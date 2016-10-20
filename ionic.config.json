@@ -1,0 +1,5 @@
+{
+  "name": "crac-frontend",
+  "app_id": ""
+  "gulpStartupTasks": ["sass", "watch"]
+}
