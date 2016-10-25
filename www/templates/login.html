@@ -1,0 +1,55 @@
+<ion-view title="Anmelden" hide-back-button="true" id="page5">
+    <ion-content padding="true" class="has-header">
+        <form id="anmelden-form1" name="authorizationForm" class="list">
+            <ion-list id="anmelden-list2">
+                <label class="item item-input" id="anmelden-input1" ng-class="{
+						 	 'has-errors' : authorizationForm.username.$invalid && authorizationForm.username.$dirty,
+							 'no-errors' : authorizationForm.username.$valid && !authorizationForm.username.$untouched}">
+                    <span class="input-label">Benutzername</span>
+                    <input type="text" placeholder="Benutzername" ng-model="data.username" name="username" required>
+                </label>
+                <div class="error-container"
+                    ng-show="authorizationForm.username.$invalid && authorizationForm.username.$dirty"
+                     ng-messages="authorizationForm.username.$error">
+                  <div class="error" ng-message="username">
+                    <i class="ion-information-circled"></i>
+                    Bitte einen gültigen Username eintragen!
+                  </div>
+                </div>
+                <label class="item item-input" id="anmelden-input2">
+                    <span class="input-label">Passwort</span>
+                    <input type="password" placeholder="Passwort" ng-model="data.password" name="password" required>
+                </label>
+            </ion-list>
+            <div class="spacer" style="height: 40px;"></div>
+
+            <button class="button button-block button-calm" ng-click="login()"   ng-disabled="authorizationForm.$invalid">Login</button>
+ <!--           <a ui-sref="tabsController.home_tab1" id="anmelden-button1" class="button button-balanced  button-block" ng-click="login()">Anmelden</a>-->
+            <a ui-sref="signup" id="anmelden-button2" class="button button-energized button-small button-block">Neuen Account anlegen</a>
+        </form>
+    </ion-content>
+</ion-view>
+
+
+<!--
+24.10. Original
+<ion-view title="Anmelden" hide-back-button="true" id="page5">
+    <ion-content padding="true" class="has-header">
+        <form id="anmelden-form1" class="list">
+            <ion-list id="anmelden-list2">
+                <label class="item item-input" id="anmelden-input1">
+                    <span class="input-label">Benutzername</span>
+                    <input type="text" placeholder="Benutzername">
+                </label>
+                <label class="item item-input" id="anmelden-input2">
+                    <span class="input-label">Passwort</span>
+                    <input type="password" placeholder="Passwort">
+                </label>
+            </ion-list>
+            <div class="spacer" style="height: 40px;"></div>
+            <a ui-sref="tabsController.startseite_tab1" id="anmelden-button1" class="button button-balanced  button-block">Anmelden</a>
+            <a ui-sref="registrierung" id="anmelden-button2" class="button button-energized button-small button-block">Neuen Account anlegen</a>
+        </form>
+    </ion-content>
+</ion-view>
+-->

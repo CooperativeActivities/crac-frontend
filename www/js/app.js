@@ -5,14 +5,14 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives','app.services',])
+var cracApp = angular.module('app', ['ionic', 'ngCookies', 'app.controllers', 'app.routes', 'app.directives', 'app.services',])
 
-.config(function($ionicConfigProvider){
-  
-})
+  .config(function ($ionicConfigProvider) {
 
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
+  })
+
+cracApp.run(function ($ionicPlatform, $rootScope, $location) {
+  $ionicPlatform.ready(function () {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -24,4 +24,18 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
       StatusBar.styleDefault();
     }
   });
+
+  /*
+   //register event -> locationChangeStart is thrown wenn URL is changed
+   $rootScope.$on('$locationChangeStart', function (event, next, current) {
+   // redirect to login page if not logged in and trying to access a restricted page
+   //var restrictedPage = $.inArray($location.path(), ['/admin']) === -1;
+   var restrictedPage = $location.path().indexOf("/login") == -1
+   console.log(restrictedPage)
+   //var loggedIn = $rootScope.globals.currentUser;
+   if (restrictedPage) { //&& !loggedIn) {
+   $location.path('/login');
+   }
+   });
+   */
 })

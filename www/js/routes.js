@@ -7,30 +7,30 @@ angular.module('app.routes', ['ionicUIRouter'])
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
   $stateProvider
-    
-  
 
-      .state('tabsController.alleAufgaben', {
+
+
+      .state('tabsController.allTasks', {
     url: '/alltasks',
     views: {
       'tab2': {
-        templateUrl: 'templates/alleAufgaben.html',
-        controller: 'alleAufgabenCtrl'
+        templateUrl: 'templates/allTasks.html',
+        controller: 'allTasksCtrl'
       }
     }
   })
 
-  .state('tabsController.meineAufgaben', {
+  .state('tabsController.myTasks', {
     url: '/mytasks',
     views: {
       'tab3': {
-        templateUrl: 'templates/meineAufgaben.html',
-        controller: 'meineAufgabenCtrl'
+        templateUrl: 'templates/myTasks.html',
+        controller: 'myTasksCtrl'
       }
     }
   })
 
-  /* 
+  /*
     The IonicUIRouter.js UI-Router Modification is being used for this route.
     To navigate to this route, do NOT use a URL. Instead use one of the following:
       1) Using the ui-sref HTML attribute:
@@ -44,23 +44,32 @@ angular.module('app.routes', ['ionicUIRouter'])
       /tabcontroller/tab2/home
       /tabcontroller/tab3/home
   */
-  .state('tabsController.startseite', {
+
+  .state('tabsController.home', {
     url: '/home',
     views: {
       'tab1': {
-        templateUrl: 'templates/startseite.html',
-        controller: 'startseiteCtrl'
+        templateUrl: 'templates/home.html',
+        controller: 'homeCtrl'
       },
       'tab2': {
-        templateUrl: 'templates/startseite.html',
-        controller: 'startseiteCtrl'
+        templateUrl: 'templates/allTasks.html',
+        controller: 'allTasksCtrl'
       },
       'tab3': {
-        templateUrl: 'templates/startseite.html',
-        controller: 'startseiteCtrl'
+        templateUrl: 'templates/myTasks.html',
+        controller: 'myTasksCtrl'
       }
     }
   })
+
+/*
+    .state('tabsController.home', {
+      url: '/home',
+      templateUrl: 'templates/home.html',
+      controller: 'homeCtrl'
+    })
+*/
 
   .state('tabsController', {
     url: '/tabcontroller',
@@ -68,41 +77,41 @@ angular.module('app.routes', ['ionicUIRouter'])
     abstract:true
   })
 
-  .state('anmelden', {
+  .state('login', {
     url: '/login',
-    templateUrl: 'templates/anmelden.html',
-    controller: 'anmeldenCtrl'
+    templateUrl: 'templates/login.html',
+    controller: 'loginCtrl'
   })
 
-  .state('registrierung', {
+  .state('signup', {
     url: '/signup',
-    templateUrl: 'templates/registrierung.html',
-    controller: 'registrierungCtrl'
+    templateUrl: 'templates/signup.html',
+    controller: 'signupCtrl'
   })
 
-  .state('willkommen', {
+  .state('welcome', {
     url: '/welcome',
-    templateUrl: 'templates/willkommen.html',
-    controller: 'willkommenCtrl'
+    templateUrl: 'templates/welcome.html',
+    controller: 'welcomeCtrl'
   })
 
-  .state('profilAssistent', {
+  .state('profileAssistent', {
     url: '/profileassistent',
-    templateUrl: 'templates/profilAssistent.html',
-    controller: 'profilAssistentCtrl'
+    templateUrl: 'templates/profileAssistent.html',
+    controller: 'profileAssistentCtrl'
   })
 
-  .state('tabsController.aufgabe2_enrolled', {
+  .state('tabsController.task2enrolled', {
     url: '/task2enrolled',
     views: {
       'tab3': {
-        templateUrl: 'templates/aufgabe2_enrolled.html',
-        controller: 'aufgabe2_enrolledCtrl'
+        templateUrl: 'templates/task2enrolled.html',
+        controller: 'task2enrolledCtrl'
       }
     }
   })
 
-  /* 
+  /*
     The IonicUIRouter.js UI-Router Modification is being used for this route.
     To navigate to this route, do NOT use a URL. Instead use one of the following:
       1) Using the ui-sref HTML attribute:
@@ -116,25 +125,25 @@ angular.module('app.routes', ['ionicUIRouter'])
       /tabcontroller/tab2/task2
       /tabcontroller/tab3/task2
   */
-  .state('tabsController.aufgabe2', {
+  .state('tabsController.task2', {
     url: '/task2',
     views: {
       'tab1': {
-        templateUrl: 'templates/aufgabe2.html',
-        controller: 'aufgabe2Ctrl'
+        templateUrl: 'templates/task2.html',
+        controller: 'task2Ctrl'
       },
       'tab2': {
-        templateUrl: 'templates/aufgabe2.html',
-        controller: 'aufgabe2Ctrl'
+        templateUrl: 'templates/task2.html',
+        controller: 'task2Ctrl'
       },
       'tab3': {
-        templateUrl: 'templates/aufgabe2.html',
-        controller: 'aufgabe2Ctrl'
+        templateUrl: 'templates/task2.html',
+        controller: 'task2Ctrl'
       }
     }
   })
 
-  /* 
+  /*
     The IonicUIRouter.js UI-Router Modification is being used for this route.
     To navigate to this route, do NOT use a URL. Instead use one of the following:
       1) Using the ui-sref HTML attribute:
@@ -148,45 +157,45 @@ angular.module('app.routes', ['ionicUIRouter'])
       /tabcontroller/tab2/task1
       /tabcontroller/tab3/task1
   */
-  .state('tabsController.aufgabe1', {
+  .state('tabsController.task1', {
     url: '/task1',
     views: {
       'tab1': {
-        templateUrl: 'templates/aufgabe1.html',
-        controller: 'aufgabe1Ctrl'
+        templateUrl: 'templates/task1.html',
+        controller: 'task1Ctrl'
       },
       'tab2': {
-        templateUrl: 'templates/aufgabe1.html',
-        controller: 'aufgabe1Ctrl'
+        templateUrl: 'templates/task1.html',
+        controller: 'task1Ctrl'
       },
       'tab3': {
-        templateUrl: 'templates/aufgabe1.html',
-        controller: 'aufgabe1Ctrl'
+        templateUrl: 'templates/task1.html',
+        controller: 'task1Ctrl'
       }
     }
   })
 
-  .state('tabsController.aufgabe1_enrolled', {
+  .state('tabsController.task1enrolled', {
     url: '/task1enrolled',
     views: {
       'tab3': {
-        templateUrl: 'templates/aufgabe1_enrolled.html',
-        controller: 'aufgabe1_enrolledCtrl'
+        templateUrl: 'templates/task1enrolled.html',
+        controller: 'task1enrolledCtrl'
       }
     }
   })
 
-  .state('tabsController.meinProfil', {
+  .state('tabsController.myProfile', {
     url: '/myprofile',
     views: {
       'tab5': {
-        templateUrl: 'templates/meinProfil.html',
-        controller: 'meinProfilCtrl'
+        templateUrl: 'templates/myProfile.html',
+        controller: 'myProfileCtrl'
       }
     }
   })
 
-  /* 
+  /*
     The IonicUIRouter.js UI-Router Modification is being used for this route.
     To navigate to this route, do NOT use a URL. Instead use one of the following:
       1) Using the ui-sref HTML attribute:
@@ -199,61 +208,61 @@ angular.module('app.routes', ['ionicUIRouter'])
       /tabcontroller/tab6/mycompetencies
       /tabcontroller/tab8/mycompetencies
   */
-  .state('tabsController.meineKompetenzen', {
+  .state('tabsController.myCompetencies', {
     url: '/mycompetencies',
     views: {
       'tab6': {
-        templateUrl: 'templates/meineKompetenzen.html',
-        controller: 'meineKompetenzenCtrl'
+        templateUrl: 'templates/myCompetencies.html',
+        controller: 'myCompetenciesCtrl'
       },
       'tab8': {
-        templateUrl: 'templates/meineKompetenzen.html',
-        controller: 'meineKompetenzenCtrl'
+        templateUrl: 'templates/myCompetencies.html',
+        controller: 'myCompetenciesCtrl'
       }
     }
   })
 
-  .state('tabsController.einstellungen', {
+  .state('tabsController.settings', {
     url: '/settings',
     views: {
       'tab7': {
-        templateUrl: 'templates/einstellungen.html',
-        controller: 'einstellungenCtrl'
+        templateUrl: 'templates/settings.html',
+        controller: 'settingsCtrl'
       }
     }
   })
 
-  .state('tabsController.kompetenzHinzufGen', {
+  .state('tabsController.addCompetency', {
     url: '/addcompetency',
     views: {
       'tab8': {
-        templateUrl: 'templates/kompetenzHinzufGen.html',
-        controller: 'kompetenzHinzufGenCtrl'
+        templateUrl: 'templates/addCompetency.html',
+        controller: 'addCompetencyCtrl'
       }
     }
   })
 
-  .state('tabsController.organisationen', {
-    url: '/organisationen',
+  .state('tabsController.organisations', {
+    url: '/organisations',
     views: {
       'tab9': {
-        templateUrl: 'templates/organisationen.html',
-        controller: 'organisationenCtrl'
+        templateUrl: 'templates/organisations.html',
+        controller: 'organisationsCtrl'
       }
     }
   })
 
-  .state('tabsController.nachrichten', {
+  .state('tabsController.messages', {
     url: '/messages',
     views: {
       'tab10': {
-        templateUrl: 'templates/nachrichten.html',
-        controller: 'nachrichtenCtrl'
+        templateUrl: 'templates/messages.html',
+        controller: 'messagingCtrl'
       }
     }
   })
 
-  /* 
+  /*
     The IonicUIRouter.js UI-Router Modification is being used for this route.
     To navigate to this route, do NOT use a URL. Instead use one of the following:
       1) Using the ui-sref HTML attribute:
@@ -266,22 +275,23 @@ angular.module('app.routes', ['ionicUIRouter'])
       /tabcontroller/tab9/selectedOrganisation
       /tabcontroller/tab11/selectedOrganisation
   */
-  .state('tabsController.rotesKreuzLinz', {
-    url: '/selectedOrganisation',
+  .state('tabsController.organisation_rk', {
+    url: '/organisation_rk',
     views: {
       'tab9': {
-        templateUrl: 'templates/rotesKreuzLinz.html',
-        controller: 'rotesKreuzLinzCtrl'
+        templateUrl: 'templates/organisation_rk.html',
+        controller: 'rkLinzCtrl'
       },
       'tab11': {
-        templateUrl: 'templates/rotesKreuzLinz.html',
-        controller: 'rotesKreuzLinzCtrl'
+        templateUrl: 'templates/organisation_rk.html',
+        controller: 'rkLinzCtrl'
       }
     }
   })
 
-$urlRouterProvider.otherwise('/tabcontroller/tab1/home')
+/*$urlRouterProvider.otherwise('/tabcontroller/tab1/home')*/
+$urlRouterProvider.otherwise('/login');
 
-  
+
 
 });
