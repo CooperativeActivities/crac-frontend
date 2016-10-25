@@ -5,8 +5,8 @@
 
   var baseURL = "https://core.crac.at/crac-core";
 
-  AuthenticationService.$inject = ['$http', '$cookieStore', '$rootScope', '$timeout'];
-  function AuthenticationService($http, $cookieStore, $rootScope, $timeout) {
+  AuthenticationService.$inject = ['$http', '$cookieStore', '$rootScope'];
+  function AuthenticationService($http, $cookieStore, $rootScope) {
 
     var service = {};
 
@@ -23,43 +23,55 @@
 
       $http.get(baseURL + '/user/login')
         .success(function (response, status, headers) {
-          if (response.user != null) {
+          if (response.success || response.cause =="toke already created") {
             console.log("Login successful");
 
             // SetCredentials(username,headers('Authorization'));
 
-            // $http.defaults.headers.common['Authorization'] = headers('Authorization');
-            $cookieStore.put('globals', $rootScope.globals);
-
-            response = {success: true, id: response.user};
-          } else {
-            response = {success: false, message: 'Username or password is incorrect'};
-          }
+            //$http.defaults.headers.common['Authorization'] = headers('Authorization');
+            //$http.defaults.headers.common["X-AUTH-TOKEN"] = response.token;
+            //$cookieStore.put('globals', $rootScope.globals);
+            response.success = true;
+            //response = {success: true, id: response.user};
+            //return response;
+          } //else {
+            //response = {success: false, message: 'Username or password is incorrect'};
+            //return response;
+          //}
           callback(response);
         })
         .error(function (response, status, headers) {
-          response = {success: false, message: 'Username or password is incorrect'};
+          //response = {success: false, message: 'Username or password is incorrect'};
+          callback(response);
         });
     }
 
-    function SetCredentials(username, password, id) {
-      var authdata = Base64.encode(username + ':' + password);
+    function SetCredentials(response) {
+      //var authdata = Base64.encode(username + ':' + password);
 
       $rootScope.globals = {
         currentUser: {
-          username: username,
-          id: id,
-          authdata: authdata,
+          user: response.user,
+          id: response.id,
+          //authdata: authdata,
+          token : response.token,
+          roles : response.roles
         }
       };
 
-      $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
+      //$http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
+      //$http.defaults.headers.common["X-AUTH-TOKEN"] = response.token;
       $cookieStore.put('globals', $rootScope.globals);
     }
 
     function Logout() {
-      //$http.delete(baseUrl+'/api/login.json');
-      ClearCredentials();
+      $http.get(baseURL+'/user/logout').success(function(response){
+        ClearCredentials();
+      }).
+      error(function(response){
+        console.log("Logout failed");
+      });
+
     }
 
     function ClearCredentials() {
