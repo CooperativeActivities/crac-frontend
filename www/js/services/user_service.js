@@ -10,7 +10,7 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
 
     // Get all users
     srv.getAllUsers = function(){
-      return $http.get(srv._baseURL + "user");
+      return $http.get(srv._baseURL + "user/all");
     }
 
     // Get specified user by id (integer)
@@ -66,7 +66,7 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
 
     // Returns the current logged in user
     srv.getCurrentUser = function(){
-      return $http.get(srv._baseURL + "user/me");
+      return $http.get(srv._baseURL + "user");
     }
 
     /**
