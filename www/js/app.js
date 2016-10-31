@@ -11,7 +11,7 @@ var cracApp = angular.module('app', ['ionic', 'ngCookies', 'app.controllers', 'a
 
   })
 
-cracApp.run(function ($ionicPlatform, $rootScope, $location,$cookieStore) {
+cracApp.run(function ($ionicPlatform, $rootScope, $location,$cookieStore,$http) {
   $ionicPlatform.ready(function () {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -25,6 +25,7 @@ cracApp.run(function ($ionicPlatform, $rootScope, $location,$cookieStore) {
     }
   });
 
+  //$http.defaults.withCredentials = true;
   $rootScope.globals = $cookieStore.get('globals') || {};
 
    //register event -> locationChangeStart is thrown wenn URL is changed

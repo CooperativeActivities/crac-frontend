@@ -60,7 +60,7 @@
       };
 
       //$http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
-      //$http.defaults.headers.common["X-AUTH-TOKEN"] = response.token;
+      $http.defaults.headers.common["Token"] = response.token;
       $cookieStore.put('globals', $rootScope.globals);
     }
 
