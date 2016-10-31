@@ -26,15 +26,15 @@
             </label>
             <label class="item item-input item-stacked-label" id="meinProfil-input8">
                 <span class="input-label">Email</span>
-                <input type="text" placeholder="johndoe@gmail.com">
+                <input type="text" ng-model="user.email" placeholder="{{user.email}}">
             </label>
             <label class="item item-input item-stacked-label" id="meinProfil-input9">
                 <span class="input-label">Handy</span>
-                <input type="text" placeholder="+43 681 45 69 88 14">
+                <input type="text" ng-model="user.phone" placeholder="{{user.phone}}">
             </label>
             <label class="item item-input item-stacked-label" id="meinProfil-input10">
                 <span class="input-label">Festnetz</span>
-                <input type="text" placeholder="+43 732 45445">
+                <input type="text"  placeholder="+43 732 45445">
             </label>
             <label class="item item-input item-stacked-label" id="meinProfil-input24">
                 <span class="input-label">Geburtsdatum</span>
@@ -42,7 +42,7 @@
             </label>
             <ion-item class="item-divider" id="meinProfil-list-item-divider14">Item</ion-item>
             <div id="meinProfil-button-bar4" class="button-bar">
-                <button id="meinProfil-button43" class="button button-balanced  button-block">Speichern</button>
+                <button id="meinProfil-button43" ng-click="save()" class="button button-balanced  button-block">Speichern</button>
                 <button id="meinProfil-button45" class="button button-energized  button-block">Weitere Daten</button>
             </div>
         </form>

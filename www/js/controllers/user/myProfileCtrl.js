@@ -9,7 +9,21 @@ cracApp.controller('myProfileCtrl', function($rootScope,$scope, $http, $ionicMod
   }, function(error) {
     console.log('An error occurred!', error);
   });
+  $scope.save = function(){
+    var profileData = {};
+    profileData.name= $scope.user.name;
+    profileData.firstName= $scope.user.firstName;
+    profileData.lastName= $scope.user.lastName;
+    profileData.phone= $scope.user.phone;
+    profileData.email= $scope.user.email;
 
+    UserDataService.updateCurrentUser(profileData).then(function(res) {
+      console.log(profileData);
+      console.log(res.data)
+    }, function(error) {
+      console.log('An error occurred!', error);
+    });
+  };
   // Picture Change expand modal
  /* $ionicModal.fromTemplateUrl('profileimage-modal.html', {
     scope: $scope,

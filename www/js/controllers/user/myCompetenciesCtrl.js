@@ -1,10 +1,14 @@
 /**
  * Created by P41332 on 25.10.2016.
  */
-cracApp.controller('myCompetenciesCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
-  function ($scope, $stateParams) {
+cracApp.controller('myCompetenciesCtrl', function($rootScope,$scope, $http, $ionicModal,UserDataService) {
+  console.log("Userid: " +$rootScope.globals.currentUser.id)
+  UserDataService.getUserById($rootScope.globals.currentUser.id).then(function(res) {
+    $scope.user = res.data;
+    console.log($scope.user)
+  }, function(error) {
+    console.log('An error occurred!', error);
+  });
 
 
-  }])
+  })

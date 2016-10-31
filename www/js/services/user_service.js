@@ -63,6 +63,22 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
     srv.updateUserById = function(id, newUserData){
       return $http.put(srv._baseURL + "user/" + id, newUserData);
     }
+  /**
+   * Updates the user which is currently logged in and new user data
+   {
+       "name":"test",
+       "password": "test",
+       "role":"USER",
+       "firstName":"TestHans",
+       "lastName":"TestName",
+       "phone":"234",
+       "email":"asd@asd"
+    }
+   */
+    srv.updateCurrentUser = function(newUserData){
+      return $http.put(srv._baseURL + "user", newUserData);
+    }
+
 
     // Returns the current logged in user
     srv.getCurrentUser = function(){
@@ -84,6 +100,9 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
       },
       updateUserById : function(id, newUserData){
         return srv.updateUserById(id, newUserData);
+      },
+      updateCurrentUser : function(newUserData){
+        return srv.updateCurrentUser(newUserData);
       },
       getCurrentUser : function(){
         return srv.getCurrentUser();
