@@ -27,6 +27,9 @@ cracApp.run(function ($ionicPlatform, $rootScope, $location,$cookieStore,$http) 
 
   //$http.defaults.withCredentials = true;
   $rootScope.globals = $cookieStore.get('globals') || {};
+  if($rootScope.globals != null){
+    $http.defaults.headers.common['Authorization'] = $cookieStore.get('basic');
+  }
 
    //register event -> locationChangeStart is thrown wenn URL is changed
    $rootScope.$on('$locationChangeStart', function (event, next, current) {

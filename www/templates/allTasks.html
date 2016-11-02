@@ -1,4 +1,4 @@
-<ion-view title="Alle Aufgaben" id="page3">
+<ion-view title="Alle offenen Projekte" id="page3">
   <ion-content padding="true" class="has-header">
     <ion-list>
       <div ng-repeat="task in tasks">
@@ -8,8 +8,13 @@
           <img src="img/i8bhuXcQQcqLW28wQ4ka_presentation.jpg">
           <h2>{{task.name}}</h2>
           <p style="white-space:normal;">{{task.description}}</p>
-          <p>{{task.location}}</p>
-          <p>{{task.startTime}}</p>
+          <p>Ort: {{task.location}}</p>
+          <p>Von {{task.startTime}} bis {{task.endTime}}</p>
+
+          <p>Subtasks: {{task.childTasks}}</p>
+
+
+
 
         </ion-item>
         </div>
