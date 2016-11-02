@@ -6,23 +6,33 @@ cracApp.controller('myProfileCtrl', function($rootScope,$scope, $http, $ionicMod
   UserDataService.getUserById($rootScope.globals.currentUser.id).then(function(res) {
     $scope.user = res.data;
     console.log($scope.user)
+
   }, function(error) {
     console.log('An error occurred!', error);
   });
+
+  $scope.editFlag =true;
+
   $scope.save = function(){
     var profileData = {};
-    profileData.name= $scope.user.name;
     profileData.firstName= $scope.user.firstName;
     profileData.lastName= $scope.user.lastName;
+    profileData.address= $scope.user.address;
     profileData.phone= $scope.user.phone;
     profileData.email= $scope.user.email;
+    profileData.birthDate= $scope.user.birthDate;
+
 
     UserDataService.updateCurrentUser(profileData).then(function(res) {
       console.log(profileData);
       console.log(res.data)
+      $scope.editFlag =true;
     }, function(error) {
       console.log('An error occurred!', error);
     });
+  };
+  $scope.edit = function(){
+    $scope.editFlag =false;
   };
   // Picture Change expand modal
  /* $ionicModal.fromTemplateUrl('profileimage-modal.html', {

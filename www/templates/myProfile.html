@@ -1,6 +1,6 @@
 <ion-view title="Mein Profil" id="page16">
     <ion-nav-buttons side="right" class="has-header">
-        <button class="button icon ion-edit"></button>
+        <button class="button icon ion-edit" ng-click="edit()"></button>
     </ion-nav-buttons>
     <ion-content padding="true" class="has-header">
         <div id="meinProfil-container4">
@@ -10,41 +10,33 @@
                 </div>
                 <ion-item class="item-divider" id="meinProfil-list-item-divider15">Basisdaten</ion-item>
                 <label class="item item-input" id="meinProfil-input20">
-                    <span class="input-label">Name</span>
-                    <input type="text" placeholder="{{user.firstName}} {{user.lastName}}">
+                  <span class="input-label">Name</span>
+                  <input type="text" ng-readonly="editFlag" ng-model="user.firstName">
+                  <input type="text" ng-readonly="editFlag" ng-model="user.lastName">
                 </label>
             </form>
         </div>
         <form id="meinProfil-form18" class="list">
-            <label class="item item-input item-stacked-label" id="meinProfil-input21">
-                <span class="input-label">PLZ</span>
-                <input type="text" placeholder="4020">
-            </label>
             <label class="item item-input item-stacked-label" id="meinProfil-input23">
-                <span class="input-label">Ort</span>
-                <input type="text" placeholder="Linz">
+                <span class="input-label">Adresse</span>
+                <input type="text" ng-readonly="editFlag" ng-model="user.adress" >
             </label>
             <label class="item item-input item-stacked-label" id="meinProfil-input8">
                 <span class="input-label">Email</span>
-                <input type="text" ng-model="user.email" placeholder="{{user.email}}">
+                <input type="text" ng-readonly="editFlag" ng-model="user.email">
             </label>
             <label class="item item-input item-stacked-label" id="meinProfil-input9">
                 <span class="input-label">Handy</span>
-                <input type="text" ng-model="user.phone" placeholder="{{user.phone}}">
-            </label>
-            <label class="item item-input item-stacked-label" id="meinProfil-input10">
-                <span class="input-label">Festnetz</span>
-                <input type="text"  placeholder="+43 732 45445">
-            </label>
+                <input type="text" ng-readonly="editFlag" ng-model="user.phone">
+              </label>
             <label class="item item-input item-stacked-label" id="meinProfil-input24">
                 <span class="input-label">Geburtsdatum</span>
-                <input type="date" placeholder="02.10.1989">
+                <input type="date" ng-readonly="editFlag" ng-model="birthDate">
             </label>
-            <ion-item class="item-divider" id="meinProfil-list-item-divider14">Item</ion-item>
             <div id="meinProfil-button-bar4" class="button-bar">
-                <button id="meinProfil-button43" ng-click="save()" class="button button-balanced  button-block">Speichern</button>
-                <button id="meinProfil-button45" class="button button-energized  button-block">Weitere Daten</button>
+                <button id="meinProfil-button43"  ng-hide="editFlag" ng-click="save()" class="button button-balanced button-block">Speichern</button>
+                <button id="meinProfil-button45"  ng-hide="editFlag" class="button button-energized  button-block ">Weitere Daten</button>
             </div>
-        </form>
+          </form>
     </ion-content>
 </ion-view>
