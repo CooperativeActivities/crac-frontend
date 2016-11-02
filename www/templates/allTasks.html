@@ -1,35 +1,19 @@
 <ion-view title="Alle Aufgaben" id="page3">
-    <ion-content padding="true" class="has-header">
-        <ion-list id="alleAufgaben-list4">
+  <ion-content padding="true" class="has-header">
+    <ion-list>
+      <div ng-repeat="task in tasks">
+        <div>
+        <ion-item class="item-thumbnail-left"  ng-click="loadSingleTask(task.id)">
+                  <!--ng-href="#/tabcontroller/task/{{task.id}}"> -->
+          <img src="img/i8bhuXcQQcqLW28wQ4ka_presentation.jpg">
+          <h2>{{task.name}}</h2>
+          <p style="white-space:normal;">{{task.description}}</p>
+          <p>{{task.location}}</p>
+          <p>{{task.startTime}}</p>
 
-            Test fuer Taskname aus DB
-            <ion-item class="item-thumbnail-left" id="alleAufgaben-list-item20" ui-sref="tabsController.task1">
-              <img src="img/i8bhuXcQQcqLW28wQ4ka_presentation.jpg">
-              <h2>{{task.name}}</h2>
-              <p style="white-space:normal;">asdfasdf</p>
-            </ion-item>
-
-            <ion-item class="item-thumbnail-left" id="alleAufgaben-list-item21" ui-sref="tabsController.task1">
-                <img src="img/i8bhuXcQQcqLW28wQ4ka_presentation.jpg">
-                <h2>Präsentation vorbereiten</h2>
-                <p style="white-space:normal;">Infoabend am 30.01.2017</p>
-            </ion-item>
-            <ion-item class="item-thumbnail-left" id="alleAufgaben-list-item22" ui-sref="tabsController.task2">
-                <img src="img/8jVhGznuScaBGPhzs27P_wand.jpg">
-                <h2>Wände ausmalen</h2>
-                <p style="white-space:normal;">Klassenzimmer und Werkraum im 4. Stock müssen bis Ende des Jahres neu ausgemalt ...</p>
-            </ion-item>
-            <ion-item class="item-thumbnail-left" id="alleAufgaben-list-item23" ui-sref="tabsController.task1">
-                <img src="img/CyGDAJN9Rdqhvh45368N_Beratung.jpg">
-                <h2>Beratungsgespräche für potentielle Freiwillige</h2>
-                <p style="white-space:normal;">Es werden erfahrene Mitglieder oder Mitarbeiter ...</p>
-            </ion-item>
-            <ion-item class="item-thumbnail-left positive" id="alleAufgaben-list-item24" ui-sref="tabsController.task1">
-                <img src="img/mOW8cSR4T4CA3L1GVQHG_rkessen.jpg">
-                <h2positive>Essen auf Rädern (MO)
-                    <p style="white-space:normal;">In der Region Linz, Bindermichl werden für Montag ...</p>
-                </h2positive>
-            </ion-item>
-        </ion-list>
-    </ion-content>
+        </ion-item>
+        </div>
+      </div>
+    </ion-list>
+  </ion-content>
 </ion-view>

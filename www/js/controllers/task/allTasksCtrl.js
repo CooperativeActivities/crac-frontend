@@ -12,17 +12,32 @@
  }])
  */
 
-cracApp.controller('allTasksCtrl', function ($rootScope, $scope, $http, $ionicModal, TaskDataService) {
+cracApp.controller('allTasksCtrl', function ($rootScope, $state, $scope, $http, $ionicModal, TaskDataService) {
   console.log("Taskdata: " + $rootScope.globals.currentUser)
 
 
-  TaskDataService.getAllTasks().then(function (res) {
-    $scope.task = res.data;
-    console.log("scope.task = " + $scope.task);
-    angular.forEach($scope.task, function(item){
-      console.log("taskname " + item.name);
+  $scope.loadSingleTask = function(taskId){
+    console.log("In fkt")
+    $state.go('tabsController.task1', { id:taskId });
+  }
+
+  TaskDataService.getAllParentTasks().then(function (res) {
+    $scope.tasks = res.data;
+    console.log("scope.task = " + $scope.tasks);
+    angular.forEach($scope.tasks, function(item){
+      console.log("taskname " + item.name + item.description);
     })
   }, function (error) {
     console.log('An error occurred!', error);
   });
+
+  $scope.getTaskById= function(id){
+    TaskDataService.getTaskById(id).then(function (res) {
+      $scope.tasks = res.data;
+      console.log("scope.task = " + $scope.tasks);
+      $scope.singleTask = res;
+    }, function (error) {
+      console.log('An error occurred!', error);
+    });
+  }
 })

@@ -158,19 +158,11 @@ angular.module('app.routes', ['ionicUIRouter'])
       /tabcontroller/tab3/task1
   */
   .state('tabsController.task1', {
-    url: '/task1',
+    url: '/task/:id',
     views: {
       'tab1': {
-        templateUrl: 'templates/task1.html',
-        controller: 'task1Ctrl'
-      },
-      'tab2': {
-        templateUrl: 'templates/task1.html',
-        controller: 'task1Ctrl'
-      },
-      'tab3': {
-        templateUrl: 'templates/task1.html',
-        controller: 'task1Ctrl'
+        templateUrl: 'templates/task.html',
+        controller: 'singleTaskCtrl'
       }
     }
   })

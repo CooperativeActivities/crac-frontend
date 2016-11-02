@@ -6,17 +6,25 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
     srv._baseURL = "https://core.crac.at/crac-core/";
 
     // Get all task
-    srv.getAllTasks = function(){
-      return $http.get(srv._baseURL + "task");
+    srv.getAllParentTasks = function(){
+      return $http.get(srv._baseURL + "task/parents");
     }
+
+  srv.getTaskById = function(id){
+    return $http.get(srv._baseURL + "task/" + id);
+  }
 
     /**
      * EXPOSE Service Methods
      **/
     return {
-      getAllTasks : function(){
-        return srv.getAllTasks();
+      getAllParentTasks : function(){
+        return srv.getAllParentTasks();
+      },
+      getTaskById : function(id){
+        return srv.getTaskById(id);
       }
+
     }
 
   }])
