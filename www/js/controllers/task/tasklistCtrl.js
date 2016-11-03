@@ -23,7 +23,7 @@ cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, 
 
   TaskDataService.getAllParentTasks().then(function (res) {
     $scope.tasks = res.data;
-    console.log("scope.task = " + $scope.tasks);
+    console.log($scope.tasks);
     angular.forEach($scope.tasks, function(item){
       console.log("taskname " + item.name + item.description);
     })

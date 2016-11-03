@@ -1,22 +1,60 @@
 <ion-view title="Aufgabe" hide-nav-bar="false">
+  <ion-nav-buttons side="right" class="has-header">
+    <button class="button icon ion-edit" ng-show="editFlag" ng-click="edit()"></button>
+    <button class="button icon ion-checkmark "ng-hide="editFlag"  ng-click="save()"></button>
+  </ion-nav-buttons>
     <ion-content padding="true" class="manual-ios-statusbar-padding">
         <div>
             <img src="img/VYlmQQCufa0Dowy1ZgZb_rkessen.jpg" width="100%" height="auto" style="display: block; margin-left: auto; margin-right: auto;">
         </div>
         <h5 style="color:#327FE2;">{{task.name}}</h5>
         <div style="color:#000000;">
-            <p>Description: {{task.description}}</p>
-            <p>Urgency: {{task.urgency}}</p>
-            <p>AmountOfVolunteers: {{task.amountOfVolunteers}}</p>
-            <p>Feedback: {{task.feedback}}</p>
-            <p>taskState: {{task.taskState}}</p>
-            <p>taskType: {{task.taskType}}</p>
-            <p>taskRepetitionState: {{task.taskRepetitionState}}</p>
-            <p>superTask: {{task.superTask}}</p>
-            <p>childTask: {{task.childTask}}</p>
-            <p>previousTask: {{task.previousTask}}</p>
-            <p>nextTask: {{task.nextTask}}</p>
-
+          <form>
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">Description:</span>
+              <textarea ng-readonly="editFlag" ng-model="task.description"></textarea>
+            </label>
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">Urgency:</span>
+               <textarea ng-readonly="editFlag" ng-model="task.urgency"></textarea>
+            </label>
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">mountOfVolunteers:</span>
+               <textarea ng-readonly="editFlag" ng-model="task.amountOfVolunteers"></textarea>
+            </label>
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">Feedback:</span>
+               <textarea ng-readonly="editFlag" ng-model="task.feedback"></textarea>
+            </label>
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">taskState:</span>
+               <textarea ng-readonly="editFlag" ng-model="task.taskState"></textarea>
+            </label>
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">taskType:</span>
+               <textarea ng-readonly="editFlag" ng-model="task.taskType"></textarea>
+            </label>
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">taskRepetitionState:</span>
+               <textarea ng-readonly="editFlag" ng-model="task.taskRepetitionState"></textarea>
+            </label>
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">superTask:</span>
+               <textarea ng-readonly="editFlag" ng-model="task.superTask"></textarea>
+            </label>
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">childTask:</span>
+               <textarea ng-readonly="editFlag" ng-model="task.childTask"></textarea>
+            </label>
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">previousTask:</span>
+               <textarea ng-readonly="editFlag" ng-model="task.previousTask"></textarea>
+            </label>
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">nextTask:</span>
+               <textarea ng-readonly="editFlag" ng-model="task.nextTask"></textarea>
+            </label>
+          </form>
 
 
         </div>

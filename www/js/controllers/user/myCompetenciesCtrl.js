@@ -16,6 +16,4 @@ cracApp.controller('myCompetenciesCtrl', function($rootScope,$scope, $http, $ion
     console.log('An error occurred!', error);
   });
 
-
-
   })

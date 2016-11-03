@@ -13,6 +13,9 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
   srv.getTaskById = function(id){
     return $http.get(srv._baseURL + "task/" + id);
   }
+  srv.updateTaskById = function(taskData, id){
+    return $http.put(srv._baseURL + "admin/task/" + id, taskData);
+  }
 
     /**
      * EXPOSE Service Methods
@@ -23,8 +26,10 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
       },
       getTaskById : function(id){
         return srv.getTaskById(id);
+      },
+      updateTaskById : function(taskData, id){
+        return srv.updateTaskById(taskData, id);
       }
-
     }
 
   }])
