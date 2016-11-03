@@ -10,12 +10,12 @@ angular.module('app.routes', ['ionicUIRouter'])
 
 
 
-      .state('tabsController.allTasks', {
-    url: '/alltasks',
+      .state('tabsController.tasklist', {
+    url: '/tasklist',
     views: {
       'tab2': {
-        templateUrl: 'templates/allTasks.html',
-        controller: 'allTasksCtrl'
+        templateUrl: 'templates/tasklist.html',
+        controller: 'tasklistCtrl'
       }
     }
   })
@@ -53,8 +53,8 @@ angular.module('app.routes', ['ionicUIRouter'])
         controller: 'homeCtrl'
       },
       'tab2': {
-        templateUrl: 'templates/allTasks.html',
-        controller: 'allTasksCtrl'
+        templateUrl: 'templates/tasklist.html',
+        controller: 'tasklistCtrl'
       },
       'tab3': {
         templateUrl: 'templates/myTasks.html',

@@ -12,7 +12,7 @@
  }])
  */
 
-cracApp.controller('allTasksCtrl', function ($rootScope, $state, $scope, $http, $ionicModal, TaskDataService) {
+cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, $ionicModal, TaskDataService) {
   console.log("Taskdata: " + $rootScope.globals.currentUser)
 
 
