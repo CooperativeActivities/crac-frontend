@@ -7,3 +7,6 @@ plugins/
 .idea/workspace.xml
 .idea/workspace.xml
 .idea/workspace.xml
+.idea/encodings.xml
+*.xml
+.idea/workspace.xml

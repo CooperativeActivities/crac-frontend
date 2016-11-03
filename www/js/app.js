@@ -27,7 +27,8 @@ cracApp.run(function ($ionicPlatform, $rootScope, $location,$cookieStore,$http) 
 
   //$http.defaults.withCredentials = true;
   $rootScope.globals = $cookieStore.get('globals') || {};
-  if($rootScope.globals != null){
+  if($rootScope.globals.currentUser != null){
+    $http.defaults.headers.common['Token'] = $rootScope.globals.currentUser.token; // jshint ignore:line
     $http.defaults.headers.common['Authorization'] = $cookieStore.get('basic');
   }
 
