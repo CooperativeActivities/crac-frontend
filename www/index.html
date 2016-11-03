@@ -61,7 +61,6 @@
           crossorigin="anonymous"></script>
   <!-- end Bootstrap -->
 
-
   <script src="js/app.js"></script>
   <script src="lib/angular-modules/angular-cookies.min.js"></script>
   <script src="lib/angular-modules/angular-route.js"></script>
@@ -71,7 +70,6 @@
   <script src="js/services/authentication.service.js"></script>
   <script src="js/services/user_service.js"></script>
   <script src="js/services/task_service.js"></script>
-
 
   <!-- load controllers -->
   <script src="js/controllers.js"></script>
@@ -92,13 +90,11 @@
   <script src="js/controllers/homeCtrl.js"></script>
   <script src="js/controllers/myCrAcMenuCtrl.js"></script>
   <script src="js/controllers/user/logout_controller.js"></script>
+  <script src="js/controllers/task/swipeCtrl.js"></script>
 
-  <!-- load routs, directives, ... -->
+  <!-- load routes, directives, ... -->
   <script src="js/routes.js"></script>
-
   <script src="js/directives.js"></script>
-
-
   <script src="lib/ionicuirouter/ionicUIRouter.js"></script>
 
 
@@ -129,10 +125,6 @@
           Doe</h4>
         <div class="spacer" data-componentid="spacer10" style="width: 268px; height: 15px;"></div>
         <ion-list id="myCrAcMenu-list1" data-componentid="list1">
-          <ion-item class="item-icon-left positive  side-menu-item" id="myCrAcMenu-list-item4"
-                    ui-sref="tabsController.home_tab1" menu-close="" data-componentid="list-item4">
-            <i class="icon ion-android-home"></i>Startseite
-          </ion-item>
           <ion-item class="item-icon-left positive  side-menu-item" id="myCrAcMenu-list-item20"
                     ui-sref="tabsController.myProfile" menu-close="" data-componentid="list-item20">
             <i class="icon ion-android-person"></i>Mein Profil
