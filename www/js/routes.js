@@ -71,8 +71,7 @@ angular.module('app.routes', ['ionicUIRouter'])
             controller: 'messagingCtrl'
           }
         }
-      })
-
+       })
 
       //**********************************************
       //Sidemenu

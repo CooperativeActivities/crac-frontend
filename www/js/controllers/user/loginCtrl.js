@@ -20,7 +20,7 @@ cracApp.controller('loginCtrl', function ($rootScope,$scope, $ionicPopup, $locat
         //$scope.loggedIn = true;
         //$scope.hasWrongCredentials = false;
         $ionicSideMenuDelegate.canDragContent(true);
-        $location.path("/tabcontroller/tab1/home");
+        $location.path("/tabcontroller/home");
 
       } else {
         console.log("in login auth no success")
