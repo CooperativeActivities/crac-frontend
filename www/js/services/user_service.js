@@ -85,6 +85,10 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
       return $http.get(srv._baseURL + "user");
     }
 
+    srv.getCompRelationships = function(){
+     return $http.get(srv._baseURL + 'user/competence');
+    }
+
     /**
      * EXPOSE Service Methods
      **/
@@ -106,6 +110,9 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
       },
       getCurrentUser : function(){
         return srv.getCurrentUser();
+      },
+      getCompRelationships : function(){
+          return srv.getCompRelationships();
       }
     }
 
