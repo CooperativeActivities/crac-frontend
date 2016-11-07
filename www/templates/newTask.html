@@ -1,0 +1,41 @@
+<ion-view title="NeueAufgabe" hide-nav-bar="false">
+  <ion-nav-buttons side="right" class="has-header">
+    <button class="button icon ion-checkmark"  ng-click="save()"></button>
+  </ion-nav-buttons>
+  <ion-content padding="true" class="manual-ios-statusbar-padding">
+
+    <h5 style="color:#327FE2;">Erstelle eine neue Aufgabe:</h5>
+    <div style="color:#000000;">
+      <form>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Name:</span>
+          <textarea ng-model="task.name" style="background-color:white;"></textarea>
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Description:</span>
+          <textarea ng-model="task.description" style="background-color:white;"></textarea>
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Urgency:</span>
+          <textarea ng-model="task.urgency" style="background-color:white;"></textarea>
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">amountOfVolunteers:</span>
+          <textarea ng-model="task.amountOfVolunteers" style="background-color:white;"></textarea>
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Location:</span>
+          <textarea ng-model="task.location" style="background-color:white;"></textarea>
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">StartTime</span>
+          <textarea ng-model="task.tstartTime" style="background-color:white;"></textarea>
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">EndTime:</span>
+          <textarea ng-model="task.endTime" style="background-color:white;"></textarea>
+        </label>
+      </form>
+    </div>
+  </ion-content>
+</ion-view>

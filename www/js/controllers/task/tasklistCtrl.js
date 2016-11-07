@@ -20,6 +20,9 @@ cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, 
     console.log("In fkt")
     $state.go('tabsController.task1', { id:taskId });
   }
+  $scope.makeNewTask= function(){
+    $state.go('tabsController.newTask');
+  }
 
   TaskDataService.getAllParentTasks().then(function (res) {
     $scope.tasks = res.data;

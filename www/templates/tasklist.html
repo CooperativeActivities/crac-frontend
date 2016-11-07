@@ -1,4 +1,7 @@
 <ion-view title="Aufgabenliste" id="page3">
+  <ion-nav-buttons side="right" class="has-header">
+    <button class="button icon ion-android-add-circle" ng-click="makeNewTask()"></button>
+  </ion-nav-buttons>
   <ion-content padding="true" class="has-header">
     <ion-toggle ng-model="closedtasks" toggle-class="toggle-calm">Abgeschlossene Aufgaben</ion-toggle>
     <ion-toggle ng-model="mytasks" toggle-class="toggle-calm">Nur meine Aufgaben</ion-toggle>
