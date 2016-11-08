@@ -32,7 +32,9 @@
             //$http.defaults.headers.common["X-AUTH-TOKEN"] = response.token;
             //$cookieStore.put('globals', $rootScope.globals);
             response.success = true;
-            $cookieStore.put('basic', 'Basic ' + authdata);
+            //$cookieStore.put('basic', 'Basic ' + authdata);
+            $cookieStore.put('basic', 'Basic Og==');
+
             //response = {success: true, id: response.user};
             //return response;
           } //else {
