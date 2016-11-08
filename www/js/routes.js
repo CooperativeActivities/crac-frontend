@@ -66,7 +66,7 @@ angular.module('app.routes', ['ionicUIRouter'])
       .state('tabsController.newTask', {
         url: '/newtask',
         views: {
-          'tab4': {
+          'tab2': {
             templateUrl: 'templates/newTask.html',
             controller: 'newTaskCtrl'
           }
@@ -76,7 +76,7 @@ angular.module('app.routes', ['ionicUIRouter'])
       .state('tabsController.messages', {
         url: '/messages',
         views: {
-          'tab5': {
+          'tab4': {
             templateUrl: 'templates/messages.html',
             controller: 'messagingCtrl'
           }

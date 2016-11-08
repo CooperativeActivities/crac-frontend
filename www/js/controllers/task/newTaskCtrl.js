@@ -18,6 +18,7 @@ cracApp.controller('newTaskCtrl', ['$scope', '$stateParams','$routeParams','Task
       taskData.startTime= $scope.task.startTime;
       taskData.endTime= $scope.task.endTime;
 
+      console.log($scope.task);
 
       TaskDataService.createNewTask(taskData).then(function(res) {
         console.log(taskData);
