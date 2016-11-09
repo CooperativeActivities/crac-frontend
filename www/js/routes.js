@@ -110,6 +110,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         }
       })
 
+
       .state('tabsController.organisations', {
         url: '/organisations',
         views: {
@@ -157,6 +158,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         templateUrl: 'templates/profileAssistent.html',
         controller: 'profileAssistentCtrl'
       })
+
 
 
 
@@ -211,6 +213,20 @@ angular.module('app.routes', ['ionicUIRouter'])
         }
       })
 
+      .state('tabsController.myCompetenciesInfo', {
+        url: '/mycompetencies/:index',
+        views: {
+          'tab6': {
+            templateUrl: 'templates/myCompetenciesInfo.html',
+            controller: 'myCompetenciesInfoCtrl'
+          },
+          'tab8': {
+            templateUrl: 'templates/myCompetenciesInfo.html',
+            controller: 'myCompetenciesInfoCtrl'
+          }
+        }
+      })
+
       .state('tabsController.task2', {
         url: '/task2',
         views: {
@@ -227,7 +243,10 @@ angular.module('app.routes', ['ionicUIRouter'])
             controller: 'task2Ctrl'
           }
         }
-      })
+      });
+
+
+
 
 
 

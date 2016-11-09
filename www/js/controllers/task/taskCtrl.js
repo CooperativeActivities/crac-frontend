@@ -5,12 +5,10 @@ cracApp.controller('singleTaskCtrl', ['$scope', '$stateParams','$routeParams','T
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
   function ($scope, $stateParams,$routeParams,TaskDataService,$state) {
-    $scope.editFlag =true;
 
-    $scope.loadSingleTask = function(taskId){
-      console.log("In fkt")
-      $state.go('tabsController.task1', { id:taskId });
-    }
+    $scope.editFlag =true;
+    $scope.enrollFlag =false;
+
 
     $scope.getTaskById= function(id){
       TaskDataService.getTaskById(id).then(function (res) {
@@ -54,6 +52,7 @@ cracApp.controller('singleTaskCtrl', ['$scope', '$stateParams','$routeParams','T
     $scope.enroll = function(){
       TaskDataService.changeTaskState($scope.task.id,'participate').then(function(res) {
         console.log(res.data);
+        $scope.enrollFlag = true;
       }, function(error) {
         console.log('An error occurred!', error);
       });
