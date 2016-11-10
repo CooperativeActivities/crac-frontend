@@ -1,17 +1,24 @@
 <ion-view title="Meine Aufgaben" id="page23">
     <ion-content padding="true" class="has-header">
         <ion-list id="meineAufgaben-list8">
-            <ion-item class="item-thumbnail-left" id="meineAufgaben-list-item41" ui-sref="tabsController.task2enrolled">
-                <img src="img/i8bhuXcQQcqLW28wQ4ka_presentation.jpg">
-                <h2>Präsentation vorbereiten</h2>
-                <p style="white-space:normal;">Infoabend am 30.01.2017</p>
-            </ion-item>
-            <ion-item class="item-thumbnail-left positive" id="meineAufgaben-list-item44" ui-sref="tabsController.task1enrolled">
-                <img src="img/mOW8cSR4T4CA3L1GVQHG_rkessen.jpg">
-                <h2positive>Essen auf Rädern (MO)
-                    <p style="white-space:normal;">In der Region Linz, Bindermichl werden für Montag ...</p>
-                </h2positive>
-            </ion-item>
+          <div ng-repeat="task in tasks.participating">
+          <ion-item class="item-thumbnail-left" ng-click="loadSingleTask(task.id)">
+            <!--ng-href="#/tabcontroller/task/{{task.id}}"> -->
+            <img src="img/i8bhuXcQQcqLW28wQ4ka_presentation.jpg">
+            <h2>{{task.name}}</h2>
+            <p style="white-space:normal;">{{task.description}}</p>
+            <a class="button button-icon icon ion-map">{{task.location}}</a>
+            <p>Von {{task.startTime}} bis {{task.endTime}}</p>
+            <p>Anzahl Subaufgaben: {{task.childTasks}}</p>
+
+            <ion-option-button class="button-positive" ng-click="share(item)">Share</ion-option-button>
+            <ion-option-button class="button-info" ng-click="edit(item)">Edit</ion-option-button>
+            <ion-option-button class="button-assertive" ng-click="showinterest(item)">Interesse</ion-option-button>
+
+            <ion-delete-button class="ion-minus-circled"ng-click="items.splice($index, 1)"></ion-delete-button>
+            <ion-reorder-button class="ion-navicon"on-reorder="reorderItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
+          </ion-item>
+          </div>
         </ion-list>
     </ion-content>
 </ion-view>
