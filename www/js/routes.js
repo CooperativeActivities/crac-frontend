@@ -185,7 +185,7 @@ angular.module('app.routes', ['ionicUIRouter'])
       .state('tabsController.task1', {
         url: '/task/:id',
         views: {
-          'tab1': {
+          'tab2': {
             templateUrl: 'templates/task.html',
             controller: 'singleTaskCtrl'
           }
@@ -223,6 +223,20 @@ angular.module('app.routes', ['ionicUIRouter'])
           'tab8': {
             templateUrl: 'templates/myCompetenciesInfo.html',
             controller: 'myCompetenciesInfoCtrl'
+          }
+        }
+      })
+
+      .state('tabsController.newCompetence', {
+        url: '/newcompetence',
+        views: {
+          'tab6': {
+            templateUrl: 'templates/newCompetence.html',
+            controller: 'newCompetenceCtrl'
+          },
+          'tab8': {
+            templateUrl: 'templates/newCompetence.html',
+            controller: 'newCompetenceCtrl'
           }
         }
       })

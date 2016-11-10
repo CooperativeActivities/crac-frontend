@@ -19,5 +19,8 @@ cracApp.controller('myCompetenciesCtrl', function($rootScope,$scope, $http, $ion
   $scope.competenceInfo = function(indx){
     $state.go('tabsController.myCompetenciesInfo', { index:indx });
   }
+  $scope.newCompetence = function(){
+    $state.go('tabsController.newCompetence');
+  }
 
   })
