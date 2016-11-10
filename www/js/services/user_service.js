@@ -89,6 +89,10 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
      return $http.get(srv._baseURL + 'user/competence');
     }
 
+    srv.createNewCompetence = function(competenceData){
+      return $http.post(srv._baseURL + 'admin/competence', competenceData);
+    }
+
     /**
      * EXPOSE Service Methods
      **/
@@ -113,6 +117,9 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
       },
       getCompRelationships : function(){
           return srv.getCompRelationships();
+      },
+      createNewCompetence : function(competenceData){
+        return srv.createNewCompetence(competenceData);
       }
     }
 
