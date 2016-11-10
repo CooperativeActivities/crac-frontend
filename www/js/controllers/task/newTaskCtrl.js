@@ -23,6 +23,7 @@ cracApp.controller('newTaskCtrl', ['$scope', '$stateParams','$routeParams','Task
       TaskDataService.createNewTask(taskData).then(function(res) {
         console.log(taskData);
         console.log(res.data);
+        $state.go('tabsController.tasklist');
       }, function(error) {
         console.log('An error occurred!', error);
       });

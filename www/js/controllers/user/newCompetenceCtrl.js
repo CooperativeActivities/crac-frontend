@@ -18,6 +18,7 @@ cracApp.controller('newCompetenceCtrl', ['$scope', '$stateParams','$routeParams'
       UserDataService.createNewCompetence(competenceData).then(function(res) {
         console.log(competenceData);
         console.log(res.data);
+        $state.go('tabsController.myCompetencies');
       }, function(error) {
         console.log('An error occurred!', error);
       });

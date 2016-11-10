@@ -26,7 +26,7 @@
               <entry file="file://$PROJECT_DIR$/www/js/controllers/task/tasklistCtrl.js">
                 <provider selected="true" editor-type-id="text-editor">
                   <state relative-caret-position="357">
-                    <caret line="23" column="40" selection-start-line="23" selection-start-column="40" selection-end-line="23" selection-end-column="40" />
+                    <caret line="23" column="4" selection-start-line="23" selection-start-column="4" selection-end-line="23" selection-end-column="40" />
                     <folding />
                   </state>
                 </provider>
@@ -77,8 +77,8 @@
             <file leaf-file-name="newCompetenceCtrl.js" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/www/js/controllers/user/newCompetenceCtrl.js">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="323">
-                    <caret line="21" column="49" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
+                  <state relative-caret-position="306">
+                    <caret line="20" column="51" selection-start-line="20" selection-start-column="51" selection-end-line="20" selection-end-column="51" />
                     <folding>
                       <element signature="e#0#42#0" expanded="false" />
                     </folding>
@@ -152,6 +152,28 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="routes.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/www/js/routes.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3561">
+              <caret line="230" column="30" selection-start-line="230" selection-start-column="30" selection-end-line="230" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="newTaskCtrl.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/www/js/controllers/task/newTaskCtrl.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="510">
+              <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#42#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="newCompetence.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/templates/newCompetence.html">
           <provider selected="true" editor-type-id="text-editor">
@@ -174,7 +196,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="task_service.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="task_service.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/js/services/task_service.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="425">
@@ -237,7 +259,6 @@
         <option value="$PROJECT_DIR$/www/templates/tasklist.html" />
         <option value="$PROJECT_DIR$/www/js/controllers/task/tasklistCtrl.js" />
         <option value="$PROJECT_DIR$/www/templates/newTask.html" />
-        <option value="$PROJECT_DIR$/www/js/controllers/task/newTaskCtrl.js" />
         <option value="$PROJECT_DIR$/www/templates/task.html" />
         <option value="$PROJECT_DIR$/www/js/controllers/task/taskCtrl.js" />
         <option value="$PROJECT_DIR$/www/js/controllers/user/myCompetenciesInfoCtrl.js" />
@@ -250,8 +271,9 @@
         <option value="$PROJECT_DIR$/www/index.html" />
         <option value="$PROJECT_DIR$/www/templates/newCompetence.html" />
         <option value="$PROJECT_DIR$/www/js/services/user_service.js" />
-        <option value="$PROJECT_DIR$/www/js/controllers/user/newCompetenceCtrl.js" />
         <option value="$PROJECT_DIR$/www/js/services/task_service.js" />
+        <option value="$PROJECT_DIR$/www/js/controllers/user/newCompetenceCtrl.js" />
+        <option value="$PROJECT_DIR$/www/js/controllers/task/newTaskCtrl.js" />
       </list>
     </option>
   </component>
@@ -639,12 +661,12 @@
       <workItem from="1478504592401" duration="17223000" />
       <workItem from="1478590373315" duration="6845000" />
       <workItem from="1478676190088" duration="19770000" />
-      <workItem from="1478762171735" duration="10052000" />
+      <workItem from="1478762171735" duration="10943000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="155933000" />
+    <option name="totallyTimeSpent" value="156824000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1367" y="0" width="1209" height="1080" extended-state="0" />
@@ -962,26 +984,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/controllers/task/tasklistCtrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="23" column="40" selection-start-line="23" selection-start-column="40" selection-end-line="23" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/js/controllers/user/myCompetenciesCtrl.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
           <caret line="22" column="46" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/routes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="603">
-          <caret line="230" column="30" selection-start-line="230" selection-start-column="30" selection-end-line="230" selection-end-column="30" />
           <folding />
         </state>
       </provider>
@@ -1035,28 +1041,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/controllers/task/newTaskCtrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="30" selection-end-column="5" />
-          <folding>
-            <element signature="e#0#42#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
           <caret line="88" column="69" selection-start-line="88" selection-start-column="69" selection-end-line="88" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/templates/myCompetencies.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="79" selection-start-line="2" selection-start-column="79" selection-end-line="2" selection-end-column="79" />
           <folding />
         </state>
       </provider>
@@ -1066,16 +1054,6 @@
         <state relative-caret-position="306">
           <caret line="18" column="8" selection-start-line="18" selection-start-column="8" selection-end-line="18" selection-end-column="8" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/controllers/user/newCompetenceCtrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="21" column="49" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
-          <folding>
-            <element signature="e#0#42#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1102,6 +1080,50 @@
         <state relative-caret-position="425">
           <caret line="25" column="40" selection-start-line="25" selection-start-column="40" selection-end-line="25" selection-end-column="40" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/controllers/task/tasklistCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="23" column="4" selection-start-line="23" selection-start-column="4" selection-end-line="23" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/templates/myCompetencies.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="79" selection-start-line="2" selection-start-column="79" selection-end-line="2" selection-end-column="79" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/controllers/user/newCompetenceCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="20" column="51" selection-start-line="20" selection-start-column="51" selection-end-line="20" selection-end-column="51" />
+          <folding>
+            <element signature="e#0#42#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/routes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3561">
+          <caret line="230" column="30" selection-start-line="230" selection-start-column="30" selection-end-line="230" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/controllers/task/newTaskCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#42#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
