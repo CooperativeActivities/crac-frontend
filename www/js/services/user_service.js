@@ -93,8 +93,12 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
       return $http.post(srv._baseURL + 'admin/competence', competenceData);
     }
     srv.allCompetences = function(){
-      return $http.get(srv._baseURL + '/competence');
+      return $http.get(srv._baseURL + 'competence/all');
     }
+    srv.addLikeProfValue = function(id,likeValue,ProficiencyValue){
+      return $http.get(srv._baseURL + 'user/competence/'+ id +'/add/'+ likeValue +'/'+ ProficiencyValue);
+    }
+
 
     /**
      * EXPOSE Service Methods
@@ -126,6 +130,9 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
       },
       allCompetences : function(){
         return srv.allCompetences();
+      },
+      addLikeProfValue : function(id,likeValue,ProficiencyValue){
+        return srv.addLikeProfValue(id,likeValue,ProficiencyValue);
       }
     }
 
