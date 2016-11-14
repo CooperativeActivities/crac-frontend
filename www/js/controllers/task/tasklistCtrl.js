@@ -43,6 +43,13 @@ cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, 
       console.log('An error occurred!', error);
     });
   }
+  $scope.follow = function(id){
+    TaskDataService.changeTaskState(id,'follow').then(function(res) {
+      console.log(res.data);
+    }, function(error) {
+      console.log('An error occurred!', error);
+    });
+  }
 })
 
 

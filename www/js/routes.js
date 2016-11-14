@@ -241,6 +241,20 @@ angular.module('app.routes', ['ionicUIRouter'])
         }
       })
 
+      .state('tabsController.addCompetence', {
+        url: '/addcompetence',
+        views: {
+          'tab6': {
+            templateUrl: 'templates/addCompetence.html',
+            controller: 'addCompetenceCtrl'
+          },
+          'tab8': {
+            templateUrl: 'templates/addCompetence.html',
+            controller: 'addCompetenceCtrl'
+          }
+        }
+      })
+
       .state('tabsController.task2', {
         url: '/task2',
         views: {
