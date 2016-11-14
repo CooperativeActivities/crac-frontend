@@ -56,7 +56,10 @@ cracApp.controller('singleTaskCtrl', ['$scope', '$stateParams','$routeParams','T
       }, function(error) {
         console.log('An error occurred!', error);
       });
+    }
 
+    $scope.delete = function(){
+      Ta
     }
 
   }])

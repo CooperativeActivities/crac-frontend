@@ -25,6 +25,7 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
     srv.createNewTask= function(taskData){
       return $http.post(srv._baseURL + "task", taskData);
     }
+
     /**
      * EXPOSE Service Methods
      **/

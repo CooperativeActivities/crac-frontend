@@ -10,10 +10,10 @@
             <h2>{{competenceInfo.competence.name}}</h2>
             <p style="white-space:normal;">{{competenceInfo.competence.description}}</p>
             <ion-item class="range range-assertive" id="meineKompetenzen-range13">Gefällt mir
-              <input type="range" value="{{competenceInfo.likeValue}}" min="0" max="100" step="1">
+              <input type="range" ng-model="competenceInfo.likeValue" min="0" max="100" step="1">
             </ion-item>
             <ion-item class="range range-assertive" id="meineKompetenzen-range14">Kann ich
-              <input type="range" value="{{competenceInfo.proficiencyValue}}" min="0" max="100" step="1">
+              <input type="range" ng-model="competenceInfo.proficiencyValue" min="0" max="100" step="1">
             </ion-item>
           </ion-list>
         </div>
