@@ -23,8 +23,14 @@ cracApp.controller('myCompetenciesCtrl', function($rootScope,$scope, $http, $ion
     $state.go('tabsController.newCompetence');
   }
 
-
   $scope.addCompetence = function(){
     $state.go('tabsController.addCompetence');
+  }
+  $scope.remove = function(id){
+    UserDataService.removeCompetence(id).then(function(res){
+      $route.reload();
+    }, function(error) {
+      console.log('An error occurred!', error);
+    });
   }
   })

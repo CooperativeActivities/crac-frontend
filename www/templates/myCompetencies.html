@@ -4,8 +4,15 @@
       <button class="button icon ion-android-add-circle" ng-click="addCompetence()"></button>
     </ion-nav-buttons>
     <ion-content padding="true" class="has-header">
-        <ion-list id="meineKompetenzen-list7">
-            <ion-item ng-repeat= "item in competences" ng-click="competenceInfo($index)">{{item.competence.name}}</ion-item>
+      <ion-list ng-controller="swipeCtrl"
+                show-delete="shouldShowDelete"
+                show-reorder="shouldShowReorder"
+                can-swipe="listCanSwipe">
+            <div ng-repeat= "item in competences">
+            <ion-item  ng-click="competenceInfo($index)">{{item.competence.name}}
+            <ion-option-button class="button-assertive" ng-click="remove(item.competence.id)">Löschen</ion-option-button>
+            </ion-item>
+            </div>
         </ion-list>
     </ion-content>
 </ion-view>
