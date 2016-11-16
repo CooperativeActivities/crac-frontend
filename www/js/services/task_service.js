@@ -28,6 +28,9 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
     srv.removeOpenTask= function(id){
       return $http.get(srv._baseURL + "user/task/" + id + "/remove");
     }
+    srv.getTaskRelatById = function(id){
+      return $http.get(srv._baseURL + "user/task/" + id);
+    }
 
     /**
      * EXPOSE Service Methods
@@ -53,6 +56,9 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
       },
       removeOpenTask : function(id){
         return srv.removeOpenTask(id);
+      },
+      getTaskRelatById : function(id){
+        return srv.getTaskRelatById(id);
       }
     }
 

@@ -10,6 +10,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$stateParams','$routeP
     $scope.enrollFlag =false;
 
 
+
     $scope.getTaskById= function(id){
       TaskDataService.getTaskById(id).then(function (res) {
         $scope.task = res.data;
@@ -20,6 +21,17 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$stateParams','$routeP
     }
 
     $scope.getTaskById($stateParams.id);
+
+    TaskDataService.getTaskRelatById($stateParams.id).then(function (res) {
+      $scope.participationType = res.data[1].participationType;
+      console.log(res.data);
+      console.log($scope.participationType);
+      if($scope.participationType == "PARTICIPATING"){
+        $scope.enrollFlag =true;
+      }
+    }, function (error) {
+      console.log('An error occurred!', error);
+    });
 
 
     $scope.save = function(){
