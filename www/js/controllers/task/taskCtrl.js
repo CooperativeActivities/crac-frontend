@@ -76,7 +76,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     };
 
     $scope.enroll = function(){
-      TaskDataService.changeTaskState($scope.task.id,'participate').then(function(res) {
+      TaskDataService.changeTaskState($stateParams.id ,'participate').then(function(res) {
         console.log(res.data);
         $scope.enrollFlag = true;
         $window.location.reload();
