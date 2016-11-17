@@ -20,6 +20,11 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$stateParams','$routeP
       });
     }
 
+    $scope.loadSingleTask = function(taskId){
+      console.log("In fkt")
+      $state.go('tabsController.task1', { id:taskId });
+    }
+
     $scope.getTaskById($stateParams.id);
 
     TaskDataService.getTaskRelatById($stateParams.id).then(function (res) {
@@ -33,6 +38,15 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$stateParams','$routeP
       console.log('An error occurred!', error);
     });
 
+    $scope.cancle = function(id) {
+      TaskDataService.removeOpenTask(id).then(function (res) {
+        console.log("deleted");
+        $scope.enrollFlag = false;
+        $window.location.reload();
+      }, function (error) {
+        console.log('An error occurred!', error);
+      });
+    }
 
     $scope.save = function(){
       var taskData = {};
