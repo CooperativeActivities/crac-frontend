@@ -79,7 +79,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
       TaskDataService.changeTaskState($scope.task.id,'participate').then(function(res) {
         console.log(res.data);
         $scope.enrollFlag = true;
-        $route.reload();
+        $window.location.reload();
       }, function(error) {
         console.log('An error occurred!', error);
       });
