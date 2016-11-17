@@ -1,10 +1,10 @@
 /**
  * Created by P41332 on 25.10.2016.
  */
-cracApp.controller('singleTaskCtrl', ['$scope','$route', '$stateParams','$routeParams','TaskDataService','$state', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParams','$routeParams','TaskDataService','$state', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-  function ($scope,$route, $stateParams,$routeParams,TaskDataService,$state) {
+  function ($scope,$route, $window, $stateParams,$routeParams,TaskDataService,$state) {
 
     $scope.editFlag =true;
     $scope.enrollFlag =false;
@@ -38,8 +38,8 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$stateParams','$routeP
       console.log('An error occurred!', error);
     });
 
-    $scope.cancle = function(id) {
-      TaskDataService.removeOpenTask(id).then(function (res) {
+    $scope.cancle = function() {
+      TaskDataService.removeOpenTask($scope.task.id).then(function (res) {
         console.log("deleted");
         $scope.enrollFlag = false;
         $window.location.reload();
