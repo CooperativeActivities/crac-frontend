@@ -5,7 +5,7 @@ cracApp.controller('myTasksCtrl', ['$scope','$window','$route', '$stateParams','
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope,$window, $route, $stateParams, $routeParams, TaskDataService, $state) {
-
+  $state.reload();
   TaskDataService.getMyTasks().then(function(res) {
     $scope.tasks=res.data;
     console.log($scope.tasks);
@@ -20,11 +20,12 @@ function ($scope,$window, $route, $stateParams, $routeParams, TaskDataService, $
   $scope.cancle = function(id){
     TaskDataService.removeOpenTask(id).then(function(res) {
       console.log("deleted");
-      $window.location.reload();
+      $state.reload();
     }, function(error) {
       console.log('An error occurred!', error);
     });
-
   }
+
+
 
 }])

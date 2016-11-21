@@ -42,7 +42,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
       TaskDataService.removeOpenTask($scope.task.id).then(function (res) {
         console.log("deleted");
         $scope.enrollFlag = false;
-        $window.location.reload();
+        $state.reload();
       }, function (error) {
         console.log('An error occurred!', error);
       });
@@ -79,7 +79,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
       TaskDataService.changeTaskState($stateParams.id ,'participate').then(function(res) {
         console.log(res.data);
         $scope.enrollFlag = true;
-        $window.location.reload();
+        $state.reload();
       }, function(error) {
         console.log('An error occurred!', error);
       });

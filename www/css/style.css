@@ -1,1 +1,13 @@
 /* Empty. Add your own CSS if you like */
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+.full-width{
+  width: 90%;
+}
+.input-button {
+  position: absolute;
+  right: 0;
+  top: 5px;
+  color: #bbb;
+}

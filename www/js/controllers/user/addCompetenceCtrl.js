@@ -12,5 +12,9 @@ cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ioni
 
   $scope.addCompetenceInfo = function(indx){
     $state.go('tabsController.addCompetenceInfo', { index:indx });
-  }
+  };
+
+  $scope.clearSearch = function() {
+    $scope.search = '';
+  };
   })

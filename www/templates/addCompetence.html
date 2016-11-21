@@ -1,7 +1,20 @@
 <ion-view title="Alle Kompetenzen" id="page18">
   <ion-content padding="true" class="has-header">
+    <ion-search-bar class="bar-light bar-subheader">
+      <input type="search"
+             placeholder="Filter Competence..."
+             ng-model="search"
+             ng-focus="searchFocused = true"
+             ng-blur="searchFocused = false"
+             ng-change="scrollTop()"
+             class="full-width">
+      <!--button ng-if="search.length"
+              class="button button-icon ion-android-close input-button"
+              ng-click="clearSearch()">
+      </button>
+    </ion-search-bar-->
     <ion-list id="meineKompetenzen-list7">
-      <ion-item ng-repeat= "item in competences" ng-click="addCompetenceInfo($index)">{{item.name}}</ion-item>
+      <ion-item ng-repeat= "item in competences | filter: search" ng-click="addCompetenceInfo($index)">{{item.name}}</ion-item>
     </ion-list>
   </ion-content>
 </ion-view>
