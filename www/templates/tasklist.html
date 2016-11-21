@@ -3,6 +3,19 @@
     <button class="button icon ion-android-add-circle" ng-click="makeNewTask()"></button>
   </ion-nav-buttons>
   <ion-content padding="true" class="has-header">
+    <ion-search-bar class="bar-light bar-subheader">
+      <input type="search"
+             placeholder="Filter Competence..."
+             ng-model="search"
+             ng-focus="searchFocused = true"
+             ng-blur="searchFocused = false"
+             ng-change="scrollTop()"
+             class="full-width">
+      <!--button ng-if="search.length"
+              class="button button-icon ion-android-close input-button"
+              ng-click="clearSearch()">
+      </button-->
+    </ion-search-bar>
     <ion-toggle ng-model="closedtasks" toggle-class="toggle-calm">Abgeschlossene Aufgaben</ion-toggle>
     <ion-toggle ng-model="interestingtasks" toggle-class="toggle-calm">Interessante Aufgaben</ion-toggle>
 
@@ -10,7 +23,7 @@
       show-delete="shouldShowDelete"
       show-reorder="shouldShowReorder"
       can-swipe="listCanSwipe">
-      <div ng-repeat="task in tasks">
+      <div ng-repeat="task in tasks | filter: search">
         <div>
           <ion-item class="item-thumbnail-left" ng-click="loadSingleTask(task.id)">
             <!--ng-href="#/tabcontroller/task/{{task.id}}"> -->
