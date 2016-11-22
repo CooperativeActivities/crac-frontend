@@ -56,7 +56,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="tasklist.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="tasklist.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/templates/tasklist.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="425">
@@ -68,11 +68,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="routes.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="routes.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/js/routes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="680">
-              <caret line="40" column="34" selection-start-line="40" selection-start-column="34" selection-end-line="40" selection-end-column="34" />
+            <state relative-caret-position="416">
+              <caret line="192" column="47" selection-start-line="192" selection-start-column="47" selection-end-line="192" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -175,7 +175,6 @@
         <option value="$PROJECT_DIR$/www/js/controllers/user/addCompetenceInfoCtrl.js" />
         <option value="$PROJECT_DIR$/www/js/services/task_service.js" />
         <option value="$PROJECT_DIR$/www/templates/tabsController.html" />
-        <option value="$PROJECT_DIR$/www/js/routes.js" />
         <option value="$PROJECT_DIR$/www/js/controllers/task/taskCtrl.js" />
         <option value="$PROJECT_DIR$/www/templates/task.html" />
         <option value="$PROJECT_DIR$/www/index.html" />
@@ -186,6 +185,7 @@
         <option value="$PROJECT_DIR$/www/js/controllers/task/myTasksCtrl.js" />
         <option value="$PROJECT_DIR$/www/templates/myTasks.html" />
         <option value="$PROJECT_DIR$/www/templates/tasklist.html" />
+        <option value="$PROJECT_DIR$/www/js/routes.js" />
       </list>
     </option>
   </component>
@@ -582,12 +582,12 @@
       <workItem from="1479381430892" duration="5775000" />
       <workItem from="1479454191063" duration="8150000" />
       <workItem from="1479713752736" duration="3090000" />
-      <workItem from="1479799858939" duration="7356000" />
+      <workItem from="1479799858939" duration="7930000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="221209000" />
+    <option name="totallyTimeSpent" value="221783000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1370" y="0" width="1318" height="1080" extended-state="0" />
@@ -974,14 +974,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/routes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="40" column="34" selection-start-line="40" selection-start-column="34" selection-end-line="40" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/myTasks.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -997,6 +989,14 @@
           <folding>
             <element signature="n#style#0;n#p#0;n#ion-item#0;n#div#0;n#div#0;n#ion-list#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/routes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="192" column="47" selection-start-line="192" selection-start-column="47" selection-end-line="192" selection-end-column="47" />
+          <folding />
         </state>
       </provider>
     </entry>
