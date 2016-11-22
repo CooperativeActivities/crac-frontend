@@ -1,7 +1,8 @@
 <ion-view title="Meine Aufgaben" id="page23">
     <ion-content padding="true" class="has-header">
+      <ion-toggle ng-model="closedtasks" toggle-class="toggle-calm">Abgeschlossene Aufgaben</ion-toggle>
         <ion-list id="meineAufgaben-list8">
-          <div ng-repeat="task in tasks.participating | filter: task.taskState : 'COMPLETED' : false">
+          <div ng-repeat="task in tasks.participating | filter: { taskState: '!' + 'COMPLETED' }">
           <ion-item class="item-thumbnail-left" ng-click="loadSingleTask(task.id)">
             <!--ng-href="#/tabcontroller/task/{{task.id}}"> -->
             <img src="img/i8bhuXcQQcqLW28wQ4ka_presentation.jpg">

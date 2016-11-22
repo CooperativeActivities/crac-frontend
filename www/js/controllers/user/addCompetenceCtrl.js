@@ -17,4 +17,8 @@ cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ioni
   $scope.clearSearch = function() {
     $scope.search = '';
   };
+
+  $scope.scrollTop = function() {
+    $ionicScrollDelegate.scrollTop();
+  };
   })

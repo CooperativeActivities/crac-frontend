@@ -26,6 +26,11 @@ function ($scope,$window, $route, $stateParams, $routeParams, TaskDataService, $
     });
   }
 
+  $scope.notCompleted = function(item)
+  {
+    return (item.type !== 'foo');
+  };
+
 
 
 }])

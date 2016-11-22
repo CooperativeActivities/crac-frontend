@@ -42,14 +42,22 @@ cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, 
     }, function (error) {
       console.log('An error occurred!', error);
     });
-  }
+  };
   $scope.follow = function(id){
     TaskDataService.changeTaskState(id,'follow').then(function(res) {
       console.log(res.data);
     }, function(error) {
       console.log('An error occurred!', error);
     });
-  }
+  };
+
+  $scope.clearSearch = function() {
+    $scope.search = '';
+  };
+
+  $scope.scrollTop = function() {
+    $ionicScrollDelegate.scrollTop();
+  };
 })
 
 
