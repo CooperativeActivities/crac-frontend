@@ -21,6 +21,7 @@ function ($scope,$window, $route, $stateParams, $routeParams, TaskDataService, $
     TaskDataService.removeOpenTask(id).then(function(res) {
       console.log("deleted");
       $state.reload();
+      $window.location.reload();
     }, function(error) {
       console.log('An error occurred!', error);
     });

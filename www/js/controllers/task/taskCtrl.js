@@ -80,6 +80,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         console.log(res.data);
         $scope.enrollFlag = true;
         $state.reload();
+        $window.location.reload();
       }, function(error) {
         console.log('An error occurred!', error);
       });

@@ -16,6 +16,7 @@
               ng-click="clearSearch()">
       </button-->
     </ion-search-bar>
+    <ion-toggle ng-model="started" toggle-class="toggle-calm" ng-true-value="'STARTED'" ng-false-value="'!' + 'STARTED'">Gestartete Aufgaben</ion-toggle>
     <ion-toggle ng-model="completed" toggle-class="toggle-calm" ng-true-value="'COMPLETED'" ng-false-value="'!' + 'COMPLETED'">Abgeschlossene Aufgaben</ion-toggle>
     <ion-toggle ng-model="interestingtasks" toggle-class="toggle-calm">Interessante Aufgaben</ion-toggle>
 
@@ -23,7 +24,7 @@
       show-delete="shouldShowDelete"
       show-reorder="shouldShowReorder"
       can-swipe="listCanSwipe">
-      <div ng-repeat="task in tasks | filter: { taskState: completed } | filter: search"> 
+      <div ng-repeat="task in tasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search">
         <div>
           <ion-item class="item-thumbnail-left" ng-click="loadSingleTask(task.id)">
             <!--ng-href="#/tabcontroller/task/{{task.id}}"> -->
