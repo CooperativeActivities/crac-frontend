@@ -55,9 +55,7 @@ cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, 
     $scope.search = '';
   };
 
-  $scope.scrollTop = function() {
-    $ionicScrollDelegate.scrollTop();
-  };
+
 })
 
 

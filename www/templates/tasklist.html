@@ -23,7 +23,7 @@
       show-delete="shouldShowDelete"
       show-reorder="shouldShowReorder"
       can-swipe="listCanSwipe">
-      <div ng-repeat="task in tasks | filter: { taskState: completed }">
+      <div ng-repeat="task in tasks | filter: { taskState: completed } | filter: search"> 
         <div>
           <ion-item class="item-thumbnail-left" ng-click="loadSingleTask(task.id)">
             <!--ng-href="#/tabcontroller/task/{{task.id}}"> -->
