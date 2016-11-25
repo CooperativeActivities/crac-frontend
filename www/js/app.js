@@ -44,4 +44,6 @@ cracApp.run(function ($ionicPlatform, $rootScope, $location,$cookieStore,$http) 
      }
    });
 
+
+
 })
