@@ -9,16 +9,30 @@
                 <ion-item id="startseite-list-item31">T-Shirt Bestellung</ion-item>
             </ion-list>
             <ion-item class="item-divider" id="startseite-list-item-divider12">Vorgeschlagene Aufgaben</ion-item>
-            <ion-item class="item-thumbnail-left" id="startseite-list-item32" ui-sref="tabsController.task2">
-                <img src="img/CnmY2GJeQ5aILBUPwYV0_pp.png">
-                <h2>Powerpoint Experte gesucht</h2>
-                <p style="white-space:normal;">Für eine professionelle Powerpoint Präsentation wird ein Experte gesucht.</p>
-            </ion-item>
-            <ion-item class="item-thumbnail-left" id="startseite-list-item33" ui-sref="tabsController.task1">
-                <img src="img/5o9AhrhLSA2LtKVaatOn_czechsquare.png">
-                <h2>Übersetzungen Tschechisch - Deutsch</h2>
-                <p style="white-space:normal;">Übersetzungen von Einladungstexten und dem Einladungstext auf der Webseite dringend notwendig (CZ / DE).</p>
-            </ion-item>
+
+          <ion-list ng-controller="swipeCtrl"
+                    show-delete="shouldShowDelete"
+                    show-reorder="shouldShowReorder"
+                    can-swipe="listCanSwipe">
+            <div ng-repeat="task in tasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search">
+              <div>
+                <ion-item class="item-thumbnail-left" ng-click="loadSingleTask(task.task.id)">
+                  <!--ng-href="#/tabcontroller/task/{{task.id}}"> -->
+                  <img src="img/i8bhuXcQQcqLW28wQ4ka_presentation.jpg">
+                  <h2>{{task.task.name}}</h2>
+                  <p style="white-space:normal;">{{task.task.description}}</p>
+                  <a class="button button-icon icon ion-map">{{task.task.location}}</a>
+                  <p>Von {{task.task.startTime}} bis {{task.task.endTime}}</p>
+                  <p>Anzahl Subaufgaben: {{task.task.childTasks}}</p>
+
+
+                  <ion-option-button class="button-positive" ng-click="follow(task.task.id)">Folgen</ion-option-button>
+                  
+                </ion-item>
+              </div>
+            </div>
+          </ion-list>
+
             <ion-item class="item-divider" id="startseite-list-item-divider13">Freunde</ion-item>
             <ion-item class="item-avatar" id="startseite-list-item34">
                 <img src="img/p1Y8ug2UQrKO8gvEjMgN_avatar2.png">

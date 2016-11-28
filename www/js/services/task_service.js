@@ -31,6 +31,9 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
     srv.getTaskRelatById = function(id){
       return $http.get(srv._baseURL + "user/task/" + id);
     }
+    srv.getMatchingTasks = function(){
+      return $http.get(srv._baseURL + "user/findMatchingTasks");
+    }
 
     /**
      * EXPOSE Service Methods
@@ -59,6 +62,9 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
       },
       getTaskRelatById : function(id){
         return srv.getTaskRelatById(id);
+      },
+      getMatchingTasks : function() {
+        return srv.getMatchingTasks();
       }
     }
 
