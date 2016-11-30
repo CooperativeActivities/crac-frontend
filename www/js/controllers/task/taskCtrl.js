@@ -43,7 +43,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         console.log("deleted");
         $scope.enrollFlag = false;
         $state.reload();
-        $window.location.reload();
+        //$window.location.reload();
       }, function (error) {
         console.log('An error occurred!', error);
       });

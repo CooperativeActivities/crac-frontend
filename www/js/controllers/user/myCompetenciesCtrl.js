@@ -29,6 +29,7 @@ cracApp.controller('myCompetenciesCtrl', function($rootScope,$scope,$window,$rou
   $scope.remove = function(id){
     UserDataService.removeCompetence(id).then(function(res){
       $window.location.reload();
+      
     }, function(error) {
       console.log('An error occurred!', error);
     });

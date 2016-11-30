@@ -14,7 +14,7 @@ cracApp.controller('addCompetenceInfoCtrl', ['$rootScope','$scope','$window', '$
     $scope.add = function(){
       UserDataService.addLikeProfValue($scope.competenceInfo.id,$scope.competenceInfo.likeValue,$scope.competenceInfo.proficiencyValue).then(function(res){
         console.log($scope.competenceInfo);
-        $window.location.reload();
+        //$window.location.reload();
         $state.go('tabsController.myCompetencies');
       }, function(error) {
         console.log('An error occurred!', error);
