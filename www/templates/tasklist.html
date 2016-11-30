@@ -1,8 +1,9 @@
-<ion-view title="Aufgabenliste" id="page3">
+<ion-view cache-view="false" title="Aufgabenliste" id="page3">
   <ion-nav-buttons side="right" class="has-header">
     <button class="button icon ion-android-add-circle" ng-click="makeNewTask()"></button>
   </ion-nav-buttons>
   <ion-content padding="true" class="has-header">
+    <ion-refresher on-refresh="doRefresh()"> </ion-refresher>
     <ion-search-bar class="bar-light bar-subheader">
       <input type="search"
              placeholder="Filter Task..."
@@ -18,7 +19,7 @@
     </ion-search-bar>
     <ion-toggle ng-model="started" toggle-class="toggle-calm" ng-true-value="'STARTED'" ng-false-value="'!' + 'STARTED'">Gestartete Aufgaben</ion-toggle>
     <ion-toggle ng-model="completed" toggle-class="toggle-calm" ng-true-value="'COMPLETED'" ng-false-value="'!' + 'COMPLETED'">Abgeschlossene Aufgaben</ion-toggle>
-    <ion-toggle ng-model="interestingtasks" toggle-class="toggle-calm">Interessante Aufgaben</ion-toggle>
+    <ion-toggle ng-model="interestingtasks" toggle-class="toggle-calm">Gefolgte Aufgaben</ion-toggle>
 
     <ion-list ng-controller="swipeCtrl"
       show-delete="shouldShowDelete"

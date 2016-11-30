@@ -77,18 +77,38 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     };
 
     $scope.enroll = function(){
-      TaskDataService.changeTaskState($stateParams.id ,'participate').then(function(res) {
+      TaskDataService.changeTaskPartState($stateParams.id ,'participate').then(function(res) {
         console.log(res.data);
         $scope.enrollFlag = true;
         $state.reload();
-        $window.location.reload();
+       // $window.location.reload();
       }, function(error) {
         console.log('An error occurred!', error);
       });
     }
 
+    $scope.follow = function(){
+      TaskDataService.changeTaskPartState($scope.task.id,'follow').then(function(res) {
+        console.log(res.data);
+      }, function(error) {
+        console.log('An error occurred!', error);
+      });
+    };
+
     $scope.delete = function(){
 
+    }
+
+    $scope.readyToPublish = function(){
+      TaskDataService.setReadyToPublishS($scope.task.id);
+      console.log('works');
+    }
+    $scope.publish = function(){
+      TaskDataService.changeTaskState($scope.task.id, 'publish').then(function(res) {
+      }, function(error) {
+        console.log('An error occurred!', error);
+      });
+      console.log('works 2');
     }
 
   }])

@@ -16,8 +16,8 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
     srv.updateTaskById = function(taskData, id){
      return $http.put(srv._baseURL + "admin/task/" + id, taskData);
     }
-    srv.changeTaskState = function(id, stateName){
-       return $http.get(srv._baseURL + "task/" + id + "/" + stateName);
+    srv.changeTaskPartState = function(id, stateName){
+       return $http.get(srv._baseURL + "user/task/" + id + "/" + stateName);
     }
     srv.getMyTasks = function(){
      return $http.get(srv._baseURL + "user/task");
@@ -34,6 +34,18 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
     srv.getMatchingTasks = function(){
       return $http.get(srv._baseURL + "user/findMatchingTasks");
     }
+    srv.setReadyToPublishS = function(taskId){
+      return $http.get(srv._baseURL + "task/" + taskId + "/publish/ready/single");
+    }
+    srv.setReadyToPublishT = function(taskId){
+     return $http.get(srv._baseURL + "task/" + taskId + "/publish/ready/tree");
+    }
+    srv.setTaskDone = function(taskId, done_boolean){
+      return $http.get(srv._baseURL + "task/" + taskId + "/done/" + done_boolean);
+    }
+    srv.changeTaskState = function(taskId, state_name){
+     return $http.get(srv._baseURL + "task/" + taskId + "/state/" + state_name);
+    }
 
     /**
      * EXPOSE Service Methods
@@ -48,7 +60,7 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
       updateTaskById : function(taskData, id){
         return srv.updateTaskById(taskData, id);
       },
-      changeTaskState : function(id, stateName){
+      changeTaskPartState : function(id, stateName){
         return srv.changeTaskState(id, stateName);
       },
       getMyTasks : function(){
@@ -65,6 +77,18 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
       },
       getMatchingTasks : function() {
         return srv.getMatchingTasks();
+      },
+      setReadyToPublishS : function(taskId) {
+        return srv.setReadyToPublishS(taskId);
+      },
+      setReadyToPublishT : function(taskId) {
+        return srv.setReadyToPublishT(taskId);
+      },
+      setTaskDone : function(taskId, done_boolean) {
+        return srv.setTaskDone(taskId, done_boolean);
+      },
+      changeTaskState : function(taskId, state_name) {
+        return srv.changeTaskState(taskId, state_name);
       }
     }
 
