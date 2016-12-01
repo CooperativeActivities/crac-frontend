@@ -3,30 +3,33 @@
  */
 cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ionicModal,UserDataService, $state) {
 
-  var j;
-  var i;
-  var l=0;
-  var kickOut;
+  var delay=500; //1 second
   $scope.competencesPre = [];
   $scope.allCompetences= [];
   $scope.myCompetences= [];
-  UserDataService.allCompetences().then(function(res){
-    $scope.allCompetences = res.data;
-    console.log($scope.allCompetences);
-    console.log($scope.allCompetences.length);
-  }, function(error) {
-    console.log('An error occurred!', error);
-  });
-  UserDataService.getCompRelationships().then(function(res){
-    $scope.myCompetences = res.data;
-    console.log($scope.myCompetences);
-    console.log($scope.myCompetences.length);
-    $scope.alreadyIn();
-  }, function(error) {
-    console.log('An error occurred!', error);
-  });
-
-  $scope.alreadyIn = function() {
+  $scope.loadContent = function() {
+    UserDataService.allCompetences().then(function (res) {
+      $scope.allCompetences = res.data;
+      console.log($scope.allCompetences);
+      console.log($scope.allCompetences.length);
+    }, function (error) {
+      console.log('An error occurred!', error);
+    });
+    UserDataService.getCompRelationships().then(function (res) {
+      $scope.myCompetences = res.data;
+      console.log($scope.myCompetences);
+      console.log($scope.myCompetences.length);
+    }, function (error) {
+      console.log('An error occurred!', error);
+    });
+  };
+  setTimeout(function() {
+    //your code to be executed after 1 second
+    console.log("in");
+    var j;
+    var i;
+    var l=0;
+    var kickOut;
     for (j = 0; j < $scope.allCompetences.length; j++) {
       kickOut = false;
       for (i = 0; i < $scope.myCompetences.length; i++) {
@@ -42,7 +45,9 @@ cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ioni
     }
     $scope.competences = $scope.competencesPre;
     console.log($scope.competences);
-  }
+  }, delay);
+
+
   $scope.addCompetenceInfo = function(indx){
     $state.go('tabsController.addCompetenceInfo', { index:indx });
   };
@@ -54,4 +59,7 @@ cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ioni
   $scope.scrollTop = function() {
     $ionicScrollDelegate.scrollTop();
   };
+
+  $scope.loadContent();
+
   })
