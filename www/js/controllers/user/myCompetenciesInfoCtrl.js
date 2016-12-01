@@ -5,6 +5,10 @@ cracApp.controller('myCompetenciesInfoCtrl', ['$rootScope','$scope', '$statePara
   function($rootScope, $scope, $stateParams, $routeParams, UserDataService, $http, $ionicModal, $state, $window) {
 /*cracApp.controller('myCompetenciesInfoCtrl', ['$scope', '$stateParams','$routeParams','UserDataService','$state',
    function($rootScope,$scope, $http, $stateParams, $ionicModal, UserDataService, state, routeParams) {*/
+
+    $scope.editFlag =true;
+
+
      console.log("Userid: " +$rootScope.globals.currentUser.id);
   UserDataService.getUserById($rootScope.globals.currentUser.id).then(function(res) {
     $scope.user = res.data;
@@ -26,4 +30,20 @@ cracApp.controller('myCompetenciesInfoCtrl', ['$rootScope','$scope', '$statePara
         console.log('An error occurred!', error);
       });
     }
+    $scope.edit = function(){
+      $scope.editFlag =false;
+    };
+
+    $scope.save = function(){
+
+
+
+      UserDataService.addLikeProfValue($scope.competenceInfo.competence.id, $scope.competenceInfo.likeValue, $scope.competenceInfo.proficiencyValue).then(function(res) {
+        console.log(res.data);
+        $scope.editFlag =true;
+      }, function(error) {
+        console.log('An error occurred!', error);
+      });
+    };
+
 }]);

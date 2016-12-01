@@ -6,6 +6,8 @@ cracApp.controller('addCompetenceInfoCtrl', ['$rootScope','$scope','$window', '$
     console.log("Userid: " +$rootScope.globals.currentUser.id);
     UserDataService.allCompetences().then(function(res){
       $scope.competenceInfo = res.data[$stateParams.index];
+      $scope.competenceInfo.likeValue = 50;
+      $scope.competenceInfo.proficiencyValue = 50;
       console.log($scope.competenceInfo);
     }, function(error) {
       console.log('An error occurred!', error);

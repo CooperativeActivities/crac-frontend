@@ -1,6 +1,7 @@
-<ion-view title="KompetenzInfo">
+<ion-view cache-view="false" title="KompetenzInfo">
   <ion-nav-buttons side="right" class="has-header">
-    <button class="button icon ion-android-add-circle" ng-click="edit()"></button>
+    <button class="button icon ion-edit" ng-show="editFlag" ng-click="edit()"></button>
+    <button class="button icon ion-checkmark "ng-hide="editFlag"  ng-click="save()"></button>
   </ion-nav-buttons>
   <ion-content padding="true" class="has-header">
       <div>
@@ -10,10 +11,10 @@
             <h2>{{competenceInfo.competence.name}}</h2>
             <p style="white-space:normal;">{{competenceInfo.competence.description}}</p>
             <ion-item class="range range-assertive" id="meineKompetenzen-range13" ng-cloak>Gefällt mir
-              <input type="range" ng-model="competenceInfo.likeValue" min="0" max="100" step="1">
+              <input type="range" ng-readonly="editFlag" ng-model="competenceInfo.likeValue" min="0" max="100" step="1">
             </ion-item>
             <ion-item class="range range-assertive" id="meineKompetenzen-range14" ng-cloak>Kann ich
-              <input type="range" ng-model="competenceInfo.proficiencyValue" min="0" max="100" step="1">
+              <input type="range" ng-readonly="editFlag" ng-model="competenceInfo.proficiencyValue" min="0" max="100" step="1">
             </ion-item>
           </ion-list>
         </div>
