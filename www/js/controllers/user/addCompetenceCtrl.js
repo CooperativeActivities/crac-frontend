@@ -3,7 +3,7 @@
  */
 cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ionicModal,UserDataService, $state) {
 
-  var delay=500; //1 second
+  var delay=800; //1 second
   $scope.competencesPre = [];
   $scope.allCompetences= [];
   $scope.myCompetences= [];
