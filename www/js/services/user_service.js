@@ -4,6 +4,7 @@
 cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootScope){
 
     var srv = {};
+    var CompetenceData = [];
 
     // URL to REST-Service
     srv._baseURL = "https://core.crac.at/crac-core/";
@@ -101,6 +102,12 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
     srv.removeCompetence = function(id){
       return $http.get(srv._baseURL + 'user/competence/'+ id + '/remove');
     }
+    srv.setCompetenceData = function(data){
+      CompetenceData.push(data);
+    }
+    srv.getCompetenceData = function(){
+      return CompetenceData;
+    }
 
 
     /**
@@ -139,6 +146,12 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
       },
       addLikeProfValue : function(id,likeValue,ProficiencyValue){
         return srv.addLikeProfValue(id,likeValue,ProficiencyValue);
+      },
+      setCompetenceData : function(data){
+        return srv.setCompetenceData(data);
+      },
+      getCompetenceData : function(){
+        return srv.getCompetenceData();
       }
     }
 

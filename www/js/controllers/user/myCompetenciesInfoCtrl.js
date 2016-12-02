@@ -35,7 +35,7 @@ cracApp.controller('myCompetenciesInfoCtrl', ['$rootScope','$scope', '$statePara
     };
 
     $scope.save = function(){
-      
+
     };
 
 }]);
