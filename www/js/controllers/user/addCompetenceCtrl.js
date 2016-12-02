@@ -3,7 +3,7 @@
  */
 cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ionicModal,UserDataService, $state) {
 
-  var delay=800; //1 second
+
   $scope.competencesPre = [];
   $scope.allCompetences= [];
   $scope.myCompetences= [];
@@ -23,8 +23,7 @@ cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ioni
       console.log('An error occurred!', error);
     });
   };
-  setTimeout(function() {
-    //your code to be executed after 1 second
+  $scope.$watchGroup(['allCompetences', 'myCompetences'], function() {
     console.log("in");
     var j;
     var i;
@@ -45,7 +44,7 @@ cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ioni
     }
     $scope.competences = $scope.competencesPre;
     console.log($scope.competences);
-  }, delay);
+  });
 
 
   $scope.addCompetenceInfo = function(indx){
