@@ -35,15 +35,7 @@ cracApp.controller('myCompetenciesInfoCtrl', ['$rootScope','$scope', '$statePara
     };
 
     $scope.save = function(){
-
-
-
-      UserDataService.addLikeProfValue($scope.competenceInfo.competence.id, $scope.competenceInfo.likeValue, $scope.competenceInfo.proficiencyValue).then(function(res) {
-        console.log(res.data);
-        $scope.editFlag =true;
-      }, function(error) {
-        console.log('An error occurred!', error);
-      });
+      
     };
 
 }]);
