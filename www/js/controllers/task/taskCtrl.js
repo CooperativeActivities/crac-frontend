@@ -100,8 +100,12 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     }
 
     $scope.readyToPublish = function(){
-      TaskDataService.setReadyToPublishS($scope.task.id);
-      console.log('works');
+      TaskDataService.setReadyToPublishS($scope.task.id).then(function(res) {
+        console.log('works');
+      }, function(error) {
+        console.log('An error occurred!', error);
+      });
+
     }
     $scope.publish = function(){
       TaskDataService.changeTaskState($scope.task.id, 'publish').then(function(res) {

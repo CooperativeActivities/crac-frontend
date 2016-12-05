@@ -44,7 +44,9 @@ cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ioni
     }
     $scope.competences = $scope.competencesPre;
     console.log($scope.competences);
-    UserDataService.setCompetenceData($scope.competences);
+
+      UserDataService.setCompetenceData($scope.competences);
+
   });
 
 

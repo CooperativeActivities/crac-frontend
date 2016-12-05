@@ -103,7 +103,7 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
       return $http.get(srv._baseURL + 'user/competence/'+ id + '/remove');
     }
     srv.setCompetenceData = function(data){
-      CompetenceData.push(data);
+      CompetenceData = data;
     }
     srv.getCompetenceData = function(){
       return CompetenceData;
