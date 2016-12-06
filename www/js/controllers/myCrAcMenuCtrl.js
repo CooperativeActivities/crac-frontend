@@ -11,7 +11,7 @@ cracApp.controller('myCrAcMenuCtrl', ['$scope','$rootScope', '$stateParams','Use
       if ($rootScope.globals.hasOwnProperty("currentUser")) {
         UserDataService.getUserById($rootScope.globals.currentUser.id).then(function (res) {
           $scope.user = res.data;
-          console.log($scope.user)
+          console.log($scope.user);
 
         }, function (error) {
           console.log('An error occurred!', error);

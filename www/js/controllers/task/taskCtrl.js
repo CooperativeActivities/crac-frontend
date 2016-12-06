@@ -8,6 +8,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 
     $scope.editFlag =true;
     $scope.enrollFlag =false;
+    $scope.followFlag = false;
 
 
 
@@ -42,6 +43,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
       TaskDataService.removeOpenTask($scope.task.id).then(function (res) {
         console.log("deleted");
         $scope.enrollFlag = false;
+        $scope.followFlag = false;
         $state.reload();
         //$window.location.reload();
       }, function (error) {
@@ -80,6 +82,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
       TaskDataService.changeTaskPartState($stateParams.id ,'participate').then(function(res) {
         console.log(res.data);
         $scope.enrollFlag = true;
+        $scope.followFlag = false;
         $state.reload();
        // $window.location.reload();
       }, function(error) {
@@ -90,6 +93,8 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.follow = function(){
       TaskDataService.changeTaskPartState($scope.task.id,'follow').then(function(res) {
         console.log(res.data);
+        $scope.followFlag = true;
+        $scope.enrollFlag = false;
       }, function(error) {
         console.log('An error occurred!', error);
       });
