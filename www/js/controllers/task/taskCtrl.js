@@ -35,6 +35,9 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
       if($scope.participationType == "PARTICIPATING"){
         $scope.enrollFlag =true;
       }
+      if($scope.participationType == "FOLLOWING"){
+        $scope.followFlag =true;
+      }
     }, function (error) {
       console.log('An error occurred!', error);
     });
