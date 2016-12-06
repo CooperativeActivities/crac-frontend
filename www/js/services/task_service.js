@@ -14,7 +14,7 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
       return $http.get(srv._baseURL + "task/" + id);
     }
     srv.updateTaskById = function(taskData, id){
-     return $http.put(srv._baseURL + "admin/task/" + id, taskData);
+     return $http.put(srv._baseURL + "task/" + id, taskData);
     }
     srv.changeTaskPartState = function(id, stateName){
        return $http.get(srv._baseURL + "user/task/" + id + "/" + stateName);
@@ -23,7 +23,7 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
      return $http.get(srv._baseURL + "user/task");
     }
     srv.createNewTask= function(taskData){
-      return $http.post(srv._baseURL + "task", taskData);
+      return $http.post(srv._baseURL + "admin/task", taskData);
     }
     srv.removeOpenTask= function(id){
       return $http.get(srv._baseURL + "user/task/" + id + "/remove");
