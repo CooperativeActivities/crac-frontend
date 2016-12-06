@@ -61,7 +61,7 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
         return srv.updateTaskById(taskData, id);
       },
       changeTaskPartState : function(id, stateName){
-        return srv.changeTaskState(id, stateName);
+        return srv.changeTaskPartState(id, stateName);
       },
       getMyTasks : function(){
         return srv.getMyTasks();

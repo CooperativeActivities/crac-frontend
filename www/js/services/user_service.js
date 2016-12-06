@@ -6,6 +6,7 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
     var srv = {};
     var CompetenceData = [];
 
+
     // URL to REST-Service
     srv._baseURL = "https://core.crac.at/crac-core/";
 
@@ -108,6 +109,7 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
     srv.getCompetenceData = function(){
       return CompetenceData;
     }
+
 
 
     /**
