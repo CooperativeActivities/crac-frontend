@@ -46,6 +46,9 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
     srv.changeTaskState = function(taskId, state_name){
      return $http.get(srv._baseURL + "task/" + taskId + "/state/" + state_name);
     }
+    srv.deleteTaskById = function(taskId){
+      return $http.delete(srv._baseURL + "admin/task/" + taskId);
+    }
 
     /**
      * EXPOSE Service Methods
@@ -89,6 +92,9 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
       },
       changeTaskState : function(taskId, state_name) {
         return srv.changeTaskState(taskId, state_name);
+      },
+      deleteTaskById : function(taskId){
+        return srv.deleteTaskById(taskId);
       }
     }
 

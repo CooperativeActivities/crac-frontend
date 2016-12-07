@@ -17,9 +17,9 @@
               ng-click="clearSearch()">
       </button-->
     </ion-search-bar>
-    <ion-toggle ng-model="started" toggle-class="toggle-calm" ng-true-value="'STARTED'" ng-false-value="'!' + 'STARTED'">Gestartete Aufgaben</ion-toggle>
+    <ion-toggle ng-model="started" toggle-class="toggle-calm" ng-true-value="'STARTED'" ng-false-value="'!' + 'COMPLETED'">Gestartete Aufgaben</ion-toggle>
     <ion-toggle ng-model="completed" toggle-class="toggle-calm" ng-true-value="'COMPLETED'" ng-false-value="'!' + 'COMPLETED'">Abgeschlossene Aufgaben</ion-toggle>
-    <ion-toggle ng-model="interestingtasks" toggle-class="toggle-calm">Gefolgte Aufgaben</ion-toggle>
+    <ion-toggle ng-model="interestingtasks" ng-hide="true" toggle-class="toggle-calm">Gefolgte Aufgaben</ion-toggle>
 
     <ion-list ng-controller="swipeCtrl"
       show-delete="shouldShowDelete"
