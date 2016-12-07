@@ -7,6 +7,7 @@ cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ioni
   $scope.competencesPre = [];
   $scope.allCompetences= [];
   $scope.myCompetences= [];
+  $scope.competences= [];
   $scope.loadContent = function() {
     UserDataService.allCompetences().then(function (res) {
       $scope.allCompetences = res.data;
@@ -37,21 +38,21 @@ cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ioni
           break;
         }
       }
-      if (kickOut == false) {
+      if (kickOut === false) {
         $scope.competencesPre[l] = $scope.allCompetences[j];
         l++;
       }
     }
     $scope.competences = $scope.competencesPre;
     console.log($scope.competences);
-
-      UserDataService.setCompetenceData($scope.competences);
-
   });
 
+  $scope.$watch('competences', function(){
+    UserDataService.setCompetenceData($scope.competences);
+  })
 
-  $scope.addCompetenceInfo = function(indx){
-    $state.go('tabsController.addCompetenceInfo', { index:indx });
+  $scope.addCompetenceInfo = function(compId){
+    $state.go('tabsController.addCompetenceInfo', { id:compId });
   };
 
   $scope.clearSearch = function() {

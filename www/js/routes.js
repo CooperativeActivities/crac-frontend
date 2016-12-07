@@ -229,7 +229,7 @@ angular.module('app.routes', ['ionicUIRouter'])
       })
 
       .state('tabsController.addCompetenceInfo', {
-        url: '/addcompetence/:index',
+        url: '/addcompetence/:id',
         views: {
           'tab6': {
             templateUrl: 'templates/addCompetenceInfo.html',

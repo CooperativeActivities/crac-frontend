@@ -26,6 +26,7 @@ cracApp.controller('myCompetenciesCtrl', function($rootScope,$scope,$window,$rou
   $scope.addCompetence = function(){
     $state.go('tabsController.addCompetence');
   }
+
   $scope.remove = function(id){
     UserDataService.removeCompetence(id).then(function(res){
       UserDataService.getCompRelationships().then(function(res){

@@ -13,8 +13,8 @@
               ng-click="clearSearch()">
       </button-->
     </ion-search-bar>
-    <ion-list id="meineKompetenzen-list7">
-      <ion-item ng-repeat= "item in competences | filter: search" ng-click="addCompetenceInfo($index)">{{item.name}}</ion-item>
+    <ion-list id="meineKompetenzen-list7" ng-repeat= "item in competences | filter: search">
+      <ion-item  ng-click="addCompetenceInfo(item.id)">{{item.name}}</ion-item>
     </ion-list>
   </ion-content>
 </ion-view>

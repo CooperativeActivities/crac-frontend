@@ -109,6 +109,9 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
     srv.getCompetenceData = function(){
       return CompetenceData;
     }
+    srv.getCompetenceById = function(id){
+      return $http.get(srv._baseURL + 'competence/'+ id);
+    }
 
 
 
@@ -155,6 +158,9 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
       },
       getCompetenceData : function(){
         return srv.getCompetenceData();
+      },
+      getCompetenceById : function(id) {
+        return srv.getCompetenceById(id);
       }
     }
 

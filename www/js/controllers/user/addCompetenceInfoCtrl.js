@@ -4,13 +4,18 @@
 cracApp.controller('addCompetenceInfoCtrl', ['$rootScope','$scope','$window', '$stateParams','$routeParams','UserDataService','$http', '$ionicModal','$state',
   function($rootScope, $scope, $window, $stateParams, $routeParams, UserDataService, $http, $ionicModal, $state) {
     console.log("Userid: " +$rootScope.globals.currentUser.id);
-
-      $scope.competenceInfoPre = UserDataService.getCompetenceData();
-      $scope.competenceInfo = $scope.competenceInfoPre[$stateParams.index];
+    console.log("id: " +$stateParams.id);
+    UserDataService.getCompetenceById($stateParams.id).then(function (res) {
+      $scope.competenceInfo= res.data;
       $scope.competenceInfo.likeValue = 50;
       $scope.competenceInfo.proficiencyValue = 50;
       console.log($scope.competenceInfo);
-    console.log($scope.competenceInfoPre);
+    }, function (error) {
+      console.log('An error occurred!', error);
+    });
+
+
+
 
     $scope.add = function(){
       UserDataService.addLikeProfValue($scope.competenceInfo.id,$scope.competenceInfo.likeValue,$scope.competenceInfo.proficiencyValue).then(function(res){
