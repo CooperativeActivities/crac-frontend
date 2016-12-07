@@ -12,7 +12,18 @@
   color: #bbb;
 }
 
+/* Content */
+
+.content-title {
+  padding: 10px 0;
+  font-size: 20px;
+}
+
 /* Custom */
+
+.modal.slide-in-up {
+  border-radius: 4px;
+}
 
 #logo {
   margin: 0 auto;
@@ -22,6 +33,7 @@
 
 .container {
   padding: 20px;
+  min-width: 300px;
 }
 
 .row {
@@ -45,21 +57,33 @@
 
 /* page */
 
-#page5 {
+#page5, #page6, #page1 {
   text-align: center;
-  font-size: 18px;
-}
-
-#page5 p {
-  margin: 0;
 }
 
 /* Form */
 
-.item-input {
+.item-input, .item-select {
   background: #f0f0f0;
   border-radius: 4px;
   margin: 4px 0;
+  padding: 0;
+}
+
+.item-select select {
+  background: #f0f0f0;
+}
+
+input {
+  padding: 6px 6px 6px 16px !important;
+}
+
+span.input-label {
+  text-align: left;
+  color: #444;
+  padding: 9px 6px 9px 16px;
+  font-size: 14px;
+  line-height: 16px;
 }
 
 .button.button-calm {

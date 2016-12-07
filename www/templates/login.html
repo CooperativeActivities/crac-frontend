@@ -1,88 +1,55 @@
 <ion-view title="Anmelden" hide-back-button="true" id="page5" hide-nav-bar="true">
-    <ion-content padding="true" class="has-header">
-      <div class="container">
-        <div class="row">
-          <div class="col">
-            <div id="logo">
-              <img src="img/logo.png"/>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <p class="assertive">Anmelden</p><!-- translate -->
-          </div>
-        </div>
-        <form id="anmelden-form1" name="authorizationForm" class="list">
-          <div class="row">
-            <div class="col">
-              <ion-list id="anmelden-list2">
-                  <label class="item item-input" id="anmelden-input1" ng-class="{
+  <ion-content padding="true" class="has-header">
+    <div class="container">
+      <div id="logo">
+        <img src="img/logo.png"/>
+      </div>
+      <div class="content-title assertive">Anmelden</div>
+      <form id="anmelden-form1" name="authorizationForm" class="list">
+        <ion-list id="anmelden-list2">
+          <label class="item item-input" id="anmelden-input1" ng-class="{
                  'has-errors' : authorizationForm.username.$invalid && authorizationForm.username.$dirty,
                  'no-errors' : authorizationForm.username.$valid && !authorizationForm.username.$untouched}">
-                      <!--<span class="input-label">Benutzername</span>-->
-                      <input type="text" placeholder="Benutzername" ng-model="data.username" name="username" required>
-                  </label>
-                  <div class="error-container"
-                      ng-show="authorizationForm.username.$invalid && authorizationForm.username.$dirty"
-                       ng-messages="authorizationForm.username.$error">
-                    <div class="error" ng-message="username">
-                      <i class="ion-information-circled"></i>
-                      Bitte einen gültigen Username eintragen!
-                    </div>
-                  </div>
-                  <label class="item item-input" id="anmelden-input2">
-                    <!--<span class="input-label">Passwort</span>-->
-                      <input type="password" placeholder="Passwort" ng-model="data.password" name="password" required>
-                  </label>
-              </ion-list>
+            <!--<span class="input-label">Benutzername</span>-->
+            <input type="text" placeholder="Benutzername" ng-model="data.username" name="username" required>
+          </label>
+          <div class="error-container"
+               ng-show="authorizationForm.username.$invalid && authorizationForm.username.$dirty"
+               ng-messages="authorizationForm.username.$error">
+            <div class="error" ng-message="username">
+              <i class="ion-information-circled"></i>
+              Bitte einen gültigen Username eintragen!
             </div>
           </div>
-
-          <div class="row">
-            <div class="col">
-              <!--<a ui-sref="tabsController.home_tab1" id="anmelden-button1" class="button button-balanced  button-block" ng-click="login()">Anmelden</a>-->
-              <button class="button button-block button-outline button-positive button-assertive" ng-click="login()"   ng-disabled="authorizationForm.$invalid">
-                <i class="ion-log-in"></i> Login
-              </button>
-            </div>
+          <label class="item item-input" id="anmelden-input2">
+            <!--<span class="input-label">Passwort</span>-->
+            <input type="password" placeholder="Passwort" ng-model="data.password" name="password" required>
+          </label>
+        </ion-list>
+        <!--<a ui-sref="tabsController.home_tab1" id="anmelden-button1" class="button button-balanced  button-block" ng-click="login()">Anmelden</a>-->
+        <button class="button button-block button-outline button-positive button-assertive" ng-click="login()"   ng-disabled="authorizationForm.$invalid">
+          <i class="ion-log-in"></i> Login
+        </button>
+        <div class="content-title">oder</div>
+        <div class="row">
+          <div class="col">
+            <button class="button button-block button-outline button-positive button-face">
+              <i class="ion-social-facebook-outline"></i> Anmelden
+            </button>
           </div>
-
-          <div class="row">
-            <div class="col">
-              <p>oder</p><!-- translate -->
-            </div>
+          <div class="col">
+            <button class="button button-block button-outline button-positive button-google">
+              <i class="ion-social-google-outline"></i> Anmelden
+            </button>
           </div>
-
-          <div class="row">
-            <div class="col">
-              <button class="button button-block button-outline button-positive button-face">
-                <i class="ion-social-facebook-outline"></i> Anmelden
-              </button>
-            </div>
-            <div class="col">
-              <button class="button button-block button-outline button-positive button-google">
-                <i class="ion-social-google-outline"></i> Anmelden
-              </button>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              <a ui-sref="signup" id="anmelden-button2" class="button button-block button-outline button-positive button-energized">Neuen Account anlegen</a>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              <button class="button button-clear">
-                Password vergessen?
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </ion-content>
+        </div>
+        <a ui-sref="signup" id="anmelden-button2" class="button button-block button-outline button-positive button-energized">Neuen Account anlegen</a>
+        <button class="button button-clear">
+          Password vergessen?
+        </button>
+      </form>
+    </div>
+  </ion-content>
 </ion-view>
 
 

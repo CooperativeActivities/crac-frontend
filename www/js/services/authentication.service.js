@@ -21,6 +21,7 @@
       var authdata = Base64.encode(username + ':' + password);
       $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
 
+      /* autcommended for testing reasosns
       $http.get(baseURL + '/user/login')
         .success(function (response, status, headers) {
           if (response.success || response.cause =="toke already created") {
@@ -47,6 +48,24 @@
           //response = {success: false, message: 'Username or password is incorrect'};
           callback(response);
         });
+        */
+
+      var test_user = {
+        "name":"test",
+        "password": "test",
+        "role":"USER",
+        "firstName":"TestHans",
+        "lastName":"TestName",
+        "phone":"234",
+        "email":"asd@asd"
+      }
+
+      console.log("Login successful");
+      var response = {success: true, id: test_user};
+      //return response;
+      callback(response);
+
+      // end of testcode
     }
 
     function SetCredentials(response) {
