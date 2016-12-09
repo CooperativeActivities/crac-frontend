@@ -32,12 +32,8 @@ cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ioni
     var kickOut;
     for (j = 0; j < $scope.allCompetences.length; j++) {
       kickOut = false;
-      for (i = 0; i < $scope.myCompetences.length; i++) {
-        if ($scope.allCompetences[j].id == $scope.myCompetences[i].competence.id) {
-          kickOut = true;
-          break;
-        }
-      }
+      kickOut = $scope.innerFor(i,j,kickOut);
+
       if (kickOut === false) {
         $scope.competencesPre[l] = $scope.allCompetences[j];
         l++;
@@ -46,6 +42,16 @@ cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ioni
     $scope.competences = $scope.competencesPre;
     console.log($scope.competences);
   });
+
+  $scope.innerFor = function(i,j,kickOut) {
+    for (i = 0; i < $scope.myCompetences.length; i++) {
+      if ($scope.allCompetences[j].id == $scope.myCompetences[i].competence.id) {
+        kickOut = true;
+        return kickOut;
+      }
+    }
+    return kickOut;
+  }
 
   $scope.$watch('competences', function(){
     UserDataService.setCompetenceData($scope.competences);

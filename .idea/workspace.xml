@@ -90,17 +90,17 @@
       <file leaf-file-name="addCompetenceCtrl.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/js/controllers/user/addCompetenceCtrl.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="603">
-              <caret line="54" column="65" selection-start-line="54" selection-start-column="65" selection-end-line="54" selection-end-column="65" />
+            <state relative-caret-position="654">
+              <caret line="54" column="0" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="routes.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="routes.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/js/routes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="433">
+            <state relative-caret-position="17">
               <caret line="231" column="34" selection-start-line="231" selection-start-column="34" selection-end-line="231" selection-end-column="34" />
               <folding />
             </state>
@@ -110,8 +110,8 @@
       <file leaf-file-name="myCompetenciesCtrl.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/js/controllers/user/myCompetenciesCtrl.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+            <state relative-caret-position="68">
+              <caret line="4" column="3" selection-start-line="4" selection-start-column="3" selection-end-line="4" selection-end-column="3" />
               <folding />
             </state>
           </provider>
@@ -127,11 +127,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="myCompetencies.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="myCompetencies.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/templates/myCompetencies.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" column="50" selection-start-line="10" selection-start-column="50" selection-end-line="10" selection-end-column="50" />
+            <state relative-caret-position="306">
+              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -150,7 +150,7 @@
       <file leaf-file-name="task.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/templates/task.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="801">
+            <state relative-caret-position="1547">
               <caret line="91" column="0" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
               <folding>
                 <element signature="n#style#0;n#h5#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
@@ -232,13 +232,13 @@
         <option value="$PROJECT_DIR$/www/js/controllers/task/taskCtrl.js" />
         <option value="$PROJECT_DIR$/www/templates/tasklist.html" />
         <option value="$PROJECT_DIR$/www/templates/addCompetenceInfo.html" />
-        <option value="$PROJECT_DIR$/www/templates/myCompetencies.html" />
-        <option value="$PROJECT_DIR$/www/js/controllers/user/myCompetenciesCtrl.js" />
         <option value="$PROJECT_DIR$/www/js/services/user_service.js" />
         <option value="$PROJECT_DIR$/www/templates/addCompetence.html" />
-        <option value="$PROJECT_DIR$/www/js/controllers/user/addCompetenceCtrl.js" />
         <option value="$PROJECT_DIR$/www/js/controllers/user/addCompetenceInfoCtrl.js" />
         <option value="$PROJECT_DIR$/www/js/routes.js" />
+        <option value="$PROJECT_DIR$/www/js/controllers/user/myCompetenciesCtrl.js" />
+        <option value="$PROJECT_DIR$/www/js/controllers/user/addCompetenceCtrl.js" />
+        <option value="$PROJECT_DIR$/www/templates/myCompetencies.html" />
       </list>
     </option>
   </component>
@@ -283,7 +283,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -451,6 +450,7 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -576,12 +576,13 @@
       <workItem from="1480664075194" duration="10354000" />
       <workItem from="1480922840381" duration="9442000" />
       <workItem from="1481009212990" duration="10233000" />
-      <workItem from="1481095241513" duration="11111000" />
+      <workItem from="1481095241513" duration="12656000" />
+      <workItem from="1481268673174" duration="1128000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="326908000" />
+    <option name="totallyTimeSpent" value="329581000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1363" y="0" width="1094" height="1080" extended-state="0" />
@@ -832,7 +833,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -840,7 +840,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2006">
           <caret line="118" column="38" selection-start-line="118" selection-start-column="38" selection-end-line="118" selection-end-column="38" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -868,7 +867,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/task.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="801">
+        <state relative-caret-position="1547">
           <caret line="91" column="0" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
           <folding>
             <element signature="n#style#0;n#h5#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
@@ -890,7 +889,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" column="7" selection-start-line="3" selection-start-column="7" selection-end-line="3" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -906,7 +904,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
           <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -914,7 +911,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
           <caret line="21" column="51" selection-start-line="21" selection-start-column="51" selection-end-line="21" selection-end-column="51" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -922,22 +918,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="51" selection-start-line="0" selection-start-column="51" selection-end-line="0" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/templates/myCompetencies.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="50" selection-start-line="10" selection-start-column="50" selection-end-line="10" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/controllers/user/myCompetenciesCtrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -950,10 +930,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/services/user_service.js">
+    <entry file="file://$PROJECT_DIR$/www/js/controllers/user/myCompetenciesCtrl.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="130" column="8" selection-start-line="130" selection-start-column="8" selection-end-line="130" selection-end-column="8" />
+        <state relative-caret-position="68">
+          <caret line="4" column="3" selection-start-line="4" selection-start-column="3" selection-end-line="4" selection-end-column="3" />
           <folding />
         </state>
       </provider>
@@ -982,18 +962,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/controllers/user/addCompetenceCtrl.js">
+    <entry file="file://$PROJECT_DIR$/www/js/routes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="603">
-          <caret line="54" column="65" selection-start-line="54" selection-start-column="65" selection-end-line="54" selection-end-column="65" />
+        <state relative-caret-position="17">
+          <caret line="231" column="34" selection-start-line="231" selection-start-column="34" selection-end-line="231" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/routes.js">
+    <entry file="file://$PROJECT_DIR$/www/js/services/user_service.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="433">
-          <caret line="231" column="34" selection-start-line="231" selection-start-column="34" selection-end-line="231" selection-end-column="34" />
+        <state relative-caret-position="198">
+          <caret line="130" column="8" selection-start-line="130" selection-start-column="8" selection-end-line="130" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/controllers/user/addCompetenceCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="654">
+          <caret line="54" column="0" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/templates/myCompetencies.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
           <folding />
         </state>
       </provider>
