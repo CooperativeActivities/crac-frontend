@@ -108,7 +108,14 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     };
 
     $scope.delete = function(){
-        TaskDataService.deleteTaskById($scope.task.id);
+        TaskDataService.deleteTaskById($scope.task.id).then(function(res) {
+          console.log(res.data);
+          $state.go('tabsController.tasklist');
+        }, function(error) {
+          console.log('An error occurred!', error);
+          alert(error.data.cause);
+        });
+
     }
 
     $scope.readyToPublish = function(){
