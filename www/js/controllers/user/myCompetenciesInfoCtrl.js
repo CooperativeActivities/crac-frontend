@@ -35,7 +35,12 @@ cracApp.controller('myCompetenciesInfoCtrl', ['$rootScope','$scope', '$statePara
     };
 
     $scope.save = function(){
-
+      UserDataService.updateCompetence($scope.competenceInfo.competence.id,$scope.competenceInfo.likeValue,$scope.competenceInfo.proficiencyValue).then(function(res){
+        //$window.location.reload();
+        $state.go('tabsController.myCompetencies');
+      }, function(error) {
+        console.log('An error occurred!', error);
+      });
     };
 
 }]);

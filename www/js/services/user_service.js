@@ -97,8 +97,8 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
     srv.allCompetences = function(){
       return $http.get(srv._baseURL + 'competence/all');
     }
-    srv.addLikeProfValue = function(id,likeValue,ProficiencyValue){
-      return $http.get(srv._baseURL + 'user/competence/'+ id +'/add/'+ likeValue +'/'+ ProficiencyValue);
+    srv.addLikeProfValue = function(id,likeValue,proficiencyValue){
+      return $http.get(srv._baseURL + 'user/competence/'+ id +'/add/'+ likeValue +'/'+ proficiencyValue);
     }
     srv.removeCompetence = function(id){
       return $http.get(srv._baseURL + 'user/competence/'+ id + '/remove');
@@ -111,6 +111,9 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
     }
     srv.getCompetenceById = function(id){
       return $http.get(srv._baseURL + 'competence/'+ id);
+    }
+    srv.updateCompetence = function(id,likeValue,proficiencyValue){
+      return $http.get(srv._baseURL + 'user/competence/'+ id +'/adjust/'+ likeValue +'/'+ proficiencyValue);
     }
 
 
@@ -150,8 +153,8 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
       removeCompetence : function(id){
         return srv.removeCompetence(id);
       },
-      addLikeProfValue : function(id,likeValue,ProficiencyValue){
-        return srv.addLikeProfValue(id,likeValue,ProficiencyValue);
+      addLikeProfValue : function(id,likeValue,proficiencyValue){
+        return srv.addLikeProfValue(id,likeValue,proficiencyValue);
       },
       setCompetenceData : function(data){
         return srv.setCompetenceData(data);
@@ -161,6 +164,9 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
       },
       getCompetenceById : function(id) {
         return srv.getCompetenceById(id);
+      },
+      updateCompetence : function(id,likeValue,proficiencyValue){
+        return srv.updateCompetence(id,likeValue,proficiencyValue);
       }
     }
 
