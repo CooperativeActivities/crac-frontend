@@ -115,6 +115,9 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
     srv.updateCompetence = function(id,likeValue,proficiencyValue){
       return $http.get(srv._baseURL + 'user/competence/'+ id +'/adjust/'+ likeValue +'/'+ proficiencyValue);
     }
+    srv.getNotification = function(){
+      return $http.get(srv._baseURL + 'notification');
+    }
 
 
 
@@ -167,6 +170,9 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
       },
       updateCompetence : function(id,likeValue,proficiencyValue){
         return srv.updateCompetence(id,likeValue,proficiencyValue);
+      },
+      getNotification : function(){
+        return srv.getNotification();
       }
     }
 
