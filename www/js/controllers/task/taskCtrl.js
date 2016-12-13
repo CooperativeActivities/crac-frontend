@@ -9,13 +9,16 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.editFlag =true;
     $scope.enrollFlag =false;
     $scope.followFlag = false;
-
+    $scope.readyToPublishTreeFlag = true;
 
 
     $scope.getTaskById= function(id){
       TaskDataService.getTaskById(id).then(function (res) {
         $scope.task = res.data;
         console.log($scope.task);
+        if($scope.task.childTasks == ''){
+          $scope.readyToPublishTreeFlag = false;
+        }
       }, function (error) {
         console.log('An error occurred!', error);
       });
@@ -118,15 +121,24 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 
     }
 
-    $scope.readyToPublish = function(){
-      TaskDataService.setReadyToPublishS($scope.task.id).then(function(res) {
-        console.log('works');
+
+    $scope.readyToPublishT = function() {
+      TaskDataService.setReadyToPublishT($scope.task.id).then(function (res) {
+        console.log('worksT');
         console.log(res.data);
-      }, function(error) {
+      }, function (error) {
         console.log('An error occurred!', error);
         alert(error.data.cause);
       });
-
+    }
+      $scope.readyToPublishS = function(){
+        TaskDataService.setReadyToPublishS($scope.task.id).then(function(res) {
+          console.log('worksS');
+          console.log(res.data);
+        }, function(error) {
+          console.log('An error occurred!', error);
+          alert(error.data.cause);
+        });
     }
     $scope.publish = function(){
       TaskDataService.changeTaskState($scope.task.id, 'publish').then(function(res) {
@@ -142,5 +154,8 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
       });
       console.log('works 2');
     }
+
+
+
 
   }])

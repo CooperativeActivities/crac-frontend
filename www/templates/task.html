@@ -47,14 +47,6 @@
               <span class="input-label">childTask:</span>
                <textarea ng-readonly="editFlag" ng-model="task.childTask" style="background-color:white;"></textarea>
             </label>
-            <label class="item item-input item-stacked-label">
-              <span class="input-label">previousTask:</span>
-               <textarea ng-readonly="editFlag" ng-model="task.previousTask" style="background-color:white;"></textarea>
-            </label>
-            <label class="item item-input item-stacked-label">
-              <span class="input-label">nextTask:</span>
-               <textarea ng-readonly="editFlag" ng-model="task.nextTask" style="background-color:white;"></textarea>
-            </label>
           </form>
 
 
@@ -84,7 +76,8 @@
         <button  ng-click="cancle()" ng-if="followFlag" class="button button button-assertive  button-block " ng-cloak >{{"Nicht mehr folgen"}}</button>
     </div>
       <div class="button-bar" ng-cloak>
-        <button  ng-click="readyToPublish()" class="button button-positive button-block ">Fertig</button>
+        <button  ng-if="readyToPublishTreeFlag" ng-click="readyToPublishT()" class="button button-positive button-block ">Alle Fertig</button>
+        <button  ng-click="readyToPublishS()" class="button button-positive button-block ">Fertig</button>
         <button  ng-click="publish()" class="button button button-balanced button-block ">Veröffentlichen</button>
       </div>
     </ion-content>
