@@ -12,9 +12,11 @@
             <p style="white-space:normal;">{{competenceInfo.competence.description}}</p>
             <ion-item class="range range-assertive" id="meineKompetenzen-range13" ng-cloak>Gefällt mir
               <input type="range" ng-readonly="editFlag" ng-model="competenceInfo.likeValue" min="0" max="100" step="1">
+              <p>{{competenceInfo.likeValue}}</p>
             </ion-item>
             <ion-item class="range range-assertive" id="meineKompetenzen-range14" ng-cloak>Kann ich
               <input type="range" ng-readonly="editFlag" ng-model="competenceInfo.proficiencyValue" min="0" max="100" step="1">
+              <p>{{competenceInfo.proficiencyValue}}</p>
             </ion-item>
           </ion-list>
         </div>
