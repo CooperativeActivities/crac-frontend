@@ -8,8 +8,10 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 
     $scope.editFlag =true;
     $scope.enrollFlag =false;
-    $scope.followFlag = false;
+    $scope.ufollowFlag = false;
+    $scope.followFlag = true;
     $scope.readyToPublishTreeFlag = true;
+    $scope.publishFlag = true;
 
 
     $scope.getTaskById= function(id){
@@ -18,6 +20,9 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         console.log($scope.task);
         if($scope.task.childTasks == ''){
           $scope.readyToPublishTreeFlag = false;
+        }
+        if($scope.task.superTask != null){
+          $scope.publishFlag = false;
         }
       }, function (error) {
         console.log('An error occurred!', error);
@@ -37,9 +42,12 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
       console.log($scope.participationType);
       if($scope.participationType == "PARTICIPATING"){
         $scope.enrollFlag =true;
+        $scope.followFlag =false;
+        $scope.ufollowFlag =false;
       }
       if($scope.participationType == "FOLLOWING"){
-        $scope.followFlag =true;
+        $scope.followFlag =false;
+        $scope.ufollowFlag =true;
       }
     }, function (error) {
       console.log('An error occurred!', error);
@@ -49,7 +57,8 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
       TaskDataService.removeOpenTask($scope.task.id).then(function (res) {
         console.log("deleted");
         $scope.enrollFlag = false;
-        $scope.followFlag = false;
+        $scope.followFlag = true;
+        $scope.ufollowFlag = false;
         $state.reload();
         //$window.location.reload();
       }, function (error) {
@@ -91,6 +100,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         console.log(res.data);
         $scope.enrollFlag = true;
         $scope.followFlag = false;
+        $scope.ufollowFlag = false;
         $state.reload();
        // $window.location.reload();
       }, function(error) {
@@ -103,6 +113,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
       TaskDataService.changeTaskPartState($scope.task.id,'follow').then(function(res) {
         console.log(res.data);
         $scope.followFlag = true;
+        $scope.ufollowFlag = false;
         $scope.enrollFlag = false;
       }, function(error) {
         console.log('An error occurred!', error);
@@ -142,7 +153,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     }
     $scope.publish = function(){
       TaskDataService.changeTaskState($scope.task.id, 'publish').then(function(res) {
-        TaskDataService.getTaskById(id).then(function (res) {
+        TaskDataService.getTaskById($scope.task.id).then(function (res) {
           $scope.task = res.data;
           console.log($scope.task);
         }, function (error) {
