@@ -118,6 +118,9 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
     srv.getNotification = function(){
       return $http.get(srv._baseURL + 'notification');
     }
+    srv.getAllAvailableCompetences = function(){
+     return $http.get(srv._baseURL + 'user/competence/available');
+  }
 
 
 
@@ -173,6 +176,9 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
       },
       getNotification : function(){
         return srv.getNotification();
+      },
+      getAllAvailableCompetences : function(){
+        return srv.getAllAvailableCompetences();
       }
     }
 

@@ -3,11 +3,18 @@
  */
 cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ionicModal,UserDataService, $state) {
 
+  UserDataService.getAllAvailableCompetences().then(function(res){
+        $scope.competences = res.data;
+        console.log($scope.competences);
+        console.log(res);
+  }), function(error){
+    console.log('An error occurred!', error);
+    alert(error.data.cause);
+  }
 
-  $scope.competencesPre = [];
-  $scope.allCompetences= [];
+  /* $scope.allCompetences= [];
   $scope.myCompetences= [];
-  $scope.competences= [];
+
   $scope.loadContent = function() {
     UserDataService.allCompetences().then(function (res) {
       $scope.allCompetences = res.data;
@@ -51,11 +58,8 @@ cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ioni
       }
     }
     return kickOut;
-  }
+  } */
 
-  $scope.$watch('competences', function(){
-    UserDataService.setCompetenceData($scope.competences);
-  })
 
   $scope.addCompetenceInfo = function(compId){
     $state.go('tabsController.addCompetenceInfo', { id:compId });
@@ -69,6 +73,6 @@ cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ioni
     $ionicScrollDelegate.scrollTop();
   };
 
-  $scope.loadContent();
+
 
   })
