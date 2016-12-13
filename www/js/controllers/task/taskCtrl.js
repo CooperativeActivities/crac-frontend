@@ -112,8 +112,8 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.follow = function(){
       TaskDataService.changeTaskPartState($scope.task.id,'follow').then(function(res) {
         console.log(res.data);
-        $scope.followFlag = true;
-        $scope.ufollowFlag = false;
+        $scope.followFlag = false;
+        $scope.ufollowFlag = true;
         $scope.enrollFlag = false;
       }, function(error) {
         console.log('An error occurred!', error);
