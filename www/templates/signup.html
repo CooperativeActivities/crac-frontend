@@ -1,69 +1,117 @@
 <ion-view title="Registrierung" id="page6">
-    <ion-content padding="true" class="has-header">
-        <form id="registrierung-form2" class="list">
-            <ion-list id="registrierung-list3">
-                <ion-item class="item-divider" id="registrierung-list-item-divider1">Anmeldedaten</ion-item>
-                <label class="item item-input" id="registrierung-input4">
-                    <span class="input-label">Benutzername</span>
-                    <input type="text" placeholder="">
-                </label>
-                <label class="item item-input" id="registrierung-input6">
-                    <span class="input-label">Email-Adresse</span>
-                    <input type="email" placeholder="">
-                </label>
-                <label class="item item-input" id="registrierung-input5">
-                    <span class="input-label">Password</span>
-                    <input type="password" placeholder="">
-                </label>
-                <ion-item class="item-divider" id="registrierung-list-item-divider2">Basisdaten</ion-item>
-                <label class="item item-input" id="registrierung-input3">
-                    <span class="input-label">Vorname</span>
-                    <input type="text" placeholder="">
-                </label>
-                <label class="item item-input" id="registrierung-input11">
-                    <span class="input-label">Nachname</span>
-                    <input type="text" placeholder="">
-                </label>
-                <label class="item item-input" id="registrierung-input14">
-                    <span class="input-label">PLZ</span>
-                    <input type="text" placeholder="">
-                </label>
-                <label class="item item-input" id="registrierung-input15">
-                    <span class="input-label">Ort</span>
-                    <input type="text" placeholder="">
-                </label>
-                <label class="item item-input" id="registrierung-input12">
-                    <span class="input-label">Handynummer</span>
-                    <input type="tel" placeholder="">
-                </label>
-                <label class="item item-input" id="registrierung-input13">
-                    <span class="input-label">Telefonnummer</span>
-                    <input type="tel" placeholder="">
-                </label>
-                <label class="item item-input" id="registrierung-input16">
-                    <span class="input-label">Geburtsdatum</span>
-                    <input type="date" placeholder="">
-                </label>
-                <ion-item class="item-divider" id="registrierung-list-item-divider3">Organisation</ion-item>
-                <label class="item item-select" id="registrierung-select1">
-                    <span class="input-label">Organisation</span>
-                    <select>
-                        <option>Rotes Kreuz (Linz)</option>
-                        <option>Rotes Kreuz (Pregarten)</option>
-                        <option>Waldorfschule (Linz)</option>
-                        <option>FF Gallneukirchen</option>
-                    </select>
-                </label>
-                <label class="item item-select" id="registrierung-select2">
-                    <span class="input-label">Rolle</span>
-                    <select>
-                        <option>Freiwilliger</option>
-                        <option>Mitarbeiter</option>
-                        <option>Administrator</option>
-                    </select>
-                </label>
-            </ion-list>
-            <a ui-sref="welcome" id="registrierung-button3" class="button button-balanced  button-block">Registrierung abschließen</a>
-        </form>
-    </ion-content>
+  <ion-content padding="true" class="has-header">
+    <div class="container">
+      <div id="logo">
+        <img src="img/logo.png"/>
+      </div>
+      <div class="content-title assertive">Neuen Account erstellen</div>
+      <form id="registrierung-form2" class="list">
+        <ion-list id="registrierung-list3">
+          <div class="row">
+            <div class="col">
+              <label class="item item-input" id="registrierung-input4">
+                <input type="text" placeholder="Benutzername" required>
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label class="item item-input" id="registrierung-input6">
+                <input type="text" placeholder="Email-Adresse" required>
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label class="item item-input" id="registrierung-input5">
+                <input type="text" placeholder="Password" required>
+              </label>
+            </div>
+          </div>
+
+          <div class="content-title assertive">Über mich</div>
+
+          <div class="row">
+            <div class="col">
+              <label class="item item-input" id="registrierung-input3">
+                <input type="text" placeholder="Vorname" required>
+              </label>
+            </div>
+            <div class="col">
+              <label class="item item-input" id="registrierung-input11">
+                <input type="text" placeholder="Nachname" required>
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label class="item item-input" id="registrierung-input14">
+                <input type="text" placeholder="PLZ">
+              </label>
+            </div>
+            <div class="col">
+              <label class="item item-input" id="registrierung-input15">
+                <input type="text" placeholder="Ort">
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label class="item item-input" id="registrierung-input12">
+                <input type="text" placeholder="Handynummer">
+              </label>
+            </div>
+            <div class="col">
+              <label class="item item-input" id="registrierung-input13">
+                <input type="text" placeholder="Telefonnummer">
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label class="item item-input" id="registrierung-input16">
+                <input type="text" placeholder="Geburtsdatum">
+              </label>
+            </div>
+          </div>
+
+          <div class="content-title assertive">Organisation</div>
+
+          <div class="row">
+            <div class="col">
+              <label class="item item-select" id="registrierung-select1">
+                <span class="input-label">Organisation</span>
+                <select>
+                  <option>Rotes Kreuz (Linz)</option>
+                  <option>Rotes Kreuz (Pregarten)</option>
+                  <option>Waldorfschule (Linz)</option>
+                  <option>FF Gallneukirchen</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label class="item item-select" id="registrierung-select2">
+                <span class="input-label">Rolle</span>
+                <select>
+                  <option>Freiwilliger</option>
+                  <option>Mitarbeiter</option>
+                  <option>Administrator</option>
+                </select>
+              </label>
+            </div>
+          </div>
+        </ion-list>
+        <a ui-sref="welcome" id="registrierung-button3" class="button button-block button-outline button-positive button-assertive">
+          <i class="ion-checkmark-circled"></i> Registrieren und mit Guide starten</a>
+      </form>
+    </div>
+  </ion-content>
 </ion-view>
