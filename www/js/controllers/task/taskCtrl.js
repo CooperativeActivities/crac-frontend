@@ -157,6 +157,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         alert(error.data.cause);
       });
     }
+
       $scope.readyToPublishS = function(){
         TaskDataService.setReadyToPublishS($scope.task.id).then(function(res) {
           console.log('worksS');
@@ -166,6 +167,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
           alert(error.data.cause);
         });
     }
+
     $scope.publish = function(){
       TaskDataService.changeTaskState($scope.task.id, 'publish').then(function(res) {
         TaskDataService.getTaskById($scope.task.id).then(function (res) {
