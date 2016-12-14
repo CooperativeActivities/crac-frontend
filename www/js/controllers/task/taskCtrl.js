@@ -24,6 +24,10 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         if($scope.task.superTask != null){
           $scope.publishFlag = false;
         }
+        if($scope.task.taskState == "STARTED"){
+          $scope.ufollowFlag = false;
+          $scope.followFlag = false;
+        }
       }, function (error) {
         console.log('An error occurred!', error);
       });
