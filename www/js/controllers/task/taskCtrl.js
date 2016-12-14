@@ -1,10 +1,10 @@
 /**
  * Created by P41332 on 25.10.2016.
  */
-cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParams','$routeParams','TaskDataService','$state', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParams','$routeParams','TaskDataService','$state','$ionicPopup', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-  function ($scope,$route, $window, $stateParams,$routeParams,TaskDataService,$state) {
+  function ($scope,$route, $window, $stateParams,$routeParams,TaskDataService,$state, $ionicPopup) {
 
     $scope.editFlag =true;
     $scope.enrollFlag =false;
@@ -126,14 +126,25 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     };
 
     $scope.delete = function(){
-        TaskDataService.deleteTaskById($scope.task.id).then(function(res) {
-          console.log(res.data);
-          $state.go('tabsController.tasklist');
-        }, function(error) {
-          console.log('An error occurred!', error);
-          alert(error.data.cause);
-        });
+      var confirmPopup = $ionicPopup.confirm({
+        title: 'Löschen',
+        template: 'Wollen sie diese Aufgabe wirklich löschen?'
+      });
 
+      confirmPopup.then(function(res) {
+        if(res) {
+          console.log('You are sure');
+          TaskDataService.deleteTaskById($scope.task.id).then(function(res) {
+            console.log(res.data);
+            $state.go('tabsController.tasklist');
+          }, function(error) {
+            console.log('An error occurred!', error);
+            alert(error.data.cause);
+          });
+        } else {
+          console.log('You are not sure');
+        }
+      });
     }
 
 

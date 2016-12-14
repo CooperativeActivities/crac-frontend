@@ -39,8 +39,8 @@
             <file leaf-file-name="taskCtrl.js" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/www/js/controllers/task/taskCtrl.js">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="578">
-                    <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+                  <state relative-caret-position="543">
+                    <caret line="130" column="62" selection-start-line="130" selection-start-column="62" selection-end-line="130" selection-end-column="62" />
                     <folding />
                   </state>
                 </provider>
@@ -107,7 +107,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="newTaskCtrl.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="newTaskCtrl.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/js/controllers/task/newTaskCtrl.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="493">
@@ -137,7 +137,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="newTask.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="newTask.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/templates/newTask.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="527">
@@ -223,8 +223,8 @@
         <option value="$PROJECT_DIR$/www/js/services/user_service.js" />
         <option value="$PROJECT_DIR$/www/js/controllers/user/addCompetenceCtrl.js" />
         <option value="$PROJECT_DIR$/www/js/controllers/task/newTaskCtrl.js" />
-        <option value="$PROJECT_DIR$/www/js/controllers/task/taskCtrl.js" />
         <option value="$PROJECT_DIR$/www/templates/newTask.html" />
+        <option value="$PROJECT_DIR$/www/js/controllers/task/taskCtrl.js" />
       </list>
     </option>
   </component>
@@ -618,12 +618,12 @@
       <workItem from="1481268673174" duration="3042000" />
       <workItem from="1481527975131" duration="6024000" />
       <workItem from="1481614326535" duration="9475000" />
-      <workItem from="1481701823537" duration="4306000" />
+      <workItem from="1481701823537" duration="5181000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="351300000" />
+    <option name="totallyTimeSpent" value="352175000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1363" y="0" width="1184" height="1080" extended-state="0" />
@@ -1002,22 +1002,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/controllers/user/myProfileCtrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="29" column="24" selection-start-line="29" selection-start-column="24" selection-end-line="29" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/controllers/task/newTaskCtrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="29" column="49" selection-start-line="29" selection-start-column="49" selection-end-line="29" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/myProfile.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
@@ -1034,10 +1018,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/controllers/user/myProfileCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="271">
+          <caret line="29" column="24" selection-start-line="29" selection-start-column="24" selection-end-line="29" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/controllers/task/newTaskCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="29" column="49" selection-start-line="29" selection-start-column="49" selection-end-line="29" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/www/js/controllers/task/taskCtrl.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+        <state relative-caret-position="543">
+          <caret line="130" column="62" selection-start-line="130" selection-start-column="62" selection-end-line="130" selection-end-column="62" />
           <folding />
         </state>
       </provider>
