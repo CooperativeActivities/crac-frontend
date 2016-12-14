@@ -28,6 +28,7 @@ cracApp.controller('newTaskCtrl', ['$scope','$route', '$stateParams','$routePara
         $state.go('tabsController.tasklist');
       }, function(error) {
         console.log('An error occurred!', error);
+        alert("Es muss jedes Feld ausgefüllt sein:"+ error.data.cause);
       });
     };
 

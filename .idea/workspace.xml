@@ -26,17 +26,17 @@
       <content type="file-editors">
         <state>
           <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-            <file leaf-file-name="myCompetenciesCtrl.js" pinned="false" current-in-tab="true">
+            <file leaf-file-name="myCompetenciesCtrl.js" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/www/js/controllers/user/myCompetenciesCtrl.js">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="68">
-                    <caret line="4" column="3" selection-start-line="4" selection-start-column="3" selection-end-line="4" selection-end-column="3" />
+                  <state relative-caret-position="714">
+                    <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
                     <folding />
                   </state>
                 </provider>
               </entry>
             </file>
-            <file leaf-file-name="taskCtrl.js" pinned="false" current-in-tab="false">
+            <file leaf-file-name="taskCtrl.js" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/www/js/controllers/task/taskCtrl.js">
                 <provider selected="true" editor-type-id="text-editor">
                   <state relative-caret-position="238">
@@ -60,7 +60,7 @@
       <file leaf-file-name="routes.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/js/routes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
+            <state relative-caret-position="3927">
               <caret line="231" column="34" selection-start-line="231" selection-start-column="34" selection-end-line="231" selection-end-column="34" />
               <folding />
             </state>
@@ -70,7 +70,7 @@
       <file leaf-file-name="task.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/templates/task.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="699">
+            <state relative-caret-position="1309">
               <caret line="77" column="16" selection-start-line="77" selection-start-column="16" selection-end-line="77" selection-end-column="16" />
               <folding>
                 <element signature="n#style#0;n#h5#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
@@ -94,7 +94,7 @@
       <file leaf-file-name="user_service.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/js/services/user_service.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1507">
+            <state relative-caret-position="3009">
               <caret line="177" column="37" selection-start-line="177" selection-start-column="37" selection-end-line="177" selection-end-column="37" />
               <folding />
             </state>
@@ -131,21 +131,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="newTaskCtrl.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="newTaskCtrl.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/js/controllers/task/newTaskCtrl.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" column="48" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
+            <state relative-caret-position="510">
+              <caret line="30" column="71" selection-start-line="30" selection-start-column="71" selection-end-line="30" selection-end-column="71" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="newTask.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="newTask.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/templates/newTask.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="30" column="52" selection-start-line="30" selection-start-column="52" selection-end-line="30" selection-end-column="52" />
+            <state relative-caret-position="680">
+              <caret line="40" column="11" selection-start-line="40" selection-start-column="11" selection-end-line="40" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -227,8 +227,8 @@
         <option value="$PROJECT_DIR$/www/templates/myCompetenciesInfo.html" />
         <option value="$PROJECT_DIR$/www/js/services/user_service.js" />
         <option value="$PROJECT_DIR$/www/js/controllers/user/addCompetenceCtrl.js" />
-        <option value="$PROJECT_DIR$/www/js/controllers/task/newTaskCtrl.js" />
         <option value="$PROJECT_DIR$/www/templates/newTask.html" />
+        <option value="$PROJECT_DIR$/www/js/controllers/task/newTaskCtrl.js" />
       </list>
     </option>
   </component>
@@ -245,7 +245,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="1363" />
-    <option name="width" value="1094" />
+    <option name="width" value="1184" />
     <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -621,19 +621,20 @@
       <workItem from="1481095241513" duration="12656000" />
       <workItem from="1481268673174" duration="3042000" />
       <workItem from="1481527975131" duration="6024000" />
-      <workItem from="1481614326535" duration="9233000" />
+      <workItem from="1481614326535" duration="9475000" />
+      <workItem from="1481701823537" duration="727000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="346752000" />
+    <option name="totallyTimeSpent" value="347721000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1363" y="0" width="1094" height="1080" extended-state="0" />
+    <frame x="1363" y="0" width="1184" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Gulp" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3172542" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2928082" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32955715" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -890,7 +891,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="11" column="41" selection-start-line="11" selection-start-column="41" selection-end-line="11" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -898,7 +898,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
           <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -914,7 +913,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" column="39" selection-start-line="9" selection-start-column="39" selection-end-line="9" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -922,7 +920,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -930,7 +927,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="578">
           <caret line="34" column="12" selection-start-line="34" selection-start-column="12" selection-end-line="34" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -938,7 +934,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="84">
           <caret line="23" column="48" selection-start-line="23" selection-start-column="48" selection-end-line="23" selection-end-column="48" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -946,13 +941,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="15" column="3" selection-start-line="15" selection-start-column="3" selection-end-line="17" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/www/js/routes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
+        <state relative-caret-position="3927">
           <caret line="231" column="34" selection-start-line="231" selection-start-column="34" selection-end-line="231" selection-end-column="34" />
           <folding />
         </state>
@@ -960,7 +954,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/task.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="699">
+        <state relative-caret-position="1309">
           <caret line="77" column="16" selection-start-line="77" selection-start-column="16" selection-end-line="77" selection-end-column="16" />
           <folding>
             <element signature="n#style#0;n#h5#0;n#ion-content#0;n#ion-view#0;n#!!top" expanded="true" />
@@ -1004,24 +998,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/www/js/services/user_service.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1507">
+        <state relative-caret-position="3009">
           <caret line="177" column="37" selection-start-line="177" selection-start-column="37" selection-end-line="177" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/controllers/task/taskCtrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="92" column="6" selection-start-line="92" selection-start-column="6" selection-end-line="92" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/controllers/user/myCompetenciesCtrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="3" selection-start-line="4" selection-start-column="3" selection-end-line="4" selection-end-column="3" />
           <folding />
         </state>
       </provider>
@@ -1034,18 +1012,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/controllers/task/newTaskCtrl.js">
+    <entry file="file://$PROJECT_DIR$/www/js/controllers/user/myCompetenciesCtrl.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="48" selection-start-line="15" selection-start-column="48" selection-end-line="15" selection-end-column="48" />
+        <state relative-caret-position="714">
+          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/newTask.html">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="40" column="11" selection-start-line="40" selection-start-column="11" selection-end-line="40" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/controllers/task/taskCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="92" column="6" selection-start-line="92" selection-start-column="6" selection-end-line="92" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/controllers/task/newTaskCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="510">
-          <caret line="30" column="52" selection-start-line="30" selection-start-column="52" selection-end-line="30" selection-end-column="52" />
+          <caret line="30" column="71" selection-start-line="30" selection-start-column="71" selection-end-line="30" selection-end-column="71" />
           <folding />
         </state>
       </provider>
