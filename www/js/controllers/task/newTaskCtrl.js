@@ -12,13 +12,14 @@ cracApp.controller('newTaskCtrl', ['$scope','$route', '$stateParams','$routePara
       var taskData = {};
       taskData.name= $scope.task.name;
       taskData.description= $scope.task.description;
-      taskData.urgency= $scope.task.urgency;
-      taskData.amountOfVolunteers= $scope.task.amountOfVolunteers;
       taskData.location= $scope.task.location;
       taskData.startTime= $scope.task.startTime;
       taskData.endTime= $scope.task.endTime;
+      taskData.urgency= $scope.task.urgency;
+      taskData.amountOfVolunteers= $scope.task.amountOfVolunteers;
 
-      console.log($scope.task);
+
+      console.log(taskData);
 
       TaskDataService.createNewTask(taskData).then(function(res) {
         console.log(taskData);

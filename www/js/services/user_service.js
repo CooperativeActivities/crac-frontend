@@ -4,6 +4,8 @@
 cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootScope){
 
     var srv = {};
+    var CompetenceData = [];
+
 
     // URL to REST-Service
     srv._baseURL = "https://core.crac.at/crac-core/";
@@ -95,12 +97,32 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
     srv.allCompetences = function(){
       return $http.get(srv._baseURL + 'competence/all');
     }
-    srv.addLikeProfValue = function(id,likeValue,ProficiencyValue){
-      return $http.get(srv._baseURL + 'user/competence/'+ id +'/add/'+ likeValue +'/'+ ProficiencyValue);
+    srv.addLikeProfValue = function(id,likeValue,proficiencyValue){
+      return $http.get(srv._baseURL + 'user/competence/'+ id +'/add/'+ likeValue +'/'+ proficiencyValue);
     }
     srv.removeCompetence = function(id){
       return $http.get(srv._baseURL + 'user/competence/'+ id + '/remove');
     }
+    srv.setCompetenceData = function(data){
+      CompetenceData = data;
+    }
+    srv.getCompetenceData = function(){
+      return CompetenceData;
+    }
+    srv.getCompetenceById = function(id){
+      return $http.get(srv._baseURL + 'competence/'+ id);
+    }
+    srv.updateCompetence = function(id,likeValue,proficiencyValue){
+      return $http.get(srv._baseURL + 'user/competence/'+ id +'/adjust/'+ likeValue +'/'+ proficiencyValue);
+    }
+    srv.getNotification = function(){
+      return $http.get(srv._baseURL + 'notification');
+    }
+    srv.getAllAvailableCompetences = function(){
+     return $http.get(srv._baseURL + 'user/competence/available');
+  }
+
+
 
 
     /**
@@ -137,8 +159,26 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
       removeCompetence : function(id){
         return srv.removeCompetence(id);
       },
-      addLikeProfValue : function(id,likeValue,ProficiencyValue){
-        return srv.addLikeProfValue(id,likeValue,ProficiencyValue);
+      addLikeProfValue : function(id,likeValue,proficiencyValue){
+        return srv.addLikeProfValue(id,likeValue,proficiencyValue);
+      },
+      setCompetenceData : function(data){
+        return srv.setCompetenceData(data);
+      },
+      getCompetenceData : function(){
+        return srv.getCompetenceData();
+      },
+      getCompetenceById : function(id) {
+        return srv.getCompetenceById(id);
+      },
+      updateCompetence : function(id,likeValue,proficiencyValue){
+        return srv.updateCompetence(id,likeValue,proficiencyValue);
+      },
+      getNotification : function(){
+        return srv.getNotification();
+      },
+      getAllAvailableCompetences : function(){
+        return srv.getAllAvailableCompetences();
       }
     }
 

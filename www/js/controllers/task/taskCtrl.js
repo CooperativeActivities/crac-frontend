@@ -8,13 +8,22 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 
     $scope.editFlag =true;
     $scope.enrollFlag =false;
-
+    $scope.ufollowFlag = false;
+    $scope.followFlag = true;
+    $scope.readyToPublishTreeFlag = true;
+    $scope.publishFlag = true;
 
 
     $scope.getTaskById= function(id){
       TaskDataService.getTaskById(id).then(function (res) {
         $scope.task = res.data;
         console.log($scope.task);
+        if($scope.task.childTasks == ''){
+          $scope.readyToPublishTreeFlag = false;
+        }
+        if($scope.task.superTask != null){
+          $scope.publishFlag = false;
+        }
       }, function (error) {
         console.log('An error occurred!', error);
       });
@@ -33,6 +42,12 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
       console.log($scope.participationType);
       if($scope.participationType == "PARTICIPATING"){
         $scope.enrollFlag =true;
+        $scope.followFlag =false;
+        $scope.ufollowFlag =false;
+      }
+      if($scope.participationType == "FOLLOWING"){
+        $scope.followFlag =false;
+        $scope.ufollowFlag =true;
       }
     }, function (error) {
       console.log('An error occurred!', error);
@@ -42,10 +57,13 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
       TaskDataService.removeOpenTask($scope.task.id).then(function (res) {
         console.log("deleted");
         $scope.enrollFlag = false;
+        $scope.followFlag = true;
+        $scope.ufollowFlag = false;
         $state.reload();
-        $window.location.reload();
+        //$window.location.reload();
       }, function (error) {
         console.log('An error occurred!', error);
+        alert(error.data.cause);
       });
     }
 
@@ -70,6 +88,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         $scope.editFlag =true;
       }, function(error) {
         console.log('An error occurred!', error);
+        alert(error.data.cause);
       });
     };
     $scope.edit = function(){
@@ -77,18 +96,77 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     };
 
     $scope.enroll = function(){
-      TaskDataService.changeTaskState($stateParams.id ,'participate').then(function(res) {
+      TaskDataService.changeTaskPartState($stateParams.id ,'participate').then(function(res) {
         console.log(res.data);
         $scope.enrollFlag = true;
+        $scope.followFlag = false;
+        $scope.ufollowFlag = false;
         $state.reload();
-        $window.location.reload();
+       // $window.location.reload();
       }, function(error) {
         console.log('An error occurred!', error);
+        alert(error.data.cause);
       });
     }
 
+    $scope.follow = function(){
+      TaskDataService.changeTaskPartState($scope.task.id,'follow').then(function(res) {
+        console.log(res.data);
+        $scope.followFlag = false;
+        $scope.ufollowFlag = true;
+        $scope.enrollFlag = false;
+      }, function(error) {
+        console.log('An error occurred!', error);
+        alert(error.data.cause);
+      });
+    };
+
     $scope.delete = function(){
+        TaskDataService.deleteTaskById($scope.task.id).then(function(res) {
+          console.log(res.data);
+          $state.go('tabsController.tasklist');
+        }, function(error) {
+          console.log('An error occurred!', error);
+          alert(error.data.cause);
+        });
 
     }
+
+
+    $scope.readyToPublishT = function() {
+      TaskDataService.setReadyToPublishT($scope.task.id).then(function (res) {
+        console.log('worksT');
+        console.log(res.data);
+      }, function (error) {
+        console.log('An error occurred!', error);
+        alert(error.data.cause);
+      });
+    }
+      $scope.readyToPublishS = function(){
+        TaskDataService.setReadyToPublishS($scope.task.id).then(function(res) {
+          console.log('worksS');
+          console.log(res.data);
+        }, function(error) {
+          console.log('An error occurred!', error);
+          alert(error.data.cause);
+        });
+    }
+    $scope.publish = function(){
+      TaskDataService.changeTaskState($scope.task.id, 'publish').then(function(res) {
+        TaskDataService.getTaskById($scope.task.id).then(function (res) {
+          $scope.task = res.data;
+          console.log($scope.task);
+        }, function (error) {
+          console.log('An error occurred!', error);
+        });
+      }, function(error) {
+        console.log('An error occurred!', error);
+        alert(error.data.cause);
+      });
+      console.log('works 2');
+    }
+
+
+
 
   }])

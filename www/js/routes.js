@@ -28,6 +28,7 @@ angular.module('app.routes', ['ionicUIRouter'])
     //Tabs Routes
     //**********************************************
       .state('tabsController', {
+       // cache: false,
         url: '/tabcontroller',
         templateUrl: 'templates/tabsController.html',
         abstract: true
@@ -44,6 +45,7 @@ angular.module('app.routes', ['ionicUIRouter'])
       })
 
       .state('tabsController.tasklist', {
+
         url: '/tasklist',
         views: {
           'tab2': {
@@ -54,21 +56,12 @@ angular.module('app.routes', ['ionicUIRouter'])
       })
 
       .state('tabsController.myTasks', {
+
         url: '/mytasks',
         views: {
           'tab3': {
             templateUrl: 'templates/myTasks.html',
             controller: 'myTasksCtrl'
-          }
-        }
-      })
-
-      .state('tabsController.newTask', {
-        url: '/newtask',
-        views: {
-          'tab2': {
-            templateUrl: 'templates/newTask.html',
-            controller: 'newTaskCtrl'
           }
         }
       })
@@ -236,7 +229,7 @@ angular.module('app.routes', ['ionicUIRouter'])
       })
 
       .state('tabsController.addCompetenceInfo', {
-        url: '/addcompetence/:index',
+        url: '/addcompetence/:id',
         views: {
           'tab6': {
             templateUrl: 'templates/addCompetenceInfo.html',
@@ -273,6 +266,16 @@ angular.module('app.routes', ['ionicUIRouter'])
           'tab8': {
             templateUrl: 'templates/addCompetence.html',
             controller: 'addCompetenceCtrl'
+          }
+        }
+      })
+
+      .state('tabsController.newTask', {
+        url: '/newtask',
+        views: {
+          'tab2': {
+            templateUrl: 'templates/newTask.html',
+            controller: 'newTaskCtrl'
           }
         }
       })

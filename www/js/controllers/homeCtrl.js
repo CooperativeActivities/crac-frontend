@@ -11,6 +11,7 @@ cracApp.controller('homeCtrl', ['$scope', '$stateParams', 'TaskDataService','$st
         console.log($scope.tasks);
       })
 
+
     $scope.follow = function(id){
       TaskDataService.changeTaskState(id,'follow').then(function(res) {
         console.log(res.data);
@@ -23,4 +24,6 @@ cracApp.controller('homeCtrl', ['$scope', '$stateParams', 'TaskDataService','$st
       console.log("In fkt")
       $state.go('tabsController.task1', { id:taskId });
     }
+
+
   }])

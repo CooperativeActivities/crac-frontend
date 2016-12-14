@@ -1,4 +1,4 @@
-<ion-view title="KompetenzInfo">
+<ion-view cache-view="false" title="KompetenzInfo">
   <ion-nav-buttons side="right" class="has-header">
     <button class="button icon ion-android-done" ng-click="add()"></button>
   </ion-nav-buttons>
@@ -11,9 +11,11 @@
           <p style="white-space:normal;">{{competenceInfo.description}}</p>
           <ion-item class="range range-assertive" id="meineKompetenzen-range13">Gefällt mir
             <input type="range" ng-model="competenceInfo.likeValue" min="0" max="100" step="1">
+            <p>{{competenceInfo.likeValue}}</p>
           </ion-item>
           <ion-item class="range range-assertive" id="meineKompetenzen-range14">Kann ich
             <input type="range" ng-model="competenceInfo.proficiencyValue" min="0" max="100" step="1">
+            <p>{{competenceInfo.proficiencyValue}}</p>
           </ion-item>
         </ion-list>
       </div>

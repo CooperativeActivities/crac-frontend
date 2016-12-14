@@ -1,5 +1,6 @@
-<ion-view title="Meine Aufgaben" id="page23">
+<ion-view cache-view="false" title="Meine Aufgaben">
     <ion-content padding="true" class="has-header">
+      <!--ion-refresher (ionRefresh)="doRefresh($event)"-->
       <ion-toggle ng-model="completed" toggle-class="toggle-calm" ng-true-value="'COMPLETED'" ng-false-value="'!' + 'COMPLETED'" >Abgeschlossene Aufgaben</ion-toggle>
         <ion-list id="meineAufgaben-list8">
           <div ng-repeat="task in tasks.participating | filter: { taskState: completed }">
@@ -8,7 +9,7 @@
             <img src="img/i8bhuXcQQcqLW28wQ4ka_presentation.jpg">
             <h2>{{task.name}}</h2>
             <p style="white-space:normal;">{{task.description}}</p>
-            <a class="button button-icon icon ion-map">{{task.location}}</a>
+            <b>{{task.taskState}}</b>
             <p>Von {{task.startTime}} bis {{task.endTime}}</p>
             <p>Anzahl Subaufgaben: {{task.childTasks}}</p>
 
@@ -17,5 +18,6 @@
           </ion-item>
           </div>
         </ion-list>
+        <!--/ion-refresher-->
     </ion-content>
 </ion-view>
