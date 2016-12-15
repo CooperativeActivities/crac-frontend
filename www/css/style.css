@@ -58,7 +58,7 @@
 /* page */
 
 #page5, #page6, #page1 {
-  text-align: center;
+  /*text-align: center;*/
 }
 
 /* Form */
@@ -184,5 +184,16 @@ span.input-label {
   background-color: #285397;
   box-shadow: none;
   color: #fff;
+}
+
+/* Task list*/
+.item-task h2 {
+  font-weight: bold;
+}
+.item-subtask, .item-subtask .item-content{
+  min-height: 50px;
+}
+.item-subtask h3 {
+  margin-left: 4em;
 }
 
