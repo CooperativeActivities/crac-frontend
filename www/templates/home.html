@@ -19,12 +19,16 @@
                 <ion-item class="item-thumbnail-left" ng-click="loadSingleTask(task.task.id)">
                   <!--ng-href="#/tabcontroller/task/{{task.id}}"> -->
                   <img src="img/i8bhuXcQQcqLW28wQ4ka_presentation.jpg">
-                  <h2>{{task.task.name}}</h2>
-                  <p style="white-space:normal;">{{task.task.description}}</p>
-                  <b>{{task.task.taskState}}</b>
-                  <p>Von {{task.task.startTime}} bis {{task.task.endTime}}</p>
-                  <p>Anzahl Subaufgaben: {{task.task.childTasks}}</p>
 
+                  <div class="row">
+                    <div class="col"><h2>{{task.task.name}}</h2></div>
+                    <div class="col">{{task.task.startTime | date: 'shortDate'}}</div>
+                    <div class="col">{{task.task.endTime | date: 'shortDate'}}</div>
+                    <div class="col"><b>{{task.task.taskState}}</b></div>
+                  </div>
+                  <div class="row">
+                    <div class="col description">{{task.task.description}}</div>
+                  </div>
 
                   <ion-option-button class="button-positive" ng-click="follow(task.task.id)">Folgen</ion-option-button>
 
