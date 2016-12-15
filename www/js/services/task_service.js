@@ -49,6 +49,9 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
     srv.deleteTaskById = function(taskId){
       return $http.delete(srv._baseURL + "admin/task/" + taskId);
     }
+    srv.createNewSubTask= function(taskData, taskId){
+      return $http.post(srv._baseURL + "task/" + taskId + "/extend", taskData);
+    }
 
     /**
      * EXPOSE Service Methods
@@ -95,6 +98,9 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
       },
       deleteTaskById : function(taskId){
         return srv.deleteTaskById(taskId);
+      },
+      createNewSubTask : function(taskData, taskId){
+        return srv.createNewSubTask(taskData, taskId);
       }
     }
 

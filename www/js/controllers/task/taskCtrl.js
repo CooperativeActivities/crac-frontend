@@ -12,7 +12,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.followFlag = true;
     $scope.readyToPublishTreeFlag = true;
     $scope.publishFlag = true;
-
+    $scope.addSubTaskFlag =true;
 
     $scope.getTaskById= function(id){
       TaskDataService.getTaskById(id).then(function (res) {
@@ -25,8 +25,15 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
           $scope.publishFlag = false;
         }
         if($scope.task.taskState == "STARTED"){
+          $scope.addSubTaskFlag =false;
           $scope.ufollowFlag = false;
           $scope.followFlag = false;
+        }
+        if($scope.task.taskState == "PUBLISHED"){
+          $scope.addSubTaskFlag =false;
+        }
+        if($scope.task.childTasks != ''){
+          $scope.addSubTaskFlag =true;
         }
       }, function (error) {
         console.log('An error occurred!', error);
@@ -181,6 +188,10 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         alert(error.data.cause);
       });
       console.log('works 2');
+    }
+
+    $scope.makeNewSubTask = function(){
+      $state.go('tabsController.newSubTask', { id:$scope.task.id });
     }
 
 
