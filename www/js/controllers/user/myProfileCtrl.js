@@ -1,7 +1,7 @@
 /**
  * Created by P23460 on 13.10.2016.
  */
-cracApp.controller('myProfileCtrl', function($rootScope,$scope, $http, $ionicModal,UserDataService, navigator) {
+cracApp.controller('myProfileCtrl', function($rootScope,$scope, $http, $ionicModal,UserDataService) {
   console.log("Userid: " +$rootScope.globals.currentUser.id)
   UserDataService.getUserById($rootScope.globals.currentUser.id).then(function(res) {
     $scope.user = res.data;
@@ -36,7 +36,7 @@ cracApp.controller('myProfileCtrl', function($rootScope,$scope, $http, $ionicMod
   };
 
 
-  //Camera: Take a pic
+/*  //Camera: Take a pic
   $scope.takePic = function() {
     var options =   {
       quality: 50,
@@ -65,7 +65,7 @@ cracApp.controller('myProfileCtrl', function($rootScope,$scope, $http, $ionicMod
     options.params = params;
     var ft = new FileTransfer();
     ft.upload(myImg, encodeURI("https://example.com/posts/"), onUploadSuccess, onUploadFail, options);
-  }
+  } */
 
 
 
