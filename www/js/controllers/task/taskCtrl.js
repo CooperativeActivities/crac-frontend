@@ -13,6 +13,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.readyToPublishTreeFlag = true;
     $scope.publishFlag = true;
     $scope.addSubTaskFlag =true;
+    $scope.deleteFlag =true;
 
     $scope.getTaskById= function(id){
       TaskDataService.getTaskById(id).then(function (res) {
@@ -28,6 +29,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
           $scope.addSubTaskFlag =false;
           $scope.ufollowFlag = false;
           $scope.followFlag = false;
+          $scope.deleteFlag =false;
         }
         if($scope.task.taskState == "PUBLISHED"){
           $scope.addSubTaskFlag =false;
@@ -135,7 +137,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.delete = function(){
       var confirmPopup = $ionicPopup.confirm({
         title: 'Löschen',
-        template: 'Wollen sie diese Aufgabe wirklich löschen?'
+        template: 'Wollen sie diese Aufgabe wirklich löschen? Es wird die Aufgabe mit ALLEN darunterliegenden Aufgaben permanent gelöscht.'
       });
 
       confirmPopup.then(function(res) {

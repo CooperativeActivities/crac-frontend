@@ -1,7 +1,7 @@
 /**
  * Created by P23460 on 13.10.2016.
  */
-cracApp.controller('myProfileCtrl', function($rootScope,$scope, $http, $ionicModal,UserDataService) {
+cracApp.controller('myProfileCtrl', function($rootScope,$scope, $http, $ionicModal,UserDataService, navigator) {
   console.log("Userid: " +$rootScope.globals.currentUser.id)
   UserDataService.getUserById($rootScope.globals.currentUser.id).then(function(res) {
     $scope.user = res.data;
@@ -34,6 +34,41 @@ cracApp.controller('myProfileCtrl', function($rootScope,$scope, $http, $ionicMod
   $scope.edit = function(){
     $scope.editFlag =false;
   };
+
+
+  //Camera: Take a pic
+  $scope.takePic = function() {
+    var options =   {
+      quality: 50,
+      destinationType: Camera.DestinationType.FILE_URI,
+      sourceType: 1,      // 0:Photo Library, 1=Camera, 2=Saved Photo Album
+      encodingType: 0     // 0=JPG 1=PNG
+    }
+    navigator.camera.getPicture(onSuccess,onFail,options);
+  }
+  var onSuccess = function(FILE_URI) {
+    console.log(FILE_URI);
+    $scope.picData = FILE_URI;
+    $scope.$apply();
+  };
+  var onFail = function(e) {
+    console.log("On fail " + e);
+  }
+  $scope.send = function() {
+    var myImg = $scope.picData;
+    var options = new FileUploadOptions();
+    options.fileKey="post";
+    options.chunkedMode = false;
+    var params = {};
+    params.user_token = localStorage.getItem('auth_token');
+    params.user_email = localStorage.getItem('email');
+    options.params = params;
+    var ft = new FileTransfer();
+    ft.upload(myImg, encodeURI("https://example.com/posts/"), onUploadSuccess, onUploadFail, options);
+  }
+
+
+
   // Picture Change expand modal
  /* $ionicModal.fromTemplateUrl('profileimage-modal.html', {
     scope: $scope,
