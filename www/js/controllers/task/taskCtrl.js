@@ -198,6 +198,30 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
       $state.go('tabsController.newSubTask', { id:$scope.task.id });
     }
 
+    $scope.complete = function(){
+      TaskDataService.changeTaskState($scope.task.id, 'complete').then(function(res) {
+        TaskDataService.getTaskById($scope.task.id).then(function (res) {
+          $scope.task = res.data;
+          console.log($scope.task);
+          $state.go('tabsController.tasklist');
+        }, function (error) {
+          console.log('An error occurred!', error);
+        });
+      }, function(error) {
+        console.log('An error occurred!', error);
+        alert(error.data.cause);
+      });
+
+      $scope.done = function(){
+        TaskDataService.setTaskDone($scope.task.id,"true").then(function () {
+          console.log("works");
+        }, function (error) {
+          console.log('An error occurred!', error);
+        });
+      }
+
+    }
+
 
 
 
