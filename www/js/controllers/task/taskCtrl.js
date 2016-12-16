@@ -200,6 +200,17 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 
     $scope.complete = function(){
       TaskDataService.changeTaskState($scope.task.id, 'complete').then(function(res) {
+        TaskDataService.removeOpenTask($scope.task.id).then(function (res) {
+          console.log("deleted");
+          $scope.enrollFlag = false;
+          $scope.followFlag = true;
+          $scope.ufollowFlag = false;
+          $state.reload();
+          //$window.location.reload();
+        }, function (error) {
+          console.log('An error occurred!', error);
+          alert(error.data.cause);
+        });
         TaskDataService.getTaskById($scope.task.id).then(function (res) {
           $scope.task = res.data;
           console.log($scope.task);
