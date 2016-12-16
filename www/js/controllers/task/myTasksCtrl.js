@@ -6,6 +6,7 @@ cracApp.controller('myTasksCtrl', ['$scope','$window','$route', '$stateParams','
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope,$window, $route, $stateParams, $routeParams, TaskDataService, $state) {
 
+  $scope.completed ="'!' + 'COMPLETED'";
   TaskDataService.getMyTasks().then(function(res) {
     $scope.tasks=res.data;
     console.log($scope.tasks);

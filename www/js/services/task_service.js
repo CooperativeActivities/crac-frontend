@@ -52,6 +52,9 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
     srv.createNewSubTask= function(taskData, taskId){
       return $http.post(srv._baseURL + "task/" + taskId + "/extend", taskData);
     }
+    srv.addCompetenceToTask = function(taskId,competenceId,proficiency,importance){
+      return $http.get(srv._baseURL + "task/" + taskId + "/" + competenceId + "/require/" + proficiency + "/" + importance);
+    }
 
     /**
      * EXPOSE Service Methods
@@ -101,6 +104,9 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
       },
       createNewSubTask : function(taskData, taskId){
         return srv.createNewSubTask(taskData, taskId);
+      },
+      addCompetenceToTask : function(taskId,competenceId,proficiency,importance){
+        return srv.addCompetenceToTask(taskId,competenceId,proficiency,importance);
       }
     }
 
