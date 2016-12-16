@@ -82,6 +82,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 
     $scope.save = function(){
       var taskData = {};
+      taskData.name= $scope.task.name;
       taskData.description= $scope.task.description;
       taskData.urgency= $scope.task.urgency;
       taskData.amountOfVolunteers= $scope.task.amountOfVolunteers;
@@ -93,7 +94,8 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
       taskData.childTask= $scope.task.childTask;
       taskData.previousTask= $scope.task.previousTask;
       taskData.nextTask= $scope.task.nextTask;
-
+      taskData.startTime= $scope.task.startTime;
+      taskData.endTime= $scope.task.endTime;
 
       TaskDataService.updateTaskById(taskData, $scope.task.id).then(function(res) {
         console.log(taskData);
