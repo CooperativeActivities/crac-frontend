@@ -1,19 +1,25 @@
 <ion-view title="Einstellungen" id="page19">
-    <ion-content padding="true" class="has-header">
-        <h4 id="einstellungen-heading9" style="color:#000000;">Benachrichtigungen</h4>
-        <form id="einstellungen-form19" class="list">
-            <ion-toggle toggle-class="toggle-positive" ng-checked="true" id="einstellungen-toggle9">Deaktivieren</ion-toggle>
-            <ion-radio id="einstellungen-radio4" name="notificationsetting">Sofort (Push)</ion-radio>
-            <ion-radio id="einstellungen-radio5" name="notificationsetting">Täglich</ion-radio>
-            <ion-radio id="einstellungen-radio6" name="notificationsetting">Wöchentlich</ion-radio>
-        </form>
-        <h4 id="einstellungen-heading10" style="color:#000000;">Allgemeine Einstellungen</h4>
-        <form id="einstellungen-form21" class="list">
-            <ion-toggle toggle-class="toggle-positive" id="einstellungen-toggle10">Töne</ion-toggle>
-        </form>
-        <div id="einstellungen-button-bar3" class="button-bar">
-            <button id="einstellungen-button19" class="button button-balanced  button-block">Speichern</button>
-            <button id="einstellungen-button21" class="button button-assertive  button-block">Abbrechen</button>
+  <ion-content padding="true" class="has-header">
+    <div class="container">
+      <div class="content-title assertive">Benachrichtigungen</div>
+      <form id="einstellungen-form19" class="list">
+        <ion-toggle toggle-class="toggle-positive" ng-checked="true" id="einstellungen-toggle9">Deaktivieren</ion-toggle>
+        <ion-radio id="einstellungen-radio4" name="notificationsetting">Sofort (Push)</ion-radio>
+        <ion-radio id="einstellungen-radio5" name="notificationsetting">Täglich</ion-radio>
+        <ion-radio id="einstellungen-radio6" name="notificationsetting">Wöchentlich</ion-radio>
+      </form>
+      <div class="content-title assertive">Allgemeine Einstellungen</div>
+      <form id="einstellungen-form21" class="list">
+        <ion-toggle toggle-class="toggle-positive" id="einstellungen-toggle10">Töne</ion-toggle>
+      </form>
+      <div class="row">
+        <div class="col">
+          <button id="einstellungen-button19" class="button button-balanced  button-block">Speichern</button>
         </div>
-    </ion-content>
+        <div class="col">
+          <button id="einstellungen-button21" class="button button-assertive  button-block">Abbrechen</button>
+        </div>
+      </div>
+    </div>
+  </ion-content>
 </ion-view>

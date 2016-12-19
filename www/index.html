@@ -118,18 +118,16 @@
       </ion-nav-bar>
       <ion-nav-view></ion-nav-view>
     </ion-side-menu-content>
-    <ion-side-menu cache-view="false" side="left" id="side-menu21" style="background-color:#396BBE;">
-      <ion-content ng-controller="myCrAcMenuCtrl" padding="false" style="top:0px !important;"
-                   class="side-menu-left side-menu-gradiant">
-        <div class="spacer" data-componentid="spacer9" style="width: 268px; height: 30px;"></div>
+    <ion-side-menu cache-view="false" side="left" id="side-menu21">
+      <ion-content ng-controller="myCrAcMenuCtrl" padding="false" class="side-menu-left side-menu-gradiant">
+        <div class="spacer" data-componentid="spacer9"></div>
         <div class="profile-image" data-componentid="image8">
-          <a style="display:block;" ui-sref="tabsController.myProfile" menu-close="">
-            <img src="img/B27MBEuwSJ6wsdkIwFL6_avatar.png" width="100" height="auto"
-                 style="display: block; margin-left: auto; margin-right: auto;">
+          <a ui-sref="tabsController.myProfile" menu-close="">
+            <img src="img/B27MBEuwSJ6wsdkIwFL6_avatar.png" width="100" height="auto">
           </a>
         </div>
-        <h4 id="myCrAcMenu-heading14" style="color:#FFFFFF;text-align:center;" data-componentid="heading14">{{user.firstName}} {{user.lastName}}</h4>
-        <div class="spacer" data-componentid="spacer10" style="width: 268px; height: 15px;"></div>
+        <h4 id="myCrAcMenu-heading14"data-componentid="heading14">{{user.firstName}} {{user.lastName}}</h4>
+        <div class="spacer" data-componentid="spacer10"></div>
         <ion-list id="myCrAcMenu-list1" data-componentid="list1">
           <ion-item class="item-icon-left positive  side-menu-item" id="myCrAcMenu-list-item20"
                     ui-sref="tabsController.myProfile" menu-close="" data-componentid="list-item20">
@@ -159,7 +157,7 @@
           <ion-content>
             <div class="row">
               <div class="col">
-                <div class="content-title" style="text-align: center;margin-top: 20px">Wirklich ausloggen?</div>
+                <div class="content-title">Wirklich ausloggen?</div>
               </div>
             </div>
             <div class="row responsive-lg">
