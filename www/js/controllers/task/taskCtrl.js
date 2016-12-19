@@ -30,9 +30,11 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
           $scope.ufollowFlag = false;
           $scope.followFlag = false;
           $scope.deleteFlag =false;
+          $scope.publishFlag = false;
         }
         if($scope.task.taskState == "PUBLISHED"){
           $scope.addSubTaskFlag =false;
+          $scope.publishFlag = false;
         }
         if($scope.task.childTasks != ''){
           $scope.addSubTaskFlag =true;
