@@ -443,3 +443,18 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   box-shadow: none;
   color: #fff;
 }
+<<<<<<< HEAD
+=======
+
+/* Task list*/
+.item-task h2 {
+  font-weight: bold;
+}
+.item-subtask, .item-subtask .item-content{
+  min-height: 50px;
+}
+.item-subtask h3 {
+  margin-left: 4em;
+}
+
+>>>>>>> origin/master

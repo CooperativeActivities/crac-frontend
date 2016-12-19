@@ -280,6 +280,16 @@ angular.module('app.routes', ['ionicUIRouter'])
         }
       })
 
+      .state('tabsController.newSubTask', {
+        url: '/newsubtask/:id',
+        views: {
+          'tab2': {
+            templateUrl: 'templates/newSubTask.html',
+            controller: 'newSubTaskCtrl'
+          }
+        }
+      })
+
       .state('tabsController.task2', {
         url: '/task2',
         views: {

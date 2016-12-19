@@ -12,7 +12,8 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.followFlag = true;
     $scope.readyToPublishTreeFlag = true;
     $scope.publishFlag = true;
-
+    $scope.addSubTaskFlag =true;
+    $scope.deleteFlag =true;
 
     $scope.getTaskById= function(id){
       TaskDataService.getTaskById(id).then(function (res) {
@@ -25,8 +26,16 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
           $scope.publishFlag = false;
         }
         if($scope.task.taskState == "STARTED"){
+          $scope.addSubTaskFlag =false;
           $scope.ufollowFlag = false;
           $scope.followFlag = false;
+          $scope.deleteFlag =false;
+        }
+        if($scope.task.taskState == "PUBLISHED"){
+          $scope.addSubTaskFlag =false;
+        }
+        if($scope.task.childTasks != ''){
+          $scope.addSubTaskFlag =true;
         }
       }, function (error) {
         console.log('An error occurred!', error);
@@ -73,6 +82,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 
     $scope.save = function(){
       var taskData = {};
+      taskData.name= $scope.task.name;
       taskData.description= $scope.task.description;
       taskData.urgency= $scope.task.urgency;
       taskData.amountOfVolunteers= $scope.task.amountOfVolunteers;
@@ -84,7 +94,8 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
       taskData.childTask= $scope.task.childTask;
       taskData.previousTask= $scope.task.previousTask;
       taskData.nextTask= $scope.task.nextTask;
-
+      taskData.startTime= $scope.task.startTime;
+      taskData.endTime= $scope.task.endTime;
 
       TaskDataService.updateTaskById(taskData, $scope.task.id).then(function(res) {
         console.log(taskData);
@@ -128,7 +139,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.delete = function(){
       var confirmPopup = $ionicPopup.confirm({
         title: 'Löschen',
-        template: 'Wollen sie diese Aufgabe wirklich löschen?'
+        template: 'Wollen sie diese Aufgabe wirklich löschen? Es wird die Aufgabe mit ALLEN darunterliegenden Aufgaben permanent gelöscht.'
       });
 
       confirmPopup.then(function(res) {
@@ -181,6 +192,34 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         alert(error.data.cause);
       });
       console.log('works 2');
+    }
+
+    $scope.makeNewSubTask = function(){
+      $state.go('tabsController.newSubTask', { id:$scope.task.id });
+    }
+
+    $scope.complete = function(){
+      TaskDataService.changeTaskState($scope.task.id, 'complete').then(function(res) {
+        TaskDataService.getTaskById($scope.task.id).then(function (res) {
+          $scope.task = res.data;
+          console.log($scope.task);
+          $state.go('tabsController.tasklist');
+        }, function (error) {
+          console.log('An error occurred!', error);
+        });
+      }, function(error) {
+        console.log('An error occurred!', error);
+        alert(error.data.cause);
+      });
+
+      $scope.done = function(){
+        TaskDataService.setTaskDone($scope.task.id,"true").then(function () {
+          console.log("works");
+        }, function (error) {
+          console.log('An error occurred!', error);
+        });
+      }
+
     }
 
 
