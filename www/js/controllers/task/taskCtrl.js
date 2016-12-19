@@ -11,6 +11,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.ufollowFlag = false;
     $scope.followFlag = true;
     $scope.readyToPublishTreeFlag = true;
+    $scope.readyToPublishSingleFlag = true;
     $scope.publishFlag = true;
     $scope.addSubTaskFlag =true;
     $scope.deleteFlag =true;
@@ -31,10 +32,12 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
           $scope.followFlag = false;
           $scope.deleteFlag =false;
           $scope.publishFlag = false;
+          $scope.readyToPublishSingleFlag = false;
         }
         if($scope.task.taskState == "PUBLISHED"){
           $scope.addSubTaskFlag =false;
           $scope.publishFlag = false;
+          $scope.readyToPublishSingleFlag = false;
         }
         if($scope.task.childTasks != ''){
           $scope.addSubTaskFlag =true;
