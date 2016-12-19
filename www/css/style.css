@@ -12,74 +12,14 @@
   color: #bbb;
 }
 
-/* -- HEADER -------------------------------------------------------------------------------------------------------- */
-
-.menu-content .bar.bar-positive {
-  border-color: #f58730;
-  background-color: #f58730;
-  background-image: linear-gradient(0deg, #f58730, #f58730 50%, transparent 50%);
-  color: #fff;
-}
-
-.menu-content .bar.bar-positive .title {
-  color: #fff;
-}
-
-.menu-content .bar.bar-positive.bar-footer {
-  background-image: linear-gradient(180deg, #f58730, #f58730 50%, transparent 50%);
-}
-
-#side-menu21 {
-  background-color: rgb(57, 107, 190);
-  width: 275px;
-  z-index: 0;
-}
-
-#side-menu21 .profile-image a {
-  display: block;
-}
-
-#side-menu21 .profile-image img {
-  display: block;
-  margin: 0 auto;
-}
-
-#myCrAcMenu-heading14 {
-  padding: 16px 12px;
-  color: #fff;
-  text-align: center;
-  display: block;
-}
-
-/* -- FOOTER -------------------------------------------------------------------------------------------------------- */
-
-.tab-item:hover {
-  text-decoration: none;
-  color: #fff;
-}
-
-.tab-item.tab-item-active, .tab-item.active, .tab-item.activated {
-  color: #fff;
-}
-
-/* disables tab titles */
-#page1 .tab-item .icon {
-  margin: 10px auto;
-}
-
-/* -- CONTENT ------------------------------------------------------------------------------------------------------- */
+/* Content */
 
 .content-title {
   padding: 10px 0;
   font-size: 20px;
 }
 
-/* -- Custom -------------------------------------------------------------------------------------------------------- */
-
-.profile-image, .logo {
-  max-width: 300px;
-  margin: 0 auto;
-}
+/* Custom */
 
 .modal.slide-in-up {
   border-radius: 4px;
@@ -121,7 +61,7 @@
   text-align: center;
 }
 
-/*-- FORM ----------------------------------------------------------------------------------------------------------- */
+/* Form */
 
 .item-input, .item-select {
   background: #f0f0f0;
@@ -134,235 +74,37 @@
   background: #f0f0f0;
 }
 
+input {
+  padding: 6px 6px 6px 16px !important;
+}
+
 span.input-label {
   text-align: left;
   color: #444;
-  padding: 12px 0px 12px 16px;
+  padding: 9px 6px 9px 16px;
   font-size: 14px;
   line-height: 16px;
 }
 
-.placeholder-icon:first-child {
-  padding: 12px 0px 12px 16px;
-  font-size: 14px;
-  line-height: 16px;
+.button.button-calm {
+  background: none;
+  border: 1px solid #e94b30;
+  border-radius: 4px;
+  color: #e94b30;
 }
 
-input {
-  padding: 12px 16px !important;
-}
-
-textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
-  height: auto !important;
-  font-size: 14px !important;
+.button.button-energized {
+  background: none;
+  border: 1px solid #cc6601;
+  border-radius: 4px;
+  color: #cc6601;
 }
 
 /*.button:hover {
   color: inherit !important;
 }*/
 
-.item {
-  margin: -1px 0;
-  cursor: pointer;
-}
-
-.item-toggle, .item-toggle.item-complex .item-content,
-.item-radio .item-content {
-  padding: 16px;
-}
-
-.item-thumbnail-left, .item-thumbnail-left .item-content {
-  min-height: 0;
-  padding: 12px 16px;
-}
-
-.item-avatar.item-complex, .item-avatar-left.item-complex, .item-thumbnail-left.item-complex {
-  padding-top: 12px;
-  padding-left: 16px;
-}
-
-.item-thumbnail-left > img:first-child, .item-thumbnail-left .item-image, .item-thumbnail-left .item-content > img:first-child, .item-thumbnail-left .item-content .item-image {
-  top: 0;
-  left: 0;
-  width: auto;
-}
-
-/*-- BUTTONS -------------------------------------------------------------------------------------------------------- */
-
-/* -- calm ---------------------------------------------------------------------------------------------------------- */
-
-.button.button-calm {
-  border-color: transparent;
-  background-color: #11c1f3;
-  color: #fff;
-}
-
-.button.button-calm:hover {
-  color: #fff;
-  text-decoration: none;
-}
-
-.button.button-calm.active, .button.button-calm.activated {
-  background-color: #0a9dc7;
-}
-
-.button.button-calm.button-clear {
-  border-color: transparent;
-  background: none;
-  box-shadow: none;
-  color: #11c1f3;
-}
-
-.button.button-calm.button-icon {
-  border-color: transparent;
-  background: none;
-}
-
-.button.button-calm.button-outline {
-  border-color: #11c1f3;
-  background: transparent;
-  color: #11c1f3;
-}
-
-.button.button-calm.button-outline.active, .button.button-calm.button-outline.activated {
-  background-color: #11c1f3;
-  box-shadow: none;
-  color: #fff;
-}
-
-/* -- energized ----------------------------------------------------------------------------------------------------- */
-
-.button.button-energized {
-  border-color: transparent;
-  background-color: #cc6601;
-  color: #fff;
-}
-
-.button.button-energized:hover {
-  color: #fff;
-  text-decoration: none;
-}
-
-.button.button-energized.active, .button.button-energized.activated {
-  background-color: #cc6601;
-}
-
-.button.button-energized.button-clear {
-  border-color: transparent;
-  background: none;
-  box-shadow: none;
-  color: #cc6601;
-}
-
-.button.button-energized.button-icon {
-  border-color: transparent;
-  background: none;
-}
-
-.button.button-energized.button-outline {
-  border-color: #cc6601;
-  background: transparent;
-  color: #cc6601;
-}
-
-.button.button-energized.button-outline.active, .button.button-energized.button-outline.activated {
-  background-color: #cc6601;
-  box-shadow: none;
-  color: #fff;
-}
-
-/* -- energized2 ---------------------------------------------------------------------------------------------------- */
-
-.button.button-energized2 {
-  border-color: transparent;
-  background-color: #f58730;
-  color: #fff;
-}
-
-.button.button-energized2:hover {
-  color: #fff;
-  text-decoration: none;
-}
-
-.button.button-energized2.active, .button.button-energized2.activated {
-  background-color: #f58730;
-}
-
-.button.button-energized2.button-clear {
-  border-color: transparent;
-  background: none;
-  box-shadow: none;
-  color: #f58730;
-}
-
-.button.button-energized2.button-icon {
-  border-color: transparent;
-  background: none;
-}
-
-.button.button-energized2.button-outline {
-  border-color: #f58730;
-  background: transparent;
-  color: #f58730;
-}
-
-.button.button-energized2.button-outline.active, .button.button-energized2.button-outline.activated {
-  background-color: #f58730;
-  box-shadow: none;
-  color: #fff;
-}
-
-.bar.bar-energized2 {
-  border-color: #f58730;
-  background-color: #f58730;
-  background-image: linear-gradient(0deg, #f58730, #f58730 50%, transparent 50%);
-  color: #fff;
-}
-
-.bar.bar-energized2 .title {
-  color: #fff;
-}
-
-.bar.bar-energized2.bar-footer {
-  background-image: linear-gradient(180deg, #f58730, #f58730 50%, transparent 50%);
-}
-
-.tabs-energized2 > .tabs,
-.tabs.tabs-energized2 {
-  border-color: #f58730;
-  background-color: #f58730;
-  background-image: linear-gradient(0deg, #f58730, #f58730 50%, transparent 50%);
-  color: #fff;
-}
-
-.tabs-energized2 > .tabs .tab-item .badge,
-.tabs.tabs-energized2 .tab-item .badge {
-  background-color: #fff;
-  color: #f58730;
-}
-
-.tabs-striped.tabs-energized2 .tabs {
-  background-color: #f58730;
-}
-
-.tabs-striped.tabs-energized2 .tab-item {
-  color: rgba(255, 255, 255, 0.4);
-  opacity: 1;
-}
-
-.tabs-striped.tabs-energized2 .tab-item .badge {
-  opacity: 0.4;
-}
-
-.tabs-striped.tabs-energized2 .tab-item.tab-item-active, .tabs-striped.tabs-energized2 .tab-item.active, .tabs-striped.tabs-energized2 .tab-item.activated {
-  margin-top: -2px;
-  color: #fff;
-  border-style: solid;
-  border-width: 2px 0 0 0;
-  border-color: #fff;
-}
-
-/* -- google-button ------------------------------------------------------------------------------------------------- */
+/* google-button */
 
 .button.button-google {
   border-color: transparent;
@@ -403,7 +145,7 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   color: #fff;
 }
 
-/* -- facebook-button ----------------------------------------------------------------------------------------------- */
+/* facebook-button */
 
 .button.button-face {
   border-color: transparent;
@@ -443,3 +185,4 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   box-shadow: none;
   color: #fff;
 }
+

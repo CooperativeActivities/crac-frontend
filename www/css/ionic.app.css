@@ -3956,7 +3956,15 @@ a.subdued {
       color: #fff; }
     .bar.bar-balanced.bar-footer {
       background-image: linear-gradient(180deg, #28a54c, #0c60ee 50%, transparent 50%); }
-ion-header-bar
+  .bar.bar-energized {
+    border-color: #e6b500;
+    background-color: #ffc900;
+    background-image: linear-gradient(0deg, #e6b500, #e6b500 50%, transparent 50%);
+    color: #fff; }
+    .bar.bar-energized .title {
+      color: #fff; }
+    .bar.bar-energized.bar-footer {
+      background-image: linear-gradient(180deg, #e6b500, #e6b500 50%, transparent 50%); }
   .bar.bar-royal {
     border-color: #6b46e5;
     background-color: #886aea;
@@ -8695,7 +8703,31 @@ progress {
         background-color: #33cd5f;
         box-shadow: none;
         color: #fff; }
-.bar.bar-positive
+  .button.button-energized {
+    border-color: transparent;
+    background-color: #ffc900;
+    color: #fff; }
+    .button.button-energized:hover {
+      color: #fff;
+      text-decoration: none; }
+    .button.button-energized.active, .button.button-energized.activated {
+      background-color: #e6b500; }
+    .button.button-energized.button-clear {
+      border-color: transparent;
+      background: none;
+      box-shadow: none;
+      color: #ffc900; }
+    .button.button-energized.button-icon {
+      border-color: transparent;
+      background: none; }
+    .button.button-energized.button-outline {
+      border-color: #ffc900;
+      background: transparent;
+      color: #ffc900; }
+      .button.button-energized.button-outline.active, .button.button-energized.button-outline.activated {
+        background-color: #ffc900;
+        box-shadow: none;
+        color: #fff; }
   .button.button-royal {
     border-color: transparent;
     background-color: #886aea;
