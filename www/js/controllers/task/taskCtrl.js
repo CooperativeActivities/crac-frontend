@@ -6,6 +6,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
   function ($scope,$route, $window, $stateParams,$routeParams,TaskDataService,$state, $ionicPopup) {
 
+    //Flags to show/hide buttons
     $scope.editFlag =true;
     $scope.enrollFlag =false;
     $scope.ufollowFlag = false;
@@ -16,6 +17,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.addSubTaskFlag =true;
     $scope.deleteFlag =true;
 
+    //Get specific Task by ID
     $scope.getTaskById= function(id){
       TaskDataService.getTaskById(id).then(function (res) {
         $scope.task = res.data;
@@ -46,14 +48,14 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         console.log('An error occurred!', error);
       });
     }
-
+//To open another Task, e.g. SubTask
     $scope.loadSingleTask = function(taskId){
       console.log("In fkt")
       $state.go('tabsController.task1', { id:taskId });
     }
 
     $scope.getTaskById($stateParams.id);
-
+// Get the Relationship of a specific Task and the current user
     TaskDataService.getTaskRelatById($stateParams.id).then(function (res) {
       $scope.participationType = res.data[1].participationType;
       console.log(res.data);
@@ -70,7 +72,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     }, function (error) {
       console.log('An error occurred!', error);
     });
-
+// Deleting all participating types
     $scope.cancle = function() {
       TaskDataService.removeOpenTask($scope.task.id).then(function (res) {
         console.log("deleted");
@@ -84,7 +86,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         alert(error.data.cause);
       });
     }
-
+// Save changes
     $scope.save = function(){
       var taskData = {};
       taskData.name= $scope.task.name;
@@ -111,10 +113,11 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         alert(error.data.cause);
       });
     };
+    //enable editing-mode
     $scope.edit = function(){
       $scope.editFlag =false;
     };
-
+    //Enroll for a task
     $scope.enroll = function(){
       TaskDataService.changeTaskPartState($stateParams.id ,'participate').then(function(res) {
         console.log(res.data);
@@ -128,7 +131,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         alert(error.data.cause);
       });
     }
-
+// follow a task
     $scope.follow = function(){
       TaskDataService.changeTaskPartState($scope.task.id,'follow').then(function(res) {
         console.log(res.data);
@@ -140,7 +143,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         alert(error.data.cause);
       });
     };
-
+// delete a task
     $scope.delete = function(){
       var confirmPopup = $ionicPopup.confirm({
         title: 'Löschen',
@@ -163,7 +166,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
       });
     }
 
-
+//Set the task and all task under this one to ready to publish (only possible if every input field is filled out correctly)
     $scope.readyToPublishT = function() {
       TaskDataService.setReadyToPublishT($scope.task.id).then(function (res) {
         console.log('worksT');
@@ -173,7 +176,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         alert(error.data.cause);
       });
     }
-
+//Set only this task to ready to publish (only possible if every input field is filled out correctly)
       $scope.readyToPublishS = function(){
         TaskDataService.setReadyToPublishS($scope.task.id).then(function(res) {
           console.log('worksS');
@@ -183,7 +186,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
           alert(error.data.cause);
         });
     }
-
+//publish task
     $scope.publish = function(){
       TaskDataService.changeTaskState($scope.task.id, 'publish').then(function(res) {
         TaskDataService.getTaskById($scope.task.id).then(function (res) {
@@ -202,7 +205,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.makeNewSubTask = function(){
       $state.go('tabsController.newSubTask', { id:$scope.task.id });
     }
-
+//Complete a task
     $scope.complete = function(){
       TaskDataService.changeTaskState($scope.task.id, 'complete').then(function(res) {
         TaskDataService.getTaskById($scope.task.id).then(function (res) {
@@ -216,7 +219,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         console.log('An error occurred!', error);
         alert(error.data.cause);
       });
-
+//Set a task as done
       $scope.done = function(){
         TaskDataService.setTaskDone($scope.task.id,"true").then(function () {
           console.log("works");

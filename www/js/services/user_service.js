@@ -29,7 +29,7 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
       return $http.get(srv._baseURL + 'user/' + id);
     }
 
-    /**
+    /*
      * Given a user in the following structure
      {
          "name":"test",
@@ -50,7 +50,7 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
       return $http.delete(srv._baseURL + "user/" + id);
     }
 
-    /**
+    /*
      * Updates the user with the specified id and new user data
      {
          "name":"test",
@@ -65,7 +65,7 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
     srv.updateUserById = function(id, newUserData){
       return $http.put(srv._baseURL + "user/" + id, newUserData);
     }
-  /**
+  /*
    * Updates the user which is currently logged in and new user data
    {
        "name":"test",
@@ -86,7 +86,7 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
     srv.getCurrentUser = function(){
       return $http.get(srv._baseURL + "user");
     }
-
+    //Returns the competences of the currently logged in user, wrapped in the relationship-object
     srv.getCompRelationships = function(){
      return $http.get(srv._baseURL + 'user/competence');
     }
@@ -94,30 +94,31 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
     srv.createNewCompetence = function(competenceData){
       return $http.post(srv._baseURL + 'admin/competence', competenceData);
     }
+    //Returns an array containing all competences
     srv.allCompetences = function(){
       return $http.get(srv._baseURL + 'competence/all');
     }
+    //Add a competence with given ID to the currently logged in user, likeValue and proficiencyValue are mandatory
     srv.addLikeProfValue = function(id,likeValue,proficiencyValue){
       return $http.get(srv._baseURL + 'user/competence/'+ id +'/add/'+ likeValue +'/'+ proficiencyValue);
     }
+    // Remove a competence with given ID from the currently logged in user
     srv.removeCompetence = function(id){
       return $http.get(srv._baseURL + 'user/competence/'+ id + '/remove');
     }
-    srv.setCompetenceData = function(data){
-      CompetenceData = data;
-    }
-    srv.getCompetenceData = function(){
-      return CompetenceData;
-    }
+    //Returns a user object with given id
     srv.getCompetenceById = function(id){
       return $http.get(srv._baseURL + 'competence/'+ id);
     }
+    //Adjust the values of a user-competence connection
     srv.updateCompetence = function(id,likeValue,proficiencyValue){
       return $http.get(srv._baseURL + 'user/competence/'+ id +'/adjust/'+ likeValue +'/'+ proficiencyValue);
     }
+    //Returns all notifications, which target the logged in user
     srv.getNotification = function(){
       return $http.get(srv._baseURL + 'notification');
     }
+    //Show all competences, that are and not yet connected available to a user
     srv.getAllAvailableCompetences = function(){
      return $http.get(srv._baseURL + 'user/competence/available');
   }
