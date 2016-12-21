@@ -5,10 +5,12 @@ cracApp.controller('addCompetenceToTaskInfoCtrl', ['$rootScope','$scope','$windo
   function($rootScope, $scope, $window, $stateParams, $routeParams, UserDataService,TaskDataService , $http, $ionicModal, $state) {
     console.log($stateParams.compId);
     console.log($stateParams.taskId);
+    $scope.comp = [];
     UserDataService.getCompetenceById($stateParams.compId).then(function (res) {
       $scope.competenceInfo= res.data;
-      $scope.importance = 50;
-      $scope.proficiencyValue = 50;
+      $scope.comp.importance = 50;
+      $scope.comp.proficiencyValue = 50;
+      $scope.comp.mandatory= false;
       console.log($scope.competenceInfo);
     }, function (error) {
       console.log('An error occurred!', error);
@@ -18,8 +20,11 @@ cracApp.controller('addCompetenceToTaskInfoCtrl', ['$rootScope','$scope','$windo
 
 
     $scope.add = function(){
-      TaskDataService.addCompetenceToTask($stateParams.taskId,$stateParams.compId,$scope.proficiencyValue, $scope.importance).then(function(){
-        console.log($scope.competenceInfo);
+      TaskDataService.addCompetenceToTask($stateParams.taskId,$stateParams.compId,$scope.comp.proficiencyValue, $scope.comp.importance, $scope.comp.mandatory).then(function(res){
+        console.log(res.data);
+        console.log($scope.comp.importance);
+        console.log($scope.comp.proficiencyValue);
+        console.log($scope.comp.mandatory);
         //$window.location.reload();
         $state.go('tabsController.task1',{id:$stateParams.taskId});
       }, function(error) {

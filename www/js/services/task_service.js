@@ -73,8 +73,8 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
       return $http.post(srv._baseURL + "task/" + taskId + "/extend", taskData);
     }
     //Adds target competence to target task, it is mandatory to add the proficiency and importanceLvl
-    srv.addCompetenceToTask = function(taskId,competenceId,proficiency,importance){
-      return $http.get(srv._baseURL + "task/" + taskId + "/competence/" + competenceId + "/require/" + proficiency + "/" + importance+ "/true");
+    srv.addCompetenceToTask = function(taskId,competenceId,proficiency,importance,mandatory){
+      return $http.get(srv._baseURL + "task/" + taskId + "/competence/" + competenceId + "/require/" + proficiency + "/" + importance+ "/" + mandatory);
     }
     srv.getAllAvailableCompetences = function(taskId){
      return $http.get(srv._baseURL + 'task/' + taskId + '/competence/available');
@@ -129,8 +129,8 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
       createNewSubTask : function(taskData, taskId){
         return srv.createNewSubTask(taskData, taskId);
       },
-      addCompetenceToTask : function(taskId,competenceId,proficiency,importance){
-        return srv.addCompetenceToTask(taskId,competenceId,proficiency,importance);
+      addCompetenceToTask : function(taskId,competenceId,proficiency,importance, mandatory){
+        return srv.addCompetenceToTask(taskId,competenceId,proficiency,importance, mandatory);
       },
       getAllAvailableCompetences : function(taskId){
         return srv.getAllAvailableCompetences(taskId);
