@@ -206,8 +206,8 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
       $state.go('tabsController.newSubTask', { id:$scope.task.id });
     }
 //Complete a task
-    $scope.complete = function(){
-      TaskDataService.changeTaskState($scope.task.id, 'complete').then(function(res) {
+    $scope.complete = function() {
+      TaskDataService.changeTaskState($scope.task.id, 'complete').then(function (res) {
         TaskDataService.getTaskById($scope.task.id).then(function (res) {
           $scope.task = res.data;
           console.log($scope.task);
@@ -215,10 +215,11 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         }, function (error) {
           console.log('An error occurred!', error);
         });
-      }, function(error) {
+      }, function (error) {
         console.log('An error occurred!', error);
         alert(error.data.cause);
       });
+    }
 //Set a task as done
       $scope.done = function(){
         TaskDataService.setTaskDone($scope.task.id,"true").then(function () {
@@ -228,7 +229,10 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         });
       }
 
+    $scope.addCompetence = function(){
+      $state.go('tabsController.addCompetenceToTask', { id:$scope.task.id });
     }
+
 
 
 

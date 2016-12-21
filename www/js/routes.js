@@ -290,6 +290,25 @@ angular.module('app.routes', ['ionicUIRouter'])
         }
       })
 
+      .state('tabsController.addCompetenceToTask', {
+        url: '/addcompetencetotask/:id',
+        views: {
+          'tab2': {
+            templateUrl: 'templates/addCompetenceToTask.html',
+            controller: 'addCompetenceToTaskCtrl'
+          }
+        }
+      })
+      .state('tabsController.addCompetenceToTaskInfo', {
+        url: '/addcompetencetotaskinfo/:compId/:taskId',
+        views: {
+          'tab2': {
+            templateUrl: 'templates/addCompetenceToTaskInfo.html',
+            controller: 'addCompetenceToTaskInfoCtrl'
+          }
+        }
+      })
+
       .state('tabsController.task2', {
         url: '/task2',
         views: {

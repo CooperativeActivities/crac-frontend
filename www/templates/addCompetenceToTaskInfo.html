@@ -1,0 +1,25 @@
+<ion-view cache-view="false" title="KompetenzInfo">
+  <ion-nav-buttons side="right" class="has-header">
+    <button class="button icon ion-android-done" ng-click="add()"></button>
+  </ion-nav-buttons>
+  <ion-content padding="true" class="has-header">
+    <div>
+      <div>
+        <ion-list id="meineKompetenzen-list7">
+          <!--ng-href="#/tabcontroller/task/{{task.id}}"> -->
+          <h2>{{competenceInfo.name}}</h2>
+          <p style="white-space:normal;">{{competenceInfo.description}}</p>
+          <ion-item class="range range-assertive">Können
+            <input type="range" ng-model="proficiencyValue" min="0" max="100" step="1">
+            <p>{{proficiencyValue}}</p>
+          </ion-item>
+          <ion-item class="range range-assertive" >Wichtigkeit
+            <input type="range" ng-model="importance" min="0" max="100" step="1">
+            <p>{{importance}}</p>
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+    </ion-list>
+  </ion-content>
+</ion-view>

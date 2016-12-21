@@ -74,7 +74,10 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
     }
     //Adds target competence to target task, it is mandatory to add the proficiency and importanceLvl
     srv.addCompetenceToTask = function(taskId,competenceId,proficiency,importance){
-      return $http.get(srv._baseURL + "task/" + taskId + "/" + competenceId + "/require/" + proficiency + "/" + importance);
+      return $http.get(srv._baseURL + "task/" + taskId + "/competence/" + competenceId + "/require/" + proficiency + "/" + importance+ "/true");
+    }
+    srv.getAllAvailableCompetences = function(taskId){
+     return $http.get(srv._baseURL + 'task/' + taskId + '/competence/available');
     }
 
     /**
@@ -128,6 +131,9 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
       },
       addCompetenceToTask : function(taskId,competenceId,proficiency,importance){
         return srv.addCompetenceToTask(taskId,competenceId,proficiency,importance);
+      },
+      getAllAvailableCompetences : function(taskId){
+        return srv.getAllAvailableCompetences(taskId);
       }
     }
 
