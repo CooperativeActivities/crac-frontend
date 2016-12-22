@@ -33,5 +33,18 @@ cracApp.controller('loginCtrl', function ($rootScope,$scope, $ionicPopup, $locat
       }
     });
   }
+
+  $scope.facebookLogin = function(){
+    FB.getLoginStatus(function(response) {
+      if (response.status === 'connected') {
+        console.log('Logged in.');
+      }
+      else {
+        FB.login(function(response){
+          
+        });
+      }
+    });
+  }
 });
 

@@ -27,21 +27,21 @@
           </label>
         </ion-list>
         <!--<a ui-sref="tabsController.home_tab1" id="anmelden-button1" class="button button-balanced  button-block" ng-click="login()">Anmelden</a>-->
-        <button class="button button-block button-outline button-positive button-assertive" ng-click="login()"   ng-disabled="authorizationForm.$invalid">
+        <button class="button button-block button-outline button-positive button-assertive" ng-click="login()"  ng-disabled="authorizationForm.$invalid">
           <i class="ion-log-in"></i> Login
         </button>
         <div class="content-title">oder</div>
         <div class="row">
           <div class="col">
-            <button class="button button-block button-outline button-positive button-face">
+            <button class="button button-block button-outline button-positive button-face" ng-click="facebookLogin()">
               <i class="ion-social-facebook-outline"></i> Anmelden
             </button>
           </div>
-          <div class="col">
+          <!--<div class="col">
             <button class="button button-block button-outline button-positive button-google">
               <i class="ion-social-google-outline"></i> Anmelden
             </button>
-          </div>
+          </div>-->
         </div>
         <a ui-sref="signup" id="anmelden-button2" class="button button-block button-outline button-positive button-energized">Neuen Account anlegen</a>
         <button class="button button-clear">
