@@ -76,6 +76,7 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
     srv.addCompetenceToTask = function(taskId,competenceId,proficiency,importance,mandatory){
       return $http.get(srv._baseURL + "task/" + taskId + "/competence/" + competenceId + "/require/" + proficiency + "/" + importance+ "/" + mandatory);
     }
+    //Get all Competences which are not added to that specific task
     srv.getAllAvailableCompetences = function(taskId){
      return $http.get(srv._baseURL + 'task/' + taskId + '/competence/available');
     }

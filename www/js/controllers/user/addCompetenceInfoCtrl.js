@@ -1,7 +1,7 @@
 /**
  * Created by x-net on 14.11.2016.
  */
-cracApp.controller('addCompetenceToTaskInfoCtrl', ['$rootScope','$scope','$window', '$stateParams','$routeParams','UserDataService','$http', '$ionicModal','$state',
+cracApp.controller('addCompetenceInfoCtrl', ['$rootScope','$scope','$window', '$stateParams','$routeParams','UserDataService','$http', '$ionicModal','$state',
   function($rootScope, $scope, $window, $stateParams, $routeParams, UserDataService, $http, $ionicModal, $state) {
     console.log("Userid: " +$rootScope.globals.currentUser.id);
     console.log("id: " +$stateParams.id);
