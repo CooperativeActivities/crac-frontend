@@ -443,8 +443,6 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   box-shadow: none;
   color: #fff;
 }
-<<<<<<< HEAD
-=======
 
 /* Task list*/
 .item-task h2 {
@@ -457,4 +455,3 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
   margin-left: 4em;
 }
 
->>>>>>> origin/master

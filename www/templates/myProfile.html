@@ -5,35 +5,37 @@
   </ion-nav-buttons>
   <ion-content padding="true" class="has-header">
     <div class="container">
-      <div id="meinProfil-container4">
-        <form id="meinProfil-form17" class="list">
-          <div class="profile-image">
-            <img  ng-click="takePic()" src="img/qGg0ckwFQ7OphL6tKbic_avatar.png" width="100%" height="auto">
+      <form id="meinProfil-form17" class="list">
+        <div class="profile-image">
+          <img  ng-click="takePic()" src="img/qGg0ckwFQ7OphL6tKbic_avatar.png" width="100%" height="auto">
+        </div>
+
+        <div class="content-title assertive">Mein Account</div>
+        <div class="row">
+          <div class="col">
+            <label class="item item-input" id="registrierung-input[?]">
+              <input type="text" placeholder="Username" ng-readonly="editFlag" ng-model="user.name">
+            </label>
           </div>
-          <div class="content-title assertive">Mein Account</div>
-          <div class="row">
-            <div class="col">
-              <label class="item item-input" id="registrierung-input[?]">
-                <input type="text" placeholder="Username" ng-readonly="editFlag" ng-model="user.name">
-              </label>
-            </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label class="item item-input" id="registrierung-input8">
+              <input type="text" placeholder="Email-Adresse" ng-readonly="editFlag" ng-model="user.email">
+            </label>
           </div>
-          <div class="row">
-            <div class="col">
-              <label class="item item-input" id="registrierung-input8">
-                <input type="text" placeholder="Email-Adresse" ng-readonly="editFlag" ng-model="user.email">
-              </label>
-            </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label class="item item-input" id="registrierung-input[?]">
+              <input type="text" placeholder="Password" ng-readonly="editFlag" ng-model="user.password">
+            </label>
           </div>
-          <div class="row">
-            <div class="col">
-              <label class="item item-input" id="registrierung-input[?]">
-                <input type="text" placeholder="Password" ng-readonly="editFlag" ng-model="user.password">
-              </label>
-            </div>
-          </div>
-        </form>
-      </div>
+        </div>
+      </form>
+
       <form id="meinProfil-form18" class="list">
         <div class="content-title assertive">Über mich</div>
 
@@ -83,8 +85,6 @@
             </label>
           </div>
         </div>
-
-        <button id="meinProfil-button45" class="button button-block button-outline button-positive button-assertive">Weitere Daten</button>
       </form>
     </div>
   </ion-content>
