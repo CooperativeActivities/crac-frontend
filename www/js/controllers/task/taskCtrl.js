@@ -21,7 +21,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.getTaskById= function(id){
       TaskDataService.getTaskById(id).then(function (res) {
         $scope.task = res.data;
-        console.log($scope.task);
+        console.log("task", $scope.task);
         if($scope.task.childTasks == ''){
           $scope.readyToPublishTreeFlag = false;
         }
@@ -46,6 +46,12 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         }
       }, function (error) {
         console.log('An error occurred!', error);
+        //dummy data
+        $scope.task = {
+          name: "test-task",
+          taskState: "NOT PUBLISHED",
+
+        }
       });
     }
 //To open another Task, e.g. SubTask
