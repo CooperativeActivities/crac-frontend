@@ -4,7 +4,7 @@
   </ion-nav-buttons>
   <ion-content padding="true" class="has-header">
     <div class="container">
-      <ion-refresher on-refresh="doRefresh()"> </ion-refresher>
+      <ion-refresher on-refresh="doRefresh()"></ion-refresher>
       <ion-search-bar class="bar-light bar-subheader">
         <label class="item item-input">
           <input type="search"
@@ -20,55 +20,55 @@
                 ng-click="clearSearch()">
         </button-->
       </ion-search-bar>
-      <ion-toggle ng-model="started" toggle-class="toggle-calm" ng-true-value="'STARTED'" ng-false-value="'!' + 'COMPLETED'">Gestartete Aufgaben</ion-toggle>
-      <ion-toggle ng-model="completed" toggle-class="toggle-calm" ng-true-value="'COMPLETED'" ng-false-value="'!' + 'COMPLETED'">Abgeschlossene Aufgaben</ion-toggle>
+      <ion-toggle ng-model="started" toggle-class="toggle-calm" ng-true-value="'STARTED'"
+                  ng-false-value="'!' + 'COMPLETED'">Gestartete Aufgaben
+      </ion-toggle>
+      <ion-toggle ng-model="completed" toggle-class="toggle-calm" ng-true-value="'COMPLETED'"
+                  ng-false-value="'!' + 'COMPLETED'">Abgeschlossene Aufgaben
+      </ion-toggle>
       <ion-toggle ng-model="interestingtasks" ng-hide="true" toggle-class="toggle-calm">Gefolgte Aufgaben</ion-toggle>
 
       <ion-list ng-controller="swipeCtrl"
-        show-delete="shouldShowDelete"
-        show-reorder="shouldShowReorder"
-        can-swipe="listCanSwipe">
-        <div ng-repeat="task in tasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search">
-          <div>
-            <ion-item class="item-thumbnail-left item-task" ng-click="loadSingleTask(task.id)">
-              <!--ng-href="#/tabcontroller/task/{{task.id}}"> -->
-              <img src="img/i8bhuXcQQcqLW28wQ4ka_presentation.jpg">
-              <div class="row responsive-sm">
-                <div class="col"><h2>{{task.name}}</h2></div>
-                <div class="col">{{task.startTime | date: 'shortDate'}}</div>
-                <div class="col">{{task.endTime | date: 'shortDate'}}</div>
-                <div class="col"><b>{{task.taskState}}</b></div>
-              </div>
-              <div class="row">
-                <div class="col description">{{task.description}}</div>
-              </div>
-
-              <ion-option-button class="button-positive" ng-click="follow(task.id)">Folgen</ion-option-button>
-              <ion-delete-button class="ion-minus-circled"ng-click="items.splice($index, 1)"></ion-delete-button>
-              <ion-reorder-button class="ion-navicon"on-reorder="reorderItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
-            </ion-item>
-
-            <!--p>Anzahl Subaufgaben: {{task.childTasks}}</p-->
-            <div ng-repeat="childTask in task.childTasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search">
-              <div>
-                <ion-item class="item-thumbnail-left item-subtask" ng-click="loadSingleTask(childTask.id)">
-                  <!--ng-href="#/tabcontroller/task/{{childTask.id}}"> -->
-                  <div class="row responsive-sm">
-                    <div class="col"><h3>{{childTask.name}}</h3></div>
-                    <div class="col">{{childTask.startTime | date: 'shortDate'}}</div>
-                    <div class="col">{{childTask.endTime | date: 'shortDate'}}</div>
-                    <div class="col"><b>{{childTask.taskState}}</b></div>
-                  </div>
-                  <!--p style="white-space:normal;">{{childTask.description}}</p-->
-
-                  <ion-option-button class="button-positive" ng-click="follow(childTask.id)">Folgen</ion-option-button>
-                  <ion-delete-button class="ion-minus-circled" ng-click="items.splice($index, 1)"></ion-delete-button>
-                  <ion-reorder-button class="ion-navicon" on-reorder="reorderItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
-                </ion-item>
-              </div>
+                show-delete="shouldShowDelete"
+                show-reorder="shouldShowReorder"
+                can-swipe="listCanSwipe">
+        <div ng-repeat="task in tasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search" class="parent">
+          <ion-item class="item-thumbnail-left item-task" ng-click="loadSingleTask(task.id)">
+            <!--ng-href="#/tabcontroller/task/{{task.id}}"> -->
+            <img src="img/i8bhuXcQQcqLW28wQ4ka_presentation.jpg">
+            <div class="row responsive-sm">
+              <div class="col"><h2>{{task.name}}</h2></div>
+              <div class="col">{{task.startTime | date: 'shortDate'}}</div>
+              <div class="col">{{task.endTime | date: 'shortDate'}}</div>
+              <div class="col"><b>{{task.taskState}}</b></div>
+            </div>
+            <div class="row">
+              <div class="col description">{{task.description}}</div>
             </div>
 
+            <ion-option-button class="button-positive" ng-click="follow(task.id)">Folgen</ion-option-button>
+            <ion-delete-button class="ion-minus-circled" ng-click="items.splice($index, 1)"></ion-delete-button>
+            <ion-reorder-button class="ion-navicon" on-reorder="reorderItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
+          </ion-item>
+
+          <!--p>Anzahl Subaufgaben: {{task.childTasks}}</p-->
+          <div ng-repeat="childTask in task.childTasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search" class="child">
+            <ion-item class="item-thumbnail-left item-subtask" ng-click="loadSingleTask(childTask.id)">
+              <!--ng-href="#/tabcontroller/task/{{childTask.id}}"> -->
+              <div class="row responsive-sm">
+                <div class="col"><h3>{{childTask.name}}</h3></div>
+                <div class="col">{{childTask.startTime | date: 'shortDate'}}</div>
+                <div class="col">{{childTask.endTime | date: 'shortDate'}}</div>
+                <div class="col"><b>{{childTask.taskState}}</b></div>
+              </div>
+              <!--p style="white-space:normal;">{{childTask.description}}</p-->
+
+              <ion-option-button class="button-positive" ng-click="follow(childTask.id)">Folgen</ion-option-button>
+              <ion-delete-button class="ion-minus-circled" ng-click="items.splice($index, 1)"></ion-delete-button>
+              <ion-reorder-button class="ion-navicon" on-reorder="reorderItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
+            </ion-item>
           </div>
+
         </div>
       </ion-list>
     </div>
