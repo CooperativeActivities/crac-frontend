@@ -8,117 +8,91 @@
     <button class="button icon ion-checkmark "ng-hide="editFlag"  ng-click="save()"></button>
     <button ng-if="addSubTaskFlag" class="button icon ion-android-add-circle" ng-click="makeNewSubTask()"></button>
   </ion-nav-buttons>
-  <ion-content padding="true" class="manual-ios-statusbar-padding">
+  <ion-content padding="true" class="manual-ios-statusbar-padding has-footer">
     <style type="text/css">
-      .taskMainInfo{
-        display: flex; flex-flow: column nowrap;
-        align-items: stretch;
-        width: 100%;
-        font-size: 1.5em;
-      }
-      .taskMainInfo>*{
-        /*min-width: 50vw;*/
-      }
-      .taskMainInfo img{
-        display: block;
-        margin-left: auto; margin-right: auto;
-        max-width: 100%; max-height: 100%;
-      }
     </style>
     <div class="taskMainInfo" ng-cloak>
-      <div style="color:#327FE2; font-size: 1.5em;">{{task.name}}</div>
-      <div>
-        <img src="img/VYlmQQCufa0Dowy1ZgZb_rkessen.jpg">
-      </div>
-      <div style="font-weight: bold">{{task.taskState}}</div>
 
-      <!--
-      <form>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">Name:</span>
-          <textarea ng-readonly="editFlag" ng-model="task.name" style="background-color:white;"></textarea>
-        </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">Description:</span>
-          <textarea ng-readonly="editFlag" ng-model="task.description" style="background-color:white;"></textarea>
-        </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">Urgency:</span>
-          <textarea ng-readonly="editFlag" ng-model="task.urgency" style="background-color:white;"></textarea>
-        </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">mountOfVolunteers:</span>
-          <textarea ng-readonly="editFlag" ng-model="task.amountOfVolunteers" style="background-color:white;"></textarea>
-        </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">Feedback:</span>
-          <textarea ng-readonly="editFlag" ng-model="task.feedback" style="background-color:white;"></textarea>
-        </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">taskState:</span>
-          <textarea ng-readonly="editFlag" ng-model="task.taskState" style="background-color:white;"></textarea>
-        </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">taskType:</span>
-          <textarea ng-readonly="editFlag" ng-model="task.taskType" style="background-color:white;"></textarea>
-        </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">taskRepetitionState:</span>
-          <textarea ng-readonly="editFlag" ng-model="task.taskRepetitionState" style="background-color:white;"></textarea>
-        </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">superTask:</span>
-          <textarea ng-readonly="editFlag" ng-model="task.superTask" style="background-color:white;"></textarea>
-        </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">childTask:</span>
-          <textarea ng-readonly="editFlag" ng-model="task.childTask" style="background-color:white;"></textarea>
-        </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">startTime:</span>
-          <input ng-readonly="editFlag" ng-model="task.startTime" style="background-color:white;">
-        </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">endTime:</span>
-          <input ng-readonly="editFlag" ng-model="task.endTime" style="background-color:white;">
-        </label>
-      </form>
-      -->
-    </div>
-    <ion-list>
-      <div ng-repeat="subTask in task.childTasks" ng-cloak>
-        <div>
+      <h2>{{task.name}}</h2>
+      <p>{{task.description}}</p>
+      <hr>
+      <div class="row">
+        <div style="margin: 0.5em; width: 5em; height: 5em;">
+          <img class="img-responsive" src="img/VYlmQQCufa0Dowy1ZgZb_rkessen.jpg">
+        </div>
+        <div style="margin: 0.5em; width: 5em; height: 5em;">
+          <img class="img-responsive" src="img/7HOqUb6jTTeJeafRKenN_wand.jpg">
+        </div>
+      </div>
+
+      <div class="item item-divider">Zeit und Ort</div>
+      <div class="row">
+        <div class="col-25">
+          <div class="row"><span class="ion-calendar"> Zeit </span></div>
+        </div>
+        <div class="col">
+          <div class="row"> Von: {{ task.startTime | date : "medium" }} </div>
+          <div class="row"> Bis: {{ task.endTime | date : "medium" }} </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-25">
+          <div class="row"><span class="ion-location"> Ort </span></div>
+        </div>
+        <div class="col">
+          <div class="row"> {{task.location}} </div>
+        </div>
+      </div>
+
+      <div class="item item-divider">Team</div>
+      <div class="row">
+        <div style="margin: 0.5em; width: 4em; height: 4em;">
+          <img class="img-responsive" src="img/1lZ3VOkiRqOOdIDOu9mn_avatar.png">
+        </div>
+        <div style="margin: 0.5em; width: 4em; height: 4em;">
+          <img class="img-responsive" src="img/1lZ3VOkiRqOOdIDOu9mn_avatar.png">
+        </div>
+        <div style="margin: 0.5em; width: 4em; height: 4em;">
+          <img class="img-responsive" src="img/1lZ3VOkiRqOOdIDOu9mn_avatar.png">
+        </div>
+      </div>
+
+
+      <div class="item item-divider">Notwendige Kenntnisse</div>
+      <!-- @TODO: use ion-list? -->
+      <div class="row" ng-repeat="competence in task.mappedCompetences">
+        {{ competence.id }}
+      </div>
+
+      <div class="item item-divider">Notwendiges Material </div>
+      <!-- @TODO: is evaluation material? -->
+      <!-- @TODO: use ion-list? -->
+      <button class="button button-block button-outline icon-right ion-chevron-right" ng-repeat="evaluation in task.mappedEvaluations">
+        {{ evaluation.id }}
+      </button>
+
+      <div class="item item-divider">Subtasks</div>
+      <ion-list>
+        <div ng-repeat="subTask in task.childTasks" ng-cloak>
           <ion-item class="item-thumbnail-left"  ng-click="loadSingleTask(subTask.id)">
-            <!--ng-href="#/tabcontroller/task/{{task.id}}"> -->
             <img src="img/i8bhuXcQQcqLW28wQ4ka_presentation.jpg">
             <h2>{{subTask.name}}</h2>
             <p style="white-space:normal;">{{subTask.description}}</p>
-            <p>{{subTask.location}}</p>
-            <p>{{subTask.startTime}}</p>
-            <p>{{subTask.endTime}}</p>
+            <!--<p>{{subTask.location}}</p>-->
+            <p>{{subTask.startTime | date}}</p>
+            <p>{{subTask.endTime | date}}</p>
           </ion-item>
         </div>
-      </div>
-    </ion-list>
-    <div>
-      <div id="meinProfil-button-bar4" class="button-bar" ng-cloak>
-        <button  ng-click="cancle()" ng-if="enrollFlag" class="button button button-assertive  button-block " ng-cloak >{{"Absagen"}}</button>
-        <button  ng-click="enroll()" ng-if="!(enrollFlag)" class="button button-balanced  button-block " ng-cloak >{{"Zusagen"}}</button>
-        <button  ng-if="deleteFlag" ng-click="delete()" class="button button-assertive  button-block ">Löschen</button>
-        <button   ng-click="follow()" ng-if="followFlag"class="button button-positive button-block ">Folgen</button>
-        <button  ng-click="cancle()" ng-if="ufollowFlag" class="button button button-assertive  button-block " ng-cloak >{{"Nicht mehr folgen"}}</button>
-      </div>
-      <div class="button-bar" ng-cloak>
-        <button  ng-if="readyToPublishTreeFlag" ng-click="readyToPublishT()" class="button button-positive button-block ">Alle Fertig</button>
-        <button ng-if="readyToPublishSingleFlag"  ng-click="readyToPublishS()" class="button button-positive button-block ">Fertig</button>
-        <button  ng-if="publishFlag" ng-click="publish()" class="button button button-balanced button-block ">Veröffentlichen</button>
-      </div>
-      <div class="button-bar" ng-cloak>
-        <button ng-click="complete()" class="button button-positive button-block ">Abschließen</button>
-      </div>
-      <div class="button-bar" ng-cloak>
-        <button ng-click="addCompetence()" class="button button-positive button-block ">Kompetenz hinzufügen</button>
-      </div>
+      </ion-list>
     </div>
   </ion-content>
+  <ion-footer-bar class="bar bar-footer">
+    <div id="meinProfil-button-bar4" class="button-bar" ng-cloak>
+      <button ng-click="enroll()" ng-if="!enrollFlag" class="button button-small button-outline button-balanced ion-checkmark"> Ich arbeite mit! </button>
+      <button ng-click="cancle()" ng-if="enrollFlag"  class="button button-small button-outline button-assertive ion-close"> Absagen </button>
+      <button ng-click="delete()" ng-if="deleteFlag"  class="button button-small button-outline button-assertive"> Löschen </button>
+      <button ng-click="follow()" ng-if="followFlag"  class="button button-small button-outline button-positive "> Folgen </button>
+      <button ng-click="cancle()" ng-if="ufollowFlag" class="button button-small button-outline button-assertive"> Nicht mehr folgen </button>
+    </div>
+  </ion-footer-bar>
 </ion-view>

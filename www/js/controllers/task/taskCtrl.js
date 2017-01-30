@@ -47,11 +47,13 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
       }, function (error) {
         console.log('An error occurred!', error);
         //dummy data
+        /*
         $scope.task = {
           name: "test-task",
           taskState: "NOT PUBLISHED",
 
         }
+        */
       });
     }
 //To open another Task, e.g. SubTask

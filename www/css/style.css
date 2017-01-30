@@ -110,18 +110,26 @@
   flex: 0 0 100%;
   max-width: 100%;
 }
+.col-25 {
+  padding: 5px;
+}
 
 .assertive {
   color: #e94b30;
 }
 
+img.img-responsive {
+  display: block;
+  max-width: 100%; height: auto;
+}
+
 /* page */
 
-#page5, #page6, #page1 {
+#page5, #page6 {
   text-align: center;
 }
 
-#page10 {
+#page10, #page1 {
   text-align: left;
 }
 
