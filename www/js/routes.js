@@ -103,7 +103,6 @@ angular.module('app.routes', ['ionicUIRouter'])
         }
       })
 
-
       .state('tabsController.organisations', {
         url: '/organisations',
         views: {
@@ -124,6 +123,15 @@ angular.module('app.routes', ['ionicUIRouter'])
         }
       })
 
+      .state('tabsController.typography', {
+        url: '/typography',
+        views: {
+          'tab10': {
+            templateUrl: 'templates/typography.html',
+            controller: 'typographyCtrl'
+          }
+        }
+      })
 
       //**********************************************
       //Without Tabs
