@@ -12,7 +12,7 @@
  }])
  */
 
-cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, $ionicModal, TaskDataService) {
+cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, $ionicModal, TaskDataService, $q) {
   console.log("Taskdata: " + $rootScope.globals.currentUser)
 
 
@@ -23,22 +23,25 @@ cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, 
   $scope.makeNewTask= function(){
     $state.go('tabsController.newTask');
   }
-$scope.doRefresh = function(){
-    TaskDataService.getAllParentTasks().then(function (res) {
-      $scope.tasks = res.data;
-      console.log($scope.tasks);
+  $scope.doRefresh = function(){
+    $q.all(
+      TaskDataService.getMatchingTasks(3).then(function(res){
+        $scope.matchingTasks = res.data
+      }, function(error){ console.log('An error occurred!', error) }),
+      TaskDataService.getAllParentTasks().then(function (res) {
+        $scope.parentTasks = res.data;
+      }, function (error) { console.log('An error occurred!', error) })
+    ).then(function(res){
+      console.log("matching", $scope.matchingTasks);
+      console.log("parent", $scope.parentTasks);
       //Stop the ion-refresher from spinning
       $scope.$broadcast('scroll.refreshComplete');
-      angular.forEach($scope.tasks, function (item) {
-        console.log("taskname " + item.name + item.description);
-      })
-    }, function (error) {
-      console.log('An error occurred!', error);
-    });
+    })
   }
 
   $scope.doRefresh();
 
+  /*
   $scope.getTaskById= function(id){
     TaskDataService.getTaskById(id).then(function (res) {
       $scope.tasks = res.data;
@@ -48,6 +51,7 @@ $scope.doRefresh = function(){
       console.log('An error occurred!', error);
     });
   };
+  */
   $scope.follow = function(id){
     TaskDataService.changeTaskPartState(id,'follow').then(function(res) {
       console.log(res.data);

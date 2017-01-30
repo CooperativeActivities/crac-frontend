@@ -7,12 +7,18 @@ cracApp.controller('myTasksCtrl', ['$scope','$window','$route', '$stateParams','
 function ($scope,$window, $route, $stateParams, $routeParams, TaskDataService, $state) {
 
   $scope.completed ="'!' + 'COMPLETED'";
-  TaskDataService.getMyTasks().then(function(res) {
-    $scope.tasks=res.data;
-    console.log($scope.tasks);
-  }, function(error) {
-    console.log('An error occurred!', error);
-  });
+  $scope.doRefresh = function(){
+    TaskDataService.getMyTasks().then(function(res) {
+      $scope.participatingTasks = res.data.participating
+      $scope.followingTasks = res.data.following
+      $scope.leadingTasks = res.data.leading
+      $scope.$broadcast('scroll.refreshComplete');
+    }, function(error) {
+      console.log('An error occurred!', error);
+    })
+  }
+
+  $scope.doRefresh();
 
   $scope.loadSingleTask = function(taskId){
     console.log("In fkt")

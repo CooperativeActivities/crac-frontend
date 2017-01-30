@@ -38,8 +38,9 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
       return $http.get(srv._baseURL + "user/task/" + id);
     }
     //Returns a sorted list of elements with the best fitting tasks for the logged in user
-    srv.getMatchingTasks = function(){
-      return $http.get(srv._baseURL + "user/findMatchingTasks");
+    srv.getMatchingTasks = function(number){
+      if(number) return $http.get(srv._baseURL + "user/findMatchingTasks/" + number);
+      else return $http.get(srv._baseURL + "user/findMatchingTasks");
     }
     //Sets a single task ready to be published, only works if it's children are ready
     srv.setReadyToPublishS = function(taskId){
@@ -109,8 +110,8 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
       getTaskRelatById : function(id){
         return srv.getTaskRelatById(id);
       },
-      getMatchingTasks : function() {
-        return srv.getMatchingTasks();
+      getMatchingTasks : function(number) {
+        return srv.getMatchingTasks(number);
       },
       setReadyToPublishS : function(taskId) {
         return srv.setReadyToPublishS(taskId);
