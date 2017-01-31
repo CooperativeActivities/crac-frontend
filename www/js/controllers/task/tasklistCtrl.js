@@ -13,11 +13,8 @@
  */
 
 cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, $ionicModal, TaskDataService, $q) {
-  console.log("Taskdata: " + $rootScope.globals.currentUser)
-
 
   $scope.loadSingleTask = function(taskId){
-    console.log("In fkt")
     $state.go('tabsController.task1', { id:taskId });
   }
   $scope.doRefresh = function(){
@@ -29,8 +26,6 @@ cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, 
         $scope.parentTasks = res.data;
       }, function (error) { console.log('An error occurred!', error) })
     ).then(function(res){
-      console.log("matching", $scope.matchingTasks);
-      console.log("parent", $scope.parentTasks);
       //Stop the ion-refresher from spinning
       $scope.$broadcast('scroll.refreshComplete');
     })
@@ -51,7 +46,7 @@ cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, 
   */
   $scope.follow = function(id){
     TaskDataService.changeTaskPartState(id,'follow').then(function(res) {
-      console.log(res.data);
+      console.log("following task", res.data)
     }, function(error) {
       console.log('An error occurred!', error);
     });

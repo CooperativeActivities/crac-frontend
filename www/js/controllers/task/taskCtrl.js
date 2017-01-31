@@ -45,19 +45,10 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         }
       }, function (error) {
         console.log('An error occurred!', error);
-        //dummy data
-        /*
-        $scope.task = {
-          name: "test-task",
-          taskState: "NOT PUBLISHED",
-
-        }
-        */
       });
     }
 //To open another Task, e.g. SubTask
     $scope.loadSingleTask = function(taskId){
-      console.log("In fkt")
       $state.go('tabsController.task1', { id:taskId });
     }
 
@@ -65,8 +56,6 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 // Get the Relationship of a specific Task and the current user
     TaskDataService.getTaskRelatById($stateParams.id).then(function (res) {
       $scope.participationType = res.data[1].participationType;
-      console.log(res.data);
-      console.log($scope.participationType);
       if($scope.participationType == "PARTICIPATING"){
         $scope.enrollFlag =true;
         $scope.followFlag =false;
@@ -86,6 +75,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         $scope.enrollFlag = false;
         $scope.followFlag = true;
         $scope.ufollowFlag = false;
+        // @TODO: go to parent task/tasklist/myTasks
         $state.reload();
         //$window.location.reload();
       }, function (error) {
@@ -100,7 +90,6 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     //Enroll for a task
     $scope.enroll = function(){
       TaskDataService.changeTaskPartState($stateParams.id ,'participate').then(function(res) {
-        console.log(res.data);
         $scope.enrollFlag = true;
         $scope.followFlag = false;
         $scope.ufollowFlag = false;
@@ -114,7 +103,6 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 // follow a task
     $scope.follow = function(){
       TaskDataService.changeTaskPartState($scope.task.id,'follow').then(function(res) {
-        console.log(res.data);
         $scope.followFlag = false;
         $scope.ufollowFlag = true;
         $scope.enrollFlag = false;
@@ -165,21 +153,6 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
           console.log('An error occurred!', error);
           alert(error.data.cause);
         });
-    }
-//publish task
-    $scope.publish = function(){
-      TaskDataService.changeTaskState($scope.task.id, 'publish').then(function(res) {
-        TaskDataService.getTaskById($scope.task.id).then(function (res) {
-          $scope.task = res.data;
-          console.log($scope.task);
-        }, function (error) {
-          console.log('An error occurred!', error);
-        });
-      }, function(error) {
-        console.log('An error occurred!', error);
-        alert(error.data.cause);
-      });
-      console.log('works 2');
     }
 
     $scope.makeNewSubTask = function(){

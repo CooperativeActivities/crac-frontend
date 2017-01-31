@@ -8,6 +8,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','$routePar
   function ($scope, $route, $stateParams,$routeParams,TaskDataService,$state, $ionicHistory) {
 
     $scope.task= {};
+    $scope.publishFlag = false;
 
 // Save changes
     $scope.save = function(){
@@ -17,16 +18,15 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','$routePar
       taskData.urgency= $scope.task.urgency;
       taskData.amountOfVolunteers= $scope.task.amountOfVolunteers;
       taskData.location= $scope.task.location;
-      /*
       taskData.feedback= $scope.task.feedback;
       taskData.taskState= $scope.task.taskState;
       taskData.taskType= $scope.task.taskType;
       taskData.taskRepetitionState= $scope.task.taskRepetitionState;
-      taskData.superTask= $scope.task.superTask;
+      // if we set this, we get a 400
+      //taskData.superTask= $scope.task.superTask;
       taskData.childTask= $scope.task.childTask;
       taskData.previousTask= $scope.task.previousTask;
       taskData.nextTask= $scope.task.nextTask;
-      */
 
       taskData.startTime= $scope.task.startTime.getTime();
       taskData.endTime= $scope.task.endTime.getTime();
@@ -45,8 +45,18 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','$routePar
         $scope.task = res.data;
         $scope.task.startTime = new Date($scope.task.startTime)
         $scope.task.endTime = new Date($scope.task.endTime)
+        $scope.publishFlag = $scope.task.taskState !== "PUBLISHED";
       }, function (error) {
         console.log('An error occurred!', error);
+      });
+    }
+//publish task
+    $scope.publish = function(){
+      TaskDataService.changeTaskState($scope.task.id, 'publish').then(function(res) {
+        $scope.getTaskById($scope.task.id);
+      }, function(error) {
+        console.log('An error occurred!', error);
+        alert(error.data.cause);
       });
     }
 
