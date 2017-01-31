@@ -185,9 +185,4 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.addCompetence = function(){
       $state.go('tabsController.addCompetenceToTask', { id:$scope.task.id });
     }
-
-
-
-
-
   }])
