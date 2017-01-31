@@ -8,74 +8,80 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
   function ($scope,$route, $window, $stateParams,$routeParams,TaskDataService,$state, $ionicPopup, $q, UserDataService) {
 
     //Flags to show/hide buttons
-    $scope.editableFlag =true; // @TODO: check for permissions
-    $scope.addSubTaskFlag =true;
+    $scope.editableFlag =false; // @TODO: check for permissions
+    $scope.addSubTaskFlag =false;
 
     $scope.showEnroll =false;
     $scope.showCancel =false;
     $scope.showFollow = false;
     $scope.showUnfollow = false;
-    $scope.showDelete = true;
+    $scope.showDelete = false;
 
     $scope.neededCompetences = [];
 
-    //Get specific Task by ID
-    $scope.getTaskById= function(id){
-      TaskDataService.getTaskById(id).then(function (res) {
-        if(!res.data) return;
-        $q.all(res.data.mappedCompetences.map(function(comp){
-          return UserDataService.getCompetenceById(comp.competence).then(function(res){ return res.data })
-        })).then(function(competences){
+    $scope.doRefresh = function(){
+      TaskDataService.getTaskById($stateParams.id).then(function (res) {
+        var task = res.data;
+        if(!task) return;
+        $q.all(
+          task.mappedCompetences.map(function(comp){
+            return UserDataService.getCompetenceById(comp.competence).then(function(res){ return res.data })
+          }).concat([ TaskDataService.getTaskRelatById($stateParams.id).then(function(res){
+             // Get the Relationship between task and user
+            return res.data[1].participationType
+          },function(error){
+            console.log("not participating", error)
+            return "NOT_PARTICIPATING"
+          }) ])
+        ).then(function(competences){
+          var relation = competences.pop()
           $scope.neededCompetences = competences;
-          $scope.task = res.data;
-          if($scope.task.taskState == "STARTED"){
-            $scope.editableFlag = false;
-            $scope.addSubTaskFlag =false;
-            $scope.showFollow = false;
-            $scope.showUnfollow = false;
-            $scope.showDelete = false;
-          }
-          if($scope.task.taskState == "PUBLISHED"){
-            $scope.addSubTaskFlag = false;
-            $scope.showEnroll = true;
-            $scope.showFollow = true;
-          }
-        });
-      }, function (error) {
-        console.log('An error occurred!', error);
-      });
+          $scope.task = task;
+          $scope.participationType = relation;
+          $scope.updateFlags();
+          $scope.$broadcast('scroll.refreshComplete');
+        })
+      })
     }
+
+    $scope.doRefresh()
+
+
+    $scope.updateFlags = function(){
+      var relation = $scope.participationType,
+        task = $scope.task;
+      switch(task.taskState){
+        case "STARTED":
+        case "PUBLISHED":
+          $scope.showCancel = relation === "PARTICIPATING";
+          $scope.showUnfollow = relation === "FOLLOWING";
+          $scope.showFollow = !$scope.showUnfollow && !$scope.showCancel;
+          $scope.showEnroll = !$scope.showUnfollow && !$scope.showCancel;
+          break;
+        case "NOT_PUBLISHED":
+          $scope.addSubTaskFlag = true;
+          $scope.editableFlag = true;
+          $scope.showDelete = true;
+          $scope.showFollow = false;
+          $scope.showUnfollow = false;
+          $scope.showEnroll = false;
+          $scope.showCancel = false;
+          break;
+      }
+    };
+
 //To open another Task, e.g. SubTask
     $scope.loadSingleTask = function(taskId){
       $state.go('tabsController.task1', { id:taskId });
     }
 
-    $scope.getTaskById($stateParams.id);
-// Get the Relationship of a specific Task and the current user
-    TaskDataService.getTaskRelatById($stateParams.id).then(function (res) {
-      $scope.participationType = res.data[1].participationType;
-      if($scope.participationType == "PARTICIPATING"){
-        $scope.showEnroll = false;
-        $scope.showCancel = false;
-        $scope.showFollow = false;
-        $scope.showUnfollow = false;
-      }
-      if($scope.participationType == "FOLLOWING"){
-        $scope.showFollow =false;
-        $scope.showUnfollow =true;
-      }
-    }, function (error) {
-      console.log('An error occurred!', error);
-    });
 // Deleting all participating types
     $scope.cancel = function() {
       TaskDataService.removeOpenTask($scope.task.id).then(function (res) {
         console.log("unfollowed/cancelled");
-        $scope.showFollow = true;
-        $scope.showUnfollow = false;
-        $scope.showEnroll = true;
-        $scope.showCancel = false;
-        $state.reload();
+        $scope.participationType = "NOT_PARTICIPATING"
+        $scope.updateFlags();
+        //$state.reload();
         //$window.location.reload();
       }, function (error) {
         console.log('An error occurred!', error);
@@ -89,11 +95,9 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     //Enroll for a task
     $scope.enroll = function(){
       TaskDataService.changeTaskPartState($stateParams.id ,'participate').then(function(res) {
-        $scope.showEnroll = false;
-        $scope.showCancel = true;
-        $scope.showFollow = false;
-        $scope.showUnfollow = false;
-        $state.reload();
+        $scope.participationType = "PARTICIPATING"
+        $scope.updateFlags();
+        //$state.reload();
        // $window.location.reload();
       }, function(error) {
         console.log('An error occurred!', error);
@@ -103,10 +107,8 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 // follow a task
     $scope.follow = function(){
       TaskDataService.changeTaskPartState($scope.task.id,'follow').then(function(res) {
-        $scope.showFollow = false;
-        $scope.showUnfollow = true;
-        $scope.showEnroll = true;
-        $scope.showCancel = false;
+        $scope.participationType = "FOLLOWING"
+        $scope.updateFlags();
       }, function(error) {
         console.log('An error occurred!', error);
         alert(error.data.cause);

@@ -24,11 +24,6 @@ cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, 
   $scope.doRefresh();
 
 
-  $scope.clearSearch = function() {
-    $scope.search = '';
-  };
-
-
 })
 
 
