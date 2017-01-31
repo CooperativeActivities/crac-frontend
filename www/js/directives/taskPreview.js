@@ -7,7 +7,6 @@ cracApp.directive('taskPreview', [function() {
       scope.statusIsPublished = scope.task.taskState === "PUBLISHED"
       scope.statusIsNotPublished = scope.task.taskState === "NOT_PUBLISHED" && !scope.task.readyToPublish
       scope.isSubtask = scope.task.superTask !== null;
-      console.log(scope)
     },
     templateUrl: 'templates/directives/taskPreview.html'
   };
