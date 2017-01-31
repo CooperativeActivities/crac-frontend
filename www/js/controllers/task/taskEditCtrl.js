@@ -8,8 +8,9 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','$routePar
   function ($scope, $route, $stateParams,$routeParams,TaskDataService,$state, $ionicHistory) {
 
     $scope.task= {};
-    $scope.publishFlag = false;
-    $scope.readyToPublishFlag = false;
+    $scope.showPublish = false;
+    $scope.showReadyToPublishSingle = false;
+    $scope.showReadyToPublishTree = false;
 
 // Save changes
     $scope.save = function(){
@@ -46,8 +47,9 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','$routePar
         $scope.task = res.data;
         $scope.task.startTime = new Date($scope.task.startTime)
         $scope.task.endTime = new Date($scope.task.endTime)
-        $scope.publishFlag = $scope.task.taskState === "NOT_PUBLISHED";
-        $scope.readyToPublishFlag = $scope.task.taskState !== "PUBLISHED";
+        $scope.showPublish = $scope.task.taskState === "NOT_PUBLISHED" && $scope.task.superTask === null;
+        $scope.showReadyToPublishSingle = $scope.task.taskState === "NOT_PUBLISHED";
+        $scope.showReadyToPublishTree = $scope.task.taskState === "NOT_PUBLISHED" && $scope.task.childTasks.length > 0;
       }, function (error) {
         console.log('An error occurred!', error);
       });
@@ -66,6 +68,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','$routePar
         console.log(res);
       }, function(error){
         console.log('An error occurred!', error);
+        alert(error.data.cause);
       })
     }
     $scope.readyToPublishTree = function(){
@@ -73,6 +76,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','$routePar
         console.log(res);
       }, function(error){
         console.log('An error occurred!', error);
+        alert(error.data.cause);
       })
     }
 

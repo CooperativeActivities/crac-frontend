@@ -8,8 +8,6 @@
     <button ng-click="makeNewSubTask()" ng-if="addSubTaskFlag" class="button icon ion-android-add-circle"></button>
   </ion-nav-buttons>
   <ion-content padding="true" class="manual-ios-statusbar-padding has-footer">
-    <style type="text/css">
-    </style>
     <div class="taskMainInfo" ng-cloak>
 
       <h2>{{task.name}}</h2>
@@ -59,8 +57,8 @@
 
       <div class="item item-divider">Notwendige Kenntnisse</div>
       <!-- @TODO: use ion-list? -->
-      <div class="row" ng-repeat="competence in task.mappedCompetences">
-        {{ competence.id }}
+      <div class="row" ng-repeat="competence in neededCompetences">
+        {{ competence.name }}
       </div>
 
       <div class="item item-divider">Notwendiges Material </div>
@@ -87,11 +85,11 @@
   </ion-content>
   <ion-footer-bar class="bar bar-footer">
     <div id="meinProfil-button-bar4" class="button-bar" ng-cloak>
-      <button ng-click="enroll()" ng-if="!enrollFlag" class="button button-small button-outline button-balanced ion-checkmark"> Ich arbeite mit! </button>
-      <button ng-click="cancle()" ng-if="enrollFlag"  class="button button-small button-outline button-assertive ion-close"> Absagen </button>
-      <button ng-click="delete()" ng-if="deleteFlag"  class="button button-small button-outline button-assertive"> Löschen </button>
-      <button ng-click="follow()" ng-if="followFlag"  class="button button-small button-outline button-positive "> Folgen </button>
-      <button ng-click="cancle()" ng-if="ufollowFlag" class="button button-small button-outline button-assertive"> Nicht mehr folgen </button>
+      <button ng-click="enroll()" ng-if="showEnroll" class="button button-small button-outline button-balanced ion-checkmark"> Ich arbeite mit! </button>
+      <button ng-click="cancel()" ng-if="showCancel"  class="button button-small button-outline button-assertive ion-close"> Absagen </button>
+      <button ng-click="delete()" ng-if="showDelete"  class="button button-small button-outline button-assertive"> Löschen </button>
+      <button ng-click="follow()" ng-if="showFollow"  class="button button-small button-outline button-positive "> Folgen </button>
+      <button ng-click="cancel()" ng-if="showUnfollow" class="button button-small button-outline button-assertive"> Nicht mehr folgen </button>
     </div>
   </ion-footer-bar>
 </ion-view>

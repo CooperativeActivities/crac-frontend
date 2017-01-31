@@ -1,48 +1,46 @@
 /**
  * Created by P41332 on 25.10.2016.
  */
-cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParams','$routeParams','TaskDataService','$state','$ionicPopup', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParams','$routeParams','TaskDataService','$state','$ionicPopup', "$q", "UserDataService",
+  // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-  function ($scope,$route, $window, $stateParams,$routeParams,TaskDataService,$state, $ionicPopup) {
+  function ($scope,$route, $window, $stateParams,$routeParams,TaskDataService,$state, $ionicPopup, $q, UserDataService) {
 
     //Flags to show/hide buttons
     $scope.editableFlag =true; // @TODO: check for permissions
-    $scope.enrollFlag =false;
-    $scope.ufollowFlag = false;
-    $scope.followFlag = true;
-    $scope.readyToPublishTreeFlag = true;
-    $scope.readyToPublishSingleFlag = true;
-    $scope.publishFlag = true;
     $scope.addSubTaskFlag =true;
-    $scope.deleteFlag =true;
+
+    $scope.showEnroll =false;
+    $scope.showCancel =false;
+    $scope.showFollow = false;
+    $scope.showUnfollow = false;
+    $scope.showDelete = true;
+
+    $scope.neededCompetences = [];
 
     //Get specific Task by ID
     $scope.getTaskById= function(id){
       TaskDataService.getTaskById(id).then(function (res) {
-        $scope.task = res.data;
-        if($scope.task.childTasks == ''){
-          $scope.readyToPublishTreeFlag = false;
-        }
-        if($scope.task.superTask != null){
-          $scope.publishFlag = false;
-        }
-        if($scope.task.taskState == "STARTED"){
-          $scope.addSubTaskFlag =false;
-          $scope.ufollowFlag = false;
-          $scope.followFlag = false;
-          $scope.deleteFlag =false;
-          $scope.publishFlag = false;
-          $scope.readyToPublishSingleFlag = false;
-        }
-        if($scope.task.taskState == "PUBLISHED"){
-          $scope.addSubTaskFlag =false;
-          $scope.publishFlag = false;
-          $scope.readyToPublishSingleFlag = false;
-        }
-        if($scope.task.childTasks != ''){
-          $scope.addSubTaskFlag =true;
-        }
+        if(!res.data) return;
+        $q.all(res.data.mappedCompetences.map(function(comp){
+          return UserDataService.getCompetenceById(comp.competence).then(function(res){ return res.data })
+        })).then(function(competences){
+          $scope.neededCompetences = competences;
+          $scope.task = res.data;
+          if($scope.task.taskState == "STARTED"){
+            $scope.editableFlag = false;
+            $scope.addSubTaskFlag =false;
+            $scope.showFollow = false;
+            $scope.showUnfollow = false;
+            $scope.showDelete = false;
+          }
+          if($scope.task.taskState == "PUBLISHED"){
+            $scope.addSubTaskFlag = false;
+            $scope.showEnroll = true;
+            $scope.showFollow = true;
+          }
+        });
       }, function (error) {
         console.log('An error occurred!', error);
       });
@@ -57,25 +55,26 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     TaskDataService.getTaskRelatById($stateParams.id).then(function (res) {
       $scope.participationType = res.data[1].participationType;
       if($scope.participationType == "PARTICIPATING"){
-        $scope.enrollFlag =true;
-        $scope.followFlag =false;
-        $scope.ufollowFlag =false;
+        $scope.showEnroll = false;
+        $scope.showCancel = false;
+        $scope.showFollow = false;
+        $scope.showUnfollow = false;
       }
       if($scope.participationType == "FOLLOWING"){
-        $scope.followFlag =false;
-        $scope.ufollowFlag =true;
+        $scope.showFollow =false;
+        $scope.showUnfollow =true;
       }
     }, function (error) {
       console.log('An error occurred!', error);
     });
 // Deleting all participating types
-    $scope.cancle = function() {
+    $scope.cancel = function() {
       TaskDataService.removeOpenTask($scope.task.id).then(function (res) {
-        console.log("deleted");
-        $scope.enrollFlag = false;
-        $scope.followFlag = true;
-        $scope.ufollowFlag = false;
-        // @TODO: go to parent task/tasklist/myTasks
+        console.log("unfollowed/cancelled");
+        $scope.showFollow = true;
+        $scope.showUnfollow = false;
+        $scope.showEnroll = true;
+        $scope.showCancel = false;
         $state.reload();
         //$window.location.reload();
       }, function (error) {
@@ -90,9 +89,10 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     //Enroll for a task
     $scope.enroll = function(){
       TaskDataService.changeTaskPartState($stateParams.id ,'participate').then(function(res) {
-        $scope.enrollFlag = true;
-        $scope.followFlag = false;
-        $scope.ufollowFlag = false;
+        $scope.showEnroll = false;
+        $scope.showCancel = true;
+        $scope.showFollow = false;
+        $scope.showUnfollow = false;
         $state.reload();
        // $window.location.reload();
       }, function(error) {
@@ -103,9 +103,10 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 // follow a task
     $scope.follow = function(){
       TaskDataService.changeTaskPartState($scope.task.id,'follow').then(function(res) {
-        $scope.followFlag = false;
-        $scope.ufollowFlag = true;
-        $scope.enrollFlag = false;
+        $scope.showFollow = false;
+        $scope.showUnfollow = true;
+        $scope.showEnroll = true;
+        $scope.showCancel = false;
       }, function(error) {
         console.log('An error occurred!', error);
         alert(error.data.cause);
