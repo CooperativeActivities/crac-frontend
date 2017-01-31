@@ -37,7 +37,7 @@ cracApp.run(function ($ionicPlatform, $rootScope, $location,$cookieStore,$http) 
      // redirect to login page if not logged in and trying to access a restricted page
      //var restrictedPage = $.inArray($location.path(), ['/admin']) === -1;
      var restrictedPage = $location.path().indexOf("/login") == -1
-     console.log(restrictedPage)
+     //console.log(restrictedPage)
      var loggedIn = $rootScope.globals.currentUser;
      if (restrictedPage && !loggedIn) {
        $location.path('/login');

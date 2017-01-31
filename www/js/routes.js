@@ -201,6 +201,24 @@ angular.module('app.routes', ['ionicUIRouter'])
         }
       })
 
+      .state('tabsController.taskEdit', {
+        url: '/task/:id/edit',
+        views: {
+          'tab1': {
+            templateUrl: 'templates/taskEdit.html',
+            controller: 'taskEditCtrl'
+          },
+          'tab2': {
+            templateUrl: 'templates/taskEdit.html',
+            controller: 'taskEditCtrl'
+          },
+          'tab3': {
+            templateUrl: 'templates/taskEdit.html',
+            controller: 'taskEditCtrl'
+          }
+        }
+      })
+
       .state('tabsController.task1enrolled', {
         url: '/task1enrolled',
         views: {
@@ -281,7 +299,7 @@ angular.module('app.routes', ['ionicUIRouter'])
       .state('tabsController.newTask', {
         url: '/newtask',
         views: {
-          'tab2': {
+          'tab3': {
             templateUrl: 'templates/newTask.html',
             controller: 'newTaskCtrl'
           }
@@ -291,7 +309,7 @@ angular.module('app.routes', ['ionicUIRouter'])
       .state('tabsController.newSubTask', {
         url: '/newsubtask/:id',
         views: {
-          'tab2': {
+          'tab3': {
             templateUrl: 'templates/newSubTask.html',
             controller: 'newSubTaskCtrl'
           }

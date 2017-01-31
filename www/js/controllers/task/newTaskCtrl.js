@@ -19,13 +19,9 @@ cracApp.controller('newTaskCtrl', ['$scope','$route', '$stateParams','$routePara
       taskData.amountOfVolunteers= $scope.task.amountOfVolunteers;
 
 
-      console.log(taskData);
-
       TaskDataService.createNewTask(taskData).then(function(res) {
-        console.log(taskData);
-        console.log(res.data);
         $route.reload();
-        $state.go('tabsController.tasklist');
+        $state.go('tabsController.myTasks');
       }, function(error) {
         console.log('An error occurred!', error);
         alert("Es muss jedes Feld ausgefüllt sein:"+ error.data.cause);

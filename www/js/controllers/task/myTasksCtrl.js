@@ -20,6 +20,10 @@ function ($scope,$window, $route, $stateParams, $routeParams, TaskDataService, $
 
   $scope.doRefresh();
 
+  $scope.makeNewTask= function(){
+    $state.go('tabsController.newTask');
+  }
+
   $scope.loadSingleTask = function(taskId){
     console.log("In fkt")
     $state.go('tabsController.task1', { id:taskId });

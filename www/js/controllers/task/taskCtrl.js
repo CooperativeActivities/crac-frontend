@@ -7,7 +7,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
   function ($scope,$route, $window, $stateParams,$routeParams,TaskDataService,$state, $ionicPopup) {
 
     //Flags to show/hide buttons
-    $scope.editFlag =true;
+    $scope.editableFlag =true; // @TODO: check for permissions
     $scope.enrollFlag =false;
     $scope.ufollowFlag = false;
     $scope.followFlag = true;
@@ -21,7 +21,6 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.getTaskById= function(id){
       TaskDataService.getTaskById(id).then(function (res) {
         $scope.task = res.data;
-        console.log("task", $scope.task);
         if($scope.task.childTasks == ''){
           $scope.readyToPublishTreeFlag = false;
         }
@@ -94,36 +93,9 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         alert(error.data.cause);
       });
     }
-// Save changes
-    $scope.save = function(){
-      var taskData = {};
-      taskData.name= $scope.task.name;
-      taskData.description= $scope.task.description;
-      taskData.urgency= $scope.task.urgency;
-      taskData.amountOfVolunteers= $scope.task.amountOfVolunteers;
-      taskData.feedback= $scope.task.feedback;
-      taskData.taskState= $scope.task.taskState;
-      taskData.taskType= $scope.task.taskType;
-      taskData.taskRepetitionState= $scope.task.taskRepetitionState;
-      taskData.superTask= $scope.task.superTask;
-      taskData.childTask= $scope.task.childTask;
-      taskData.previousTask= $scope.task.previousTask;
-      taskData.nextTask= $scope.task.nextTask;
-      taskData.startTime= $scope.task.startTime;
-      taskData.endTime= $scope.task.endTime;
-
-      TaskDataService.updateTaskById(taskData, $scope.task.id).then(function(res) {
-        console.log(taskData);
-        console.log(res.data);
-        $scope.editFlag =true;
-      }, function(error) {
-        console.log('An error occurred!', error);
-        alert(error.data.cause);
-      });
-    };
     //enable editing-mode
     $scope.edit = function(){
-      $scope.editFlag =false;
+      $state.go('tabsController.taskEdit', { id: $scope.task.id });
     };
     //Enroll for a task
     $scope.enroll = function(){

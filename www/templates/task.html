@@ -4,9 +4,8 @@
 -->
 <ion-view cache-view="false" title="Aufgabe" hide-nav-bar="false">
   <ion-nav-buttons side="right" class="has-header">
-    <button class="button icon ion-edit" ng-show="editFlag" ng-click="edit()"></button>
-    <button class="button icon ion-checkmark "ng-hide="editFlag"  ng-click="save()"></button>
-    <button ng-if="addSubTaskFlag" class="button icon ion-android-add-circle" ng-click="makeNewSubTask()"></button>
+    <button ng-click="edit()" ng-show="editableFlag" class="button icon ion-edit"></button>
+    <button ng-click="makeNewSubTask()" ng-if="addSubTaskFlag" class="button icon ion-android-add-circle"></button>
   </ion-nav-buttons>
   <ion-content padding="true" class="manual-ios-statusbar-padding has-footer">
     <style type="text/css">
