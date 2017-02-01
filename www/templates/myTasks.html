@@ -4,7 +4,6 @@
   </ion-nav-buttons>
   <ion-content padding="true" class="has-header">
     <ion-refresher on-refresh="doRefresh()"></ion-refresher>
-    <!--<ion-toggle ng-model="completed" toggle-class="toggle-calm" ng-true-value="'COMPLETED'" ng-false-value="'!' + 'COMPLETED'" >Abgeschlossene Aufgaben</ion-toggle>-->
     <div class="item item-divider">Teilgenommene Aufgaben:</div>
     <ion-list>
       <div ng-repeat="task in participatingTasks" class="parent">
@@ -15,6 +14,7 @@
         </div>
       </div>
     </ion-list>
+    <hr>
     <div class="item item-divider">Beobachtete Aufgaben:</div>
     <ion-list>
       <div ng-repeat="task in followingTasks" class="parent">
@@ -25,6 +25,7 @@
         </div>
       </div>
     </ion-list>
+    <hr>
     <div class="item item-divider">Von mir erstellte Aufgaben:</div>
     <ion-list>
       <div ng-repeat="task in leadingTasks" class="parent">

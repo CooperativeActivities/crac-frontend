@@ -10,30 +10,20 @@
           <label class="item item-input" id="anmelden-input1" ng-class="{
                  'has-errors' : authorizationForm.username.$invalid && authorizationForm.username.$dirty,
                  'no-errors' : authorizationForm.username.$valid && !authorizationForm.username.$untouched}">
-            <!--<span class="input-label">Benutzername</span>-->
             <input type="text" placeholder="Benutzername" ng-model="data.username" name="username" required>
           </label>
-          <div class="error-container"
-               ng-show="authorizationForm.username.$invalid && authorizationForm.username.$dirty"
-               ng-messages="authorizationForm.username.$error">
-            <div class="error" ng-message="username">
-              <i class="ion-information-circled"></i>
-              Bitte einen gültigen Username eintragen!
-            </div>
-          </div>
           <label class="item item-input" id="anmelden-input2">
             <!--<span class="input-label">Passwort</span>-->
             <input type="password" placeholder="Passwort" ng-model="data.password" name="password" required>
           </label>
         </ion-list>
-        <!--<a ui-sref="tabsController.home_tab1" id="anmelden-button1" class="button button-balanced  button-block" ng-click="login()">Anmelden</a>-->
-        <button class="button button-block button-outline button-positive button-assertive" ng-click="login()"  ng-disabled="authorizationForm.$invalid">
+        <button class="button button-block button-outline button-positive button-balanced" ng-click="login()"  ng-disabled="authorizationForm.$invalid">
           <i class="ion-log-in"></i> Login
         </button>
         <div class="content-title">oder</div>
         <div class="row">
           <div class="col">
-            <button class="button button-block button-outline button-positive button-face" ng-click="facebookLogin()">
+            <button class="button button-block button-outline button-positive button-face" disabled ng-click="facebookLogin()">
               <i class="ion-social-facebook-outline"></i> Anmelden
             </button>
           </div>
@@ -43,8 +33,8 @@
             </button>
           </div>-->
         </div>
-        <a ui-sref="signup" id="anmelden-button2" class="button button-block button-outline button-positive button-energized">Neuen Account anlegen</a>
-        <button class="button button-clear">
+        <a ui-sref="signup" id="anmelden-button2" class="button button-block button-outline button-positive button-energized" disabled>Neuen Account anlegen</a>
+        <button class="button button-clear" disabled>
           Password vergessen?
         </button>
       </form>

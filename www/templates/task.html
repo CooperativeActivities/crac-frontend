@@ -22,69 +22,66 @@
         </div>
       </div>
 
-      <div class="item item-divider">Zeit und Ort</div>
-      <div class="row">
-        <div class="col-25">
-          <div class="row"><span class="ion-calendar"> Zeit </span></div>
+      <c-accordion title="'Zeit und Ort'" shown="true">
+        <div class="row">
+          <div class="col-25">
+            <div class="row"><span class="ion-calendar"> Zeit </span></div>
+          </div>
+          <div class="col">
+            <div class="row"> Von: {{ task.startTime | date : "medium" }} </div>
+            <div class="row"> Bis: {{ task.endTime | date : "medium" }} </div>
+          </div>
         </div>
-        <div class="col">
-          <div class="row"> Von: {{ task.startTime | date : "medium" }} </div>
-          <div class="row"> Bis: {{ task.endTime | date : "medium" }} </div>
+        <div class="row">
+          <div class="col-25">
+            <div class="row"><span class="ion-location"> Ort </span></div>
+          </div>
+          <div class="col">
+            <div class="row"> {{task.location}} </div>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-25">
-          <div class="row"><span class="ion-location"> Ort </span></div>
-        </div>
-        <div class="col">
-          <div class="row"> {{task.location}} </div>
-        </div>
-      </div>
+      </c-accordion>
 
-      <div class="item item-divider">Team</div>
-      <div class="row">
-        <div style="margin: 0.5em; width: 4em; height: 4em;">
-          <img class="img-responsive" src="img/1lZ3VOkiRqOOdIDOu9mn_avatar.png">
+      <c-accordion title="'Team'" shown="true">
+        <div class="row">
+          <div style="margin: 0.5em; width: 4em; height: 4em;">
+            <img class="img-responsive" src="img/1lZ3VOkiRqOOdIDOu9mn_avatar.png">
+          </div>
+          <div style="margin: 0.5em; width: 4em; height: 4em;">
+            <img class="img-responsive" src="img/1lZ3VOkiRqOOdIDOu9mn_avatar.png">
+          </div>
+          <div style="margin: 0.5em; width: 4em; height: 4em;">
+            <img class="img-responsive" src="img/1lZ3VOkiRqOOdIDOu9mn_avatar.png">
+          </div>
         </div>
-        <div style="margin: 0.5em; width: 4em; height: 4em;">
-          <img class="img-responsive" src="img/1lZ3VOkiRqOOdIDOu9mn_avatar.png">
-        </div>
-        <div style="margin: 0.5em; width: 4em; height: 4em;">
-          <img class="img-responsive" src="img/1lZ3VOkiRqOOdIDOu9mn_avatar.png">
-        </div>
-      </div>
+      </c-accordion>
 
 
-      <div class="item item-divider">Notwendige Kenntnisse</div>
-      <!-- @TODO: use ion-list? -->
-      <div class="row" ng-repeat="competence in neededCompetences">
-        {{ competence.name }}
-      </div>
-
-      <div class="item item-divider">Notwendiges Material </div>
-      <!-- @TODO: is evaluation material? -->
-      <!-- @TODO: use ion-list? -->
-      <button class="button button-block button-outline icon-right ion-chevron-right" ng-repeat="evaluation in task.mappedEvaluations">
-        {{ evaluation.id }}
-      </button>
-
-      <div class="item item-divider">Subtasks</div>
-      <ion-list>
-        <div ng-repeat="subTask in task.childTasks" ng-cloak>
-          <ion-item class="item-thumbnail-left"  ng-click="loadSingleTask(subTask.id)">
-            <img src="img/i8bhuXcQQcqLW28wQ4ka_presentation.jpg">
-            <h2>{{subTask.name}}</h2>
-            <p style="white-space:normal;">{{subTask.description}}</p>
-            <!--<p>{{subTask.location}}</p>-->
-            <p>{{subTask.startTime | date}}</p>
-            <p>{{subTask.endTime | date}}</p>
-          </ion-item>
+      <c-accordion title="'Notwendige Kenntnisse'" ng-show="neededCompetences.length > 0">
+        <!-- @TODO: use ion-list? -->
+        <div class="row" ng-repeat="competence in neededCompetences">
+          {{ competence.name }}
         </div>
-      </ion-list>
+      </c-accordion>
+
+      <c-accordion title="'Notwendiges Material'" ng-show="neededMaterial.length > 0">
+        <!-- @TODO: use ion-list? -->
+        <button class="button button-block button-outline icon-right ion-chevron-right" ng-repeat="material in task.neededMaterial">
+          {{ material.name }}
+        </button>
+      </c-accordion>
+
+      <c-accordion title="'Unteraufgaben'" ng-show="task.childTasks.length > 0">
+        <ion-list>
+          <div ng-repeat="subTask in task.childTasks" ng-cloak>
+            <task-preview task="subTask" ng-click="loadSingleTask(subTask.id)"></task-preview>
+          </div>
+        </ion-list>
+      </c-accordion>
     </div>
   </ion-content>
   <ion-footer-bar class="bar bar-footer">
-    <div id="meinProfil-button-bar4" class="button-bar" ng-cloak>
+    <div class="button-bar" ng-cloak>
       <button ng-click="enroll()" ng-if="showEnroll" class="button button-small button-outline button-balanced ion-checkmark"> Ich arbeite mit! </button>
       <button ng-click="cancel()" ng-if="showCancel"  class="button button-small button-outline button-assertive ion-close"> Absagen </button>
       <button ng-click="follow()" ng-if="showFollow"  class="button button-small button-outline button-positive "> Folgen </button>

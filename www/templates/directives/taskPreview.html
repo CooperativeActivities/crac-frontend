@@ -1,5 +1,4 @@
-<ion-item ng-class="['item-thumbnail-left', 'item-task', { 'item-subtask': isSubtask }]">
-  <img ng-if="!isSubtask" src="img/i8bhuXcQQcqLW28wQ4ka_presentation.jpg">
+<ion-item ng-class="['item-task', { 'item-subtask': isSubtask }]">
   <div class="row responsive-sm">
     <div class="col" ng-if="!isSubtask"><h2>{{task.name}}</h2></div>
     <div class="col" ng-if="isSubtask"><h3>{{task.name}}</h3></div>
