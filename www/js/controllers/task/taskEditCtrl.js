@@ -87,7 +87,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 //publish task
     $scope.publish = function(){
       TaskDataService.changeTaskState($scope.task.id, 'publish').then(function(res) {
-        $scope.getTaskById($scope.task.id);
+        $ionicHistory.goBack();
       }, function(error) {
         console.log('An error occurred!', error);
         alert(error.data.cause);

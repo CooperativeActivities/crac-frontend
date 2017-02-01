@@ -6,7 +6,7 @@
     <div class="col">
       <i ng-if="statusIsPublished" class="icon ion-android-done-all balanced"></i>
       <i ng-if="statusIsNotPublished" class="icon ion-locked assertive"></i>
-      <i ng-if="task.readyToPublish" class="icon ion-unlocked positive"></i>
+      <i ng-if="task.readyToPublish && !statusIsPublished" class="icon ion-unlocked positive"></i>
     </div>
   </div>
   <div class="row" ng-if="!isSubtask">
