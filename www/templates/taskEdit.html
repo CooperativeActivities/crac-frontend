@@ -3,30 +3,22 @@
     <button class="button icon ion-checkmark"  ng-click="save()"></button>
   </ion-nav-buttons>
   <ion-content padding="true" class="manual-ios-statusbar-padding">
-
-    <h5 style="color:#327FE2;">Aufgabe bearbeiten:</h5>
     <div style="color:#000000;">
-      <form>
+      <form onsubmit="event.preventDefault">
         <label class="item item-input item-stacked-label">
           <span class="input-label">Name:</span>
           <input type="text" ng-model="task.name" style="background-color:white;"></textarea>
         </label>
         <label class="item item-input item-stacked-label">
-          <span class="input-label">Description:</span>
+          <span class="input-label">Beschreibung:</span>
           <textarea ng-model="task.description" style="background-color:white;"></textarea>
         </label>
         <label class="item item-input item-stacked-label">
-          <span class="input-label">Urgency:</span>
-          <input type="number" min="1" ng-model="task.urgency" style="background-color:white;"></textarea>
-        </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">amountOfVolunteers:</span>
+          <span class="input-label">Zahl der Freiwilligen:</span>
           <input type="number" min="1" ng-model="task.amountOfVolunteers" style="background-color:white;"></textarea>
         </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">Location:</span>
-          <input type="text" ng-model="task.location" style="background-color:white;"></textarea>
-        </label>
+        <br>
+        <div class="item item-divider">Zeit und Ort</div>
         <label class="item item-input item-stacked-label">
           <span class="input-label">StartTime</span>
           <input type="datetime-local" ng-model="task.startTime" style="background-color:white;">
@@ -35,6 +27,25 @@
           <span class="input-label">EndTime:</span>
           <input type="datetime-local" ng-model="task.endTime" style="background-color:white;">
         </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Ort:</span>
+          <input type="text" ng-model="task.location" style="background-color:white;"></textarea>
+        </label>
+        <br>
+        <div class="item item-divider">Kompetenzen:</div>
+        <div class="row" ng-repeat="competence in neededCompetences">
+          {{ competence.name }}
+        </div>
+        <br>
+        <h4>Kompetenz hinzufügen</h4>
+        <div>
+          <select ng-model="select.competenceToAdd">
+            <option ng-repeat="competence in availableCompetences" ng-value="competence.id">
+              {{ competence.name }}
+            </option>
+          </select>
+          <button type="button" ng-click="addCompetence()" class="button button-small button-outline button-positive ion-plus"></button>
+        </div>
       </form>
     </div>
     <br>
@@ -43,6 +54,5 @@
       <button ng-click="readyToPublish()" ng-if="showReadyToPublishSingle" class="button button-small button-outline button-balanced ion-checkmark"> Bereit </button>
       <button ng-click="readyToPublishTree()" ng-if="showReadyToPublishTree" class="button button-small button-outline button-balanced ion-checkmark"> Bereit (Alle) </button>
     </div>
-    <!-- @TODO: buttons to publish -->
   </ion-content>
 </ion-view>

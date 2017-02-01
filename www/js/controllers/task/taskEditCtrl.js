@@ -2,15 +2,18 @@
 /**
  * Created by md@x-net on 2017-01-31
  */
-cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','$routeParams','TaskDataService','$state', "$ionicHistory", // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataService','UserDataService', "$ionicHistory", "$q",
+  // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-  function ($scope, $route, $stateParams,$routeParams,TaskDataService,$state, $ionicHistory) {
+  function ($scope, $route, $stateParams,TaskDataService, UserDataService, $ionicHistory, $q) {
 
     $scope.task= {};
     $scope.showPublish = false;
     $scope.showReadyToPublishSingle = false;
     $scope.showReadyToPublishTree = false;
+    //this needs to be an object for the select to work (angular is weird)
+    $scope.select = { competenceToAdd : null };
 
 // Save changes
     $scope.save = function(){
@@ -42,18 +45,45 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','$routePar
       });
     };
 
-    $scope.getTaskById= function(id){
-      TaskDataService.getTaskById(id).then(function (res) {
-        $scope.task = res.data;
-        $scope.task.startTime = new Date($scope.task.startTime)
-        $scope.task.endTime = new Date($scope.task.endTime)
-        $scope.showPublish = $scope.task.taskState === "NOT_PUBLISHED" && $scope.task.superTask === null;
-        $scope.showReadyToPublishSingle = $scope.task.taskState === "NOT_PUBLISHED";
-        $scope.showReadyToPublishTree = $scope.task.taskState === "NOT_PUBLISHED" && $scope.task.childTasks.length > 0;
+    $scope.load = function(){
+      TaskDataService.getTaskById($stateParams.id).then(function (res) {
+        var task = res.data;
+        if(!task) return;
+        $q.all( [
+          $q.all( task.mappedCompetences.map(function(comp){
+            return UserDataService.getCompetenceById(comp.competence).then(function(res){ return res.data })
+          })),
+          TaskDataService.getAllAvailableCompetences(task.id).then(function(res){ return res.data })
+        ]).then(function(competences){
+          $scope.neededCompetences = competences[0];
+          $scope.availableCompetences = competences[1];
+          $scope.task = task;
+          $scope.task.startTime = new Date($scope.task.startTime)
+          $scope.task.endTime = new Date($scope.task.endTime)
+          $scope.showPublish = $scope.task.taskState === "NOT_PUBLISHED" && $scope.task.superTask === null;
+          $scope.showReadyToPublishSingle = $scope.task.taskState === "NOT_PUBLISHED";
+          $scope.showReadyToPublishTree = $scope.task.taskState === "NOT_PUBLISHED" && $scope.task.childTasks.length > 0;
+        })
       }, function (error) {
         console.log('An error occurred!', error);
       });
-    }
+    };
+
+    $scope.addCompetence = function(){
+      if(!$scope.select.competenceToAdd) return;
+      console.log($scope.select.competenceToAdd)
+      var competenceId = $scope.select.competenceToAdd;
+      TaskDataService.addCompetenceToTask($scope.task.id, competenceId,
+        // @TODO: make the configurable
+        100, 100, false).then(function(res){
+          var index;
+          $scope.availableCompetences.forEach(function(val, ind, arr){ if(val.id === competenceId) index = ind; });
+          var competence = $scope.availableCompetences.splice(index, 1)[0]
+          $scope.neededCompetences.push(competence)
+        }, function(error){
+        console.log('An error occurred adding a competence!', error);
+        });
+    };
 //publish task
     $scope.publish = function(){
       TaskDataService.changeTaskState($scope.task.id, 'publish').then(function(res) {
@@ -80,6 +110,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','$routePar
       })
     }
 
-    $scope.getTaskById($stateParams.id);
+    $scope.load();
 
   }])
