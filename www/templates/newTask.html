@@ -12,28 +12,26 @@
           <input type="text" ng-model="task.name" style="background-color:white;"></textarea>
         </label>
         <label class="item item-input item-stacked-label">
-          <span class="input-label">Description:</span>
+          <span class="input-label">Beschreibung:</span>
           <textarea ng-model="task.description" style="background-color:white;"></textarea>
         </label>
         <label class="item item-input item-stacked-label">
-          <span class="input-label">Urgency:</span>
-          <input type="number" min="1" ng-model="task.urgency" style="background-color:white;"></textarea>
-        </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">amountOfVolunteers:</span>
+          <span class="input-label">Zahl der Freiwilligen:</span>
           <input type="number" min="1" ng-model="task.amountOfVolunteers" style="background-color:white;"></textarea>
         </label>
+        <br>
+        <div class="item item-divider">Zeit und Ort</div>
         <label class="item item-input item-stacked-label">
-          <span class="input-label">Location:</span>
-          <input type="text" ng-model="task.location" style="background-color:white;"></textarea>
-        </label>
-        <label class="item item-input item-stacked-label">
-          <span class="input-label">StartTime</span>
+          <span class="input-label">Beginn:</span>
           <input type="datetime-local" ng-model="task.startTime" style="background-color:white;">
         </label>
         <label class="item item-input item-stacked-label">
-          <span class="input-label">EndTime:</span>
+          <span class="input-label">Ende:</span>
           <input type="datetime-local" ng-model="task.endTime" style="background-color:white;">
+        </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Ort:</span>
+          <input type="text" ng-model="task.location" style="background-color:white;"></textarea>
         </label>
       </form>
     </div>
