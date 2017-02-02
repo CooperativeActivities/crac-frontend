@@ -5,7 +5,7 @@ cracApp.directive('cAccordion', ["TaskDataService", function(TaskDataService) {
     },
     scope: {
       title: "=",
-      shown: "="
+      shown: "=?"
     },
     templateUrl: 'templates/directives/cAccordion.html'
   };

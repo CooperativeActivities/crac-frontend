@@ -25,15 +25,14 @@ cracApp.controller('newTaskCtrl', ['$scope','$route', '$stateParams','$routePara
       taskData.name= $scope.task.name;
       taskData.description= $scope.task.description;
       taskData.location= $scope.task.location;
-      taskData.startTime= $scope.task.startTime;
-      taskData.endTime= $scope.task.endTime;
+      taskData.startTime= $scope.task.startTime.getTime();
+      taskData.endTime= $scope.task.endTime.getTime();
       taskData.amountOfVolunteers= $scope.task.amountOfVolunteers;
 
 
       if($scope.parentTask === null){
         TaskDataService.createNewTask(taskData).then(function(res) {
-          $ionicHistory.goBack();
-          //$scope.loadSingleTask(res.data.task)
+          $scope.loadSingleTask(res.data.task)
         }, function(error) {
           console.log('An error occurred!', error);
           alert("Es muss jedes Feld ausgefüllt sein:"+ error.data.cause);
@@ -41,7 +40,7 @@ cracApp.controller('newTaskCtrl', ['$scope','$route', '$stateParams','$routePara
       } else {
         TaskDataService.createNewSubTask(taskData, $scope.parentTask.id).then(function (res) {
           $ionicHistory.goBack();
-          //$scope.loadSingleTask(res.data.task)
+          $scope.loadSingleTask(res.data.task)
         }, function (error) {
           console.log('An error occurred!', error);
           alert(error.data.cause);
