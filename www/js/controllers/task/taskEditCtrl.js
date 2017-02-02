@@ -2,11 +2,11 @@
 /**
  * Created by md@x-net on 2017-01-31
  */
-cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataService','UserDataService', "$ionicHistory", "$q",
+cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataService','UserDataService', "$ionicHistory", "$q", "$ionicPopup",
   // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-  function ($scope, $route, $stateParams,TaskDataService, UserDataService, $ionicHistory, $q) {
+  function ($scope, $route, $stateParams,TaskDataService, UserDataService, $ionicHistory, $q, $ionicPopup) {
 
     $scope.task= {};
     $scope.showPublish = false;
@@ -41,7 +41,16 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         $ionicHistory.goBack();
       }, function(error) {
         console.log('An error occurred!', error);
-        alert(error.data.cause);
+        var message = "";
+        switch(error.data.cause){
+            //welche fehler gibt es hier?
+          default: message = "Anderer Fehler: " + error.data.cause;
+        }
+        $ionicPopup.alert({
+          title: "Task kann nicht auf 'bereit' gesetzt werden",
+          template: message,
+          okType: "button-positive button-outline"
+        })
       });
     };
 
@@ -90,15 +99,35 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         $ionicHistory.goBack();
       }, function(error) {
         console.log('An error occurred!', error);
-        alert(error.data.cause);
+        var message = "";
+        switch(error.data.cause){
+          case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
+          case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
+          default: message = "Anderer Fehler: " + error.data.cause;
+        }
+        $ionicPopup.alert({
+          title: "Task kann nicht veröffentlicht werden",
+          template: message,
+          okType: "button-positive button-outline"
+        })
       });
     }
     $scope.readyToPublish = function(){
       TaskDataService.setReadyToPublishS($scope.task.id).then(function(res){
-        console.log(res);
+        console.log("ready", res);
       }, function(error){
         console.log('An error occurred!', error);
-        alert(error.data.cause);
+        var message = "";
+        switch(error.data.cause){
+          case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
+          case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
+          default: message = "Anderer Fehler: " + error.data.cause;
+        }
+        $ionicPopup.alert({
+          title: "Task kann nicht auf 'bereit' gesetzt werden",
+          template: message,
+          okType: "button-positive button-outline"
+        })
       })
     }
     $scope.readyToPublishTree = function(){
@@ -106,7 +135,16 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         console.log(res);
       }, function(error){
         console.log('An error occurred!', error);
-        alert(error.data.cause);
+        var message = "";
+        switch(error.data.cause){
+          case "CHILD_MISSING_COMPETENCES": message = "Eine Unteraufgabe benötigt noch Kompetenzen."; break;
+          default: message = "Anderer Fehler: " + error.data.cause;
+        }
+        $ionicPopup.alert({
+          title: "Task und Subtasks können nicht auf 'bereit' gesetzt werden",
+          template: message,
+          okType: "button-positive button-outline"
+        })
       })
     }
 
