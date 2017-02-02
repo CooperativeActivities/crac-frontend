@@ -69,6 +69,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
           if(relation !== "LEADING"){
             // @DISCUSS: cannot unfollow started task
             $scope.showFollow = relation !== "FOLLOWING";
+            // @DISCUSS: we might remove that & allow participation on all tasks
             if(taskIsLeaf){
               $scope.showEnroll = relation !== "PARTICIPATING";
             }
@@ -77,6 +78,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         case "PUBLISHED":
 
           if(relation !== "LEADING"){
+            // @DISCUSS: we might remove that & allow participation on all tasks
             if(taskIsLeaf){
               $scope.showCancel = relation === "PARTICIPATING";
               $scope.showEnroll = !$scope.showCancel;
@@ -105,16 +107,17 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 
 // Deleting all participating types
     $scope.cancel = function() {
-      TaskDataService.removeOpenTask($scope.task.id).then(function (res) {
-        console.log("unfollowed/cancelled");
-        $scope.participationType = "NOT_PARTICIPATING"
-        $scope.updateFlags();
-        //$state.reload();
-        //$window.location.reload();
-      }, function (error) {
-        console.log('An error occurred!', error);
-        alert(error.data.cause);
-      });
+      //failsafe, so you dont accidentally cancel leading a task
+      if($scope.participationType !== "LEADING"){
+        TaskDataService.removeOpenTask($scope.task.id).then(function (res) {
+          console.log("unfollowed/cancelled");
+          $scope.participationType = "NOT_PARTICIPATING"
+          $scope.updateFlags();
+        }, function (error) {
+          console.log('An error occurred!', error);
+          alert(error.data.cause);
+        });
+      }
     }
     //enable editing-mode
     $scope.edit = function(){

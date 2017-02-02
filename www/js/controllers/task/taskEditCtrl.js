@@ -45,7 +45,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       $scope.showPublish =false;
       $scope.showReadyToPublishSingle =false;
       $scope.showReadyToPublishTree = false;
-      $scope.showAddCompetences = false;
 
       switch(task.taskState){
         case "COMPLETED":
