@@ -297,7 +297,8 @@ angular.module('app.routes', ['ionicUIRouter'])
       })
 
       .state('tabsController.newTask', {
-        url: '/newtask',
+        // id param is optional
+        url: '/newtask/:parentId',
         views: {
           'tab3': {
             templateUrl: 'templates/newTask.html',
@@ -306,7 +307,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         }
       })
 
-      .state('tabsController.newSubTask', {
+    /*.state('tabsController.newSubTask', {
         url: '/newsubtask/:id',
         views: {
           'tab3': {
@@ -314,7 +315,7 @@ angular.module('app.routes', ['ionicUIRouter'])
             controller: 'newSubTaskCtrl'
           }
         }
-      })
+      }) */
 
       .state('tabsController.addCompetenceToTask', {
         url: '/addcompetencetotask/:id',

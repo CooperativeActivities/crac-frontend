@@ -70,6 +70,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       taskData.description= $scope.task.description;
       taskData.amountOfVolunteers= $scope.task.amountOfVolunteers;
       taskData.location= $scope.task.location;
+      // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
       taskData.startTime= $scope.task.startTime.getTime();
       taskData.endTime= $scope.task.endTime.getTime();
 

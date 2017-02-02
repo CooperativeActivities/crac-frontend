@@ -468,7 +468,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   margin-right: 1em;
 }
 .item-subtask, .item-subtask .item-content{
-  min-height: 50px;
+  /*min-height: 50px;*/
 }
 .item-subtask h3 {
   /*margin-left: 4em;*/

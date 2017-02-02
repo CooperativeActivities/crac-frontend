@@ -1,6 +1,9 @@
 /**
  * Created by P41332 on 25.10.2016.
  */
+// @TODO: move this to some global config file
+var SUBTASKS_LIMITED_TO_SHALLOW = false;
+
 cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParams','$routeParams','TaskDataService','$state','$ionicPopup', "$q", "UserDataService",
   // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
@@ -50,7 +53,8 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.updateFlags = function(){
       var relation = $scope.participationType,
         task = $scope.task,
-        taskIsLeaf = task.childTasks.length < 1;
+        taskIsLeaf = task.childTasks.length < 1,
+        taskIsSubtask = task.superTask !== null;
 
       //initialize all flags to false
       $scope.editableFlag =false;
@@ -89,12 +93,12 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
           // @TODO: check for permissions
           // if(task.userIsLeading){ //NYI
           $scope.editableFlag = true;
-          $scope.addSubTaskFlag = !taskIsLeaf;
+          $scope.addSubTaskFlag = !taskIsLeaf && (!SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask);
           break;
         case "NOT_PUBLISHED":
           // @TODO: check for permissions
           $scope.editableFlag = true;
-          $scope.addSubTaskFlag = true;
+          $scope.addSubTaskFlag = !SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask;
           $scope.showDelete = true;
           break;
       }
@@ -190,7 +194,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     }
 
     $scope.makeNewSubTask = function(){
-      $state.go('tabsController.newSubTask', { id:$scope.task.id });
+      $state.go('tabsController.newTask', { parentId: $scope.task.id });
     }
 //Complete a task
     $scope.complete = function() {

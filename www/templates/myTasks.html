@@ -6,6 +6,7 @@
     <ion-refresher on-refresh="doRefresh()"></ion-refresher>
     <div class="item item-divider">Teilgenommene Aufgaben:</div>
     <ion-list>
+      <!-- @TODO: sort-->
       <div ng-repeat="task in participatingTasks" class="parent">
         <task-preview task="task" ng-click="loadSingleTask(task.id)"></task-preview>
 
@@ -18,6 +19,7 @@
     <hr>
     <div class="item item-divider">Beobachtete Aufgaben:</div>
     <ion-list>
+      <!-- @TODO: sort-->
       <div ng-repeat="task in followingTasks" class="parent">
         <task-preview task="task" ng-click="loadSingleTask(task.id)"></task-preview>
 
@@ -28,8 +30,9 @@
       </div>
     </ion-list>
     <hr>
-    <div class="item item-divider">Von mir erstellte Aufgaben:</div>
+    <div class="item item-divider">Von mir angeführte Aufgaben:</div>
     <ion-list>
+      <!-- @TODO: sort-->
       <div ng-repeat="task in leadingTasks" class="parent">
         <task-preview task="task" ng-click="loadSingleTask(task.id)"></task-preview>
 

@@ -27,6 +27,9 @@
           <!-- @TODO: additional (matching) info? sort? -->
           <task-preview task="match.task" ng-click="loadSingleTask(match.task.id)"></task-preview>
         </div>
+        <p ng-if="matchingTasks.length < 1">
+          Keine Vorschläge gefunden; füge vielleicht ein paar Kompetenzen hinzu?
+        </p>
       </ion-list>
       <hr>
       <div class="item item-divider">Alle Aufgaben</div>
@@ -35,9 +38,9 @@
                 show-reorder="shouldShowReorder"
                 can-swipe="listCanSwipe">
         <!--<div ng-repeat="task in parentTasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search" class="parent">-->
+        <!-- @TODO: sort-->
         <div ng-repeat="task in parentTasks" class="parent">
           <task-preview task="task" ng-click="loadSingleTask(task.id)"></task-preview>
-          <!--p>Anzahl Subaufgaben: {{task.childTasks}}</p-->
           <!--<div ng-repeat="childTask in task.childTasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search" class="child">-->
           <div ng-repeat="childTask in task.childTasks" class="child">
             <task-preview task="childTask" ng-click="loadSingleTask(childTask.id)"></task-preview>
