@@ -463,6 +463,10 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 .item-task h2 {
   font-weight: bold;
 }
+.child .item-task{
+  margin-left: 1em;
+  margin-right: 1em;
+}
 .item-subtask, .item-subtask .item-content{
   min-height: 50px;
 }

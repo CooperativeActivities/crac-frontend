@@ -14,7 +14,7 @@
     </div>
   </div>
   <div class="row" ng-if="!isSubtask">
-    <div class="col description">{{task.description}}</div>
+    <div class="col"><p>{{task.description}}</p></div>
   </div>
 
   <ion-option-button class="button-positive" ng-click="follow(task.id)" ng-if="showFollow">Folgen</ion-option-button>

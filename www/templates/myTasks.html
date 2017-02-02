@@ -9,9 +9,10 @@
       <div ng-repeat="task in participatingTasks" class="parent">
         <task-preview task="task" ng-click="loadSingleTask(task.id)"></task-preview>
 
-        <div ng-repeat="childTask in task.childTasks" class="child">
+        <!-- @DISCUSS: put these back in?  -->
+        <!-- <div ng-repeat="childTask in task.childTasks" class="child">
           <task-preview task="childTask" ng-click="loadSingleTask(childTask.id)"></task-preview>
-        </div>
+        </div> -->
       </div>
     </ion-list>
     <hr>
@@ -20,9 +21,10 @@
       <div ng-repeat="task in followingTasks" class="parent">
         <task-preview task="task" ng-click="loadSingleTask(task.id)"></task-preview>
 
-        <div ng-repeat="childTask in task.childTasks" class="child">
+        <!-- @DISCUSS: put these back in?  -->
+        <!-- <div ng-repeat="childTask in task.childTasks" class="child">
           <task-preview task="childTask" ng-click="loadSingleTask(childTask.id)"></task-preview>
-        </div>
+        </div> -->
       </div>
     </ion-list>
     <hr>
@@ -31,9 +33,10 @@
       <div ng-repeat="task in leadingTasks" class="parent">
         <task-preview task="task" ng-click="loadSingleTask(task.id)"></task-preview>
 
-        <div ng-repeat="childTask in task.childTasks" class="child">
+        <!-- @DISCUSS: put these back in?  -->
+        <!-- <div ng-repeat="childTask in task.childTasks" class="child">
           <task-preview task="childTask" ng-click="loadSingleTask(childTask.id)"></task-preview>
-        </div>
+        </div> -->
       </div>
     </ion-list>
   </ion-content>
