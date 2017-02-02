@@ -7,13 +7,62 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
   function ($scope, $route, $stateParams,TaskDataService, UserDataService, $ionicHistory, $q, $ionicPopup) {
-
     $scope.task= {};
     $scope.showPublish = false;
     $scope.showReadyToPublishSingle = false;
     $scope.showReadyToPublishTree = false;
     //this needs to be an object for the select to work (angular is weird)
     $scope.select = { competenceToAdd : null };
+
+    $scope.load = function(){
+      // @TODO: check if task.userIsLeading, if not, go back
+      TaskDataService.getTaskById($stateParams.id).then(function (res) {
+        var task = res.data;
+        console.log("edit", task)
+        if(!task) return;
+        $q.all( [
+          $q.all( task.mappedCompetences.map(function(comp){
+            return UserDataService.getCompetenceById(comp.competence).then(function(res){ return res.data })
+          })),
+          TaskDataService.getAllAvailableCompetences(task.id).then(function(res){ return res.data })
+        ]).then(function(competences){
+          $scope.neededCompetences = competences[0];
+          $scope.availableCompetences = competences[1];
+          $scope.task = task;
+          $scope.task.startTime = new Date($scope.task.startTime)
+          $scope.task.endTime = new Date($scope.task.endTime)
+          $scope.updateFlags()
+        })
+      }, function (error) {
+        console.log('An error occurred!', error);
+      });
+    };
+
+    $scope.updateFlags = function(){
+      var task = $scope.task;
+
+      //initialize all flags to false
+      $scope.showPublish =false;
+      $scope.showReadyToPublishSingle =false;
+      $scope.showReadyToPublishTree = false;
+      $scope.showAddCompetences = false;
+
+      switch(task.taskState){
+        case "COMPLETED":
+          //disable all fields
+          break;
+        case "STARTED":
+          //disable all fields
+          break;
+        case "PUBLISHED":
+          break;
+        case "NOT_PUBLISHED":
+          $scope.showPublish = $scope.task.superTask === null;
+          $scope.showReadyToPublishSingle = !$scope.task.readyToPublish;
+          $scope.showReadyToPublishTree = !$scope.task.readyToPublish && $scope.task.childTasks.length > 0;
+          break;
+      }
+    };
 
 // Save changes
     $scope.save = function(){
@@ -22,13 +71,21 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       taskData.description= $scope.task.description;
       taskData.amountOfVolunteers= $scope.task.amountOfVolunteers;
       taskData.location= $scope.task.location;
-
       taskData.startTime= $scope.task.startTime.getTime();
       taskData.endTime= $scope.task.endTime.getTime();
 
+      // @TODO: this shouldn't be necessary
+      taskData.taskState = $scope.task.taskState;
+
       TaskDataService.updateTaskById(taskData, $scope.task.id).then(function(res) {
-        $route.reload();
-        $ionicHistory.goBack();
+        $scope.load()
+        // this can be closed automatically (setTimeout and .close()) in case it annoys ppl
+        $ionicPopup.alert({
+          title: "Task gespeichert",
+          okType: "button-positive button-outline"
+        })
+        /* $route.reload();
+        $ionicHistory.goBack(); */
       }, function(error) {
         console.log('An error occurred!', error);
         var message = "";
@@ -44,33 +101,9 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       });
     };
 
-    $scope.load = function(){
-      TaskDataService.getTaskById($stateParams.id).then(function (res) {
-        var task = res.data;
-        if(!task) return;
-        $q.all( [
-          $q.all( task.mappedCompetences.map(function(comp){
-            return UserDataService.getCompetenceById(comp.competence).then(function(res){ return res.data })
-          })),
-          TaskDataService.getAllAvailableCompetences(task.id).then(function(res){ return res.data })
-        ]).then(function(competences){
-          $scope.neededCompetences = competences[0];
-          $scope.availableCompetences = competences[1];
-          $scope.task = task;
-          $scope.task.startTime = new Date($scope.task.startTime)
-          $scope.task.endTime = new Date($scope.task.endTime)
-          $scope.showPublish = $scope.task.taskState === "NOT_PUBLISHED" && $scope.task.superTask === null;
-          $scope.showReadyToPublishSingle = $scope.task.taskState === "NOT_PUBLISHED";
-          $scope.showReadyToPublishTree = $scope.task.taskState === "NOT_PUBLISHED" && $scope.task.childTasks.length > 0;
-        })
-      }, function (error) {
-        console.log('An error occurred!', error);
-      });
-    };
 
     $scope.addCompetence = function(){
       if(!$scope.select.competenceToAdd) return;
-      console.log($scope.select.competenceToAdd)
       var competenceId = $scope.select.competenceToAdd;
       TaskDataService.addCompetenceToTask($scope.task.id, competenceId,
         // @TODO: make the configurable
@@ -86,7 +119,8 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 //publish task
     $scope.publish = function(){
       TaskDataService.changeTaskState($scope.task.id, 'publish').then(function(res) {
-        $ionicHistory.goBack();
+        $scope.load()
+        //$ionicHistory.goBack();
       }, function(error) {
         console.log('An error occurred!', error);
         var message = "";
@@ -104,7 +138,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     }
     $scope.readyToPublish = function(){
       TaskDataService.setReadyToPublishS($scope.task.id).then(function(res){
-        console.log("ready", res);
+        $scope.load()
       }, function(error){
         console.log('An error occurred!', error);
         var message = "";
@@ -122,7 +156,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     }
     $scope.readyToPublishTree = function(){
       TaskDataService.setReadyToPublishT($scope.task.id).then(function(res){
-        console.log(res);
+        $scope.load()
       }, function(error){
         console.log('An error occurred!', error);
         var message = "";
@@ -139,5 +173,4 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     }
 
     $scope.load();
-
   }])

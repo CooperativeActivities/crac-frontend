@@ -34,7 +34,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
             return "NOT_PARTICIPATING"
           }) ])
         ).then(function(competences){
-          var relation = competences.pop()
+          var relation = competences.pop();
           $scope.neededCompetences = competences;
           $scope.task = task;
           $scope.participationType = relation;
@@ -49,32 +49,51 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 
     $scope.updateFlags = function(){
       var relation = $scope.participationType,
-        task = $scope.task;
-      $scope.editableFlag =false; // @TODO: check for permissions
+        task = $scope.task,
+        taskIsLeaf = task.childTasks.length < 1;
+
+      //initialize all flags to false
+      $scope.editableFlag =false;
       $scope.addSubTaskFlag =false;
+      $scope.showDelete = false;
 
       $scope.showEnroll =false;
       $scope.showCancel =false;
       $scope.showFollow = false;
       $scope.showUnfollow = false;
-      $scope.showDelete = false;
+
       switch(task.taskState){
+        case "COMPLETED":
+          break;
         case "STARTED":
+          if(relation !== "LEADING"){
+            // @DISCUSS: cannot unfollow started task
+            $scope.showFollow = relation !== "FOLLOWING";
+            if(taskIsLeaf){
+              $scope.showEnroll = relation !== "PARTICIPATING";
+            }
+          }
+          break;
         case "PUBLISHED":
-          $scope.addSubTaskFlag = task.childTasks.length > 0;
-          $scope.showCancel = relation === "PARTICIPATING";
-          $scope.showUnfollow = relation === "FOLLOWING";
-          $scope.showFollow = !$scope.showUnfollow && !$scope.showCancel;
-          $scope.showEnroll = !$scope.showUnfollow && !$scope.showCancel;
+
+          if(relation !== "LEADING"){
+            if(taskIsLeaf){
+              $scope.showCancel = relation === "PARTICIPATING";
+              $scope.showEnroll = !$scope.showCancel;
+            }
+            $scope.showUnfollow = relation === "FOLLOWING";
+            $scope.showFollow = !$scope.showUnfollow && !$scope.showCancel;
+          }
+          // @TODO: check for permissions
+          // if(task.userIsLeading){ //NYI
+          $scope.editableFlag = true;
+          $scope.addSubTaskFlag = !taskIsLeaf;
           break;
         case "NOT_PUBLISHED":
-          $scope.addSubTaskFlag = true;
+          // @TODO: check for permissions
           $scope.editableFlag = true;
+          $scope.addSubTaskFlag = true;
           $scope.showDelete = true;
-          $scope.showFollow = false;
-          $scope.showUnfollow = false;
-          $scope.showEnroll = false;
-          $scope.showCancel = false;
           break;
       }
     };
