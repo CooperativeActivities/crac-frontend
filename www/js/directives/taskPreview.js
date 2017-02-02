@@ -4,8 +4,10 @@ cracApp.directive('taskPreview', ["TaskDataService", function(TaskDataService) {
       task: "=",
     },
     link: function(scope, element, attr){
-      scope.statusIsPublished = scope.task.taskState === "PUBLISHED"
-      scope.statusIsNotPublished = scope.task.taskState === "NOT_PUBLISHED" && !scope.task.readyToPublish
+      scope.statusNotPublished = scope.task.taskState === "NOT_PUBLISHED"
+      scope.statusPublished = scope.task.taskState === "PUBLISHED"
+      scope.statusStarted = scope.task.taskState === "STARTED"
+      scope.statusCompleted = scope.task.taskState === "COMPLETED"
       scope.isSubtask = scope.task.superTask !== null;
 
       scope.follow = function(id){

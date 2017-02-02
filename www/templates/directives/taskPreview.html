@@ -3,10 +3,14 @@
     <div class="col" ng-if="!isSubtask"><h2>{{task.name}}</h2></div>
     <div class="col" ng-if="isSubtask"><h3>{{task.name}}</h3></div>
     <div class="col icon ion-calendar">{{task.startTime | date: 'shortDate'}} - {{task.endTime | date: 'shortDate'}}</div>
-    <div class="col">
-      <i ng-if="statusIsPublished" class="icon ion-android-done-all balanced"></i>
-      <i ng-if="statusIsNotPublished" class="icon ion-locked assertive"></i>
-      <i ng-if="task.readyToPublish && !statusIsPublished" class="icon ion-unlocked positive"></i>
+    <div class="col" ng-if="statusNotPublished">
+      <i class="icon ion-locked"   ng-class="{ assertive : !task.readyToPublish }"></i>
+      <i class="icon ion-unlocked" ng-class="{ positive  : task.readyToPublish }" ></i>
+    </div>
+    <div class="col" ng-if="!statusNotPublished">
+      <i class="icon ion-asterisk"  ng-class="{ energized: statusPublished }"></i>
+      <i class="icon ion-loop"      ng-class="{  positive: statusStarted }"></i>
+      <i class="icon ion-checkmark" ng-class="{  balanced: statusCompleted }"></i>
     </div>
   </div>
   <div class="row" ng-if="!isSubtask">
