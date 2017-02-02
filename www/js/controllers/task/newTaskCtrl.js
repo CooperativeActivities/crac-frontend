@@ -50,7 +50,7 @@ cracApp.controller('newTaskCtrl', ['$scope','$route', '$stateParams','$routePara
     };
 
     $scope.loadSingleTask = function(taskId){
-      var x =$state.go('tabsController.task1', { id:taskId }, { location: "replace" }).then(function(res){
+      var x =$state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
         debugger
         $ionicHistory.removeBackView()
       });

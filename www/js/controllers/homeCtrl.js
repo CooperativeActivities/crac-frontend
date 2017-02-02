@@ -21,8 +21,7 @@ cracApp.controller('homeCtrl', ['$scope', '$stateParams', 'TaskDataService','$st
     };
 
     $scope.loadSingleTask = function(taskId){
-      console.log("In fkt")
-      $state.go('tabsController.task1', { id:taskId });
+      $state.go('tabsController.task', { id:taskId });
     }
 
 

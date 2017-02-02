@@ -43,6 +43,19 @@
             <option ng-repeat="competence in availableCompetences" ng-value="competence.id">
               {{ competence.name }}
             </option>
+            <!--
+                <h2>{{competenceInfo.name}}</h2>
+                <p style="white-space:normal;">{{competenceInfo.description}}</p>
+                <ion-item class="range range-assertive">Können
+                  <input type="range" ng-model="comp.proficiencyValue" min="0" max="100" step="1">
+                  <p>{{comp.proficiencyValue}}</p>
+                </ion-item>
+                <ion-item class="range range-assertive" >Wichtigkeit
+                  <input type="range" ng-model="comp.importance" min="0" max="100" step="1">
+                  <p>{{comp.importance}}</p>
+                </ion-item>
+                <ion-toggle ng-model="mandatory" toggle-class="toggle-calm" ng-true-value="true" ng-false-value="false">Zwingend</ion-toggle>
+            -->
           </select>
           <button type="button" ng-click="addCompetence()" class="button button-small button-outline button-positive ion-plus"></button>
         </div>

@@ -183,7 +183,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         }
       })
 
-      .state('tabsController.task1', {
+      .state('tabsController.task', {
         url: '/task/:id',
         views: {
           'tab1': {
@@ -215,27 +215,6 @@ angular.module('app.routes', ['ionicUIRouter'])
           'tab3': {
             templateUrl: 'templates/taskEdit.html',
             controller: 'taskEditCtrl'
-          }
-        }
-      })
-
-      .state('tabsController.task1enrolled', {
-        url: '/task1enrolled',
-        views: {
-          'tab3': {
-            templateUrl: 'templates/task1enrolled.html',
-            controller: 'task1enrolledCtrl'
-          }
-        }
-      })
-
-
-      .state('tabsController.task2enrolled', {
-        url: '/task2enrolled',
-        views: {
-          'tab3': {
-            templateUrl: 'templates/task2enrolled.html',
-            controller: 'task2enrolledCtrl'
           }
         }
       })
@@ -307,16 +286,6 @@ angular.module('app.routes', ['ionicUIRouter'])
         }
       })
 
-    /*.state('tabsController.newSubTask', {
-        url: '/newsubtask/:id',
-        views: {
-          'tab3': {
-            templateUrl: 'templates/newSubTask.html',
-            controller: 'newSubTaskCtrl'
-          }
-        }
-      }) */
-
       .state('tabsController.addCompetenceToTask', {
         url: '/addcompetencetotask/:id',
         views: {
@@ -335,28 +304,6 @@ angular.module('app.routes', ['ionicUIRouter'])
           }
         }
       })
-
-      .state('tabsController.task2', {
-        url: '/task2',
-        views: {
-          'tab1': {
-            templateUrl: 'templates/task2.html',
-            controller: 'task2Ctrl'
-          },
-          'tab2': {
-            templateUrl: 'templates/task2.html',
-            controller: 'task2Ctrl'
-          },
-          'tab3': {
-            templateUrl: 'templates/task2.html',
-            controller: 'task2Ctrl'
-          }
-        }
-      });
-
-
-
-
 
 
     //**********************************************

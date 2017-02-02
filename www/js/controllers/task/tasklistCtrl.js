@@ -5,7 +5,7 @@
 cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, $ionicModal, TaskDataService, $q) {
 
   $scope.loadSingleTask = function(taskId){
-    $state.go('tabsController.task1', { id:taskId });
+    $state.go('tabsController.task', { id:taskId });
   }
   $scope.doRefresh = function(){
     $q.all(

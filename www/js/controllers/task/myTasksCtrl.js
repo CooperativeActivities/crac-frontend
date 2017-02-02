@@ -24,7 +24,7 @@ function ($scope,$window, $route, $stateParams, $routeParams, TaskDataService, $
   }
 
   $scope.loadSingleTask = function(taskId){
-    $state.go('tabsController.task1', { id:taskId });
+    $state.go('tabsController.task', { id:taskId });
   }
   $scope.cancle = function(id){
     TaskDataService.removeOpenTask(id).then(function(res) {

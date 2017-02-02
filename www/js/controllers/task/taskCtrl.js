@@ -106,7 +106,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 
 //To open another Task, e.g. SubTask
     $scope.loadSingleTask = function(taskId){
-      $state.go('tabsController.task1', { id:taskId });
+      $state.go('tabsController.task', { id:taskId });
     }
 
 // Deleting all participating types
