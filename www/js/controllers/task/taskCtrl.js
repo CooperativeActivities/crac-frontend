@@ -50,9 +50,18 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.updateFlags = function(){
       var relation = $scope.participationType,
         task = $scope.task;
+      $scope.editableFlag =false; // @TODO: check for permissions
+      $scope.addSubTaskFlag =false;
+
+      $scope.showEnroll =false;
+      $scope.showCancel =false;
+      $scope.showFollow = false;
+      $scope.showUnfollow = false;
+      $scope.showDelete = false;
       switch(task.taskState){
         case "STARTED":
         case "PUBLISHED":
+          $scope.addSubTaskFlag = task.childTasks.length > 0;
           $scope.showCancel = relation === "PARTICIPATING";
           $scope.showUnfollow = relation === "FOLLOWING";
           $scope.showFollow = !$scope.showUnfollow && !$scope.showCancel;

@@ -20,18 +20,8 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       var taskData = {};
       taskData.name= $scope.task.name;
       taskData.description= $scope.task.description;
-      taskData.urgency= $scope.task.urgency;
       taskData.amountOfVolunteers= $scope.task.amountOfVolunteers;
       taskData.location= $scope.task.location;
-      taskData.feedback= $scope.task.feedback;
-      taskData.taskState= $scope.task.taskState;
-      taskData.taskType= $scope.task.taskType;
-      taskData.taskRepetitionState= $scope.task.taskRepetitionState;
-      // if we set this, we get a 400
-      //taskData.superTask= $scope.task.superTask;
-      taskData.childTask= $scope.task.childTask;
-      taskData.previousTask= $scope.task.previousTask;
-      taskData.nextTask= $scope.task.nextTask;
 
       taskData.startTime= $scope.task.startTime.getTime();
       taskData.endTime= $scope.task.endTime.getTime();
@@ -43,7 +33,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         console.log('An error occurred!', error);
         var message = "";
         switch(error.data.cause){
-            //welche fehler gibt es hier?
+            // @TODO: welche fehler gibt es hier?
           default: message = "Anderer Fehler: " + error.data.cause;
         }
         $ionicPopup.alert({

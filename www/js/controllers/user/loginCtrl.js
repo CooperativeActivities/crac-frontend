@@ -10,11 +10,9 @@ cracApp.controller('loginCtrl', function ($rootScope,$scope, $ionicPopup, $locat
   $scope.data = {}
 
   $scope.login = function () {
-    console.log("in login");
 
     AuthenticationService.Login($scope.data.username, $scope.data.password, function (response) {
       if (response.success) {
-        console.log("in login auth success");
         AuthenticationService.SetCredentials(response);
        // AuthenticationService.SetCredentials($scope.data.username, $scope.data.password, response.id);
         //$scope.loggedIn = true;
@@ -25,8 +23,9 @@ cracApp.controller('loginCtrl', function ($rootScope,$scope, $ionicPopup, $locat
       } else {
         console.log("in login auth no success")
         var alertPopup = $ionicPopup.alert({
-          title: 'Login failed!',
-          template: 'Please check your credentials!'
+          title: 'Login fehlgeschlagen!',
+          template: 'Username oder Passwort falsch',
+          okType: "button-positive button-outline"
         });
         //$scope.loggedIn = false;
         //$scope.hasWrongCredentials = true;
@@ -34,6 +33,7 @@ cracApp.controller('loginCtrl', function ($rootScope,$scope, $ionicPopup, $locat
     });
   }
 
+  //NYI
   $scope.facebookLogin = function(){
     FB.getLoginStatus(function(response) {
       if (response.status === 'connected') {
@@ -41,7 +41,7 @@ cracApp.controller('loginCtrl', function ($rootScope,$scope, $ionicPopup, $locat
       }
       else {
         FB.login(function(response){
-          
+
         });
       }
     });
