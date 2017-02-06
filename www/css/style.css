@@ -14,23 +14,8 @@
 
 /* -- HEADER -------------------------------------------------------------------------------------------------------- */
 
-.menu-content .bar.bar-positive {
-  border-color: #f58730;
-  background-color: #f58730;
-  background-image: linear-gradient(0deg, #f58730, #f58730 50%, transparent 50%);
-  color: #fff;
-}
-
-.menu-content .bar.bar-positive .title {
-  color: #fff;
-}
-
-.menu-content .bar.bar-positive.bar-footer {
-  background-image: linear-gradient(180deg, #f58730, #f58730 50%, transparent 50%);
-}
-
 #side-menu21 {
-  background-color: rgb(57, 107, 190);
+  background-color: #BD0770;
   width: 275px;
   z-index: 0;
 }
@@ -115,7 +100,7 @@
 }
 
 .assertive {
-  color: #e94b30;
+  color: #663366;
 }
 
 img.img-responsive {
@@ -191,12 +176,60 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 
 /* shoukd not contain ion native tags */
 
+.item {
+  margin: -1px 0 -1px 0;
+}
+
 .item.item-select {
   padding: 6px 0 5px 16px;
 }
 
 input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.cloned-text-input), textarea[readonly]:not(.cloned-text-input), select[readonly] {
   background: transparent;
+}
+
+.bar .button {
+  background: none;
+  color: #fff;
+}
+
+/*-- OVERRIDES ------------------------------------------------------------------------------------------------------ */
+
+.item-divider, .button {
+  border-radius: 50px;
+}
+
+.range, .item-select, .card {
+  border-radius: 20px;
+}
+
+.list .item-divider {
+  border-radius: 0;
+}
+
+.list .item:first-child {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.list .item:last-child {
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.list .list .item {
+  border-radius: 0;
+}
+
+.bar-1 {
+  border-color: #F91C48;
+  background-color: #F91C48;
+  background-image: linear-gradient(0deg, #F91C48, #F91C48 50%, transparent 50%);
+  color: #fff;
+}
+
+.bar-1 .title {
+  color: #fff;
 }
 
 /*-- BUTTONS -------------------------------------------------------------------------------------------------------- */
@@ -283,90 +316,82 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   color: #fff;
 }
 
-/* -- energized2 ---------------------------------------------------------------------------------------------------- */
+/* -- 1 ------------------------------------------------------------------------------------------------------------ */
 
-.button.button-energized2 {
+.button.button-1 {
   border-color: transparent;
-  background-color: #f58730;
+  background-color: #F91C48;
   color: #fff;
 }
 
-.button.button-energized2:hover {
+.button.button-1:hover {
   color: #fff;
   text-decoration: none;
 }
 
-.button.button-energized2.active, .button.button-energized2.activated {
-  background-color: #f58730;
+.button.button-1.active, .button.1.activated {
+  background-color: #F91C48;
 }
 
-.button.button-energized2.button-clear {
+.button.button-1.button-clear {
   border-color: transparent;
   background: none;
   box-shadow: none;
-  color: #f58730;
+  color: #F91C48;
 }
 
-.button.button-energized2.button-icon {
+.button.button-1.button-icon {
   border-color: transparent;
   background: none;
 }
 
-.button.button-energized2.button-outline {
-  border-color: #f58730;
+.button.button-1.button-outline {
+  border-color: #F91C48;
   background: transparent;
-  color: #f58730;
+  color: #F91C48;
 }
 
-.button.button-energized2.button-outline.active, .button.button-energized2.button-outline.activated {
-  background-color: #f58730;
+.button.button-1.button-outline.active, .button.button-1.button-outline.activated {
+  background-color: #F91C48;
   box-shadow: none;
   color: #fff;
 }
 
-.bar.bar-energized2 {
-  border-color: #f58730;
-  background-color: #f58730;
-  background-image: linear-gradient(0deg, #f58730, #f58730 50%, transparent 50%);
+.bar.bar-1 {
+  border-color: #F91C48;
+  background-color: #F91C48;
+  background-image: linear-gradient(0deg, #F91C48, #F91C48 50%, transparent 50%);
   color: #fff;
 }
 
-.bar.bar-energized2 .title {
+.tabs-1 > .tabs,
+.tabs.tabs-1 {
+  border-color: #F91C48;
+  background-color: #F91C48;
+  background-image: linear-gradient(0deg, #F91C48, #F91C48 50%, transparent 50%);
   color: #fff;
 }
 
-.bar.bar-energized2.bar-footer {
-  background-image: linear-gradient(180deg, #f58730, #f58730 50%, transparent 50%);
-}
-
-.tabs-energized2 > .tabs,
-.tabs.tabs-energized2 {
-  border-color: #f58730;
-  background-color: #f58730;
-  background-image: linear-gradient(0deg, #f58730, #f58730 50%, transparent 50%);
-  color: #fff;
-}
-
-.tabs-energized2 > .tabs .tab-item .badge,
-.tabs.tabs-energized2 .tab-item .badge {
+.tabs-1 > .tabs .tab-item .badge,
+.tabs.tabs-1 .tab-item .badge {
   background-color: #fff;
-  color: #f58730;
+  color: #F91C48;
 }
 
-.tabs-striped.tabs-energized2 .tabs {
-  background-color: #f58730;
+.tabs-striped.tabs-1 .tabs {
+  background-color: #F91C48;
 }
 
-.tabs-striped.tabs-energized2 .tab-item {
+.tabs-striped.tabs-1 .tab-item {
   color: rgba(255, 255, 255, 0.4);
   opacity: 1;
 }
 
-.tabs-striped.tabs-energized2 .tab-item .badge {
+.tabs-striped.tabs-1 .tab-item .badge {
   opacity: 0.4;
 }
 
-.tabs-striped.tabs-energized2 .tab-item.tab-item-active, .tabs-striped.tabs-energized2 .tab-item.active, .tabs-striped.tabs-energized2 .tab-item.activated {
+.tabs-striped.tabs-1 .tab-item.tab-item-active, .tabs-striped.tabs-1 .tab-item.active, .tabs-striped.tabs-1 .tab-item.activated {
   margin-top: -2px;
   color: #fff;
   border-style: solid;
@@ -456,6 +481,129 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   color: #fff;
 }
 
+/* -- button-2 ------------------------------------------------------------------------------------------------------ */
+
+.button.button-2 {
+  border-color: transparent;
+  background-color: #1384A1;
+  color: #fff;
+}
+
+.button.button-2:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.button.button-2.active, .button.button-2.activated {
+  background-color: #1384A1;
+}
+
+.button.button-2.button-clear {
+  border-color: transparent;
+  background: none;
+  box-shadow: none;
+  color: #1384A1;
+}
+
+.button.button-2.button-icon {
+  border-color: transparent;
+  background: none;
+}
+
+.button.button-2.button-outline {
+  border-color: #1384A1;
+  background: transparent;
+  color: #1384A1;
+}
+
+.button.button-2.button-outline.active, .button.button-2.button-outline.activated {
+  background-color: #1384A1;
+  box-shadow: none;
+  color: #fff;
+}
+
+/* -- button-3 ------------------------------------------------------------------------------------------------------ */
+
+.button.button-3 {
+  border-color: transparent;
+  background-color: #BD0770;
+  color: #fff;
+}
+
+.button.button-3:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.button.button-3.active, .button.button-3.activated {
+  background-color: #BD0770;
+}
+
+.button.button-3.button-clear {
+  border-color: transparent;
+  background: none;
+  box-shadow: none;
+  color: #BD0770;
+}
+
+.button.button-3.button-icon {
+  border-color: transparent;
+  background: none;
+}
+
+.button.button-3.button-outline {
+  border-color: #BD0770;
+  background: transparent;
+  color: #BD0770;
+}
+
+.button.button-3.button-outline.active, .button.button-3.button-outline.activated {
+  background-color: #BD0770;
+  box-shadow: none;
+  color: #fff;
+}
+
+/* -- button-4 ------------------------------------------------------------------------------------------------------ */
+
+.button.button-4 {
+  border-color: transparent;
+  background-color: #663366;
+  color: #fff;
+}
+
+.button.button-4:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.button.button-4.active, .button.button-4.activated {
+  background-color: #663366;
+}
+
+.button.button-4.button-clear {
+  border-color: transparent;
+  background: none;
+  box-shadow: none;
+  color: #663366;
+}
+
+.button.button-4.button-icon {
+  border-color: transparent;
+  background: none;
+}
+
+.button.button-4.button-outline {
+  border-color: #663366;
+  background: transparent;
+  color: #663366;
+}
+
+.button.button-4.button-outline.active, .button.button-4.button-outline.activated {
+  background-color: #663366;
+  box-shadow: none;
+  color: #fff;
+}
+
 /* Task list*/
 .item-task:not(.item-subtask) .item-content{
   background: #f5f5f5;
@@ -512,5 +660,9 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 }
 
 .tab-item:hover {
-  color: #000;
+  color: #fff;
+}
+
+#myCrAcMenu-list1 .item {
+  border-radius: 0;
 }
