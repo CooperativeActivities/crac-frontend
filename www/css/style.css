@@ -207,6 +207,14 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   border-radius: 0;
 }
 
+.item-divider {
+  margin-bottom 10px;
+}
+
+.card .item-divider, .list .item-divider {
+  margin-bottom 0;
+}
+
 .list .item:first-child {
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
@@ -606,21 +614,20 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 
 /* Task list*/
 .item-task:not(.item-subtask) .item-content{
-  background: #3399ff;
-  color: #fff;
+  background: #f5f5f5;
+  border-radius: 20px;
 }
-.item-task:not(.item-subtask) .item-content p{
-  color: #fff;
+
+.item-subtask {
+  border: 1px dashed #ccc;
 }
-.item-task:not(.item-subtask) .item-content h2{
-  color: #fff;
-}
+
 .item-task h2 {
   font-weight: bold;
 }
 .child .item-task{
   margin-left: 1em;
-  margin-right: 1em;
+  /*margin-right: 1em;*/
 }
 .item-subtask, .item-subtask .item-content{
   /*min-height: 50px;*/
