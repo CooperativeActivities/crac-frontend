@@ -208,11 +208,11 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 }
 
 .item-divider {
-  margin-bottom 10px;
+  margin-bottom: 10px;
 }
 
 .card .item-divider, .list .item-divider {
-  margin-bottom 0;
+  margin-bottom: 0;
 }
 
 .list .item:first-child {
