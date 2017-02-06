@@ -485,7 +485,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 
 .button.button-2 {
   border-color: transparent;
-  background-color: #3399ff;
+  background-color: #297ba4;
   color: #fff;
 }
 
@@ -495,14 +495,14 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 }
 
 .button.button-2.active, .button.button-2.activated {
-  background-color: #3399ff;
+  background-color: #297ba4;
 }
 
 .button.button-2.button-clear {
   border-color: transparent;
   background: none;
   box-shadow: none;
-  color: #3399ff;
+  color: #297ba4;
 }
 
 .button.button-2.button-icon {
@@ -511,13 +511,13 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 }
 
 .button.button-2.button-outline {
-  border-color: #3399ff;
+  border-color: #297ba4;
   background: transparent;
-  color: #3399ff;
+  color: #297ba4;
 }
 
 .button.button-2.button-outline.active, .button.button-2.button-outline.activated {
-  background-color: #3399ff;
+  background-color: #297ba4;
   box-shadow: none;
   color: #fff;
 }
@@ -526,7 +526,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 
 .button.button-3 {
   border-color: transparent;
-  background-color: #BD0770;
+  background-color: #8e0253;
   color: #fff;
 }
 
@@ -536,14 +536,14 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 }
 
 .button.button-3.active, .button.button-3.activated {
-  background-color: #BD0770;
+  background-color: #8e0253;
 }
 
 .button.button-3.button-clear {
   border-color: transparent;
   background: none;
   box-shadow: none;
-  color: #BD0770;
+  color: #8e0253;
 }
 
 .button.button-3.button-icon {
@@ -552,13 +552,13 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 }
 
 .button.button-3.button-outline {
-  border-color: #BD0770;
+  border-color: #8e0253;
   background: transparent;
-  color: #BD0770;
+  color: #8e0253;
 }
 
 .button.button-3.button-outline.active, .button.button-3.button-outline.activated {
-  background-color: #BD0770;
+  background-color: #8e0253;
   box-shadow: none;
   color: #fff;
 }
