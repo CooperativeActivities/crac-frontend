@@ -7,7 +7,7 @@
     <div class="item item-divider">Teilgenommene Aufgaben:</div>
     <ion-list>
       <!-- @TODO: sort-->
-      <div ng-repeat="task in participatingTasks" class="parent">
+      <div ng-repeat="task in participatingTasks" class="parent item">
         <task-preview task="task" ng-click="loadSingleTask(task.id)"></task-preview>
 
         <!-- @DISCUSS: put these back in?  -->
@@ -24,7 +24,7 @@
         <task-preview task="task" ng-click="loadSingleTask(task.id)"></task-preview>
 
         <!-- @DISCUSS: put these back in?  -->
-        <!-- <div ng-repeat="childTask in task.childTasks" class="child">
+        <!-- <div ng-repeat="childTask in task.childTasks" class="child item">
           <task-preview task="childTask" ng-click="loadSingleTask(childTask.id)"></task-preview>
         </div> -->
       </div>
@@ -37,7 +37,7 @@
         <task-preview task="task" ng-click="loadSingleTask(task.id)"></task-preview>
 
         <!-- @DISCUSS: put these back in?  -->
-        <!-- <div ng-repeat="childTask in task.childTasks" class="child">
+        <!-- <div ng-repeat="childTask in task.childTasks" class="child item">
           <task-preview task="childTask" ng-click="loadSingleTask(childTask.id)"></task-preview>
         </div> -->
       </div>
