@@ -15,7 +15,7 @@
 /* -- HEADER -------------------------------------------------------------------------------------------------------- */
 
 #side-menu21 {
-  background-color: #BD0770;
+  background-color: #B070B2;
   width: 275px;
   z-index: 0;
 }
@@ -174,9 +174,9 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 }
 
 .bar-1 {
-  border-color: #1384A1;
-  background-color: #1384A1;
-  background-image: linear-gradient(0deg, #1384A1, #1384A1 50%, transparent 50%);
+  border-color: #1C7DC9;
+  background-color: #1C7DC9;
+  background-image: linear-gradient(0deg, #1C7DC9, #1C7DC9 50%, transparent 50%);
   color: #fff;
 }
 
@@ -280,7 +280,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 
 .button.button-1 {
   border-color: transparent;
-  background-color: #1384A1;
+  background-color: #1C7DC9;
   color: #fff;
 }
 
@@ -290,14 +290,14 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 }
 
 .button.button-1.active, .button.1.activated {
-  background-color: #1384A1;
+  background-color: #1C7DC9;
 }
 
 .button.button-1.button-clear {
   border-color: transparent;
   background: none;
   box-shadow: none;
-  color: #1384A1;
+  color: #1C7DC9;
 }
 
 .button.button-1.button-icon {
@@ -306,40 +306,40 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 }
 
 .button.button-1.button-outline {
-  border-color: #1384A1;
+  border-color: #1C7DC9;
   background: transparent;
-  color: #1384A1;
+  color: #1C7DC9;
 }
 
 .button.button-1.button-outline.active, .button.button-1.button-outline.activated {
-  background-color: #1384A1;
+  background-color: #1C7DC9;
   box-shadow: none;
   color: #fff;
 }
 
 .bar.bar-1 {
-  border-color: #1384A1;
-  background-color: #1384A1;
-  background-image: linear-gradient(0deg, #1384A1, #1384A1 50%, transparent 50%);
+  border-color: #1C7DC9;
+  background-color: #1C7DC9;
+  background-image: linear-gradient(0deg, #1C7DC9, #1C7DC9 50%, transparent 50%);
   color: #fff;
 }
 
 .tabs-1 > .tabs,
 .tabs.tabs-1 {
-  border-color: #1384A1;
-  background-color: #1384A1;
-  background-image: linear-gradient(0deg, #1384A1, #1384A1 50%, transparent 50%);
+  border-color: #1C7DC9;
+  background-color: #1C7DC9;
+  background-image: linear-gradient(0deg, #1C7DC9, #1C7DC9 50%, transparent 50%);
   color: #fff;
 }
 
 .tabs-1 > .tabs .tab-item .badge,
 .tabs.tabs-1 .tab-item .badge {
   background-color: #fff;
-  color: #1384A1;
+  color: #1C7DC9;
 }
 
 .tabs-striped.tabs-1 .tabs {
-  background-color: #1384A1;
+  background-color: #1C7DC9;
 }
 
 .tabs-striped.tabs-1 .tab-item {
@@ -445,7 +445,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 
 .button.button-2 {
   border-color: transparent;
-  background-color: #297ba4;
+  background-color: rgb(51, 165, 140);
   color: #fff;
 }
 
@@ -455,14 +455,14 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 }
 
 .button.button-2.active, .button.button-2.activated {
-  background-color: #297ba4;
+  background-color: rgb(51, 165, 140);
 }
 
 .button.button-2.button-clear {
   border-color: transparent;
   background: none;
   box-shadow: none;
-  color: #297ba4;
+  color: rgb(51, 165, 140);
 }
 
 .button.button-2.button-icon {
@@ -471,13 +471,13 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 }
 
 .button.button-2.button-outline {
-  border-color: #297ba4;
+  border-color: rgb(51, 165, 140);
   background: transparent;
-  color: #297ba4;
+  color: rgb(51, 165, 140);
 }
 
 .button.button-2.button-outline.active, .button.button-2.button-outline.activated {
-  background-color: #297ba4;
+  background-color: rgb(51, 165, 140);
   box-shadow: none;
   color: #fff;
 }
@@ -486,7 +486,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 
 .button.button-3 {
   border-color: transparent;
-  background-color: #8e0253;
+  background-color: #B070B2;
   color: #fff;
 }
 
@@ -496,14 +496,14 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 }
 
 .button.button-3.active, .button.button-3.activated {
-  background-color: #8e0253;
+  background-color: #B070B2;
 }
 
 .button.button-3.button-clear {
   border-color: transparent;
   background: none;
   box-shadow: none;
-  color: #8e0253;
+  color: #B070B2;
 }
 
 .button.button-3.button-icon {
@@ -512,13 +512,13 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 }
 
 .button.button-3.button-outline {
-  border-color: #8e0253;
+  border-color: #B070B2;
   background: transparent;
   color: #8e0253;
 }
 
 .button.button-3.button-outline.active, .button.button-3.button-outline.activated {
-  background-color: #8e0253;
+  background-color: #B070B2;
   box-shadow: none;
   color: #fff;
 }
@@ -527,7 +527,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 
 .button.button-4 {
   border-color: transparent;
-  background-color: #663366;
+  background-color: #855CB7;
   color: #fff;
 }
 
@@ -537,14 +537,14 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 }
 
 .button.button-4.active, .button.button-4.activated {
-  background-color: #663366;
+  background-color: #855CB7;
 }
 
 .button.button-4.button-clear {
   border-color: transparent;
   background: none;
   box-shadow: none;
-  color: #663366;
+  color: #855CB7;
 }
 
 .button.button-4.button-icon {
@@ -553,23 +553,23 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 }
 
 .button.button-4.button-outline {
-  border-color: #663366;
+  border-color: #855CB7;
   background: transparent;
-  color: #663366;
+  color: #855CB7;
 }
 
 .button.button-4.button-outline.active, .button.button-4.button-outline.activated {
-  background-color: #663366;
+  background-color: #855CB7;
   box-shadow: none;
   color: #fff;
 }
 
 /* Task list*/
 .item-task:not(.item-subtask) {
-  border-color: rgb(215, 39, 20);
+  border-color: rgb(51, 165, 140);
 }
 .item-task:not(.item-subtask) .item-content{
-  background: rgb(215, 39, 20);
+  background: rgb(51, 165, 140);
 }
 .item-task:not(.item-subtask) .item-content, .item-task:not(.item-subtask) p, .item-task:not(.item-subtask) h2 {
   color: #fff;
