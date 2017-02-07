@@ -244,10 +244,6 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   color: #fff;
 }
 
-task-preview > .item {
- margin-bottom: -0.8px;
-}
-
 .parent.item, .child.item {
   padding: 0;
 }
@@ -630,8 +626,11 @@ task-preview > .item {
 
 /* Task list*/
 .item-task:not(.item-subtask) .item-content{
-  background: #f5f5f5;
+  background: #E10303;
   border-radius: 20px;
+}
+.item-task:not(.item-subtask) .item-content, .item-task:not(.item-subtask) p, .item-task:not(.item-subtask) h2 {
+  color: #fff;
 }
 
 .item-subtask {
