@@ -26,19 +26,21 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
       TaskDataService.getTaskById($stateParams.id).then(function (res) {
         var task = res.data;
         if(!task) return;
-        $q.all(
-          task.mappedCompetences.map(function(comp){
-            return UserDataService.getCompetenceById(comp.competence).then(function(res){ return res.data })
-          }).concat([ TaskDataService.getTaskRelatById($stateParams.id).then(function(res){
-             // Get the Relationship between task and user
-            return res.data[1].participationType
-          },function(error){
-            console.log("not participating", error)
-            return "NOT_PARTICIPATING"
-          }) ])
-        ).then(function(competences){
-          var relation = competences.pop();
-          $scope.neededCompetences = competences;
+        /* var relation = _.find(task.userRelationships, { self: true });
+        if(!relation){
+          relation = "NOT_PARTICIPATING";
+        } else {
+          relation = relation.type;
+        } */
+        // @TODO: deprecate
+        TaskDataService.getTaskRelatById($stateParams.id).then(function(res){
+          return res.data[1].participationType
+        },function(error){
+          console.log("not participating", error)
+          return "NOT_PARTICIPATING"
+        }).then(function(relation){
+
+          $scope.neededCompetences = task.taskCompetences;
           $scope.task = task;
           $scope.participationType = relation;
           $scope.updateFlags();

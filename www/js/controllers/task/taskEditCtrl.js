@@ -20,14 +20,10 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         var task = res.data;
         console.log("edit", task)
         if(!task) return;
-        $q.all( [
-          $q.all( task.mappedCompetences.map(function(comp){
-            return UserDataService.getCompetenceById(comp.competence).then(function(res){ return res.data })
-          })),
-          TaskDataService.getAllAvailableCompetences(task.id).then(function(res){ return res.data })
-        ]).then(function(competences){
-          $scope.neededCompetences = competences[0];
-          $scope.availableCompetences = competences[1];
+        TaskDataService.getAllAvailableCompetences(task.id).then(function(res){ return res.data })
+        .then(function(availableCompetences){
+          $scope.neededCompetences = task.taskCompetences;
+          $scope.availableCompetences = availableCompetences;
           $scope.task = task;
           $scope.task.startTime = new Date($scope.task.startTime)
           $scope.task.endTime = new Date($scope.task.endTime)
@@ -94,7 +90,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           default: message = "Anderer Fehler: " + error.data.cause;
         }
         $ionicPopup.alert({
-          title: "Task kann nicht auf 'bereit' gesetzt werden",
+          title: "Task kann nicht gespeichert werden",
           template: message,
           okType: "button-positive button-outline"
         })
@@ -113,7 +109,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           var competence = $scope.availableCompetences.splice(index, 1)[0]
           $scope.neededCompetences.push(competence)
         }, function(error){
-        console.log('An error occurred adding a competence!', error);
+          console.log('An error occurred adding a competence!', error);
         });
     };
 //publish task

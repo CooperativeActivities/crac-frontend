@@ -11,3 +11,4 @@ plugins/
 .idea/encodings.xml
 *.xml
 .idea/workspace.xml
+www/lib/*
