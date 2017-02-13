@@ -64,8 +64,13 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       var taskData = {};
       taskData.name= $scope.task.name;
       taskData.description= $scope.task.description;
-      taskData.amountOfVolunteers= $scope.task.amountOfVolunteers;
+      taskData.minAmountOfVolunteers= $scope.task.minAmountOfVolunteers;
       taskData.location= $scope.task.location;
+
+      // @TODO: remove: this currently needs to be set in order to publish tasks
+      if($scope.task.superTask === null){
+        taskData.maxAmountOfVolunteers = 1;
+      }
       // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
       taskData.startTime= $scope.task.startTime.getTime();
       taskData.endTime= $scope.task.endTime.getTime();
@@ -134,24 +139,44 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     }
     $scope.readyToPublish = function(){
       TaskDataService.setReadyToPublishS($scope.task.id).then(function(res){
+        if(!res.data.success){
+          var message = "";
+          switch(res.data.cause){
+            case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
+            case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
+            case "TASK_NOT_READY":  message = "Bitte Felder ausfüllen (Beginn, Ende, Ort)"; break;
+            default: message = "Anderer Fehler: " + res.data.cause;
+          }
+          $ionicPopup.alert({
+            title: "Task kann nicht auf 'bereit' gesetzt werden",
+            template: message,
+            okType: "button-positive button-outline"
+          })
+        }
         $scope.load()
       }, function(error){
         console.log('An error occurred!', error);
-        var message = "";
-        switch(error.data.cause){
-          case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
-          case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
-          default: message = "Anderer Fehler: " + error.data.cause;
-        }
         $ionicPopup.alert({
           title: "Task kann nicht auf 'bereit' gesetzt werden",
-          template: message,
+          template: "Fehler: "+ error.data.cause,
           okType: "button-positive button-outline"
         })
       })
     }
     $scope.readyToPublishTree = function(){
       TaskDataService.setReadyToPublishT($scope.task.id).then(function(res){
+        if(!res.data.success){
+          var message = "";
+          switch(res.data.cause){
+            case "CHILD_MISSING_COMPETENCES": message = "Eine Unteraufgabe benötigt noch Kompetenzen."; break;
+            default: message = "Anderer Fehler: " + res.data.cause;
+          }
+          $ionicPopup.alert({
+            title: "Task und Subtasks können nicht auf 'bereit' gesetzt werden",
+            template: message,
+            okType: "button-positive button-outline"
+          })
+        }
         $scope.load()
       }, function(error){
         console.log('An error occurred!', error);
