@@ -27,7 +27,7 @@ cracApp.controller('newTaskCtrl', ['$scope','$route', '$stateParams','$routePara
       taskData.location= $scope.task.location;
       taskData.startTime= $scope.task.startTime.getTime();
       taskData.endTime= $scope.task.endTime.getTime();
-      taskData.amountOfVolunteers= $scope.task.amountOfVolunteers;
+      taskData.minAmountOfVolunteers= $scope.task.minAmountOfVolunteers;
 
 
       if($scope.parentTask === null){

@@ -67,7 +67,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       taskData.minAmountOfVolunteers= $scope.task.minAmountOfVolunteers;
       taskData.location= $scope.task.location;
 
-      // @TODO: remove: this currently needs to be set in order to publish tasks
+      // @TODO: remove later: this currently needs to be set in order to publish tasks
       if($scope.task.superTask === null){
         taskData.maxAmountOfVolunteers = 1;
       }
