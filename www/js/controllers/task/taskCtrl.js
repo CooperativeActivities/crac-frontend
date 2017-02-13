@@ -21,6 +21,8 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.showDelete = false;
 
     $scope.neededCompetences = [];
+		
+		$scope.newComment = {name:'', content: ''};
 
     $scope.doRefresh = function(){
       TaskDataService.getTaskById($stateParams.id).then(function (res) {
@@ -225,4 +227,24 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.addCompetence = function(){
       $state.go('tabsController.addCompetenceToTask', { id:$scope.task.id });
     }
+		
+//Add a new comment to the task
+		$scope.addNewComment = function() {
+			if(!$scope.newComment.name || !$scope.newComment.content) return false;
+			TaskDataService.addComment($scope.task.id,$scope.newComment).then(function () {
+				console.log("works");
+				$scope.newComment = {name:'', content: ''};
+			}, function (error) {
+				console.log('An error occurred! ', error);
+			});
+		}
+		
+//Delete a comment from the task
+		$scope.removeComment = function(id) {
+			TaskDataService.removeComment($scope.task.id,id).then(function () {
+				console.log("works");
+			}, function (error) {
+				console.log('An error occurred! ', error);
+			});
+		}
   }])

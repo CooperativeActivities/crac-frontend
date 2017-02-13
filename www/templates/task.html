@@ -78,7 +78,31 @@
           </div>
         </ion-list>
       </c-accordion>
-    </div>
+
+      <c-accordion title="'Kommentare (' + task.comments.length + ')'">
+        <ion-list can-swipe="listCanSwipe" ng-show="task.comments.length > 0">
+          <div ng-repeat="comment in task.comments" ng-cloak>
+						<ion-item>
+							{{ comment.content }}
+							<ion-option-button class="button-assertive" ng-click="removeComment(comment.id)">Löschen</ion-option-button>
+						</ion-item>
+					</div>
+        </ion-list>
+				
+				<form ng-submit="addNewComment()">
+					<label class="item item-input item-stacked-label">
+						<span class="input-label">Name:</span>
+						<input type="text" ng-model="newComment.name" style="background-color:white;"></textarea>
+					</label>
+					<label class="item item-input item-stacked-label">
+						<span class="input-label">Kommentar:</span>
+						<textarea ng-model="newComment.content" style="background-color:white;"></textarea>
+					</label>
+
+					<button type="submit" ng-disabled="!newComment.name || !newComment.content" class="button button-block button-outline button-balanced ion-checkmark"> Kommentar Hinzufügen </button>
+				</form>
+      </c-accordion>
+			</div>
   </ion-content>
   <ion-footer-bar class="bar bar-footer">
     <div class="button-bar" ng-cloak>
