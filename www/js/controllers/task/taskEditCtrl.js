@@ -2,11 +2,11 @@
 /**
  * Created by md@x-net on 2017-01-31
  */
-cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataService','UserDataService', "$ionicHistory", "$q", "$ionicPopup",
+cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataService','UserDataService', "$ionicHistory", "$q", "$ionicPopup", "$state",
   // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-  function ($scope, $route, $stateParams,TaskDataService, UserDataService, $ionicHistory, $q, $ionicPopup) {
+  function ($scope, $route, $stateParams,TaskDataService, UserDataService, $ionicHistory, $q, $ionicPopup, $state) {
     $scope.task= {};
     $scope.showPublish = false;
     $scope.showReadyToPublishSingle = false;
@@ -35,16 +35,21 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         }, function (error) {
           console.warn('An error occurred!', error);
         });
-      } else if($stateParams.parentId !== ""){
-        $scope.isNewTask = true;
-        TaskDataService.getTaskById($stateParams.parentId).then(function(res){
-          $scope.parentTask = res.data;
-        },function(error){
-          console.warn('An error occurred!', error);
-        });
       } else {
         $scope.isNewTask = true;
-        console.log("new task: no parent")
+        $scope.neededCompetences = [];
+        TaskDataService.getAllCompetences().then(function(res){
+          $scope.availableCompetences = res.data;
+        }, function(error){
+          console.warn('An error occurred!', error);
+        })
+        if($stateParams.parentId !== ""){
+          TaskDataService.getTaskById($stateParams.parentId).then(function(res){
+            $scope.parentTask = res.data;
+          },function(error){
+            console.warn('An error occurred!', error);
+          });
+        }
       }
     };
 
@@ -95,10 +100,25 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         // @TODO: this shouldn't be necessary
         taskData.taskState = $scope.task.taskState;
         promise = TaskDataService.updateTaskById(taskData, $scope.task.id)
-      } else  if(!$scope.parentTask){
-        promise = TaskDataService.createNewTask(taskData)
       } else {
-        promise = TaskDataService.createNewSubTask(taskData, $scope.parentTask.id)
+        var creation_promise;
+        if(!$scope.parentTask){
+          creation_promise = TaskDataService.createNewTask(taskData)
+        } else {
+          creation_promise = TaskDataService.createNewSubTask(taskData, $scope.parentTask.id)
+        }
+        promise = $q(function(resolve, reject){
+          var neededCompetences = $scope.neededCompetences;
+          creation_promise.then(function(creation_res){
+            var taskId = creation_res.data.task
+            $q.all(neededCompetences.map(function(competence){
+            // @TODO: make configurable
+              return TaskDataService.addCompetenceToTask(taskId, competence.id, 100, 100, false)
+            })).then(function(competences_res){
+              resolve(creation_res)
+            })
+          })
+        })
       }
       promise.then(function (res) {
         $scope.load()
@@ -108,7 +128,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           okType: "button-positive button-outline"
         })
 
-        if($scope.newTask){
+        if($scope.isNewTask){
           var taskId = res.data.task;
           $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
             $ionicHistory.removeBackView()
@@ -132,9 +152,9 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
 
     $scope.addCompetence = function(){
+      if(!$scope.select.competenceToAdd) return;
+      var competenceId = $scope.select.competenceToAdd;
       if(!$scope.isNewTask){
-        if(!$scope.select.competenceToAdd) return;
-        var competenceId = $scope.select.competenceToAdd;
         TaskDataService.addCompetenceToTask($scope.task.id, competenceId,
             // @TODO: make the configurable
           100, 100, false).then(function(res){
@@ -146,7 +166,11 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
             console.log('An error occurred adding a competence!', error);
           });
       } else {
-        //@TODO: add competence to new task??
+        //save later
+        var index;
+        $scope.availableCompetences.forEach(function(val, ind, arr){ if(val.id === competenceId) index = ind; });
+        var competence = $scope.availableCompetences.splice(index, 1)[0]
+        $scope.neededCompetences.push(competence)
       }
     };
 //publish task

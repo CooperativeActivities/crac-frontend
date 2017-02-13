@@ -82,6 +82,10 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
      return $http.get(srv._baseURL + 'task/' + taskId + '/competence/available');
     }
 
+    srv.getAllCompetences = function(){
+     return $http.get(srv._baseURL + '/competence/all');
+    }
+
     /**
      * EXPOSE Service Methods
      **/
@@ -136,6 +140,9 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
       },
       getAllAvailableCompetences : function(taskId){
         return srv.getAllAvailableCompetences(taskId);
+      },
+      getAllCompetences : function(taskId){
+        return srv.getAllCompetences(taskId);
       }
     }
 
