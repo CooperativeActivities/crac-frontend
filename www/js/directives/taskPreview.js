@@ -9,6 +9,15 @@ cracApp.directive('taskPreview', ["TaskDataService", function(TaskDataService) {
       scope.statusStarted = scope.task.taskState === "STARTED";
       scope.statusCompleted = scope.task.taskState === "COMPLETED";
       scope.isSubtask = scope.task.superTask !== null;
+			
+			scope.isSingleTime = scope.task.startTime == scope.task.endTime;
+			var startDate = new Date(scope.task.startTime);
+			var endDate = new Date(scope.task.endTime);
+			scope.isSingleDate = 
+				(startDate.getDate() == endDate.getDate()) &&
+				(startDate.getFullYear() == endDate.getFullYear()) &&
+				(startDate.getMonth() == endDate.getMonth())
+
       // @TODO: get this info from the task
       scope.participationType = "NOT_PARTICIPATING";
 
