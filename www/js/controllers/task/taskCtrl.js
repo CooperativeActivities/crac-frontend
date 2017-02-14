@@ -20,11 +20,13 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.showUnfollow = false;
     $scope.showDelete = false;
 
+		$scope.team = [];
     $scope.neededCompetences = [];
 
     $scope.doRefresh = function(){
       TaskDataService.getTaskById($stateParams.id).then(function (res) {
         var task = res.data;
+				console.log(task);
         if(!task) return;
         /* var relation = _.find(task.userRelationships, { self: true });
         if(!relation){
@@ -33,6 +35,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
           relation = relation.type;
         } */
         // @TODO: deprecate
+				
         TaskDataService.getTaskRelatById($stateParams.id).then(function(res){
           return res.data[1].participationType
         },function(error){
