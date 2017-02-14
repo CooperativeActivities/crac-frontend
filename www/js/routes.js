@@ -219,6 +219,18 @@ angular.module('app.routes', ['ionicUIRouter'])
         }
       })
 
+      .state('tabsController.newTask', {
+        // id param is optional
+        url: '/newtask/:parentId',
+        views: {
+          'tab3': {
+            templateUrl: 'templates/taskEdit.html',
+            controller: 'taskEditCtrl'
+          }
+        }
+      })
+
+
       .state('tabsController.myCompetenciesInfo', {
         url: '/mycompetencies/:index',
         views: {
@@ -271,17 +283,6 @@ angular.module('app.routes', ['ionicUIRouter'])
           'tab8': {
             templateUrl: 'templates/addCompetence.html',
             controller: 'addCompetenceCtrl'
-          }
-        }
-      })
-
-      .state('tabsController.newTask', {
-        // id param is optional
-        url: '/newtask/:parentId',
-        views: {
-          'tab3': {
-            templateUrl: 'templates/newTask.html',
-            controller: 'newTaskCtrl'
           }
         }
       })

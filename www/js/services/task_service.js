@@ -81,6 +81,10 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
     srv.getAllAvailableCompetences = function(taskId){
      return $http.get(srv._baseURL + 'task/' + taskId + '/competence/available');
     }
+		//Get all competences
+    srv.getAllCompetences = function(){
+     return $http.get(srv._baseURL + '/competence/all');
+    }
     //Add new comment to a task
     srv.addComment = function(taskId, commentData){
      return $http.post(srv._baseURL + 'task/' + taskId + '/addComment', commentData);
@@ -92,8 +96,8 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
     //Get all comments for a task
     srv.getAllCommentsForTask = function(taskId){
      return $http.get(srv._baseURL + 'task/' + taskId + '/comments');
-    }
-		
+		}
+
     /**
      * EXPOSE Service Methods
      **/
@@ -149,6 +153,9 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
       getAllAvailableCompetences : function(taskId){
         return srv.getAllAvailableCompetences(taskId);
       },
+      getAllCompetences : function(taskId){
+        return srv.getAllCompetences(taskId);
+      },
 			addComment : function(taskId, commentData) {
 				return srv.addComment(taskId, commentData);
 			},
@@ -159,6 +166,4 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
 				return srv.getAllCommentsForTask(taskId);
 			}
     }
-
-
   }])
