@@ -39,6 +39,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       } else {
         $scope.isNewTask = true;
         $scope.neededCompetences = [];
+        $scope.task.materials = []
         TaskDataService.getAllCompetences().then(function(res){
           $scope.availableCompetences = res.data;
         }, function(error){
