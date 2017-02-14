@@ -103,6 +103,47 @@
           <br>
           <button type="button" ng-click="addCompetence()" class="button button-outline button-positive ion-plus">Hinzufügen</button>
         </div>
+          <br>
+        <div class="item item-divider">Benötigte Materialien:</div>
+        <ion-list>
+          <div ng-repeat="material in task.materials" ng-cloak>
+            <ion-item>
+              <div class="row">
+                  Name: {{ material.name }}
+              </div>
+              <div class="row">
+                Menge: {{ material.quantity }}
+              </div>
+              <div class="row">
+                <div class="column">
+                  Beschreibung:
+                </div>
+                <div class="column" style="white-space: pre-line;"> {{ material.description }} </div>
+              </div>
+              <ion-option-button class="button-assertive" ng-click="removeMaterial(material)">Löschen</ion-option-button>
+            </ion-item>
+          </div>
+          <br>
+          <ion-item>
+            Neues Material:
+            <label class="item item-input">
+              <span class="input-label">Name</span>
+              <input type="text" ng-model="materialToAdd.name">
+            </label>
+            <label class="item item-input">
+              <span class="input-label">Menge</span>
+              <input type="number" ng-model="materialToAdd.quantity">
+            </label>
+            <label class="item item-input">
+              <span class="input-label">Beschreibung</span>
+              <textarea ng-model="materialToAdd.description"></textarea>
+            </label>
+            <br>
+            <button type="button" ng-click="addMaterial()" class="button button-outline button-positive ion-plus">Hinzufügen</button>
+          </ion-item>
+        </ion-list>
+        <div>
+        </div>
       </form>
     </div>
     <br>

@@ -90,6 +90,14 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
      return $http.get(srv._baseURL + '/competence/all');
     }
 
+    //Adds target material to target task
+    srv.addMaterialToTask = function(taskId,material){
+      return $http.post(srv._baseURL + "task/" + taskId + "/material/add", material);
+    }
+    srv.removeMaterialFromTask = function(taskId,materialId){
+      return $http.get(srv._baseURL + "task/" + taskId + "/material/remove/" + materialId);
+    }
+
     /**
      * EXPOSE Service Methods
      **/
@@ -150,7 +158,13 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
       },
       getAllCompetences : function(taskId){
         return srv.getAllCompetences(taskId);
-      }
+      },
+      addMaterialToTask : function(taskId,material){
+        return srv.addMaterialToTask(taskId,material);
+      },
+      removeMaterialFromTask : function(taskId,materialId){
+        return srv.removeMaterialFromTask(taskId,materialId);
+      },
     }
 
 

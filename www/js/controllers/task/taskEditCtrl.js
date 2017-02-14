@@ -12,8 +12,9 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.showReadyToPublishSingle = false;
     $scope.showReadyToPublishTree = false;
     $scope.isNewTask = false;
-    //this needs to be an object for the select to work (angular is weird)
+
     $scope.competenceToAdd = {};
+    $scope.materialToAdd = {};
 
     $scope.load = function(){
       if($stateParams.id !== undefined){
@@ -134,9 +135,13 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           var neededCompetences = $scope.neededCompetences;
           creation_promise.then(function(creation_res){
             var taskId = creation_res.data.task
-            $q.all(neededCompetences.map(function(competence){
+            $q.all(
+            neededCompetences.map(function(competence){
               return TaskDataService.addCompetenceToTask(taskId, competence.id, competence.proficiency || 50, competence.importance || 50, competence.mandatory || false)
-            })).then(function(competences_res){
+            }).concat(task.materials.map(function(material){
+              return TaskDataService.addMaterialToTask(taskId, material)
+            })
+            )).then(function(competences_and_material_res){
               resolve(creation_res)
             }, reject)
           }, reject)
@@ -236,6 +241,41 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         $scope.availableCompetences.push({ name: competence.name, id: competence.id })
       }
     }
+
+    //material
+    $scope.addMaterial = function(){
+      if(!$scope.materialToAdd.name) return;
+      if(!$scope.isNewTask){
+        TaskDataService.addMaterialToTask($scope.task.id, $scope.materialToAdd).then(function(res){
+            $scope.task.materials.push(_.clone($scope.materialToAdd))
+            $scope.materialToAdd = { };
+          }, function(error){
+            console.log('An error occurred adding a material!', error);
+          });
+      } else {
+        //save later
+        if(!$scope.task.materials){ $scope.task.materials = [] }
+        $scope.task.materials.push(_.clone($scope.materialToAdd))
+        $scope.materialToAdd = { };
+      }
+    };
+    $scope.removeMaterial = function(material){
+      if(!material) return;
+      if(!$scope.isNewTask){
+        var materialId = material.id;
+        TaskDataService.removeMaterialFromTask($scope.task.id, materialId).then(function(res){
+          var index = _.findIndex($scope.task.materials, material)
+          $scope.task.materials.splice(index, 1)[0]
+        }, function(error){
+          console.log('An error occurred removing a material!', error);
+        });
+      } else {
+        var index = _.findIndex($scope.task.materials, material)
+        $scope.task.materials.splice(index, 1)[0]
+      }
+    }
+
+
 //publish task
     $scope.publish = function(){
       if($scope.newTask){ return }
