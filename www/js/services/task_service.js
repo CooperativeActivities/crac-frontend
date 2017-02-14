@@ -87,11 +87,11 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
     }
     //Add new comment to a task
     srv.addComment = function(taskId, commentData){
-     return $http.post(srv._baseURL + 'task/' + taskId + '/addComment', commentData);
+     return $http.post(srv._baseURL + 'task/' + taskId + '/comment/add', commentData);
     }
     //Remove a comment from a task
     srv.removeComment = function(taskId, commentId){
-     return $http.delete(srv._baseURL + 'task/' + taskId + '/removeComment/' + commentId);
+     return $http.delete(srv._baseURL + 'task/' + taskId + '/comment/' + commentId + '/remove');
     }
     //Get all comments for a task
     srv.getAllCommentsForTask = function(taskId){

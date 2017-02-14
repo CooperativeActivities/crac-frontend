@@ -79,15 +79,17 @@
       </c-accordion>
 
       <c-accordion title="'Kommentare (' + task.comments.length + ')'">
-        <ion-list can-swipe="listCanSwipe" ng-show="task.comments.length > 0">
+        <ion-list can-swipe="true" ng-show="task.comments.length > 0">
           <div ng-repeat="comment in task.comments" ng-cloak>
 						<ion-item>
+							<h3>{{comment.name}}</h3>
 							{{ comment.content }}
 							<ion-option-button class="button-assertive" ng-click="removeComment(comment.id)">Löschen</ion-option-button>
 						</ion-item>
 					</div>
         </ion-list>
 				
+				<h4>Kommentar Hinzufügen</h4>
 				<form ng-submit="addNewComment()">
 					<label class="item item-input item-stacked-label">
 						<span class="input-label">Name:</span>
