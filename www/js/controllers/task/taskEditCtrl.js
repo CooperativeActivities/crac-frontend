@@ -80,14 +80,25 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
 // Save changes
     $scope.save = function(){
+      var task = $scope.task;
       var taskData = {};
-      taskData.name= $scope.task.name;
-      taskData.description= $scope.task.description;
-      taskData.minAmountOfVolunteers= $scope.task.minAmountOfVolunteers;
-      taskData.location= $scope.task.location;
+      if(!task.name || !task.description || !task.location){
+        $ionicPopup.alert({
+          title: "Task kann nicht gespeichert werden:",
+          template: "Name, Beschreibung und Ort müssen angegeben werden.",
+          okType: "button-positive button-outline"
+        })
+        return
+      }
+      taskData.name= task.name;
+      taskData.description= task.description;
+      taskData.location= task.location;
+
+      //make required?
+      if(task.minAmountOfVolunteers) taskData.minAmountOfVolunteers = task.minAmountOfVolunteers;
 
       // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
-      if(!$scope.task.startTime || !$scope.task.endTime){
+      if(!task.startTime || !task.endTime){
         $ionicPopup.alert({
           title: "Task kann nicht gespeichert werden:",
           template: "Beginn und Ende müssen angegeben werden.",
@@ -95,24 +106,28 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         })
         return
       }
-      taskData.startTime= $scope.task.startTime.getTime();
-      taskData.endTime= $scope.task.endTime.getTime();
+      taskData.startTime= task.startTime.getTime();
+      taskData.endTime= task.endTime.getTime();
 
       var promise;
       if(!$scope.isNewTask){
-        // @TODO: remove later: this currently needs to be set in order to publish tasks
-        if($scope.task.superTask === null){
-          taskData.maxAmountOfVolunteers = 1;
-        }
 
         // @TODO: this shouldn't be necessary
-        taskData.taskState = $scope.task.taskState;
-        promise = TaskDataService.updateTaskById(taskData, $scope.task.id)
+        taskData.taskState = task.taskState;
+        promise = TaskDataService.updateTaskById(taskData, task.id)
       } else {
         var creation_promise;
         if(!$scope.parentTask){
+        // @TODO: remove later: this currently needs to be set in order to publish tasks
+          taskData.maxAmountOfVolunteers = 1000000;
           creation_promise = TaskDataService.createNewTask(taskData)
         } else {
+        // @TODO: remove later: this currently needs to be set in order to publish tasks
+          if(!$scope.parentTask.superTask){
+            taskData.maxAmountOfVolunteers = 1000;
+          } else {
+            taskData.maxAmountOfVolunteers = 1;
+          }
           creation_promise = TaskDataService.createNewSubTask(taskData, $scope.parentTask.id)
         }
         promise = $q(function(resolve, reject){
@@ -225,6 +240,20 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.publish = function(){
       if($scope.newTask){ return }
       TaskDataService.changeTaskState($scope.task.id, 'publish').then(function(res) {
+        if(!res.data.success){
+          var message = "";
+          switch(res.data.cause){
+            case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
+            case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
+            case "TASK_NOT_READY":  message = "Bitte Felder ausfüllen (Beginn, Ende, Ort)"; break;
+            default: message = "Anderer Fehler: " + res.data.cause;
+          }
+          $ionicPopup.alert({
+            title: "Task kann nicht veröffentlicht werden",
+            template: message,
+            okType: "button-positive button-outline"
+          })
+        }
         $scope.load()
         //$ionicHistory.goBack();
       }, function(error) {
