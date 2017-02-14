@@ -13,7 +13,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.showReadyToPublishTree = false;
     $scope.isNewTask = false;
     //this needs to be an object for the select to work (angular is weird)
-    $scope.select = { competenceToAdd : null };
+    $scope.competenceToAdd = {};
 
     $scope.load = function(){
       if($stateParams.id !== undefined){
@@ -112,8 +112,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           creation_promise.then(function(creation_res){
             var taskId = creation_res.data.task
             $q.all(neededCompetences.map(function(competence){
-            // @TODO: make configurable
-              return TaskDataService.addCompetenceToTask(taskId, competence.id, 100, 100, false)
+              return TaskDataService.addCompetenceToTask(taskId, competence.id, competence.proficiency || 50, competence.importance || 50, competence.mandatory || false)
             })).then(function(competences_res){
               resolve(creation_res)
             })
@@ -152,27 +151,64 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
 
     $scope.addCompetence = function(){
-      if(!$scope.select.competenceToAdd) return;
-      var competenceId = $scope.select.competenceToAdd;
+      var competenceId = $scope.competenceToAdd.id;
+      if(!competenceId) return;
       if(!$scope.isNewTask){
         TaskDataService.addCompetenceToTask($scope.task.id, competenceId,
-            // @TODO: make the configurable
-          100, 100, false).then(function(res){
-            var index;
-            $scope.availableCompetences.forEach(function(val, ind, arr){ if(val.id === competenceId) index = ind; });
+          $scope.competenceToAdd.proficiency || 50,  $scope.competenceToAdd.importance || 50, $scope.competenceToAdd.mandatory || false).then(function(res){
+            var index = _.findIndex($scope.availableCompetences, { id: parseInt(competenceId) })
+            if(index === -1){
+              console.error("this shouldn't happen")
+              return;
+            }
+            //$scope.availableCompetences.forEach(function(val, ind, arr){ if(val.id === competenceId) index = ind; });
             var competence = $scope.availableCompetences.splice(index, 1)[0]
-            $scope.neededCompetences.push(competence)
+            $scope.neededCompetences.push({
+              id: $scope.competenceToAdd.id,
+              name: competence.name,
+              importance: $scope.competenceToAdd.importance,
+              proficiency: $scope.competenceToAdd.proficiency,
+              mandatory: $scope.competenceToAdd.mandatory
+            })
           }, function(error){
             console.log('An error occurred adding a competence!', error);
           });
       } else {
         //save later
-        var index;
-        $scope.availableCompetences.forEach(function(val, ind, arr){ if(val.id === competenceId) index = ind; });
+        var index = _.findIndex($scope.availableCompetences, { id: parseInt(competenceId) })
+        if(index === -1){
+          console.error("this shouldn't happen")
+          return;
+        }
+        //$scope.availableCompetences.forEach(function(val, ind, arr){ if(val.id === competenceId) index = ind; });
         var competence = $scope.availableCompetences.splice(index, 1)[0]
-        $scope.neededCompetences.push(competence)
+        $scope.neededCompetences.push({
+          id: $scope.competenceToAdd.id,
+          name: competence.name,
+          importance: $scope.competenceToAdd.importance,
+          proficiency: $scope.competenceToAdd.proficiency,
+          mandatory: $scope.competenceToAdd.mandatory
+        })
       }
     };
+
+    $scope.removeCompetence = function(competence){
+      if(!competence) return;
+      var competenceId = competence.id;
+      if(!$scope.isNewTask){
+        TaskDataService.removeCompetenceFromTask($scope.task.id, competenceId).then(function(res){
+          var index = _.findIndex($scope.neededCompetences, { id: competenceId })
+          $scope.neededCompetences.splice(index, 1)[0]
+          $scope.availableCompetences.push({ name: competence.name, id: competence.id })
+        }, function(error){
+          console.log('An error occurred removing a competence!', error);
+        });
+      } else {
+        var index = _.findIndex($scope.neededCompetences, { id: competenceId })
+        $scope.neededCompetences.splice(index, 1)[0]
+        $scope.availableCompetences.push({ name: competence.name, id: competence.id })
+      }
+    }
 //publish task
     $scope.publish = function(){
       if($scope.newTask){ return }
