@@ -20,11 +20,13 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.showUnfollow = false;
     $scope.showDelete = false;
 
+		$scope.team = [];
     $scope.neededCompetences = [];
 
     $scope.doRefresh = function(){
       TaskDataService.getTaskById($stateParams.id).then(function (res) {
         var task = res.data;
+				console.log(task);
         if(!task) return;
         /* var relation = _.find(task.userRelationships, { self: true });
         if(!relation){
@@ -33,6 +35,9 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
           relation = relation.type;
         } */
         // @TODO: deprecate
+				
+				task.userRelationships.sort($scope.sortMemberListByRelationship);
+				
         TaskDataService.getTaskRelatById($stateParams.id).then(function(res){
           return res.data[1].participationType
         },function(error){
@@ -51,6 +56,15 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 
     $scope.doRefresh()
 
+		$scope.sortMemberListByRelationship = function(a,b) {
+			if(b.participationType === "LEADING") {
+				return 1;
+			}
+			if(b.friend) {
+				return 1;
+			}
+			return 0;
+		}
 
     $scope.updateFlags = function(){
       var relation = $scope.participationType,

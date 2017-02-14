@@ -44,14 +44,13 @@
 
       <c-accordion title="'Team'" shown="true">
         <div class="row">
-          <div style="margin: 0.5em; width: 4em; height: 4em;">
-            <img class="img-responsive" src="img/1lZ3VOkiRqOOdIDOu9mn_avatar.png">
-          </div>
-          <div style="margin: 0.5em; width: 4em; height: 4em;">
-            <img class="img-responsive" src="img/1lZ3VOkiRqOOdIDOu9mn_avatar.png">
-          </div>
-          <div style="margin: 0.5em; width: 4em; height: 4em;">
-            <img class="img-responsive" src="img/1lZ3VOkiRqOOdIDOu9mn_avatar.png">
+          <div ng-repeat="member in task.userRelationships" ng-show="!member.self" style="margin: 0.5em;">
+            <img class="img-responsive" src="img/1lZ3VOkiRqOOdIDOu9mn_avatar.png" style="margin: 0 auto; width: 4em; height: 4em;">
+						<caption>
+							<i ng-show="member.participationType == 'LEADING'" class="icon ion-ios-star"></i>
+							<i ng-show="member.friend" class="icon ion-android-contacts"></i>
+							{{member.name}}
+						</caption>
           </div>
         </div>
       </c-accordion>

@@ -38,15 +38,6 @@
 
 /* -- FOOTER -------------------------------------------------------------------------------------------------------- */
 
-.tabs-1 .tab-item:hover {
-  text-decoration: none;
-  color: #fff;
-}
-
-.tab-item.tab-item-active, .tab-item.active, .tab-item.activated {
-  color: #fff;
-}
-
 /* disables tab titles */
 #page1 .tab-item .icon {
   margin: 10px auto;
@@ -188,8 +179,8 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   float: right;
   z-index: 3;
   position: relative;
-  left: -10px;
-  top: 10px;
+  left: 3px;
+  top: -3px;
   margin: 0 0 0 -50px;
 }
 
@@ -210,6 +201,24 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 
 .parent.item .item, .child.item .item {
   border: none;
+}
+
+.toggle input:checked + .track {
+  border-color: #33A58C;
+  background-color: #33A58C;
+}
+
+.checkbox input:checked:before, .checkbox input:checked + .checkbox-icon:before {
+  background: #33A58C;
+  border-color: #33A58C;
+}
+
+.range input + p.ng-binding {
+  min-width: 20px;
+}
+
+.button-bar > .button:only-child {
+  border-radius: 50px;
 }
 
 /*-- BUTTONS -------------------------------------------------------------------------------------------------------- */
@@ -465,7 +474,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 
 .button.button-2 {
   border-color: transparent;
-  background-color: rgb(51, 165, 140);
+  background-color: #33A58C;
   color: #fff;
 }
 
@@ -475,14 +484,14 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 }
 
 .button.button-2.active, .button.button-2.activated {
-  background-color: rgb(51, 165, 140);
+  background-color: #33A58C;
 }
 
 .button.button-2.button-clear {
   border-color: transparent;
   background: none;
   box-shadow: none;
-  color: rgb(51, 165, 140);
+  color: #33A58C;
 }
 
 .button.button-2.button-icon {
@@ -491,13 +500,13 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 }
 
 .button.button-2.button-outline {
-  border-color: rgb(51, 165, 140);
+  border-color: #33A58C;
   background: transparent;
-  color: rgb(51, 165, 140);
+  color: #33A58C;
 }
 
 .button.button-2.button-outline.active, .button.button-2.button-outline.activated {
-  background-color: rgb(51, 165, 140);
+  background-color: #33A58C;
   box-shadow: none;
   color: #fff;
 }
@@ -534,7 +543,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 .button.button-3.button-outline {
   border-color: #B070B2;
   background: transparent;
-  color: #8e0253;
+  color: #B070B2;
 }
 
 .button.button-3.button-outline.active, .button.button-3.button-outline.activated {
@@ -580,6 +589,47 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 
 .button.button-4.button-outline.active, .button.button-4.button-outline.activated {
   background-color: #855CB7;
+  box-shadow: none;
+  color: #fff;
+}
+
+/* -- button-5 ------------------------------------------------------------------------------------------------------ */
+
+.button.button-5 {
+  border-color: transparent;
+  background-color: #ef4a44;
+  color: #fff;
+}
+
+.button.button-5:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.button.button-5.active, .button.button-5.activated {
+  background-color: #ef4a44;
+}
+
+.button.button-5.button-clear {
+  border-color: transparent;
+  background: none;
+  box-shadow: none;
+  color: #ef4a44;
+}
+
+.button.button-5.button-icon {
+  border-color: transparent;
+  background: none;
+}
+
+.button.button-5.button-outline {
+  border-color: #ef4a44;
+  background: transparent;
+  color: #ef4a44;
+}
+
+.button.button-5.button-outline.active, .button.button-5.button-outline.activated {
+  background-color: #ef4a44;
   box-shadow: none;
   color: #fff;
 }

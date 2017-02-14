@@ -8,11 +8,10 @@
                 show-delete="shouldShowDelete"
                 show-reorder="shouldShowReorder"
                 can-swipe="listCanSwipe">
-            <div ng-repeat= "item in competences">
-            <ion-item  ng-click="competenceInfo($index)">{{item.competence.name}}
-            <ion-option-button class="button-assertive" ng-click="remove(item.competence.id)">Löschen</ion-option-button>
-            </ion-item>
-            </div>
+              <ion-item  ng-click="competenceInfo($index)" ng-repeat="item in competences">
+                {{item.competence.name}}
+                <ion-option-button class="button-assertive" ng-click="remove(item.competence.id)">Löschen</ion-option-button>
+              </ion-item>
         </ion-list>
     </ion-content>
 </ion-view>
