@@ -8,7 +8,7 @@
     <ion-list>
       <!-- @TODO: sort-->
       <div ng-repeat="task in participatingTasks" class="parent item">
-        <task-preview task="task" ng-click="loadSingleTask(task.id)"></task-preview>
+        <task-preview task="task" action="" ng-click="loadSingleTask(task.id)"></task-preview>
 
         <!-- @DISCUSS: put these back in?  -->
         <!-- <div ng-repeat="childTask in task.childTasks" class="child">
@@ -21,7 +21,7 @@
     <ion-list>
       <!-- @TODO: sort-->
       <div ng-repeat="task in followingTasks" class="parent">
-        <task-preview task="task" ng-click="loadSingleTask(task.id)"></task-preview>
+        <task-preview task="task" action="'unfollow'" ng-click="loadSingleTask(task.id)"></task-preview>
 
         <!-- @DISCUSS: put these back in?  -->
         <!-- <div ng-repeat="childTask in task.childTasks" class="child item">
@@ -34,7 +34,7 @@
     <ion-list>
       <!-- @TODO: sort-->
       <div ng-repeat="task in leadingTasks" class="parent">
-        <task-preview task="task" ng-click="loadSingleTask(task.id)"></task-preview>
+        <task-preview task="task" action="" ng-click="loadSingleTask(task.id)"></task-preview>
 
         <!-- @DISCUSS: put these back in?  -->
         <!-- <div ng-repeat="childTask in task.childTasks" class="child item">

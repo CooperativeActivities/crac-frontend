@@ -2,12 +2,15 @@ cracApp.directive('taskPreview', ["TaskDataService", function(TaskDataService) {
   return {
     scope: {
       task: "=",
+			action: "="
     },
     link: function(scope, element, attr){
+			console.log(scope);
       scope.statusNotPublished = scope.task.taskState === "NOT_PUBLISHED";
-      scope.statusPublished = scope.task.taskState === "PUBLISHED";
+      /*scope.statusPublished = scope.task.taskState === "PUBLISHED";
       scope.statusStarted = scope.task.taskState === "STARTED";
-      scope.statusCompleted = scope.task.taskState === "COMPLETED";
+      scope.statusCompleted = scope.task.taskState === "COMPLETED";*/
+			
       scope.isSubtask = scope.task.superTask !== null;
 			
 			scope.isSingleTime = scope.task.startTime == scope.task.endTime;
@@ -30,7 +33,7 @@ cracApp.directive('taskPreview', ["TaskDataService", function(TaskDataService) {
         if(scope.participationType === "NOT_PARTICIPATING"){
           TaskDataService.changeTaskPartState(id,'follow').then(function(res) {
             scope.participationType = "FOLLOWING";
-            scope.updateFlags();
+            //scope.updateFlags();
           }, function(error) {
             console.log('An error occurred!', error);
           });
@@ -41,18 +44,18 @@ cracApp.directive('taskPreview', ["TaskDataService", function(TaskDataService) {
         if(scope.participationType === "FOLLOWING"){
           TaskDataService.removeOpenTask($scope.task.id).then(function (res) {
             scope.participationType = "NOT_PARTICIPATING";
-            scope.updateFlags();
+            //scope.updateFlags();
           }, function (error) {
             console.log('An error occurred!', error);
             alert(error.data.cause);
           });
         }
       };
-      scope.updateFlags = function(){
+      /*scope.updateFlags = function(){
         scope.showFollow = true;
         scope.showUnfollow = false;
       };
-      scope.updateFlags();
+      scope.updateFlags();*/
     },
     templateUrl: 'templates/directives/taskPreview.html'
   };

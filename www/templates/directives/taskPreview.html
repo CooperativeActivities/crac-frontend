@@ -18,7 +18,7 @@
       <i class="icon ion-unlocked" ng-class="{ positive  : task.readyToPublish }" ></i>
     </div>
     <div class="col" ng-if="!statusNotPublished">
-			<!-- 
+			<!--
       <i class="icon ion-asterisk"  ng-class="{ energized: statusPublished }"></i>
       <i class="icon ion-loop"      ng-class="{  positive: statusStarted }"></i>
       <i class="icon ion-checkmark" ng-class="{  balanced: statusCompleted }"></i>
@@ -33,8 +33,8 @@
     <div class="col"><p>{{task.description}}</p></div>
   </div>
 
-  <ion-option-button class="button-positive" ng-click="follow(task.id)" ng-if="showFollow">Folgen</ion-option-button>
-  <ion-option-button class="button-assertive" ng-click="unfollow(task.id)" ng-if="showUnfollow">Nicht mehr Folgen</ion-option-button>
+  <ion-option-button class="button-positive" ng-click="follow(task.id)" ng-if="action == 'follow'">Folgen</ion-option-button>
+  <ion-option-button class="button-assertive" ng-click="unfollow(task.id)" ng-if="action == 'unfollow'">Nicht mehr Folgen</ion-option-button>
   <!--
   <ion-delete-button class="ion-minus-circled" ng-click="items.splice($index, 1)"></ion-delete-button>
   <ion-reorder-button class="ion-navicon" on-reorder="reorderItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
