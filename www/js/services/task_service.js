@@ -77,6 +77,10 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
     srv.addCompetenceToTask = function(taskId,competenceId,proficiency,importance,mandatory){
       return $http.get(srv._baseURL + "task/" + taskId + "/competence/" + competenceId + "/require/" + proficiency + "/" + importance+ "/" + mandatory);
     }
+    //removes target competence from target task
+    srv.removeCompetenceFromTask = function(taskId,competenceId){
+      return $http.get(srv._baseURL + "task/" + taskId + "/competence/" + competenceId + "/remove");
+    }
     //Get all Competences which are not added to that specific task
     srv.getAllAvailableCompetences = function(taskId){
      return $http.get(srv._baseURL + 'task/' + taskId + '/competence/available');
@@ -97,6 +101,14 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
     srv.getAllCommentsForTask = function(taskId){
      return $http.get(srv._baseURL + 'task/' + taskId + '/comments');
 		}
+
+    //Adds target material to target task
+    srv.addMaterialToTask = function(taskId,material){
+      return $http.post(srv._baseURL + "task/" + taskId + "/material/add", material);
+    }
+    srv.removeMaterialFromTask = function(taskId,materialId){
+      return $http.get(srv._baseURL + "task/" + taskId + "/material/remove/" + materialId);
+    }
 
     /**
      * EXPOSE Service Methods
@@ -150,6 +162,9 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
       addCompetenceToTask : function(taskId,competenceId,proficiency,importance, mandatory){
         return srv.addCompetenceToTask(taskId,competenceId,proficiency,importance, mandatory);
       },
+      removeCompetenceFromTask : function(taskId,competenceId){
+        return srv.removeCompetenceFromTask(taskId,competenceId);
+      },
       getAllAvailableCompetences : function(taskId){
         return srv.getAllAvailableCompetences(taskId);
       },
@@ -164,6 +179,12 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
 			},
 			getAllCommentsForTask : function(taskId){
 				return srv.getAllCommentsForTask(taskId);
-			}
+			},
+      addMaterialToTask : function(taskId,material){
+        return srv.addMaterialToTask(taskId,material);
+      },
+      removeMaterialFromTask : function(taskId,materialId){
+        return srv.removeMaterialFromTask(taskId,materialId);
+      }
     }
   }])

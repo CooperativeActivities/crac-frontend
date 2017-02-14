@@ -4,11 +4,11 @@
 // @TODO: move this to some global config file
 var SUBTASKS_LIMITED_TO_SHALLOW = false;
 
-cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParams','$routeParams','TaskDataService','$state','$ionicPopup', "$q", "UserDataService",
+cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParams','$routeParams','TaskDataService','$state','$ionicPopup', "$q", "UserDataService", "$ionicHistory",
   // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-  function ($scope,$route, $window, $stateParams,$routeParams,TaskDataService,$state, $ionicPopup, $q, UserDataService) {
+  function ($scope,$route, $window, $stateParams,$routeParams,TaskDataService,$state, $ionicPopup, $q, UserDataService, $ionicHistory) {
 
     //Flags to show/hide buttons
     $scope.editableFlag =false; // @TODO: check for permissions
@@ -37,9 +37,9 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
           relation = relation.type;
         } */
         // @TODO: deprecate
-				
+
 				task.userRelationships.sort($scope.sortMemberListByRelationship);
-				
+
         TaskDataService.getTaskRelatById($stateParams.id).then(function(res){
           return res.data[1].participationType
         },function(error){
@@ -176,16 +176,12 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 
       confirmPopup.then(function(res) {
         if(res) {
-          console.log('You are sure');
           TaskDataService.deleteTaskById($scope.task.id).then(function(res) {
-            console.log(res.data);
-            $state.go('tabsController.tasklist');
+            $ionicHistory.goBack();
           }, function(error) {
             console.log('An error occurred!', error);
             alert(error.data.cause);
           });
-        } else {
-          console.log('You are not sure');
         }
       });
     }
