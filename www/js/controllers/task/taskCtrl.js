@@ -58,12 +58,12 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 
 		$scope.sortMemberListByRelationship = function(a,b) {
 			if(b.participationType === "LEADING") {
-				return b-a;
+				return 1;
 			}
 			if(b.friend) {
-				return b-a;
+				return 1;
 			}
-			return a-b;
+			return 0;
 		}
 
     $scope.updateFlags = function(){
