@@ -87,6 +87,14 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       taskData.location= $scope.task.location;
 
       // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
+      if(!$scope.task.startTime || !$scope.task.endTime){
+        $ionicPopup.alert({
+          title: "Task kann nicht gespeichert werden:",
+          template: "Beginn und Ende müssen angegeben werden.",
+          okType: "button-positive button-outline"
+        })
+        return
+      }
       taskData.startTime= $scope.task.startTime.getTime();
       taskData.endTime= $scope.task.endTime.getTime();
 
@@ -115,8 +123,8 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
               return TaskDataService.addCompetenceToTask(taskId, competence.id, competence.proficiency || 50, competence.importance || 50, competence.mandatory || false)
             })).then(function(competences_res){
               resolve(creation_res)
-            })
-          })
+            }, reject)
+          }, reject)
         })
       }
       promise.then(function (res) {
@@ -136,9 +144,13 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       }, function(error) {
         console.log('An error occurred!', error);
         var message = "";
-        switch(error.data.cause){
-            // @TODO: welche fehler gibt es hier?
-          default: message = "Anderer Fehler: " + error.data.cause;
+        if(error.data.cause){
+          switch(error.data.cause){
+              // @TODO: welche fehler gibt es hier?
+            default: message = "Anderer Fehler: " + error.data.cause;
+          }
+        } else if(error.status = 403){
+          message = "Du hast keine Berechtigungen Tasks zu speichern.";
         }
         $ionicPopup.alert({
           title: "Task kann nicht gespeichert werden",
