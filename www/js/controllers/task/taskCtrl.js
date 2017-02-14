@@ -36,6 +36,8 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
         } */
         // @TODO: deprecate
 				
+				task.userRelationships.sort($scope.sortMemberListByRelationship);
+				
         TaskDataService.getTaskRelatById($stateParams.id).then(function(res){
           return res.data[1].participationType
         },function(error){
@@ -54,6 +56,15 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 
     $scope.doRefresh()
 
+		$scope.sortMemberListByRelationship = function(a,b) {
+			if(b.participationType === "LEADING") {
+				return b-a;
+			}
+			if(b.friend) {
+				return b-a;
+			}
+			return a-b;
+		}
 
     $scope.updateFlags = function(){
       var relation = $scope.participationType,
