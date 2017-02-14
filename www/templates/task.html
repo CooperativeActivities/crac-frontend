@@ -63,11 +63,27 @@
         </div>
       </c-accordion>
 
-      <c-accordion title="'Notwendiges Material'" ng-show="neededMaterial.length > 0">
+      <c-accordion title="'Notwendiges Material'" ng-show="task.materials.length > 0">
         <!-- @TODO: use ion-list? -->
-        <button class="button button-block button-outline icon-right ion-chevron-right" ng-repeat="material in task.neededMaterial">
-          {{ material.name }}
-        </button>
+        <ion-list>
+          <div ng-repeat="material in task.materials" ng-cloak>
+            <ion-item>
+              <div class="row">
+                  Name: {{ material.name }}
+              </div>
+              <div class="row">
+                Menge: {{ material.quantity }}
+              </div>
+              <div class="row">
+                <div class="column">
+                  Beschreibung:
+                </div>
+                <div class="column" style="white-space: pre-line;"> {{ material.description }} </div>
+              </div>
+              <ion-option-button class="button-assertive" ng-click="removeMaterial(material)">Löschen</ion-option-button>
+            </ion-item>
+          </div>
+        </ion-list>
       </c-accordion>
 
       <c-accordion title="'Unteraufgaben'" ng-show="task.childTasks.length > 0">
@@ -77,7 +93,33 @@
           </div>
         </ion-list>
       </c-accordion>
-    </div>
+
+      <c-accordion title="'Kommentare (' + task.comments.length + ')'">
+        <ion-list can-swipe="true" ng-show="task.comments.length > 0">
+          <div ng-repeat="comment in task.comments" ng-cloak>
+						<ion-item>
+							<h3>{{comment.name}}</h3>
+							{{ comment.content }}
+							<ion-option-button class="button-assertive" ng-click="removeComment(comment.id)">Löschen</ion-option-button>
+						</ion-item>
+					</div>
+        </ion-list>
+				
+				<h4>Kommentar Hinzufügen</h4>
+				<form ng-submit="addNewComment()">
+					<label class="item item-input item-stacked-label">
+						<span class="input-label">Name:</span>
+						<input type="text" ng-model="newComment.name" style="background-color:white;"></textarea>
+					</label>
+					<label class="item item-input item-stacked-label">
+						<span class="input-label">Kommentar:</span>
+						<textarea ng-model="newComment.content" style="background-color:white;"></textarea>
+					</label>
+
+					<button type="submit" ng-disabled="!newComment.name || !newComment.content" class="button button-block button-outline button-balanced ion-checkmark"> Kommentar Hinzufügen </button>
+				</form>
+      </c-accordion>
+			</div>
   </ion-content>
   <ion-footer-bar class="bar bar-footer">
     <div class="button-bar" ng-cloak>

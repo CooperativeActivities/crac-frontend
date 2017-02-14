@@ -32,32 +32,117 @@
           <input type="text" ng-model="task.location" style="background-color:white;"></textarea>
         </label>
         <br>
-        <div class="item item-divider">Kompetenzen:</div>
-        <div class="row" ng-repeat="competence in neededCompetences">
-          {{ competence.name }}
-        </div>
-        <br>
-        <h4>Kompetenz hinzufügen</h4>
+        <div class="item item-divider">Notwendige Kenntnisse:</div>
+        <ion-list>
+          <div ng-repeat="competence in neededCompetences" ng-cloak>
+            <custom-accordion>
+              <custom-accordion-head>
+                <ion-item>
+                  {{ competence.name }}
+                  <ion-option-button class="button-assertive" ng-click="removeCompetence(competence)">Löschen</ion-option-button>
+                </ion-item>
+              </custom-accordion-head>
+              <custom-accordion-body>
+                <label class="item item-input range">
+                  <span class="input-label">Wichtigkeit</span>
+                  <input type="range" min="0" max="100" ng-value="competence.importance" readonly>
+                </label>
+                <label class="item item-input range">
+                  <span class="input-label">Können</span>
+                  <input type="range" min="0" max="100" ng-value="competence.proficiency" readonly>
+                </label>
+                <div class="item item-toggle">
+                   Zwingend
+                   <label class="toggle toggle-assertive">
+                     <input type="checkbox" ng-model="competence.mandatory">
+                     <div class="track">
+                       <div class="handle"></div>
+                     </div>
+                   </label>
+                </div>
+              </custom-accordion-body>
+            </custom-accordion>
+          </div>
+          <br>
+          <custom-accordion>
+            <custom-accordion-head>
+              <label class="item item-input item-select">
+                <span class="input-label">
+                  Neu:
+                </span>
+                <!-- TODO: typeahead -->
+                <select ng-model="competenceToAdd.id">
+                  <option ng-repeat="competence in availableCompetences" ng-value="competence.id">
+                    {{ competence.name }}
+                  </option>
+                </select>
+              </label>
+            </custom-accordion-head>
+            <custom-accordion-body>
+                <label class="item item-input range">
+                  <span class="input-label">Wichtigkeit</span>
+                  <input type="range" min="0" max="100" ng-model="competenceToAdd.importance">
+                </label>
+                <label class="item item-input range">
+                  <span class="input-label">Können</span>
+                  <input type="range" min="0" max="100" ng-model="competenceToAdd.proficiency">
+                </label>
+                <div class="item item-toggle">
+                   Zwingend
+                   <label class="toggle toggle-assertive">
+                     <input type="checkbox" ng-model="competenceToAdd.mandatory">
+                     <div class="track">
+                       <div class="handle"></div>
+                     </div>
+                   </label>
+                </div>
+            </custom-accordion-body>
+          </custom-accordion>
+        </ion-list>
         <div>
-          <select ng-model="select.competenceToAdd">
-            <option ng-repeat="competence in availableCompetences" ng-value="competence.id">
-              {{ competence.name }}
-            </option>
-            <!--
-                <h2>{{competenceInfo.name}}</h2>
-                <p style="white-space:normal;">{{competenceInfo.description}}</p>
-                <ion-item class="range range-assertive">Können
-                  <input type="range" ng-model="comp.proficiencyValue" min="0" max="100" step="1">
-                  <p>{{comp.proficiencyValue}}</p>
-                </ion-item>
-                <ion-item class="range range-assertive" >Wichtigkeit
-                  <input type="range" ng-model="comp.importance" min="0" max="100" step="1">
-                  <p>{{comp.importance}}</p>
-                </ion-item>
-                <ion-toggle ng-model="mandatory" toggle-class="toggle-calm" ng-true-value="true" ng-false-value="false">Zwingend</ion-toggle>
-            -->
-          </select>
-          <button type="button" ng-click="addCompetence()" class="button button-small button-outline button-positive ion-plus"></button>
+          <br>
+          <button type="button" ng-click="addCompetence()" class="button button-outline button-positive ion-plus">Hinzufügen</button>
+        </div>
+          <br>
+        <div class="item item-divider">Benötigte Materialien:</div>
+        <ion-list>
+          <div ng-repeat="material in task.materials" ng-cloak>
+            <ion-item>
+              <div class="row">
+                  Name: {{ material.name }}
+              </div>
+              <div class="row">
+                Menge: {{ material.quantity }}
+              </div>
+              <div class="row">
+                <div class="column">
+                  Beschreibung:
+                </div>
+                <div class="column" style="white-space: pre-line;"> {{ material.description }} </div>
+              </div>
+              <ion-option-button class="button-assertive" ng-click="removeMaterial(material)">Löschen</ion-option-button>
+            </ion-item>
+          </div>
+          <br>
+          <ion-item>
+            Neues Material:
+            <label class="item item-input">
+              <span class="input-label">Name</span>
+              <input type="text" ng-model="materialToAdd.name">
+            </label>
+            <label class="item item-input">
+              <span class="input-label">Menge</span>
+              <input type="number" ng-model="materialToAdd.quantity">
+            </label>
+            <label class="item item-input">
+              <span class="input-label">Beschreibung</span>
+              <textarea ng-model="materialToAdd.description"></textarea>
+            </label>
+            <br>
+            <button type="button" ng-click="addMaterial()" class="button button-outline button-positive ion-plus">Hinzufügen</button>
+          </ion-item>
+        </ion-list>
+        <div>
         </div>
       </form>
     </div>
