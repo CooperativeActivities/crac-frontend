@@ -14,6 +14,7 @@
     service.SetCredentials = SetCredentials;
     service.ClearCredentials = ClearCredentials;
     service.Logout = Logout;
+    service.SuperLogout = SuperLogout;
 
     return service;
 
@@ -67,7 +68,7 @@
       $cookieStore.put('globals', $rootScope.globals);
     }
 
-    function Logout() {
+    function SuperLogout() {
       $http.get(baseURL+'/user/logout').success(function(response){
         ClearCredentials();
       }).
@@ -75,6 +76,9 @@
         console.log("Logout failed");
       });
 
+    }
+    function Logout() {
+        ClearCredentials();
     }
 
     function ClearCredentials() {
