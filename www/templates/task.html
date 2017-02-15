@@ -58,13 +58,13 @@
 
       <c-accordion title="'Notwendige Kenntnisse'" ng-show="neededCompetences.length > 0">
         <!-- @TODO: use ion-list? -->
+        <!-- @TODO: show more info (accordion?) -->
         <div class="row" ng-repeat="competence in neededCompetences">
           {{ competence.name }}
         </div>
       </c-accordion>
 
       <c-accordion title="'Notwendiges Material'" ng-show="task.materials.length > 0">
-        <!-- @TODO: use ion-list? -->
         <ion-list>
           <div ng-repeat="material in task.materials" ng-cloak>
             <ion-item>
@@ -80,7 +80,6 @@
                 </div>
                 <div class="column" style="white-space: pre-line;"> {{ material.description }} </div>
               </div>
-              <ion-option-button class="button-assertive" ng-click="removeMaterial(material)">Löschen</ion-option-button>
             </ion-item>
           </div>
         </ion-list>
@@ -104,7 +103,7 @@
 						</ion-item>
 					</div>
         </ion-list>
-				
+
 				<h4>Kommentar Hinzufügen</h4>
 				<form ng-submit="addNewComment()">
 					<label class="item item-input item-stacked-label">
