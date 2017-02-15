@@ -24,7 +24,8 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     $scope.neededCompetences = [];
 		
 		$scope.newComment = {name:'', content: ''};
-
+		$scope.user = $rootScope.globals.currentUser.user;
+		
     $scope.doRefresh = function(){
       TaskDataService.getTaskById($stateParams.id).then(function (res) {
         var task = res.data;
@@ -241,7 +242,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 //Add a new comment to the task
 		$scope.addNewComment = function() {
 			if(!$scope.newComment.content) return false;
-			$scope.newComment.name = $rootScope.globals.currentUser.user;
+			$scope.newComment.name = $scope.user;
 			TaskDataService.addComment($scope.task.id,$scope.newComment).then(function () {
 				console.log("comment added");
 				$scope.newComment = {name:'', content: ''};
@@ -252,8 +253,9 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 		}
 		
 //Delete a comment from the task
-		$scope.removeComment = function(id) {
-			TaskDataService.removeComment($scope.task.id,id).then(function () {
+		$scope.removeComment = function(comment) {
+			if($scope.user !== comment.name) return false;
+			TaskDataService.removeComment($scope.task.id,comment.id).then(function () {
 				console.log("comment removed");
 				$scope.doRefresh();
 			}, function (error) {
