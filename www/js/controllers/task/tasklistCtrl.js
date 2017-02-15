@@ -51,6 +51,18 @@ cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, 
     return $scope.shownGroup === group;
   };
 
+
+  /*
+  * Tobias test function 1
+   */
+
+  $scope.checkChildTask = function(task){
+    if(task.length > 0){
+      return true;
+    }
+    return false;
+  }
+
 })
 
 

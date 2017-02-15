@@ -43,7 +43,7 @@
           <div class="item-stable"
                     ng-click="toggleGroup(task)"
                     ng-class="{active: isGroupShown(task)}">
-            <i class="icon" ng-class="isGroupShown(task) ? 'ion-minus' : 'ion-plus'"></i>
+            <i class="icon" ng-if="checkChildTask(task.childTasks)" ng-class="isGroupShown(task) ? 'ion-minus' : 'ion-plus'"></i>
             <task-preview task="task" action="'follow'" ng-click="loadSingleTask(task.id)"></task-preview>
           </div>
           <!--<div ng-repeat="childTask in task.childTasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search" class="child">-->

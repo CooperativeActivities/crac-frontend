@@ -11,4 +11,6 @@ plugins/
 .idea/encodings.xml
 *.xml
 .idea/workspace.xml
+.idea/crac-frontend.iml
+.idea/workspace.xml
 www/lib/*
