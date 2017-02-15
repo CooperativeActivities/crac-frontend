@@ -53,7 +53,8 @@ cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, 
 
 
   /*
-  * Tobias test function 1
+   * if the task has a childTask, return true
+   * else return false;
    */
 
   $scope.checkChildTask = function(task){
