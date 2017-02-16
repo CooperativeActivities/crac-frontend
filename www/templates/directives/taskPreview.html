@@ -13,20 +13,16 @@
 				{{task.startTime | date: 'shortDate'}} - {{task.endTime | date: 'shortDate'}}
 			</span>
 		</div>
-    <div class="col" ng-if="statusNotPublished">
-      <i class="icon ion-locked"   ng-class="{ assertive : !task.readyToPublish }"></i>
-      <i class="icon ion-unlocked" ng-class="{ positive  : task.readyToPublish }" ></i>
-    </div>
-    <div class="col" ng-if="!statusNotPublished">
-			<!--
-      <i class="icon ion-asterisk"  ng-class="{ energized: statusPublished }"></i>
-      <i class="icon ion-loop"      ng-class="{  positive: statusStarted }"></i>
-      <i class="icon ion-checkmark" ng-class="{  balanced: statusCompleted }"></i>
-			-->
+    <div class="col status-icons">
+			<!-- only show non-published status for task owner -->
+			<span ng-if="participationType == 'LEADING'">
+				<i class="icon ion-locked"   ng-class="{ assertive : (task.taskState == 'NOT_PUBLISHED' && !task.readyToPublish) }"></i>
+				<i class="icon ion-unlocked" ng-class="{ positive  : (task.taskState == 'NOT_PUBLISHED' && task.readyToPublish) }" ></i>
+			</span>
 			
-			<span ng-if="task.taskState == 'PUBLISHED'">Veröffentlicht</span>
-			<span ng-if="task.taskState == 'STARTED'">Gestartet</span>
-			<span ng-if="task.taskState == 'COMPLETED'">Abgeschlossen</span>
+			<i class="icon ion-asterisk"  ng-class="{ energized: task.taskState == 'PUBLISHED' }"></i>
+			<i class="icon ion-loop"      ng-class="{  positive: task.taskState == 'STARTED' }"></i>
+			<i class="icon ion-checkmark" ng-class="{  balanced: task.taskState == 'COMPLETED' }"></i>
     </div>
   </div>
   <div class="row" ng-if="!isSubtask">

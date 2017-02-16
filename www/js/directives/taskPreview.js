@@ -6,8 +6,8 @@ cracApp.directive('taskPreview', ["TaskDataService", function(TaskDataService) {
     },
     link: function(scope, element, attr){
 			console.log(scope);
-      scope.statusNotPublished = scope.task.taskState === "NOT_PUBLISHED";
-      /*scope.statusPublished = scope.task.taskState === "PUBLISHED";
+      /*scope.statusNotPublished = scope.task.taskState === "NOT_PUBLISHED";
+      scope.statusPublished = scope.task.taskState === "PUBLISHED";
       scope.statusStarted = scope.task.taskState === "STARTED";
       scope.statusCompleted = scope.task.taskState === "COMPLETED";*/
 			
@@ -23,6 +23,13 @@ cracApp.directive('taskPreview', ["TaskDataService", function(TaskDataService) {
 
       // @TODO: get this info from the task
       scope.participationType = "NOT_PARTICIPATING";
+			TaskDataService.getTaskRelatById(scope.task.id).then(function(res){
+				return res.data[1].participationType
+			},function(error){
+				console.log("error: ", error)
+			}).then(function(relation){
+				scope.participationType = relation;
+			});
 
       //initialize to false
       scope.showFollow = false;
