@@ -8,6 +8,7 @@
     <button ng-click="makeNewSubTask()" ng-if="addSubTaskFlag" class="button icon ion-android-add-circle"></button>
   </ion-nav-buttons>
   <ion-content padding="true" class="manual-ios-statusbar-padding has-footer">
+    <ion-refresher on-refresh="doRefresh()"></ion-refresher>
     <div class="taskMainInfo" ng-cloak>
 
       <h2>{{task.name}}</h2>

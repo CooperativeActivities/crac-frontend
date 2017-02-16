@@ -5,12 +5,6 @@ cracApp.directive('taskPreview', ["TaskDataService", function(TaskDataService) {
 			action: "="
     },
     link: function(scope, element, attr){
-			console.log(scope);
-      /*scope.statusNotPublished = scope.task.taskState === "NOT_PUBLISHED";
-      scope.statusPublished = scope.task.taskState === "PUBLISHED";
-      scope.statusStarted = scope.task.taskState === "STARTED";
-      scope.statusCompleted = scope.task.taskState === "COMPLETED";*/
-			
       scope.isSubtask = scope.task.superTask !== null;
 			
 			scope.isSingleTime = scope.task.startTime == scope.task.endTime;
@@ -22,10 +16,10 @@ cracApp.directive('taskPreview', ["TaskDataService", function(TaskDataService) {
 				(startDate.getMonth() == endDate.getMonth())
 
       // @TODO: get this info from the task
-      scope.participationType = "NOT_PARTICIPATING";
 			TaskDataService.getTaskRelatById(scope.task.id).then(function(res){
 				return res.data[1].participationType
 			},function(error){
+				return "NOT_PARTICIPATING";
 				console.log("error: ", error)
 			}).then(function(relation){
 				scope.participationType = relation;
@@ -46,10 +40,10 @@ cracApp.directive('taskPreview', ["TaskDataService", function(TaskDataService) {
           });
         }
       };
-      scope.unfollow = function() {
+      scope.unfollow = function(id) {
         //failsafe, so you dont accidentally cancel leading/participating a task
         if(scope.participationType === "FOLLOWING"){
-          TaskDataService.removeOpenTask($scope.task.id).then(function (res) {
+          TaskDataService.removeOpenTask(id).then(function (res) {
             scope.participationType = "NOT_PARTICIPATING";
             //scope.updateFlags();
           }, function (error) {
