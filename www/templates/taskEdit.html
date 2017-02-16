@@ -1,8 +1,8 @@
 <ion-view title="Aufgabe bearbeiten" hide-nav-bar="false">
-  <ion-nav-buttons side="right" class="has-header">
-    <button class="button icon ion-checkmark"  ng-click="save()"></button>
+  <ion-nav-buttons side="right">
+    <button ng-if="!isNewTask" class="button icon ion-checkmark"  ng-click="save()"></button>
   </ion-nav-buttons>
-  <ion-content padding="true" class="manual-ios-statusbar-padding">
+  <ion-content padding="true" class="manual-ios-statusbar-padding has-footer">
     <div style="color:#000000;">
       <form onsubmit="event.preventDefault">
         <label class="item item-input item-stacked-label">
@@ -147,10 +147,16 @@
       </form>
     </div>
     <br>
-    <div>
-      <button ng-click="publish()"            ng-if="showPublish" class="button button-block button-outline button-balanced ion-checkmark" ng-disabled="!task.readyToPublish"> Veröffentlichen </button>
-      <button ng-click="readyToPublish()"     ng-if="showReadyToPublishSingle" class="button button-block button-outline button-balanced ion-checkmark"> Bereit </button>
-      <button ng-click="readyToPublishTree()" ng-if="showReadyToPublishTree" class="button button-block button-outline button-balanced ion-checkmark"> Bereit (Alle) </button>
-    </div>
   </ion-content>
+  <ion-footer-bar>
+    <div class="buttons" ng-if="!isNewTask">
+      <button ng-click="publish()"            ng-if="showPublish" class="button button-outline button-balanced ion-checkmark" ng-disabled="!task.readyToPublish"> Veröffentlichen </button>
+      <button ng-click="readyToPublish()"     ng-if="showReadyToPublishSingle" class="button button-outline button-balanced ion-checkmark"> Bereit </button>
+      <button ng-click="readyToPublishTree()" ng-if="showReadyToPublishTree" class="button button-outline button-balanced ion-checkmark"> Bereit (Alle) </button>
+    </div>
+    <div class="buttons" ng-if="isNewTask">
+      <button ng-click="save_and_back()" class="button button-outline button-balanced ion-checkmark"> Speichern </button>
+      <button ng-click="save_and_publish()" class="button button-outline button-balanced ion-checkmark"> Speichern  und Veröffentlichen </button>
+    </div>
+  </ion-footer-bar>
 </ion-view>
