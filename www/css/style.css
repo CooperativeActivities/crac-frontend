@@ -155,9 +155,27 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   border-top-right-radius: 20px;
 }
 
-.list .item:last-child, .item-stable:not(.active) {
-  border-bottom-right-radius: 20px;
+.list .item:last-child,
+.item-stable:not(.active),
+.item-stable:not(.active) .item {
   border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.item-stable.active,
+.item-stable.active .item {
+	border-bottom-right-radius: 0px;
+	margin-bottom: 1px;
+}
+
+.list .item-accordion .item {
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	margin-left: 1em;
+}
+.list .item-accordion:not(:last-child) .item:last-child {
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
 }
 
 .list .list .item:not(.child) {
@@ -640,11 +658,11 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   border-width: 2px;
 }
 .item-task:not(.item-subtask) .item-content{
-  background: #58bd91;
+  border-color: #58bd91;
 }
-.item-task:not(.item-subtask) .item-content, .item-task:not(.item-subtask) p, .item-task:not(.item-subtask) h2 {
+/*.item-task:not(.item-subtask) .item-content, .item-task:not(.item-subtask) p, .item-task:not(.item-subtask) h2 {
   color: #fff;
-}
+}*/
 .item-task h2 {
   font-weight: bold;
 }
@@ -664,11 +682,11 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 	border: 0.2em solid #999;
 	border-radius: 1em;
 	display: inline-block;
-	height: 2em;
-	line-height: 1.6em;
+	height: 1.6em;
+	line-height: 1.2em;
 	opacity: 0.6;
 	text-align: center;
-	width: 2em;
+	width: 1.6em;
 }
 
 i.icon-step1 { background-color: #e66; border-color: #e66; color: #e66;}
