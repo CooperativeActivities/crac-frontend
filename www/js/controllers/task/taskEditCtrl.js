@@ -248,11 +248,11 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       if(!$scope.materialToAdd.name) return;
       if(!$scope.isNewTask){
         TaskDataService.addMaterialToTask($scope.task.id, $scope.materialToAdd).then(function(res){
-            $scope.task.materials.push(_.clone($scope.materialToAdd))
-            $scope.materialToAdd = { };
-          }, function(error){
-            console.log('An error occurred adding a material!', error);
-          });
+          $scope.task.materials.push(_.extend(_.clone($scope.materialToAdd), { id: res.data.material } ))
+          $scope.materialToAdd = { };
+        }, function(error){
+          console.log('An error occurred adding a material!', error);
+        });
       } else {
         //save later
         if(!$scope.task.materials){ $scope.task.materials = [] }

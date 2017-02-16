@@ -4,11 +4,11 @@
 // @TODO: move this to some global config file
 var SUBTASKS_LIMITED_TO_SHALLOW = false;
 
-cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParams','$routeParams','TaskDataService','$state','$ionicPopup', "$q", "UserDataService", "$ionicHistory",
+cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window', '$stateParams','$routeParams','TaskDataService','$state','$ionicPopup', "$q", "$ionicHistory",
   // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-  function ($scope,$route, $window, $stateParams,$routeParams,TaskDataService,$state, $ionicPopup, $q, UserDataService, $ionicHistory) {
+  function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskDataService,$state, $ionicPopup, $q, $ionicHistory) {
 
     //Flags to show/hide buttons
     $scope.editableFlag =false; // @TODO: check for permissions
@@ -24,7 +24,8 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
     $scope.neededCompetences = [];
 		
 		$scope.newComment = {name:'', content: ''};
-
+		$scope.user = $rootScope.globals.currentUser.user;
+		
     $scope.doRefresh = function(){
       TaskDataService.getTaskById($stateParams.id).then(function (res) {
         var task = res.data;
@@ -240,19 +241,23 @@ cracApp.controller('singleTaskCtrl', ['$scope','$route', '$window', '$stateParam
 		
 //Add a new comment to the task
 		$scope.addNewComment = function() {
-			if(!$scope.newComment.name || !$scope.newComment.content) return false;
+			if(!$scope.newComment.content) return false;
+			$scope.newComment.name = $scope.user;
 			TaskDataService.addComment($scope.task.id,$scope.newComment).then(function () {
-				console.log("works");
+				console.log("comment added");
 				$scope.newComment = {name:'', content: ''};
+				$scope.doRefresh();
 			}, function (error) {
 				console.log('An error occurred! ', error);
 			});
 		}
 		
 //Delete a comment from the task
-		$scope.removeComment = function(id) {
-			TaskDataService.removeComment($scope.task.id,id).then(function () {
-				console.log("works");
+		$scope.removeComment = function(comment) {
+			if($scope.user !== comment.name) return false;
+			TaskDataService.removeComment($scope.task.id,comment.id).then(function () {
+				console.log("comment removed");
+				$scope.doRefresh();
 			}, function (error) {
 				console.log('An error occurred! ', error);
 			});
