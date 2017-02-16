@@ -20,7 +20,7 @@
     <div class="item item-divider">Beobachtete Aufgaben:</div>
     <ion-list>
       <!-- @TODO: sort-->
-      <div ng-repeat="task in followingTasks" class="parent">
+      <div ng-repeat="task in followingTasks" class="parent item">
         <task-preview task="task" action="'unfollow'" ng-click="loadSingleTask(task.id)"></task-preview>
 
         <!-- @DISCUSS: put these back in?  -->
@@ -33,7 +33,7 @@
     <div class="item item-divider">Von mir angeführte Aufgaben:</div>
     <ion-list>
       <!-- @TODO: sort-->
-      <div ng-repeat="task in leadingTasks" class="parent">
+      <div ng-repeat="task in leadingTasks" class="parent item">
         <task-preview task="task" action="" ng-click="loadSingleTask(task.id)"></task-preview>
 
         <!-- @DISCUSS: put these back in?  -->
