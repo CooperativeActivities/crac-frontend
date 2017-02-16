@@ -150,7 +150,8 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   margin-bottom: 0;
 }
 
-.list .item:first-child {
+.list > .item:first-child,
+.list .item-stable:first-child .item:first-child {
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
