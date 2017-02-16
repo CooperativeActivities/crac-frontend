@@ -716,3 +716,61 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 .list .item.item-accordion.ng-hide-remove {
   display: block !important;
 }
+
+/* -- comments ------------------------------------------------------------------------------------------------------ */
+
+.comment-bubble {
+  background: #ddd;
+  border-radius:7px;
+  padding: 7px 7px 5px;
+  width: 250px;
+  max-width: 90%;
+  position: relative;
+  margin-top: 2em;
+  margin-left:0.8em;
+  float: left;
+}
+
+
+.comment-bubble .name {
+  font-size: 0.9em;
+  color: black;
+  font-weight: bold;
+}
+
+.comment-bubble .content {
+  margin-top: 0.5em;
+  line-height: 110%;
+  color: black;
+  font-size: 0.85em;
+}
+
+.comment-bubble .mouth {
+  width: 0;
+  height:0;
+  border-bottom:10px solid #ddd;
+  border-left:10px solid transparent;
+
+  position: absolute;
+  bottom:10px;
+  left: -10px;
+  box-shadow: -1px 2px 2px rgba(0,0,0,0.05);
+}
+
+.comment-bubble.mine {
+  background: hsl(100, 60%, 85%);
+  margin-right:0.8em;
+  float: right;
+}
+
+.comment-bubble.mine .mouth {
+  border-left: none;
+  border-bottom: 10px solid  hsl(100, 60%, 85%);
+  border-right: 10px solid transparent;
+  left: auto;
+  right: -10px;
+}
+
+.clear {
+  clear: both;
+}

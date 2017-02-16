@@ -262,4 +262,13 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 				console.log('An error occurred! ', error);
 			});
 		}
+//Check if user is the owner of the comment
+    $scope.checkCommentOwner = function(name){
+      if(name === $rootScope.globals.currentUser.user){
+        return true;
+      }
+      return false;
+    };
+
+
   }])
