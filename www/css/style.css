@@ -660,6 +660,39 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   /*margin-left: 4em;*/
 }
 
+.status-icons i {
+	border: 0.2em solid #999;
+	border-radius: 1em;
+	display: inline-block;
+	height: 2em;
+	line-height: 1.6em;
+	opacity: 0.6;
+	text-align: center;
+	width: 2em;
+}
+
+i.icon-step1 { background-color: #e66; border-color: #e66; color: #e66;}
+i.icon-step2 { background-color: #64c5d8; border-color: #64c5d8; color: #64c5d8;}
+i.icon-step3 { background-color: #648bd8; border-color: #648bd8; color: #648bd8;}
+i.icon-step4 { background-color: #8bd864; border-color: #8bd864; color: #8bd864;}
+i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;}
+
+i:not(.current) {
+	background-color: transparent;
+}
+i.current {
+	color: #fff;
+	opacity: 1.0;
+}
+
+.icon-connector {
+	border: 2px solid #999;
+	display: inline-block;
+	margin: 0 -5px;
+	vertical-align: middle;
+	width: 1em;
+}
+
 /* -- toggle -------------------------------------------------------------------------------------------------------- */
 
 .item-toggle .toggle {

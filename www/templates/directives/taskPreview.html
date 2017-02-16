@@ -16,13 +16,17 @@
     <div class="col status-icons">
 			<!-- only show non-published status for task owner -->
 			<span ng-if="participationType == 'LEADING'">
-				<i class="icon ion-locked"   ng-class="{ assertive : (task.taskState == 'NOT_PUBLISHED' && !task.readyToPublish) }"></i>
-				<i class="icon ion-unlocked" ng-class="{ positive  : (task.taskState == 'NOT_PUBLISHED' && task.readyToPublish) }" ></i>
+				<i class="icon ion-compose icon-step1"   ng-class="{ current : (task.taskState == 'NOT_PUBLISHED' && !task.readyToPublish) }"></i>
+				<span class="icon-connector"></span>
+				<i class="icon ion-eye-disabled icon-step2" ng-class="{ current  : (task.taskState == 'NOT_PUBLISHED' && task.readyToPublish) }" ></i>
+				<span class="icon-connector"></span>
 			</span>
 			
-			<i class="icon ion-asterisk"  ng-class="{ energized: task.taskState == 'PUBLISHED' }"></i>
-			<i class="icon ion-loop"      ng-class="{  positive: task.taskState == 'STARTED' }"></i>
-			<i class="icon ion-checkmark" ng-class="{  balanced: task.taskState == 'COMPLETED' }"></i>
+			<i class="icon ion-eye icon-step3"  ng-class="{ current: task.taskState == 'PUBLISHED' }"></i>
+				<span class="icon-connector"></span>
+			<i class="icon ion-load-a icon-step4"      ng-class="{ current: task.taskState == 'STARTED' }"></i>
+				<span class="icon-connector"></span>
+			<i class="icon ion-checkmark icon-step5" ng-class="{ current: task.taskState == 'COMPLETED' }"></i>
     </div>
   </div>
   <div class="row" ng-if="!isSubtask">
