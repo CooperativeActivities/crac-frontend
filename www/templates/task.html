@@ -100,10 +100,15 @@
               <div class="mouth"></div>
 
               <div class="name">{{comment.name}}</div>
+              <div class="delete" ng-if="checkCommentOwner(comment.name)" >
+                <i class="ion-close-circled" ng-click="removeComment(comment.id)"></i>
+              </div>
+              <span class="clear"></span>
               <div class="content"> {{ comment.content }}</div>
               <!--<ion-option-button class="button-assertive" ng-click="removeComment(comment.id)">Löschen</ion-option-button>-->
 
             </div>
+            <div class="clear"></div>
           </div>
           <div class="clear"></div>
         </ion-list>

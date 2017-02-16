@@ -736,13 +736,25 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   font-size: 0.9em;
   color: black;
   font-weight: bold;
+  float: left;
+  display: inline-block;
+  width: 80%;
+}
+
+.comment-bubble .delete {
+  float: right;
+  display: inline-block;
+  width: 20%;
+  text-align: right;
 }
 
 .comment-bubble .content {
-  margin-top: 0.5em;
+  margin-top: 0.8em;
   line-height: 110%;
   color: black;
   font-size: 0.85em;
+  display: block;
+  float: left;
 }
 
 .comment-bubble .mouth {
