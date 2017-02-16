@@ -148,7 +148,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           }, reject)
         })
       }
-      promise.then(function (res) {
+      return promise.then(function (res) {
         $scope.load()
         // this can be closed automatically (setTimeout and .close()) in case it annoys ppl
         $ionicPopup.alert({
@@ -156,12 +156,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           okType: "button-positive button-outline"
         })
 
-        if($scope.isNewTask){
-          var taskId = res.data.task;
-          $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
-            $ionicHistory.removeBackView()
-          });
-        }
+        return res;
       }, function(error) {
         console.log('An error occurred!', error);
         var message = "";
@@ -181,6 +176,44 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       });
 
     };
+    $scope.save_and_back = function(){
+      $scope.save().then(function(save_res){
+        var taskId = save_res.data.task;
+        if($scope.isNewTask){
+          $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
+            $ionicHistory.removeBackView()
+          });
+        } else {
+          $ionicHistory.goBack();
+        }
+      })
+    }
+    $scope.save_and_publish = function(){
+      if(!$scope.isNewTask) return;
+      $scope.save().then(function(save_res){
+        if(!save_res) return;
+        var taskId = save_res.data.task;
+        TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
+          if(!res.data.success){
+            var message = "";
+            switch(res.data.cause){
+              case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
+              case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
+              case "TASK_NOT_READY":  message = "Bitte Felder ausfüllen (Beginn, Ende, Ort)"; break;
+              default: message = "Anderer Fehler: " + res.data.cause;
+            }
+            $ionicPopup.alert({
+              title: "Task kann nicht veröffentlicht werden",
+              template: message,
+              okType: "button-positive button-outline"
+            })
+          }
+          $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
+            $ionicHistory.removeBackView()
+          });
+        })
+      })
+    }
 
 
     $scope.addCompetence = function(){

@@ -223,6 +223,10 @@ angular.module('app.routes', ['ionicUIRouter'])
         // id param is optional
         url: '/newtask/:parentId',
         views: {
+          'tab2': {
+            templateUrl: 'templates/taskEdit.html',
+            controller: 'taskEditCtrl'
+          },
           'tab3': {
             templateUrl: 'templates/taskEdit.html',
             controller: 'taskEditCtrl'
