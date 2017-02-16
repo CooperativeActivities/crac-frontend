@@ -799,6 +799,10 @@ i.current {
   text-align: right;
 }
 
+.comment-bubble .delete i {
+	cursor: pointer;
+}
+
 .comment-bubble .content {
   margin-top: 0.8em;
   line-height: 110%;

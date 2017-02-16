@@ -101,7 +101,7 @@
 
               <div class="name">{{comment.name}}</div>
               <div class="delete" ng-if="checkCommentOwner(comment.name)" >
-                <i class="ion-close-circled" ng-click="removeComment(comment.id)"></i>
+                <i class="ion-close-circled" ng-click="removeComment(comment)"></i>
               </div>
               <span class="clear"></span>
               <div class="content"> {{ comment.content }}</div>
