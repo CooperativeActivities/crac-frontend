@@ -15,13 +15,14 @@
 		</div>
     <div class="col status-icons">
 			<!-- only show non-published status for task owner -->
-			<span ng-if="participationType == 'LEADING'">
-				<i class="icon ion-compose icon-step1"   ng-class="{ current : (task.taskState == 'NOT_PUBLISHED' && !task.readyToPublish) }"></i>
-				<span class="icon-connector"></span>
-				<i class="icon ion-eye-disabled icon-step2" ng-class="{ current  : (task.taskState == 'NOT_PUBLISHED' && task.readyToPublish) }" ></i>
-				<span class="icon-connector"></span>
-			</span>
-			
+			<i ng-if="participationType == 'LEADING'"
+					class="icon ion-compose icon-step1"
+					ng-class="{ current : (task.taskState == 'NOT_PUBLISHED' && !task.readyToPublish) }"></i>
+			<span ng-if="participationType == 'LEADING'" class="icon-connector"></span>
+			<i ng-if="participationType == 'LEADING'"
+				class="icon ion-eye-disabled icon-step2" 
+				ng-class="{ current  : (task.taskState == 'NOT_PUBLISHED' && task.readyToPublish) }" ></i>
+			<span ng-if="participationType == 'LEADING'" class="icon-connector"></span>
 			<i class="icon ion-eye icon-step3"  ng-class="{ current: task.taskState == 'PUBLISHED' }"></i>
 				<span class="icon-connector"></span>
 			<i class="icon ion-load-a icon-step4"      ng-class="{ current: task.taskState == 'STARTED' }"></i>
