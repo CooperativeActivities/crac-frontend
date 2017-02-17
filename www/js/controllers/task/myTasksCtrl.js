@@ -8,6 +8,8 @@ function ($scope,$window, $route, $stateParams, $routeParams, TaskDataService, $
   $scope.completed ="'!' + 'COMPLETED'";
   $scope.doRefresh = function(){
     TaskDataService.getMyTasks().then(function(res) {
+			console.log("My Tasks: ");
+			console.log(res);
       $scope.participatingTasks = res.data.participating
       $scope.followingTasks = res.data.following
       $scope.leadingTasks = res.data.leading

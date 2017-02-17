@@ -11,10 +11,14 @@ cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, 
   $scope.doRefresh = function(){
     $q.all(
       TaskDataService.getMatchingTasks(3).then(function(res){
-        $scope.matchingTasks = res.data
+        $scope.matchingTasks = res.data;
+				console.log("Matching tasks: ");
+				console.log(res.data);
       }, function(error){ console.log('An error occurred!', error) }),
       TaskDataService.getAllParentTasks().then(function (res) {
         $scope.parentTasks = res.data;
+				console.log("Parent tasks: ");
+				console.log(res.data);
       }, function (error) { console.log('An error occurred!', error) })
     ).then(function(res){
       //Stop the ion-refresher from spinning

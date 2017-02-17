@@ -22,7 +22,7 @@
       <ion-list ng-controller="swipeCtrl"
                 show-delete="shouldShowDelete"
                 show-reorder="shouldShowReorder"
-                can-swipe="listCanSwipe">
+                can-swipe="true">
         <div ng-repeat="match in matchingTasks | orderBy: 'startTime'" class="parent item">
           <!-- @TODO: additional (matching) info? sort? -->
           <task-preview task="match.task" action="'follow'" ng-click="loadSingleTask(match.task.id)"></task-preview>
@@ -36,7 +36,7 @@
       <ion-list ng-controller="swipeCtrl"
                 show-delete="shouldShowDelete"
                 show-reorder="shouldShowReorder"
-                can-swipe="listCanSwipe">
+                can-swipe="true">
         <!--<div ng-repeat="task in parentTasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search" class="parent">-->
         <!-- @TODO: sort-->
         <div ng-repeat="task in parentTasks | orderBy: 'startTime'" class="parent">
