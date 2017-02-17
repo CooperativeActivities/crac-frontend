@@ -118,27 +118,42 @@
                 <span class="material-content-amount">{{ material.quantity }}</span>
                 <span class="material-content-description"> {{ material.description }}</span>
               </div>
+              <div class="new-material">
 
+                <c-accordion title="'+ Material hinzufügen'" >
+                   <div class="row row-new-material">
+
+                            <input type="text" ng-model="materialToAdd.name" placeholder="Name" class="material-new-name">
+
+                            <input type="number" ng-model="materialToAdd.quantity" placeholder="Menge" class="material-new-amount">
+
+                            <textarea ng-model="materialToAdd.description" placeholder="Beschreibung" class="material-new-description"></textarea>
+
+                  </div>
+                    <button type="button" ng-click="addMaterial()" class="button button-outline button-positive ion-plus">Hinzufügen</button>
+
+                </c-accordion>
+              </div>
             </ion-item>
           </div>
           <br>
-          <ion-item>
-            Neues Material:
-            <label class="item item-input">
-              <span class="input-label">Name</span>
-              <input type="text" ng-model="materialToAdd.name">
-            </label>
-            <label class="item item-input">
-              <span class="input-label">Menge</span>
-              <input type="number" ng-model="materialToAdd.quantity">
-            </label>
-            <label class="item item-input">
-              <span class="input-label">Beschreibung</span>
-              <textarea ng-model="materialToAdd.description"></textarea>
-            </label>
-            <br>
-            <button type="button" ng-click="addMaterial()" class="button button-outline button-positive ion-plus">Hinzufügen</button>
-          </ion-item>
+          <!--<ion-item>-->
+            <!--Neues Material:-->
+            <!--<label class="item item-input">-->
+              <!--<span class="input-label">Name</span>-->
+              <!--<input type="text" ng-model="materialToAdd.name">-->
+            <!--</label>-->
+            <!--<label class="item item-input">-->
+              <!--<span class="input-label">Menge</span>-->
+              <!--<input type="number" ng-model="materialToAdd.quantity">-->
+            <!--</label>-->
+            <!--<label class="item item-input">-->
+              <!--<span class="input-label">Beschreibung</span>-->
+              <!--<textarea ng-model="materialToAdd.description"></textarea>-->
+            <!--</label>-->
+            <!--<br>-->
+            <!--<button type="button" ng-click="addMaterial()" class="button button-outline button-positive ion-plus">Hinzufügen</button>-->
+          <!--</ion-item>-->
         </ion-list>
         <div>
         </div>

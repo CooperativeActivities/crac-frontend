@@ -850,7 +850,7 @@ i.current {
   font-weight: bold;
   font-size: 1em;
   padding: 2px;
-  min-width: 90px;
+  min-width: 100px;
   margin-right:5px;
 }
 
@@ -874,8 +874,9 @@ i.current {
 .material-content-name {
   font-size: 0.9em;
   padding: 2px;
-  min-width: 90px;
+  min-width: 100px;
   margin-right:5px;
+  white-space: pre-line;
 }
 
 .material-content-amount {
@@ -906,4 +907,33 @@ i.current {
 .row-content:last-child {
   border-bottom:none;
   margin-bottom:0.5em;
+}
+
+.row-new-material {
+  background:hsla(212, 5%, 30%, 0.25);
+  margin-bottom:1em;
+}
+
+.material-new-name {
+  font-size: 0.9em;
+  padding: 2px;
+  width: 90px;
+  margin-right:5px;
+  border-bottom:1px solid lightgray;
+}
+
+.material-new-amount {
+  font-size: 0.9em;
+  padding: 2px;
+  width: 60px;
+  margin-right:5px;
+  text-align: center;
+  border-bottom:1px solid lightgray;
+}
+
+.material-new-description {
+  font-size: 0.9em;
+  padding: 2px;
+  min-height: 34px;
+  width: 100%;
 }
