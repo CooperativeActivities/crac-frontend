@@ -57,7 +57,7 @@
       </c-accordion>
 
 
-      <c-accordion title="'Notwendige Kenntnisse'" ng-show="neededCompetences.length > 0">
+      <c-accordion title="'Notwendige Kenntnisse ('+ neededCompetences.length + ')'" ng-show="neededCompetences.length > 0">
         <!-- @TODO: use ion-list? -->
         <!-- @TODO: show more info (accordion?) -->
         <div class="row" ng-repeat="competence in neededCompetences">
@@ -65,22 +65,21 @@
         </div>
       </c-accordion>
 
-      <c-accordion title="'Notwendiges Material'" ng-show="task.materials.length > 0">
+      <c-accordion title="'Notwendiges Material (' + task.materials.length + ')'" ng-show="task.materials.length > 0">
         <ion-list>
-          <div ng-repeat="material in task.materials" ng-cloak>
+          <div  ng-cloak>
             <ion-item>
-              <div class="row">
-                  Name: {{ material.name }}
+              <div class="row row-header">
+                <span class="material-header-name">Name: </span>
+                <span class="material-header-amount">Menge: </span>
+                <span class="material-header-description">Beschreibung: </span>
               </div>
-              <div class="row">
-                Menge: {{ material.quantity }}
+              <div class="row row-content" ng-repeat="material in task.materials">
+                <span class="material-content-name">{{ material.name }}</span>
+                <span class="material-content-amount">{{ material.quantity }}</span>
+                <span class="material-content-description"> {{ material.description }}</span>
               </div>
-              <div class="row">
-                <div class="column">
-                  Beschreibung:
-                </div>
-                <div class="column" style="white-space: pre-line;"> {{ material.description }} </div>
-              </div>
+
             </ion-item>
           </div>
         </ion-list>

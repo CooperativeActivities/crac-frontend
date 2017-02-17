@@ -842,3 +842,68 @@ i.current {
 .clear {
   clear: both;
 }
+
+/* -- material ------------------------------------------------------------------------------------------------------ */
+
+.material-header-name {
+  color: black;
+  font-weight: bold;
+  font-size: 1em;
+  padding: 2px;
+  min-width: 90px;
+  margin-right:5px;
+}
+
+.material-header-amount {
+  color: black;
+  font-weight: bold;
+  font-size: 1em;
+  padding: 2px;
+  min-width: 60px;
+  margin-right:5px;
+}
+
+.material-header-description {
+  color: black;
+  font-weight: bold;
+  font-size: 1em;
+  padding: 2px;
+  min-width: 110px;
+}
+
+.material-content-name {
+  font-size: 0.9em;
+  padding: 2px;
+  min-width: 90px;
+  margin-right:5px;
+}
+
+.material-content-amount {
+  font-size: 0.9em;
+  padding: 2px;
+  min-width: 60px;
+  margin-right:5px;
+  text-align: center;
+}
+
+.material-content-description {
+  font-size: 0.9em;
+  padding: 2px;
+  min-width: 110px;
+  white-space: pre-line;
+}
+
+.row-header {
+  border-bottom:1px solid lightgray;
+  margin-bottom:0.5em;
+}
+
+.row-content {
+  border-bottom:1px solid lightgray;
+  margin-bottom: 0.5em;
+}
+
+.row-content:last-child {
+  border-bottom:none;
+  margin-bottom:0.5em;
+}
