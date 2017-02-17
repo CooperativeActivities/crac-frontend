@@ -7,39 +7,24 @@
     <div class="item item-divider">Teilgenommene Aufgaben:</div>
     <ion-list>
       <!-- @TODO: sort-->
-      <div ng-repeat="task in participatingTasks" class="parent item">
+      <div ng-repeat="task in participatingTasks | orderBy: 'startTime'" class="parent item">
         <task-preview task="task" action="" ng-click="loadSingleTask(task.id)"></task-preview>
-
-        <!-- @DISCUSS: put these back in?  -->
-        <!-- <div ng-repeat="childTask in task.childTasks" class="child">
-          <task-preview task="childTask" ng-click="loadSingleTask(childTask.id)"></task-preview>
-        </div> -->
       </div>
     </ion-list>
     <hr>
     <div class="item item-divider">Beobachtete Aufgaben:</div>
     <ion-list>
       <!-- @TODO: sort-->
-      <div ng-repeat="task in followingTasks" class="parent item">
+      <div ng-repeat="task in followingTasks | orderBy: 'startTime'" class="parent item">
         <task-preview task="task" action="'unfollow'" ng-click="loadSingleTask(task.id)"></task-preview>
-
-        <!-- @DISCUSS: put these back in?  -->
-        <!-- <div ng-repeat="childTask in task.childTasks" class="child item">
-          <task-preview task="childTask" ng-click="loadSingleTask(childTask.id)"></task-preview>
-        </div> -->
       </div>
     </ion-list>
     <hr>
     <div class="item item-divider">Von mir angeführte Aufgaben:</div>
-    <ion-list>
+    <ion-list can-swipe="false">
       <!-- @TODO: sort-->
-      <div ng-repeat="task in leadingTasks" class="parent item">
+      <div ng-repeat="task in leadingTasks | orderBy: 'startTime'" class="parent item">
         <task-preview task="task" action="" ng-click="loadSingleTask(task.id)"></task-preview>
-
-        <!-- @DISCUSS: put these back in?  -->
-        <!-- <div ng-repeat="childTask in task.childTasks" class="child item">
-          <task-preview task="childTask" ng-click="loadSingleTask(childTask.id)"></task-preview>
-        </div> -->
       </div>
     </ion-list>
   </ion-content>

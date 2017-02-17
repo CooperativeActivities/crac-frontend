@@ -165,8 +165,10 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
               // @TODO: welche fehler gibt es hier?
             default: message = "Anderer Fehler: " + error.data.cause;
           }
-        } else if(error.status = 403){
+        } else if(error.status == 403){
           message = "Du hast keine Berechtigungen Tasks zu speichern.";
+        } else if(error.status == 500){
+          message = "Server Fehler";
         }
         $ionicPopup.alert({
           title: "Task kann nicht gespeichert werden",
@@ -356,6 +358,8 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
             case "TASK_NOT_READY":  message = "Bitte Felder ausfüllen (Beginn, Ende, Ort)"; break;
             default: message = "Anderer Fehler: " + res.data.cause;
           }
+          //server doesn't respond correctly
+          message = "Bitte füge Kompetenzen/Unteraufgaben hinzu oder setze Unteraufgaben auf 'bereit'.";
           $ionicPopup.alert({
             title: "Task kann nicht auf 'bereit' gesetzt werden",
             template: message,
