@@ -41,6 +41,30 @@
             <div class="row"> {{task.location}} </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-25">
+            <div class="row"><span class="ion-information-circled"> Status </span></div>
+          </div>
+          <div class="col">
+            <div class="row status-icons">
+							<!-- only show non-published status for task owner -->
+							<i ng-if="participationType == 'LEADING'"
+									class="icon ion-compose icon-step1"
+									ng-class="{ current : (task.taskState == 'NOT_PUBLISHED' && !task.readyToPublish) }"></i>
+							<span ng-if="participationType == 'LEADING'" class="icon-connector"></span>
+							<i ng-if="participationType == 'LEADING'"
+								class="icon ion-eye-disabled icon-step2" 
+								ng-class="{ current  : (task.taskState == 'NOT_PUBLISHED' && task.readyToPublish) }" ></i>
+							<span ng-if="participationType == 'LEADING'" class="icon-connector"></span>
+							<i class="icon ion-eye icon-step3"  ng-class="{ current: task.taskState == 'PUBLISHED' }"></i>
+								<span class="icon-connector"></span>
+							<i class="icon ion-load-a icon-step4"      ng-class="{ current: task.taskState == 'STARTED' }"></i>
+								<span class="icon-connector"></span>
+							<i class="icon ion-checkmark icon-step5" ng-class="{ current: task.taskState == 'COMPLETED' }"></i>
+						</div>
+          </div>
+        </div>
+					
       </c-accordion>
 
       <c-accordion title="'Team'" shown="true">
@@ -113,14 +137,11 @@
           <div class="clear"></div>
         </ion-list>
 
-				<h4>Kommentar Hinzufügen</h4>
 				<form ng-submit="addNewComment()">
 					<label class="item item-input item-stacked-label">
-						<span class="input-label">Kommentar:</span>
-						<textarea ng-model="newComment.content" style="background-color:white;"></textarea>
+						<span class="input-label">Kommentar Hinzufügen:</span>
+						<input type="text" ng-model="newComment.content" style="background-color:white;" />
 					</label>
-
-					<button type="submit" ng-disabled="!newComment.content" class="button button-block button-outline button-balanced ion-checkmark"> Kommentar Hinzufügen </button>
 				</form>
       </c-accordion>
 			</div>

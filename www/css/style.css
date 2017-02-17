@@ -696,10 +696,10 @@ i.icon-step3 { background-color: #648bd8; border-color: #648bd8; color: #648bd8;
 i.icon-step4 { background-color: #8bd864; border-color: #8bd864; color: #8bd864;}
 i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;}
 
-i:not(.current) {
-	background-color: transparent;
+.status-icons i:not(.current) {
+	background-color: #fff;
 }
-i.current {
+.status-icons i.current {
 	color: #fff;
 	opacity: 1.0;
 }
@@ -707,7 +707,7 @@ i.current {
 .icon-connector {
 	border: 2px solid #999;
 	display: inline-block;
-	margin: 0 -5px;
+	margin: auto -0.1em;
 	vertical-align: middle;
 	width: 1em;
 }
@@ -778,7 +778,7 @@ i.current {
   width: 250px;
   max-width: 90%;
   position: relative;
-  margin-top: 2em;
+  margin-bottom: 1em;
   margin-left:0.8em;
   float: left;
 }
