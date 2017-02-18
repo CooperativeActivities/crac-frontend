@@ -17,7 +17,7 @@ cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, 
       }, function(error){ console.log('An error occurred!', error) }),
       TaskDataService.getAllParentTasks().then(function (res) {
         $scope.parentTasks = res.data;
-				console.log("Parent tasks: ");
+				console.log("Matching tasks: ");
 				console.log(res.data);
       }, function (error) { console.log('An error occurred!', error) })
     ).then(function(res){

@@ -15,7 +15,7 @@
                     show-reorder="shouldShowReorder"
                     can-swipe="true">
             <!-- <div ng-repeat="task in tasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search">-->
-            <div ng-repeat="task in tasks">
+            <div ng-repeat="task in tasks | orderBy: 'startTime'">
               <task-preview task="task.task" action="'follow'" ng-click="loadSingleTask(task.task.id)"></task-preview>
             </div>
           </ion-list>
