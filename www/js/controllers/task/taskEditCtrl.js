@@ -12,6 +12,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.showReadyToPublishSingle = false;
     $scope.showReadyToPublishTree = false;
     $scope.isNewTask = false;
+		$scope.formTitle = "Aufgabe Bearbeiten";
 
     $scope.competenceToAdd = {};
     $scope.materialToAdd = {};
@@ -38,6 +39,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         });
       } else {
         $scope.isNewTask = true;
+				$scope.formTitle = "Aufgabe Erstellen";
         $scope.neededCompetences = [];
         $scope.task.materials = []
         TaskDataService.getAllCompetences().then(function(res){
