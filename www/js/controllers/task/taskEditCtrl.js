@@ -81,7 +81,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     };
 
 // Save changes
-    $scope.save = function(){
+    $scope.save = function(intermediateSave){
       var task = $scope.task;
       var taskData = {};
       if(!task.name || !task.description || !task.location){
@@ -151,11 +151,14 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       return promise.then(function (res) {
         $scope.load()
         // this can be closed automatically (setTimeout and .close()) in case it annoys ppl
-        $ionicPopup.alert({
-          title: "Task gespeichert",
-          okType: "button-positive button-outline"
-        })
-
+        
+				if(!intermediateSave) {
+					$ionicPopup.alert({
+						title: "Task gespeichert",
+						okType: "button-positive button-outline"
+					})
+				}
+				
         return res;
       }, function(error) {
         console.log('An error occurred!', error);
@@ -192,7 +195,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     }*/
     $scope.save_and_publish = function(){
       //if(!$scope.isNewTask) return;
-      $scope.save().then(function(save_res){
+      $scope.save(true).then(function(save_res){
         if(!save_res) return;
         var taskId = save_res.data.task;
         TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
@@ -201,7 +204,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
             switch(res.data.cause){
               case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
               case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
-              case "TASK_NOT_READY":  message = "Bitte Felder ausfüllen (Beginn, Ende, Ort)"; break;
+              case "TASK_NOT_READY":  message = "Aufgabe ist nicht bereit veröffentlicht zu werden."; break;
               default: message = "Anderer Fehler: " + res.data.cause;
             }
             $ionicPopup.alert({
@@ -209,10 +212,11 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
               template: message,
               okType: "button-positive button-outline"
             })
-          }
-          $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
-            $ionicHistory.removeBackView()
-          });
+          } else {
+						$state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
+							$ionicHistory.removeBackView()
+						});
+					}
         })
       })
     }
