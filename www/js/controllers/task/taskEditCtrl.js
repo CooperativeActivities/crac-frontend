@@ -178,7 +178,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       });
 
     };
-    $scope.save_and_back = function(){
+    /*$scope.save_and_back = function(){
       $scope.save().then(function(save_res){
         var taskId = save_res.data.task;
         if($scope.isNewTask){
@@ -189,9 +189,9 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           $ionicHistory.goBack();
         }
       })
-    }
+    }*/
     $scope.save_and_publish = function(){
-      if(!$scope.isNewTask) return;
+      //if(!$scope.isNewTask) return;
       $scope.save().then(function(save_res){
         if(!save_res) return;
         var taskId = save_res.data.task;
@@ -313,7 +313,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
 
 //publish task
-    $scope.publish = function(){
+    /*$scope.publish = function(){
       if($scope.newTask){ return }
       TaskDataService.changeTaskState($scope.task.id, 'publish').then(function(res) {
         if(!res.data.success){
@@ -346,9 +346,9 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           okType: "button-positive button-outline"
         })
       });
-    }
+    }*/
     $scope.readyToPublish = function(){
-      if($scope.newTask){ return }
+      //if($scope.newTask){ return }
       TaskDataService.setReadyToPublishS($scope.task.id).then(function(res){
         if(!res.data.success){
           var message = "";
