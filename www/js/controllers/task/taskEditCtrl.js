@@ -199,7 +199,11 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         if(!save_res) return;
         var taskId = save_res.data.task;
         TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
-          if(!res.data.success){
+          if(res.data.success){
+						$state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
+							$ionicHistory.removeBackView()
+						});
+          } else {
             var message = "";
             switch(res.data.cause){
               case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
@@ -212,10 +216,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
               template: message,
               okType: "button-positive button-outline"
             })
-          } else {
-						$state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
-							$ionicHistory.removeBackView()
-						});
 					}
         })
       })
