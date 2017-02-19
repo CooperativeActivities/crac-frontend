@@ -123,6 +123,10 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   background: transparent;
 }
 
+.has-error.ng-touched {
+	border: 1px solid #f00;
+}
+
 .bar .button {
   background: none;
   color: #fff;

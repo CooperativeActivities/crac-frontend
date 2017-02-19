@@ -6,12 +6,12 @@
     <div style="color:#000000;">
       <form onsubmit="event.preventDefault">
         <label class="item item-input item-stacked-label">
-          <span class="input-label">Name:</span>
-          <input type="text" ng-model="task.name" style="background-color:white;"></textarea>
+          <span class="input-label">Name*:</span>
+          <input type="text" ng-model="task.name" style="background-color:white;" ng-class="{'has-error' : !task.name}"></textarea>
         </label>
         <label class="item item-input item-stacked-label">
-          <span class="input-label">Beschreibung:</span>
-          <textarea ng-model="task.description" style="background-color:white;"></textarea>
+          <span class="input-label">Beschreibung*:</span>
+          <textarea ng-model="task.description" style="background-color:white;" ng-class="{'has-error' : !task.description}"></textarea>
         </label>
         <label class="item item-input item-stacked-label">
           <span class="input-label">Zahl der Freiwilligen:</span>
@@ -20,16 +20,16 @@
         <br>
         <div class="item item-divider">Zeit und Ort</div>
         <label class="item item-input item-stacked-label">
-          <span class="input-label">Beginn:</span>
-          <input type="datetime-local" ng-model="task.startTime" style="background-color:white;">
+          <span class="input-label">Beginn*:</span>
+          <input type="datetime-local" ng-model="task.startTime" style="background-color:white;" ng-class="{'has-error' : !task.startTime}">
         </label>
         <label class="item item-input item-stacked-label">
-          <span class="input-label">Ende:</span>
-          <input type="datetime-local" ng-model="task.endTime" style="background-color:white;">
+          <span class="input-label">Ende*:</span>
+          <input type="datetime-local" ng-model="task.endTime" style="background-color:white;" ng-class="{'has-error' : !task.endTime}">
         </label>
         <label class="item item-input item-stacked-label">
-          <span class="input-label">Ort:</span>
-          <input type="text" ng-model="task.location" style="background-color:white;"></textarea>
+          <span class="input-label">Ort*:</span>
+          <input type="text" ng-model="task.location" style="background-color:white;" ng-class="{'has-error' : !task.location}"></textarea>
         </label>
         <br>
         <div class="item item-divider">Notwendige Kenntnisse:</div>
