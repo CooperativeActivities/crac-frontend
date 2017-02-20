@@ -211,28 +211,31 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.save_and_publish = function(){
       //if(!$scope.isNewTask) return;
       $scope.save().then(function(save_res){
-        if(!save_res) return;
+        if(!save_res || !save_res.data.success) return;
         var taskId = save_res.data.task;
-        TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
-          if(res.data.success){
-						$state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
-							$ionicHistory.removeBackView()
-						});
-          } else {
-            var message = "";
-            switch(res.data.cause){
-              case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
-              case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
-              case "TASK_NOT_READY":  message = "Aufgabe ist nicht bereit veröffentlicht zu werden."; break;
-              default: message = "Anderer Fehler: " + res.data.cause;
-            }
-            $ionicPopup.alert({
-              title: "Task kann nicht veröffentlicht werden",
-              template: message,
-              okType: "button-positive button-outline"
-            })
-					}
-        })
+				$scope.setAsReady().then(function(ready_res) {
+					if(!ready_res || !ready_res.data.success) return;
+					TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
+						if(res.data.success){
+							$state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
+								$ionicHistory.removeBackView()
+							});
+						} else {
+							var message = "";
+							switch(res.data.cause){
+								case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
+								case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
+								case "TASK_NOT_READY":  message = "Aufgabe ist nicht bereit veröffentlicht zu werden."; break;
+								default: message = "Anderer Fehler: " + res.data.cause;
+							}
+							$ionicPopup.alert({
+								title: "Task kann nicht veröffentlicht werden",
+								template: message,
+								okType: "button-positive button-outline"
+							})
+						}
+					})
+				})
       })
     }
 
@@ -405,7 +408,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.readyToPublish = function(){
       //if($scope.newTask){ return }
 			$scope.save().then(function(save_res){
-        if(!save_res) return;
+        if(!save_res || !save_res.data.success) return;
         var taskId = save_res.data.task;
 				$scope.setAsReady().then(function(res) {
 					if(res.data.success){
