@@ -11,17 +11,22 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.showPublish = false;
     $scope.showReadyToPublishSingle = false;
     $scope.showReadyToPublishTree = false;
-    $scope.isNewTask = false;
-		$scope.formTitle = "Aufgabe Bearbeiten";
+    $scope.isNewTask = true;
+		$scope.formTitle = "";
 
     $scope.competenceToAdd = {};
     $scope.materialToAdd = {};
+		
+		if($stateParams.id !== undefined) {
+		  $scope.isNewTask = false;
+			$scope.taskId = $stateParams.id;
+		}
 
     $scope.load = function(){
-      if($stateParams.id !== undefined){
-        $scope.isNewTask = false;
+      if(!$scope.isNewTask){
+				$scope.formTitle = "Aufgabe Bearbeiten";
         // @TODO: check if task.userIsLeading, if not, go back
-        TaskDataService.getTaskById($stateParams.id).then(function (res) {
+        TaskDataService.getTaskById($scope.taskId).then(function (res) {
           var task = res.data;
           console.log("edit", task)
           if(!task) return;
@@ -38,7 +43,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           console.warn('An error occurred!', error);
         });
       } else {
-        $scope.isNewTask = true;
 				$scope.formTitle = "Aufgabe Erstellen";
         $scope.neededCompetences = [];
         $scope.task.materials = []
@@ -151,7 +155,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         })
       }
       return promise.then(function (res) {
-        $scope.load()
         // this can be closed automatically (setTimeout and .close()) in case it annoys ppl
         return res;
       }, function(error) {
@@ -190,12 +193,18 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 		
 		// Save changes only
 		$scope.save_changes = function() {
-			$scope.save().then(function(res) {
-        if(!res) return;
+			$scope.save().then(function(save_res) {
+        if(!save_res) return;
+        var taskId = save_res.data.task;
 				$ionicPopup.alert({
 					title: "Task gespeichert",
 					okType: "button-positive button-outline"
 				})
+				
+				if($scope.isNewTask) {
+			    $scope.isNewTask = false;
+					$scope.load();
+				}
 			})
 		}
 		
@@ -357,39 +366,57 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         })
       });
     }*/
+		
+		// Save task
+    $scope.setAsReady = function(){
+      var task = $scope.task;
+      var taskData = {};
+
+      var promise = TaskDataService.setReadyToPublishS(task.id);
+      
+      return promise.then(function (res) {
+				if(!res.data.success){
+					var message = "";
+					switch(res.data.cause){
+						case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
+						case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
+						case "TASK_NOT_READY":  message = "Bitte Felder ausfüllen (Beginn, Ende, Ort)"; break;
+						default: message = "Anderer Fehler: " + res.data.cause;
+					}
+					//server doesn't respond correctly
+					message = "Bitte füge Kompetenzen/Unteraufgaben hinzu oder setze Unteraufgaben auf 'bereit'.";
+					$ionicPopup.alert({
+						title: "Task kann nicht auf 'bereit' gesetzt werden",
+						template: message,
+						okType: "button-positive button-outline"
+					})
+				}
+				return res;
+			}, function(error) {
+				console.log('An error occurred!', error);
+				$ionicPopup.alert({
+					title: "Task kann nicht auf 'bereit' gesetzt werden",
+					template: "Fehler: "+ error.data.cause,
+					okType: "button-positive button-outline"
+				})
+      });
+    };
+
     $scope.readyToPublish = function(){
       //if($scope.newTask){ return }
 			$scope.save().then(function(save_res){
         if(!save_res) return;
         var taskId = save_res.data.task;
-        TaskDataService.setReadyToPublishS(taskId).then(function(res){
-					if(!res.data.success){
-						var message = "";
-						switch(res.data.cause){
-							case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
-							case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
-							case "TASK_NOT_READY":  message = "Bitte Felder ausfüllen (Beginn, Ende, Ort)"; break;
-							default: message = "Anderer Fehler: " + res.data.cause;
-						}
-						//server doesn't respond correctly
-						message = "Bitte füge Kompetenzen/Unteraufgaben hinzu oder setze Unteraufgaben auf 'bereit'.";
-						$ionicPopup.alert({
-							title: "Task kann nicht auf 'bereit' gesetzt werden",
-							template: message,
-							okType: "button-positive button-outline"
-						})
+				$scope.setAsReady().then(function(res) {
+					if(res.data.success){
+						$state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
+							$ionicHistory.removeBackView()
+						});
 					}
-					$scope.load()
-				}, function(error){
-					console.log('An error occurred!', error);
-					$ionicPopup.alert({
-						title: "Task kann nicht auf 'bereit' gesetzt werden",
-						template: "Fehler: "+ error.data.cause,
-						okType: "button-positive button-outline"
-					})
 				})
 			})
     }
+		
     $scope.readyToPublishTree = function(){
       if($scope.newTask){ return }
       TaskDataService.setReadyToPublishT($scope.task.id).then(function(res){
