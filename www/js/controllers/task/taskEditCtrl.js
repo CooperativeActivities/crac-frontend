@@ -193,8 +193,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 		
 		// Save changes only
 		$scope.save_changes = function() {
-			$scope.save();
-			/*.then(function(save_res) {
+			$scope.save().then(function(save_res) {
         if(!save_res) return;
         var taskId = save_res.data.task;
 				$ionicPopup.alert({
@@ -206,7 +205,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 			    $scope.isNewTask = false;
 					$scope.load();
 				}
-			})*/
+			})
 		}
 		
     $scope.save_and_publish = function(){
