@@ -82,8 +82,8 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       }
     };
 
-// Save changes
-    $scope.save = function(intermediateSave){
+// Save task
+    $scope.save = function(){
       var task = $scope.task;
       var taskData = {};
       if(!task.name || !task.description || !task.location){
@@ -153,14 +153,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       return promise.then(function (res) {
         $scope.load()
         // this can be closed automatically (setTimeout and .close()) in case it annoys ppl
-        
-				if(!intermediateSave) {
-					$ionicPopup.alert({
-						title: "Task gespeichert",
-						okType: "button-positive button-outline"
-					})
-				}
-				
         return res;
       }, function(error) {
         console.log('An error occurred!', error);
@@ -195,9 +187,21 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         }
       })
     }*/
+		
+		// Save changes only
+		$scope.save_changes = function() {
+			$scope.save().then(function(res) {
+        if(!res) return;
+				$ionicPopup.alert({
+					title: "Task gespeichert",
+					okType: "button-positive button-outline"
+				})
+			})
+		}
+		
     $scope.save_and_publish = function(){
       //if(!$scope.isNewTask) return;
-      $scope.save(true).then(function(save_res){
+      $scope.save().then(function(save_res){
         if(!save_res) return;
         var taskId = save_res.data.task;
         TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
@@ -355,7 +359,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     }*/
     $scope.readyToPublish = function(){
       //if($scope.newTask){ return }
-			$scope.save(true).then(function(save_res){
+			$scope.save().then(function(save_res){
         if(!save_res) return;
         var taskId = save_res.data.task;
         TaskDataService.setReadyToPublishS(taskId).then(function(res){
