@@ -854,8 +854,9 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
   font-weight: bold;
   font-size: 1em;
   padding: 2px;
-  min-width: 100px;
+  width: 100px;
   margin-right:5px;
+  display: inline-table;
 }
 
 .material-header-amount {
@@ -863,8 +864,9 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
   font-weight: bold;
   font-size: 1em;
   padding: 2px;
-  min-width: 60px;
+  width: 60px;
   margin-right:5px;
+  display: inline-table;
 }
 
 .material-header-description {
@@ -872,31 +874,72 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
   font-weight: bold;
   font-size: 1em;
   padding: 2px;
-  min-width: 110px;
+  width: 110px;
 }
 
 .material-content-name {
-  font-size: 0.9em;
+  font-size: 0.8em;
   padding: 2px;
-  min-width: 100px;
+  width: 100px;
   margin-right:5px;
   white-space: pre-line;
+  display: inline-table;
+
 }
 
 .material-content-amount {
-  font-size: 0.9em;
+  font-size: 0.8em;
   padding: 2px;
-  min-width: 60px;
+  width: 60px;
   margin-right:5px;
   text-align: center;
+  white-space: pre-line;
+  display: inline-table;
 }
 
+/*-- description media queries  ---------*/
+
 .material-content-description {
-  font-size: 0.9em;
+  font-size: 0.8em;
   padding: 2px;
-  min-width: 110px;
   white-space: pre-line;
+  display: inline-table;
 }
+
+@media screen and (min-width: 320px) {
+  .material-content-description {
+    width: 95px;
+  }
+}
+
+@media screen and (min-width: 375px)  {
+  .material-content-description {
+       width: 145px;
+  }
+}
+
+@media screen and (min-width: 412px)  {
+  .material-content-description {
+    width: 185px;
+  }
+}
+@media screen and (min-width: 480px)  {
+  .material-content-description {
+    min-width: 185px;
+    width:60%;
+  }
+}
+@media screen and (min-width: 550px)  {
+  .material-content-description {
+    min-width: 185px;
+    width:70%;
+  }
+}
+
+/*-- end media queries */
+
+
+
 
 .row-header {
   border-bottom:1px solid lightgray;
@@ -906,6 +949,11 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
 .row-content {
   border-bottom:1px solid lightgray;
   margin-bottom: 0.5em;
+
+}
+
+.row-content:nth-child(odd) {
+  background: hsla(0, 0%, 86%, 0.3);
 }
 
 .row-content:last-child {
@@ -914,30 +962,15 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
 }
 
 .row-new-material {
-  background:hsla(212, 5%, 30%, 0.25);
+  background:hsla(0, 0%, 86%, 0.5);
   margin-bottom:1em;
 }
 
-.material-new-name {
-  font-size: 0.9em;
-  padding: 2px;
-  width: 90px;
-  margin-right:5px;
-  border-bottom:1px solid lightgray;
+.new-material-label {
+  font-size: 1em;
+  font-weight: bold;
 }
 
-.material-new-amount {
+.new-material-input {
   font-size: 0.9em;
-  padding: 2px;
-  width: 60px;
-  margin-right:5px;
-  text-align: center;
-  border-bottom:1px solid lightgray;
-}
-
-.material-new-description {
-  font-size: 0.9em;
-  padding: 2px;
-  min-height: 34px;
-  width: 100%;
 }
