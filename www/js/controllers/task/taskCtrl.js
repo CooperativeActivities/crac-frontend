@@ -22,10 +22,10 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 
 		$scope.team = [];
     $scope.neededCompetences = [];
-		
+
 		$scope.newComment = {name:'', content: ''};
 		$scope.user = $rootScope.globals.currentUser.user;
-		
+
     $scope.doRefresh = function(){
       TaskDataService.getTaskById($stateParams.id).then(function (res) {
         var task = res.data;
@@ -238,7 +238,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     $scope.addCompetence = function(){
       $state.go('tabsController.addCompetenceToTask', { id:$scope.task.id });
     }
-		
+
 //Add a new comment to the task
 		$scope.addNewComment = function() {
 			if(!$scope.newComment.content) return false;
@@ -251,7 +251,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 				console.log('An error occurred! ', error);
 			});
 		}
-		
+
 //Delete a comment from the task
 		$scope.removeComment = function(comment) {
 			if($scope.user !== comment.name) return false;
@@ -268,6 +268,24 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
         return true;
       }
       return false;
+    };
+
+    $scope.getCompetenceColors = function(competence){
+      var competenceUserRel = _.find($rootScope.globals.userInfoCompetences, function(rel){
+        return rel.competence.id === competence.id
+      })
+      if(competenceUserRel){
+        // likeValue = competenceUserRel.likeValue
+        // proficiencyValue = competenceUserRel.proficiencyValue
+      } else {
+      }
+      var hueLowImportance = 120 // green
+        , hueHighImportance = 0 // blue
+      var saturationLowProficiency = 90 // brighter
+        , saturationHighProficiency = 65 // darker
+      var hue = hueLowImportance + (competence.importanceLevel / 100 * (hueHighImportance - hueLowImportance))
+      var saturation = saturationLowProficiency + (competence.neededProficiencyLevel / 100 * (saturationHighProficiency - saturationLowProficiency))
+      return { "background-color":"hsl("+ Math.floor(hue) +",100%,"+ Math.floor(saturation) +"%)" }
     };
 
 

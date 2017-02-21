@@ -53,7 +53,7 @@
 									ng-class="{ current : (task.taskState == 'NOT_PUBLISHED' && !task.readyToPublish) }"></i>
 							<span ng-if="participationType == 'LEADING'" class="icon-connector"></span>
 							<i ng-if="participationType == 'LEADING'"
-								class="icon ion-eye-disabled icon-step2" 
+								class="icon ion-eye-disabled icon-step2"
 								ng-class="{ current  : (task.taskState == 'NOT_PUBLISHED' && task.readyToPublish) }" ></i>
 							<span ng-if="participationType == 'LEADING'" class="icon-connector"></span>
 							<i class="icon ion-eye icon-step3"  ng-class="{ current: task.taskState == 'PUBLISHED' }"></i>
@@ -64,7 +64,7 @@
 						</div>
           </div>
         </div>
-					
+
       </c-accordion>
 
       <c-accordion title="'Team'" shown="true">
@@ -82,11 +82,18 @@
 
 
       <c-accordion title="'Notwendige Kenntnisse ('+ neededCompetences.length + ')'" ng-show="neededCompetences.length > 0">
-        <!-- @TODO: use ion-list? -->
-        <!-- @TODO: show more info (accordion?) -->
-        <div class="row" ng-repeat="competence in neededCompetences">
-          {{ competence.name }}
+        <div>
+          Anmerkung (Temporär, bitte Feedback) <br>
+          Grün -> Rot ===  Unwichtig -> Wichtig <br>
+          Hell -> Dunkel === Leicht -> Schwer
         </div>
+        <div class="tags">
+          <div class="tag" ng-repeat="competence in neededCompetences | orderBy: 'name'"
+            ng-style="getCompetenceColors(competence)">
+            {{ competence.name }}
+          </div>
+        </div>
+        <br>
       </c-accordion>
 
       <c-accordion title="'Notwendiges Material (' + task.materials.length + ')'" ng-show="task.materials.length > 0">
@@ -107,6 +114,7 @@
             </ion-item>
           </div>
         </ion-list>
+        <br>
       </c-accordion>
 
       <c-accordion title="'Unteraufgaben'" ng-show="task.childTasks.length > 0">
@@ -115,6 +123,7 @@
             <task-preview task="subTask" ng-click="loadSingleTask(subTask.id)"></task-preview>
           </div>
         </ion-list>
+        <br>
       </c-accordion>
 
       <c-accordion title="'Kommentare (' + task.comments.length + ')'">
@@ -143,8 +152,9 @@
 						<input type="text" ng-model="newComment.content" style="background-color:white;" />
 					</label>
 				</form>
+        <br>
       </c-accordion>
-			</div>
+    </div>
   </ion-content>
   <ion-footer-bar class="bar bar-footer">
     <div class="button-bar" ng-cloak>

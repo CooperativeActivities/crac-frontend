@@ -38,7 +38,7 @@
           <div ng-repeat="competence in neededCompetences" ng-cloak>
             <custom-accordion>
               <custom-accordion-head>
-                <ion-item>
+                <ion-item class="item-divider">
                   {{ competence.name }}
                   <ion-option-button class="button-assertive" ng-click="removeCompetence(competence)">Löschen</ion-option-button>
                 </ion-item>
@@ -46,28 +46,29 @@
               <custom-accordion-body>
                 <label class="item item-input range">
                   <span class="input-label">Wichtigkeit</span>
-                  <input type="range" min="0" max="100" ng-value="competence.importance" readonly>
+                  <input type="range" min="0" max="100" ng-value="competence.importanceLevel" readonly>
                 </label>
                 <label class="item item-input range">
                   <span class="input-label">Können</span>
-                  <input type="range" min="0" max="100" ng-value="competence.proficiency" readonly>
+                  <input type="range" min="0" max="100" ng-value="competence.neededProficiencyLevel" readonly>
                 </label>
-                <div class="item item-toggle">
-                   Zwingend
-                   <label class="toggle toggle-assertive">
-                     <input type="checkbox" ng-model="competence.mandatory">
-                     <div class="track">
-                       <div class="handle"></div>
-                     </div>
-                   </label>
-                </div>
+                <label class="item item-input item-toggle">
+                  <span class="input-label">Zwingend</span>
+                  <label class="toggle toggle-assertive">
+                    <input type="checkbox" ng-model="competence.mandatory">
+                    <div class="track">
+                      <div class="handle"></div>
+                    </div>
+                  </label>
+                </label>
+                <br>
               </custom-accordion-body>
             </custom-accordion>
           </div>
           <br>
           <custom-accordion>
             <custom-accordion-head>
-              <label class="item item-input item-select">
+              <label ion-item class="item item-divider item-input item-select">
                 <span class="input-label">
                   Neu:
                 </span>
@@ -82,11 +83,11 @@
             <custom-accordion-body>
                 <label class="item item-input range">
                   <span class="input-label">Wichtigkeit</span>
-                  <input type="range" min="0" max="100" ng-model="competenceToAdd.importance">
+                  <input type="range" min="0" max="100" ng-model="competenceToAdd.importanceLevel">
                 </label>
                 <label class="item item-input range">
                   <span class="input-label">Können</span>
-                  <input type="range" min="0" max="100" ng-model="competenceToAdd.proficiency">
+                  <input type="range" min="0" max="100" ng-model="competenceToAdd.neededProficiencyLevel">
                 </label>
                 <div class="item item-toggle">
                    Zwingend
