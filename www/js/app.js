@@ -5,6 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
+
 var cracApp = angular.module('app', ['ionic', 'ngCookies','ngRoute', 'app.controllers', 'app.routes', 'app.directives', 'app.services',])
 
   .config(function ($ionicConfigProvider) {
@@ -43,7 +44,38 @@ cracApp.run(function ($ionicPlatform, $rootScope, $location,$cookieStore,$http) 
        $location.path('/login');
      }
    });
+})
 
+// form polyfill
+webshim.setOptions("basePath", "lib/webshim-1.16.0/js-webshim/dev/shims/")
+webshim.setOptions("forms-ext", {
+  replaceUI: false, //if "auto" is used here, it replaces it on some tablets it wouldnt need to
+                      //false means it really only replaces when necessary (eg. firefox, but not chrome)
+  types: "date number datetime-local",
+  date: {
+    startView: 2,
+    openOnFocus: true,
+  },
+  widgets: {
+    calculateWidth: false,
+  },
+});
+webshim.polyfill("forms forms-ext");
 
-
+cracApp.directive('input', function() {
+  return {
+    restrict: 'E',
+    priority: -1,
+    link: function(scope, element, attrs) {
+      switch(attrs.type){
+        case "date":
+        //case "datetime":
+        case "datetime-local":
+        case "number":
+          console.log("hey")
+          $(element).updatePolyfill();
+          break
+      }
+    }
+  }
 })
