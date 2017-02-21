@@ -10,7 +10,11 @@ cracApp.controller('myCrAcMenuCtrl', ['$scope','$rootScope', '$stateParams','Use
     $rootScope.$watch(['globals.hasOwnProperty'], function() {
       if ($rootScope.globals.hasOwnProperty("currentUser")) {
         UserDataService.getUserById($rootScope.globals.currentUser.id).then(function (res) {
+          UserDataService.getCompRelationships().then(function(res){
+            $rootScope.globals.userInfoCompetences = res.data;
+          })
           $scope.user = res.data;
+          $rootScope.globals.userInfo = res.data;
           console.log($scope.user);
 
         }, function (error) {

@@ -271,6 +271,14 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     };
 
     $scope.getCompetenceColors = function(competence){
+      var competenceUserRel = _.find($rootScope.globals.userInfoCompetences, function(rel){
+        return rel.competence.id === competence.id
+      })
+      if(competenceUserRel){
+        // likeValue = competenceUserRel.likeValue
+        // proficiencyValue = competenceUserRel.proficiencyValue
+      } else {
+      }
       var hueLowImportance = 120 // green
         , hueHighImportance = 0 // blue
       var saturationLowProficiency = 90 // brighter
