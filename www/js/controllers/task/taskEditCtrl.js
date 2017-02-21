@@ -16,7 +16,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
     $scope.competenceToAdd = {};
     $scope.materialToAdd = {};
-		
+
 		if($stateParams.id !== undefined) {
 		  $scope.isNewTask = false;
 			$scope.taskId = $stateParams.id;
@@ -126,16 +126,8 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       } else {
         var creation_promise;
         if(!$scope.parentTask){
-        // @TODO: remove later: this currently needs to be set in order to publish tasks
-          taskData.maxAmountOfVolunteers = 1000000;
           creation_promise = TaskDataService.createNewTask(taskData)
         } else {
-        // @TODO: remove later: this currently needs to be set in order to publish tasks
-          if(!$scope.parentTask.superTask){
-            taskData.maxAmountOfVolunteers = 1000;
-          } else {
-            taskData.maxAmountOfVolunteers = 1;
-          }
           creation_promise = TaskDataService.createNewSubTask(taskData, $scope.parentTask.id)
         }
         promise = $q(function(resolve, reject){
@@ -144,7 +136,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
             var taskId = creation_res.data.task
             $q.all(
             neededCompetences.map(function(competence){
-              return TaskDataService.addCompetenceToTask(taskId, competence.id, competence.proficiency || 50, competence.importance || 50, competence.mandatory || false)
+              return TaskDataService.addCompetenceToTask(taskId, competence.id, competence.neededProficiencyLevel || 50, competence.importanceLevel || 50, competence.mandatory || false)
             }).concat(task.materials.map(function(material){
               return TaskDataService.addMaterialToTask(taskId, material)
             })
@@ -190,7 +182,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         }
       })
     }*/
-		
+
 		// Save changes only
 		$scope.save_changes = function() {
 			$scope.save().then(function(save_res) {
@@ -200,14 +192,14 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 					title: "Task gespeichert",
 					okType: "button-positive button-outline"
 				})
-				
+
 				if($scope.isNewTask) {
 			    $scope.isNewTask = false;
 					$scope.load();
 				}
 			})
 		}
-		
+
     $scope.save_and_publish = function(){
       //if(!$scope.isNewTask) return;
       $scope.save().then(function(save_res){
@@ -252,7 +244,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       if(!competenceId) return;
       if(!$scope.isNewTask){
         TaskDataService.addCompetenceToTask($scope.task.id, competenceId,
-          $scope.competenceToAdd.proficiency || 50,  $scope.competenceToAdd.importance || 50, $scope.competenceToAdd.mandatory || false).then(function(res){
+          $scope.competenceToAdd.neededProficiencyLevel || 50,  $scope.competenceToAdd.importanceLevel || 50, $scope.competenceToAdd.mandatory || false).then(function(res){
             var index = _.findIndex($scope.availableCompetences, { id: parseInt(competenceId) })
             if(index === -1){
               console.error("this shouldn't happen")
@@ -263,8 +255,8 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
             $scope.neededCompetences.push({
               id: $scope.competenceToAdd.id,
               name: competence.name,
-              importance: $scope.competenceToAdd.importance,
-              proficiency: $scope.competenceToAdd.proficiency,
+              importanceLevel: $scope.competenceToAdd.importanceLevel,
+              neededProficiencyLevel: $scope.competenceToAdd.neededProficiencyLevel,
               mandatory: $scope.competenceToAdd.mandatory
             })
           }, function(error){
@@ -282,8 +274,8 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         $scope.neededCompetences.push({
           id: $scope.competenceToAdd.id,
           name: competence.name,
-          importance: $scope.competenceToAdd.importance,
-          proficiency: $scope.competenceToAdd.proficiency,
+          importanceLevel: $scope.competenceToAdd.importanceLevel,
+          neededProficiencyLevel: $scope.competenceToAdd.neededProficiencyLevel,
           mandatory: $scope.competenceToAdd.mandatory
         })
       }
@@ -376,14 +368,14 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         })
       });
     }*/
-		
+
 		// Save task
     $scope.setAsReady = function(taskId){
       var task = $scope.task;
       var taskData = {};
 
       var promise = TaskDataService.setReadyToPublishS(taskId);
-      
+
       return promise.then(function (res) {
 				if(!res.data.success){
 					var message = "";
@@ -426,7 +418,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 				})
 			})
     }
-		
+
     $scope.readyToPublishTree = function(){
       if($scope.newTask){ return }
       TaskDataService.setReadyToPublishT($scope.task.id).then(function(res){
