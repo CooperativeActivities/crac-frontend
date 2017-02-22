@@ -7,29 +7,29 @@
     <div style="color:#000000;">
       <form onsubmit="event.preventDefault">
         <label class="item item-input item-stacked-label">
-          <span class="input-label">Name*:</span>
+          <span class="input-label bold">Name*:</span>
           <input type="text" ng-model="task.name" style="background-color:white;" ng-class="{'has-error' : !task.name}"></textarea>
         </label>
         <label class="item item-input item-stacked-label">
-          <span class="input-label">Beschreibung*:</span>
+          <span class="input-label bold">Beschreibung*:</span>
           <textarea ng-model="task.description" style="background-color:white;" ng-class="{'has-error' : !task.description}"></textarea>
         </label>
         <label class="item item-input item-stacked-label">
-          <span class="input-label">Zahl der Freiwilligen:</span>
+          <span class="input-label bold">Zahl der Freiwilligen:</span>
           <input type="number" min="1" ng-model="task.minAmountOfVolunteers" style="background-color:white;"></textarea>
         </label>
         <br>
         <div class="item item-divider">Zeit und Ort</div>
         <label class="item item-input item-stacked-label">
-          <span class="input-label">Beginn*:</span>
+          <span class="input-label bold">Beginn*:</span>
           <input type="datetime-local" ng-model="task.startTime" style="background-color:white;" ng-class="{'has-error' : !task.startTime}">
         </label>
         <label class="item item-input item-stacked-label">
-          <span class="input-label">Ende*:</span>
+          <span class="input-label bold">Ende*:</span>
           <input type="datetime-local" ng-model="task.endTime" style="background-color:white;" ng-class="{'has-error' : !task.endTime}">
         </label>
         <label class="item item-input item-stacked-label">
-          <span class="input-label">Ort*:</span>
+          <span class="input-label bold">Ort*:</span>
           <input type="text" ng-model="task.location" style="background-color:white;" ng-class="{'has-error' : !task.location}"></textarea>
         </label>
         <br>
@@ -103,7 +103,10 @@
         </ion-list>
         <div>
           <br>
-          <button type="button" ng-click="addCompetence()" class="button button-outline button-positive ion-plus">Hinzufügen</button>
+          <!--<button type="button" ng-click="addCompetence()" class="button button-outline button-positive ion-plus">Hinzufügen</button>-->
+          <button type="button" ng-click="addCompetence()" class="myButton add">
+            Hinzufügen
+          </button>
         </div>
           <br>
         <div class="item item-divider">Benötigte Materialien:</div>
