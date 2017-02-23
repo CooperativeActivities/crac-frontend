@@ -39,17 +39,19 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
           relation = relation.type;
         } */
         // @TODO: deprecate
-
-		$scope.neededCompetences = task.taskCompetences;
-        $scope.task = task;
-        $scope.updateFlags();
-        $scope.$broadcast('scroll.refreshComplete');
 		
 		task.userRelationships.sort($scope.sortMemberListByRelationship);
 
         TaskDataService.getTaskRelatById($stateParams.id).then(function(res){
-          $scope.participationType = res.data[1].participationType;		  
-		  $scope.userIsDone = res.data[1].completed;
+			$scope.participationType = res.data[1].participationType;		  
+			$scope.userIsDone = res.data[1].completed;
+		}, function(error) {
+			$scope.participationType = 'NOT_PARTICIPATING';
+		}).then(function() {
+			$scope.neededCompetences = task.taskCompetences;
+			$scope.task = task;
+			$scope.updateFlags();
+			$scope.$broadcast('scroll.refreshComplete');
 		});
       })
     }
