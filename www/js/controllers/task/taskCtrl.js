@@ -20,16 +20,17 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     $scope.showUnfollow = false;
     $scope.showDelete = false;
 
-		$scope.team = [];
+	$scope.team = [];
     $scope.neededCompetences = [];
 
-		$scope.newComment = {name:'', content: ''};
-		$scope.user = $rootScope.globals.currentUser.user;
+	$scope.newComment = {name:'', content: ''};
+	$scope.user = $rootScope.globals.currentUser.user;
+	$scope.userIsDone = false;
 
     $scope.doRefresh = function(){
       TaskDataService.getTaskById($stateParams.id).then(function (res) {
         var task = res.data;
-				console.log(task);
+		console.log(task);
         if(!task) return;
         /* var relation = _.find(task.userRelationships, { self: true });
         if(!relation){
@@ -39,35 +40,31 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
         } */
         // @TODO: deprecate
 
-				task.userRelationships.sort($scope.sortMemberListByRelationship);
+		$scope.neededCompetences = task.taskCompetences;
+        $scope.task = task;
+        $scope.updateFlags();
+        $scope.$broadcast('scroll.refreshComplete');
+		
+		task.userRelationships.sort($scope.sortMemberListByRelationship);
 
         TaskDataService.getTaskRelatById($stateParams.id).then(function(res){
-          return res.data[1].participationType
-        },function(error){
-          console.log("not participating", error)
-          return "NOT_PARTICIPATING"
-        }).then(function(relation){
-
-          $scope.neededCompetences = task.taskCompetences;
-          $scope.task = task;
-          $scope.participationType = relation;
-          $scope.updateFlags();
-          $scope.$broadcast('scroll.refreshComplete');
-        })
+          $scope.participationType = res.data[1].participationType;		  
+		  $scope.userIsDone = res.data[1].completed;
+		});
       })
     }
 
     $scope.doRefresh()
 
-		$scope.sortMemberListByRelationship = function(a,b) {
-			if(b.participationType === "LEADING") {
-				return 1;
-			}
-			if(b.friend) {
-				return 1;
-			}
-			return 0;
+	$scope.sortMemberListByRelationship = function(a,b) {
+		if(b.participationType === "LEADING") {
+			return 1;
 		}
+		if(b.friend) {
+			return 1;
+		}
+		return 0;
+	}
 
     $scope.updateFlags = function(){
       var relation = $scope.participationType,
@@ -213,23 +210,36 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     }
 //Complete a task
     $scope.complete = function() {
-      TaskDataService.changeTaskState($scope.task.id, 'complete').then(function (res) {
-        TaskDataService.getTaskById($scope.task.id).then(function (res) {
-          $scope.task = res.data;
-          console.log($scope.task);
-          $state.go('tabsController.tasklist');
-        }, function (error) {
-          console.log('An error occurred!', error);
-        });
-      }, function (error) {
-        console.log('An error occurred!', error);
-        alert(error.data.cause);
-      });
+		$scope.completeTask('complete');
+	}
+	$scope.forceComplete = function() {
+		$scope.completeTask('forceComplete');
+	}
+	
+	$scope.completeTask = function(state) {
+		if(!$scope.participationType === "LEADING") {
+			console.log("Only task leader may complete the task");
+			return;
+		}
+		
+		TaskDataService.changeTaskState($scope.task.id, state).then(function (res) {
+		  if(!res.data.error) {
+			console.log("Task is completed");
+			$scope.task.taskState = 'COMPLETED';
+			$scope.updateFlags();
+			console.log(res);
+		  } else {
+			console.log('Error: ', res.data.cause);
+		  }
+		}, function (error) {
+		  console.log('An error occurred!', error);
+		});
     }
 //Set a task as done
       $scope.done = function(){
         TaskDataService.setTaskDone($scope.task.id,"true").then(function () {
-          console.log("works");
+          console.log("Task is done");
+		  $scope.userIsDone = true;
         }, function (error) {
           console.log('An error occurred!', error);
         });

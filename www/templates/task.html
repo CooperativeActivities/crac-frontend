@@ -47,21 +47,23 @@
           </div>
           <div class="col">
             <div class="row status-icons">
-							<!-- only show non-published status for task owner -->
-							<i ng-if="participationType == 'LEADING'"
-									class="icon ion-compose icon-step1"
-									ng-class="{ current : (task.taskState == 'NOT_PUBLISHED' && !task.readyToPublish) }"></i>
-							<span ng-if="participationType == 'LEADING'" class="icon-connector"></span>
-							<i ng-if="participationType == 'LEADING'"
-								class="icon ion-eye-disabled icon-step2"
-								ng-class="{ current  : (task.taskState == 'NOT_PUBLISHED' && task.readyToPublish) }" ></i>
-							<span ng-if="participationType == 'LEADING'" class="icon-connector"></span>
-							<i class="icon ion-eye icon-step3"  ng-class="{ current: task.taskState == 'PUBLISHED' }"></i>
-								<span class="icon-connector"></span>
-							<i class="icon ion-load-a icon-step4"      ng-class="{ current: task.taskState == 'STARTED' }"></i>
-								<span class="icon-connector"></span>
-							<i class="icon ion-checkmark icon-step5" ng-class="{ current: task.taskState == 'COMPLETED' }"></i>
-						</div>
+				<!-- only show non-published status for task owner -->
+				<i ng-if="participationType == 'LEADING'"
+						class="icon ion-compose icon-step1"
+						ng-class="{ current : (task.taskState == 'NOT_PUBLISHED' && !task.readyToPublish) }"></i>
+				<span ng-if="participationType == 'LEADING'" class="icon-connector"></span>
+				<i ng-if="participationType == 'LEADING'"
+					class="icon ion-eye-disabled icon-step2"
+					ng-class="{ current  : (task.taskState == 'NOT_PUBLISHED' && task.readyToPublish) }" ></i>
+				<span ng-if="participationType == 'LEADING'" class="icon-connector"></span>
+				<i class="icon ion-eye icon-step3"  ng-class="{ current: task.taskState == 'PUBLISHED' }"></i>
+					<span class="icon-connector"></span>
+				<i class="icon ion-load-a icon-step4"      ng-class="{ current: task.taskState == 'STARTED' }"></i>
+					<span class="icon-connector"></span>
+				<i class="icon ion-checkmark icon-step5" ng-class="{ current: task.taskState == 'COMPLETED' }"></i>
+			</div>
+			<button ng-if="participationType == 'LEADING' && task.taskState != 'COMPLETED'" ng-click="forceComplete()" class="button button-small button-outline button-balanced ion-checkmark">Task Beenden</button>
+			<button ng-if="participationType == 'PARTICIPATING' && !userIsDone" ng-click="done()" class="button button-small button-outline button-balanced ion-checkmark">Task Beenden</button>
           </div>
         </div>
 
