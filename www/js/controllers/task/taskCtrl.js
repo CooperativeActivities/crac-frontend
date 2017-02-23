@@ -26,6 +26,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 	$scope.newComment = {name:'', content: ''};
 	$scope.user = $rootScope.globals.currentUser.user;
 	$scope.userIsDone = false;
+	$scope.allAreDone = false;
 
     $scope.doRefresh = function(){
       TaskDataService.getTaskById($stateParams.id).then(function (res) {
@@ -58,6 +59,17 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 
     $scope.doRefresh()
 
+	$scope.areAllParticipantsDone = function() {
+		for(var i=0; i<$scope.task.userRelationships; i++) {
+			var u = $scope.task.userRelationships[i];
+			if( u.participationType === "PARTICIPATING" && !u.completed ) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
 	$scope.sortMemberListByRelationship = function(a,b) {
 		if(b.participationType === "LEADING") {
 			return 1;
@@ -83,6 +95,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
       $scope.showCancel =false;
       $scope.showFollow = false;
       $scope.showUnfollow = false;
+	  $scope.allAreDone = $scope.areAllParticipantsDone();
 
       switch(task.taskState){
         case "COMPLETED":
@@ -251,15 +264,17 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 			
 			console.log("Task is done");
 			$scope.userIsDone = true;
+			$scope.allAreDone = $scope.areAllParticipantsDone();
         }, function (error) {
           console.log('An error occurred!', error);
         });
     }
-	  
+//unset task as done	  
 	$scope.notDone = function() {
         TaskDataService.setTaskDone($scope.task.id,"false").then(function (res) {
           console.log("Task is no longer done");
 		  $scope.userIsDone = false;
+		  $scope.allAreDone = false;
         }, function (error) {
           console.log('An error occurred!', error);
         });
@@ -270,28 +285,28 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     }
 
 //Add a new comment to the task
-		$scope.addNewComment = function() {
-			if(!$scope.newComment.content) return false;
-			$scope.newComment.name = $scope.user;
-			TaskDataService.addComment($scope.task.id,$scope.newComment).then(function () {
-				console.log("comment added");
-				$scope.newComment = {name:'', content: ''};
-				$scope.doRefresh();
-			}, function (error) {
-				console.log('An error occurred! ', error);
-			});
-		}
+	$scope.addNewComment = function() {
+		if(!$scope.newComment.content) return false;
+		$scope.newComment.name = $scope.user;
+		TaskDataService.addComment($scope.task.id,$scope.newComment).then(function () {
+			console.log("comment added");
+			$scope.newComment = {name:'', content: ''};
+			$scope.doRefresh();
+		}, function (error) {
+			console.log('An error occurred! ', error);
+		});
+	}
 
 //Delete a comment from the task
-		$scope.removeComment = function(comment) {
-			if($scope.user !== comment.name) return false;
-			TaskDataService.removeComment($scope.task.id,comment.id).then(function () {
-				console.log("comment removed");
-				$scope.doRefresh();
-			}, function (error) {
-				console.log('An error occurred! ', error);
-			});
-		}
+	$scope.removeComment = function(comment) {
+		if($scope.user !== comment.name) return false;
+		TaskDataService.removeComment($scope.task.id,comment.id).then(function () {
+			console.log("comment removed");
+			$scope.doRefresh();
+		}, function (error) {
+			console.log('An error occurred! ', error);
+		});
+	}
 //Check if user is the owner of the comment
     $scope.checkCommentOwner = function(name){
       if(name === $rootScope.globals.currentUser.user){
