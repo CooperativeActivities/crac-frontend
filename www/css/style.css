@@ -716,6 +716,11 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
 	width: 1em;
 }
 
+.status-actions span,
+.status-actions button {
+	vertical-align: middle;
+}
+
 /* -- toggle -------------------------------------------------------------------------------------------------------- */
 
 .item-toggle .toggle {

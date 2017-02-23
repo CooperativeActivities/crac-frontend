@@ -90,7 +90,9 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
         case "STARTED":
           if(relation !== "LEADING"){
             // @DISCUSS: cannot unfollow started task
-            $scope.showFollow = relation !== "FOLLOWING";
+			if(relation !== "PARTICIPATING") {
+				$scope.showFollow = relation !== "FOLLOWING";
+			}
             // @DISCUSS: we might remove that & allow participation on all tasks
             if(taskIsLeaf){
               $scope.showEnroll = relation !== "PARTICIPATING";
@@ -105,8 +107,10 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
               $scope.showCancel = relation === "PARTICIPATING";
               $scope.showEnroll = !$scope.showCancel;
             }
-            $scope.showUnfollow = relation === "FOLLOWING";
-            $scope.showFollow = !$scope.showUnfollow && !$scope.showCancel;
+			if(!relation !== "PARTICIPATING") {
+				$scope.showUnfollow = relation === "FOLLOWING";
+				$scope.showFollow = !$scope.showUnfollow && !$scope.showCancel;
+			}
           }
           // @TODO: check for permissions
           // if(task.userIsLeading){ //NYI
@@ -225,27 +229,41 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 		}
 		
 		TaskDataService.changeTaskState($scope.task.id, state).then(function (res) {
-		  if(!res.data.error) {
+			if(res.data.error) {
+				console.log('Error: ', res.data.cause);
+				return;
+			}
 			console.log("Task is completed");
 			$scope.task.taskState = 'COMPLETED';
 			$scope.updateFlags();
 			console.log(res);
-		  } else {
-			console.log('Error: ', res.data.cause);
-		  }
 		}, function (error) {
 		  console.log('An error occurred!', error);
 		});
     }
 //Set a task as done
-      $scope.done = function(){
-        TaskDataService.setTaskDone($scope.task.id,"true").then(function () {
-          console.log("Task is done");
-		  $scope.userIsDone = true;
+    $scope.done = function(){
+        TaskDataService.setTaskDone($scope.task.id,"true").then(function (res) {
+			if(res.data.error) {
+				console.log('Error: ', res.data.cause);
+				return;
+			}
+			
+			console.log("Task is done");
+			$scope.userIsDone = true;
         }, function (error) {
           console.log('An error occurred!', error);
         });
-      }
+    }
+	  
+	$scope.notDone = function() {
+        TaskDataService.setTaskDone($scope.task.id,"false").then(function (res) {
+          console.log("Task is no longer done");
+		  $scope.userIsDone = false;
+        }, function (error) {
+          console.log('An error occurred!', error);
+        });
+	}
 
     $scope.addCompetence = function(){
       $state.go('tabsController.addCompetenceToTask', { id:$scope.task.id });
