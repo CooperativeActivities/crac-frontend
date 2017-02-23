@@ -15,9 +15,7 @@
 /* -- HEADER -------------------------------------------------------------------------------------------------------- */
 
 #side-menu21 {
-  /*background-color: #B070B2;*/
-  /*background-color: hsla(192, 11%, 18%, 0.8);*/
-  background-color: hsla(26, 76%, 55%, 0.85);
+  background-color: hsla(167, 53%, 42%, 0.82);
   width: 275px;
   z-index: 0;
 }
@@ -140,20 +138,30 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 
 /*-- OVERRIDES ------------------------------------------------------------------------------------------------------ */
 
-.item-divider, .button {
+.button, .item-divider {
   border-radius: 50px;
 }
 
+.item-divider {
+  margin-bottom:10px;
+}
 .range, .item-select, .card {
-  border-radius: 20px;
+  /*border-radius: 20px;*/
 }
 
 .list .item-divider {
   border-radius: 0;
 }
 
-.item-divider {
-  margin-bottom: 10px;
+.item-divider-top {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  min-height: 30px;
+  background-color: #f5f5f5;
+  color: #222;
+  font-weight: 500;
 }
 
 .card .item-divider, .list .item-divider {
@@ -213,12 +221,36 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   margin: 0 0 0 -50px;
 }
 
+.form-block {
+  margin-bottom: 20px;
+}
+
+.form-block-border {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  margin-bottom: 20px;
+  border: 1px solid lightgray;
+}
+
+.internal-block {
+  padding: 5px;
+  border: 1px solid lightgray;
+  border-top:none;
+
+}
+
 .bar-1 {
   border-color: #1C7DC9;
   /*background-color: #1C7DC9;*/
   background-color: hsla(206, 76%, 45%, 0.65) !important;
   background-image: linear-gradient(0deg, #1C7DC9, #1C7DC9 50%, transparent 50%);
   color: #fff;
+}
+
+.button.button-block,
+.button.button-full {
+  margin: 0;
+  color: white;
 }
 
 .bar-1 .title {
@@ -786,7 +818,7 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
   background: #ddd;
   border-radius:7px;
   padding: 7px 7px 5px;
-  width: 250px;
+  width: 50%;
   max-width: 90%;
   position: relative;
   margin-bottom: 1em;
@@ -1011,9 +1043,22 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
 }
 
 
-/*-- Kompetenz -------------------------------*/
+/*-- Kompetenz -------------------------------------------------------------------------------------------------------*/
 
-/*-- Scale -------------------*/
+.new-competence {margin-bottom:20px;
+}
+
+.no-border-radius {
+  border-radius: 0 !important;
+}
+
+.no-border-radius .item-divider {
+  border-radius: 0 !important;
+}
+
+
+
+/*-- Scale -----------------------------------------------------------------------------------------------------------*/
 
 .scale {
   transform: scale(1.5);
