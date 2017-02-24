@@ -43,7 +43,6 @@
           </div>
           <div class="col">
             <div class="row status-icons">
-<<<<<<< HEAD
 				<!-- only show non-published status for task owner -->
 				<i ng-if="participationType == 'LEADING'"
 						class="icon ion-compose icon-step1"
@@ -65,23 +64,6 @@
 				<span ng-if="participationType == 'PARTICIPATING' && userIsDone">Ich bin fertig <button ng-click="notDone()" class="button button-small button-outline button-assertive ion-close">Lösen</button></span>
 				<button ng-if="participationType == 'PARTICIPATING' && !userIsDone" ng-click="done()" class="button button-small button-outline button-balanced ion-checkmark">Ich bin fertig</button>
 			</div>
-=======
-              <!-- only show non-published status for task owner -->
-              <i ng-if="participationType == 'LEADING'"
-                 class="icon ion-compose icon-step1"
-                 ng-class="{ current : (task.taskState == 'NOT_PUBLISHED' && !task.readyToPublish) }"></i>
-              <span ng-if="participationType == 'LEADING'" class="icon-connector"></span>
-              <i ng-if="participationType == 'LEADING'"
-                 class="icon ion-eye-disabled icon-step2"
-                 ng-class="{ current  : (task.taskState == 'NOT_PUBLISHED' && task.readyToPublish) }" ></i>
-              <span ng-if="participationType == 'LEADING'" class="icon-connector"></span>
-              <i class="icon ion-eye icon-step3"  ng-class="{ current: task.taskState == 'PUBLISHED' }"></i>
-              <span class="icon-connector"></span>
-              <i class="icon ion-load-a icon-step4"      ng-class="{ current: task.taskState == 'STARTED' }"></i>
-              <span class="icon-connector"></span>
-              <i class="icon ion-checkmark icon-step5" ng-class="{ current: task.taskState == 'COMPLETED' }"></i>
-            </div>
->>>>>>> 9f20167da9ff02e0f8f522e78807a4379306c614
           </div>
         </div>
 
@@ -91,19 +73,11 @@
         <div class="row">
           <div ng-repeat="member in task.userRelationships" style="margin: 0.5em;">
             <img class="img-responsive" src="img/1lZ3VOkiRqOOdIDOu9mn_avatar.png" style="margin: 0 auto; width: 4em; height: 4em;">
-<<<<<<< HEAD
 				<caption>
 					<i ng-show="member.participationType == 'LEADING'" class="icon ion-ios-star"></i>
 					<i ng-show="member.friend" class="icon ion-android-contacts"></i>
 					{{member.name}}
 				</caption>
-=======
-            <caption>
-              <i ng-show="member.participationType == 'LEADING'" class="icon ion-ios-star"></i>
-              <i ng-show="member.friend" class="icon ion-android-contacts"></i>
-              {{member.name}}
-            </caption>
->>>>>>> 9f20167da9ff02e0f8f522e78807a4379306c614
           </div>
         </div>
       </c-accordion>
