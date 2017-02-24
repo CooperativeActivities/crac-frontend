@@ -60,7 +60,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     $scope.doRefresh()
 
 	$scope.areAllParticipantsDone = function() {
-		for(var i=0; i<$scope.task.userRelationships; i++) {
+		for(var i=0; i<$scope.task.userRelationships.length; i++) {
 			var u = $scope.task.userRelationships[i];
 			if( u.participationType === "PARTICIPATING" && !u.completed ) {
 				return false;
