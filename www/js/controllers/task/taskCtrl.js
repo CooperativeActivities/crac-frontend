@@ -246,8 +246,8 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 				console.log('Error: ', res.data.cause);
 				if( res.data.cause === 'NOT_COMPLETED_BY_USERS' ) {
 					$ionicPopup.confirm({
-					  title: "Fehler",
-					  template: "Alle Teilnehmer haben die Aufgabe als fertig nicht markiert. Schließen die Aufgabe trotzdem ab?",
+					  title: "Task kann nicht als fertig markiert werden:",
+					  template: "Noch nicht alle Teilnehmer haben die Aufgabe als fertig markiert. Aufgabe trotzdem abschließen?",
 					  okText: "Abschließen",
 					  cancelText: "Abbrechen"
 					}).then(function(res) {
