@@ -1,7 +1,3 @@
-<!--
-  is this necessary?
-<script src="../js/controllers/task/taskCtrl.js"></script>
--->
 <ion-view cache-view="false" title="Aufgabe" hide-nav-bar="false">
   <ion-nav-buttons side="right" class="has-header">
     <button ng-click="edit()" ng-show="editableFlag" class="button icon ion-edit"></button>
@@ -47,35 +43,35 @@
           </div>
           <div class="col">
             <div class="row status-icons">
-							<!-- only show non-published status for task owner -->
-							<i ng-if="participationType == 'LEADING'"
-									class="icon ion-compose icon-step1"
-									ng-class="{ current : (task.taskState == 'NOT_PUBLISHED' && !task.readyToPublish) }"></i>
-							<span ng-if="participationType == 'LEADING'" class="icon-connector"></span>
-							<i ng-if="participationType == 'LEADING'"
-								class="icon ion-eye-disabled icon-step2"
-								ng-class="{ current  : (task.taskState == 'NOT_PUBLISHED' && task.readyToPublish) }" ></i>
-							<span ng-if="participationType == 'LEADING'" class="icon-connector"></span>
-							<i class="icon ion-eye icon-step3"  ng-class="{ current: task.taskState == 'PUBLISHED' }"></i>
-								<span class="icon-connector"></span>
-							<i class="icon ion-load-a icon-step4"      ng-class="{ current: task.taskState == 'STARTED' }"></i>
-								<span class="icon-connector"></span>
-							<i class="icon ion-checkmark icon-step5" ng-class="{ current: task.taskState == 'COMPLETED' }"></i>
-						</div>
+              <!-- only show non-published status for task owner -->
+              <i ng-if="participationType == 'LEADING'"
+                 class="icon ion-compose icon-step1"
+                 ng-class="{ current : (task.taskState == 'NOT_PUBLISHED' && !task.readyToPublish) }"></i>
+              <span ng-if="participationType == 'LEADING'" class="icon-connector"></span>
+              <i ng-if="participationType == 'LEADING'"
+                 class="icon ion-eye-disabled icon-step2"
+                 ng-class="{ current  : (task.taskState == 'NOT_PUBLISHED' && task.readyToPublish) }" ></i>
+              <span ng-if="participationType == 'LEADING'" class="icon-connector"></span>
+              <i class="icon ion-eye icon-step3"  ng-class="{ current: task.taskState == 'PUBLISHED' }"></i>
+              <span class="icon-connector"></span>
+              <i class="icon ion-load-a icon-step4"      ng-class="{ current: task.taskState == 'STARTED' }"></i>
+              <span class="icon-connector"></span>
+              <i class="icon ion-checkmark icon-step5" ng-class="{ current: task.taskState == 'COMPLETED' }"></i>
+            </div>
           </div>
         </div>
 
       </c-accordion>
 
-      <c-accordion title="'Team'" shown="true">
+      <c-accordion title="'Team'" ng-show="task.userRelationship.length > 0" shown="true">
         <div class="row">
-          <div ng-repeat="member in task.userRelationships" ng-show="!member.self" style="margin: 0.5em;">
+          <div ng-repeat="member in task.userRelationships" style="margin: 0.5em;">
             <img class="img-responsive" src="img/1lZ3VOkiRqOOdIDOu9mn_avatar.png" style="margin: 0 auto; width: 4em; height: 4em;">
-						<caption>
-							<i ng-show="member.participationType == 'LEADING'" class="icon ion-ios-star"></i>
-							<i ng-show="member.friend" class="icon ion-android-contacts"></i>
-							{{member.name}}
-						</caption>
+            <caption>
+              <i ng-show="member.participationType == 'LEADING'" class="icon ion-ios-star"></i>
+              <i ng-show="member.friend" class="icon ion-android-contacts"></i>
+              {{member.name}}
+            </caption>
           </div>
         </div>
       </c-accordion>
@@ -89,7 +85,7 @@
         </div>
         <div class="tags">
           <div class="tag" ng-repeat="competence in neededCompetences | orderBy: 'name'"
-            ng-style="getCompetenceColors(competence)">
+                           ng-style="getCompetenceColors(competence)">
             {{ competence.name }}
           </div>
         </div>
@@ -114,6 +110,11 @@
             </ion-item>
           </div>
         </ion-list>
+        <br>
+      </c-accordion>
+
+      <c-accordion title="'Übergeordnete Aufgabe'" ng-if="task.superTask">
+        <task-preview task="task.superTask" ng-click="loadSingleTask(task.superTask.id)"></task-preview>
         <br>
       </c-accordion>
 
@@ -146,12 +147,12 @@
           <div class="clear"></div>
         </ion-list>
 
-				<form ng-submit="addNewComment()">
-					<label class="item item-input item-stacked-label">
-						<span class="input-label">Kommentar Hinzufügen:</span>
-						<input type="text" ng-model="newComment.content" style="background-color:white;" />
-					</label>
-				</form>
+        <form ng-submit="addNewComment()">
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Kommentar Hinzufügen:</span>
+            <input type="text" ng-model="newComment.content" style="background-color:white;" />
+          </label>
+        </form>
         <br>
       </c-accordion>
     </div>

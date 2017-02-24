@@ -29,7 +29,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     $scope.doRefresh = function(){
       TaskDataService.getTaskById($stateParams.id).then(function (res) {
         var task = res.data;
-				console.log(task);
+				console.log("task detail view", task);
         if(!task) return;
         /* var relation = _.find(task.userRelationships, { self: true });
         if(!relation){
