@@ -112,7 +112,7 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
 
   //Current user subscribes to material with quantity (if already subscribed, change quantity)
   srv.subscribeToMaterial = function(taskId, materialId, quantity){
-    return $http.get(srv._baseURL + "task/" + taskId + "/material/", materialId + "/subscribe/" + quantity);
+    return $http.get(srv._baseURL + "task/" + taskId + "/material/" + materialId + "/subscribe/" + quantity);
   }
   //Current user unsubscribes from material
   srv.unsubscribeFromMaterial = function(taskId, materialId){

@@ -102,16 +102,28 @@
         <ion-list>
           <div  ng-cloak>
             <ion-item>
-              <div class="row row-header">
-                <span class="material-header-name">Name: </span>
-                <span class="material-header-amount">Menge: </span>
-                <span class="material-header-description">Beschreibung: </span>
-              </div>
-              <div class="row row-content" ng-repeat="material in task.materials">
-                <span class="material-content-name">{{ material.name }}</span>
-                <span class="material-content-amount">{{ material.quantity }}</span>
-                <span class="material-content-description"> {{ material.description }}</span>
-              </div>
+              <ion-item ng-repeat="material in task.materials">
+                <custom-accordion>
+                  <custom-accordion-head>
+                    <div>
+                      <span>{{ material.quantity }}x</span>
+                      <span>{{ material.name }}</span>
+                    </div>
+                  </custom-accordion-head>
+                  <custom-accordion-body>
+                    <br>
+                    <div>
+                      {{ material.description }}
+                    </div>
+                    <br>
+                    <label>
+                      Anzahl: <input type="number" placeholder="Anzahl..." ng-model="material.subscribedQuantity">
+                    </label>
+                    <button ng-click="subscribe(material)"
+                      class="button button-small button-outline button-balanced ion-checkmark">Material bringen</button>
+                  </custom-accordion-body>
+                </custom-accordion>
+              </ion-item>
 
             </ion-item>
           </div>
