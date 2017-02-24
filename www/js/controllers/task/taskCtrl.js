@@ -20,16 +20,18 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     $scope.showUnfollow = false;
     $scope.showDelete = false;
 
-		$scope.team = [];
+	$scope.team = [];
     $scope.neededCompetences = [];
 
-		$scope.newComment = {name:'', content: ''};
-		$scope.user = $rootScope.globals.currentUser.user;
+	$scope.newComment = {name:'', content: ''};
+	$scope.user = $rootScope.globals.currentUser.user;
+	$scope.userIsDone = false;
+	$scope.allAreDone = false;
 
     $scope.doRefresh = function(){
       TaskDataService.getTaskById($stateParams.id).then(function (res) {
         var task = res.data;
-				console.log("task detail view", task);
+		console.log("task detail view", task);
         if(!task) return;
         /* var relation = _.find(task.userRelationships, { self: true });
         if(!relation){
@@ -38,36 +40,45 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
           relation = relation.type;
         } */
         // @TODO: deprecate
-
-				task.userRelationships.sort($scope.sortMemberListByRelationship);
+		
+		task.userRelationships.sort($scope.sortMemberListByRelationship);
 
         TaskDataService.getTaskRelatById($stateParams.id).then(function(res){
-          return res.data[1].participationType
-        },function(error){
-          console.log("not participating", error)
-          return "NOT_PARTICIPATING"
-        }).then(function(relation){
-
-          $scope.neededCompetences = task.taskCompetences;
-          $scope.task = task;
-          $scope.participationType = relation;
-          $scope.updateFlags();
-          $scope.$broadcast('scroll.refreshComplete');
-        })
+			$scope.participationType = res.data[1].participationType;		  
+			$scope.userIsDone = res.data[1].completed;
+		}, function(error) {
+			$scope.participationType = 'NOT_PARTICIPATING';
+		}).then(function() {
+			$scope.neededCompetences = task.taskCompetences;
+			$scope.task = task;
+			$scope.updateFlags();
+			$scope.$broadcast('scroll.refreshComplete');
+		});
       })
     }
 
     $scope.doRefresh()
 
-		$scope.sortMemberListByRelationship = function(a,b) {
-			if(b.participationType === "LEADING") {
-				return 1;
+	$scope.areAllParticipantsDone = function() {
+		for(var i=0; i<$scope.task.userRelationships.length; i++) {
+			var u = $scope.task.userRelationships[i];
+			if( u.participationType === "PARTICIPATING" && !u.completed ) {
+				return false;
 			}
-			if(b.friend) {
-				return 1;
-			}
-			return 0;
 		}
+		
+		return true;
+	}
+	
+	$scope.sortMemberListByRelationship = function(a,b) {
+		if(b.participationType === "LEADING") {
+			return 1;
+		}
+		if(b.friend) {
+			return 1;
+		}
+		return 0;
+	}
 
     $scope.updateFlags = function(){
       var relation = $scope.participationType,
@@ -84,6 +95,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
       $scope.showCancel =false;
       $scope.showFollow = false;
       $scope.showUnfollow = false;
+	  $scope.allAreDone = $scope.areAllParticipantsDone();
 
       switch(task.taskState){
         case "COMPLETED":
@@ -91,7 +103,9 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
         case "STARTED":
           if(relation !== "LEADING"){
             // @DISCUSS: cannot unfollow started task
-            $scope.showFollow = relation !== "FOLLOWING";
+			if(relation !== "PARTICIPATING") {
+				$scope.showFollow = relation !== "FOLLOWING";
+			}
             // @DISCUSS: we might remove that & allow participation on all tasks
             if(taskIsLeaf){
               $scope.showEnroll = relation !== "PARTICIPATING";
@@ -106,8 +120,10 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
               $scope.showCancel = relation === "PARTICIPATING";
               $scope.showEnroll = !$scope.showCancel;
             }
-            $scope.showUnfollow = relation === "FOLLOWING";
-            $scope.showFollow = !$scope.showUnfollow && !$scope.showCancel;
+			if(!relation !== "PARTICIPATING") {
+				$scope.showUnfollow = relation === "FOLLOWING";
+				$scope.showFollow = !$scope.showUnfollow && !$scope.showCancel;
+			}
           }
           // @TODO: check for permissions
           // if(task.userIsLeading){ //NYI
@@ -213,55 +229,111 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     }
 //Complete a task
     $scope.complete = function() {
-      TaskDataService.changeTaskState($scope.task.id, 'complete').then(function (res) {
-        TaskDataService.getTaskById($scope.task.id).then(function (res) {
-          $scope.task = res.data;
-          console.log($scope.task);
-          $state.go('tabsController.tasklist');
-        }, function (error) {
-          console.log('An error occurred!', error);
-        });
-      }, function (error) {
-        console.log('An error occurred!', error);
-        alert(error.data.cause);
-      });
+		$scope.completeTask('complete');
+	}
+	$scope.forceComplete = function() {
+		$scope.completeTask('forceComplete');
+	}
+	
+	$scope.completeTask = function(state) {
+		if(!$scope.participationType === "LEADING") {
+			console.log("Only task leader may complete the task");
+			return;
+		}
+		
+		TaskDataService.changeTaskState($scope.task.id, state).then(function (res) {
+			if(res.data.error) {
+				console.log('Error: ', res.data.cause);
+				if( res.data.cause === 'NOT_COMPLETED_BY_USERS' ) {
+					$ionicPopup.confirm({
+					  title: "Task kann nicht als fertig markiert werden:",
+					  template: "Noch nicht alle Teilnehmer haben die Aufgabe als fertig markiert. Aufgabe trotzdem abschließen?",
+					  okText: "Abschließen",
+					  cancelText: "Abbrechen"
+					}).then(function(res) {
+						if( !res ) {
+							return false;
+						}
+						else {
+							$scope.forceComplete();
+						}
+					});
+				} else {
+					console.log('Error: ', res.data.cause);
+					$ionicPopup.alert({
+					  title: "Task kann nicht abgeschlossen werden:",
+					  template: res.data.cause,
+					  okType: "button-positive button-outline"
+					});
+				}
+				return;
+			}
+			console.log("Task is completed");
+			$scope.task.taskState = 'COMPLETED';
+			$scope.updateFlags();
+			console.log(res);
+		}, function (error) {
+			console.log('Error: ', error);
+			$ionicPopup.alert({
+			  title: "Task kann nicht abgeschlossen werden:",
+			  template: error,
+			  okType: "button-positive button-outline"
+			});
+		});
     }
 //Set a task as done
-      $scope.done = function(){
-        TaskDataService.setTaskDone($scope.task.id,"true").then(function () {
-          console.log("works");
+    $scope.done = function(){
+        TaskDataService.setTaskDone($scope.task.id,"true").then(function (res) {
+			if(res.data.error) {
+				console.log('Error: ', res.data.cause);
+				return;
+			}
+			
+			console.log("Task is done");
+			$scope.userIsDone = true;
+			$scope.allAreDone = $scope.areAllParticipantsDone();
         }, function (error) {
           console.log('An error occurred!', error);
         });
-      }
+    }
+//unset task as done	  
+	$scope.notDone = function() {
+        TaskDataService.setTaskDone($scope.task.id,"false").then(function (res) {
+          console.log("Task is no longer done");
+		  $scope.userIsDone = false;
+		  $scope.allAreDone = false;
+        }, function (error) {
+          console.log('An error occurred!', error);
+        });
+	}
 
     $scope.addCompetence = function(){
       $state.go('tabsController.addCompetenceToTask', { id:$scope.task.id });
     }
 
 //Add a new comment to the task
-		$scope.addNewComment = function() {
-			if(!$scope.newComment.content) return false;
-			$scope.newComment.name = $scope.user;
-			TaskDataService.addComment($scope.task.id,$scope.newComment).then(function () {
-				console.log("comment added");
-				$scope.newComment = {name:'', content: ''};
-				$scope.doRefresh();
-			}, function (error) {
-				console.log('An error occurred! ', error);
-			});
-		}
+	$scope.addNewComment = function() {
+		if(!$scope.newComment.content) return false;
+		$scope.newComment.name = $scope.user;
+		TaskDataService.addComment($scope.task.id,$scope.newComment).then(function () {
+			console.log("comment added");
+			$scope.newComment = {name:'', content: ''};
+			$scope.doRefresh();
+		}, function (error) {
+			console.log('An error occurred! ', error);
+		});
+	}
 
 //Delete a comment from the task
-		$scope.removeComment = function(comment) {
-			if($scope.user !== comment.name) return false;
-			TaskDataService.removeComment($scope.task.id,comment.id).then(function () {
-				console.log("comment removed");
-				$scope.doRefresh();
-			}, function (error) {
-				console.log('An error occurred! ', error);
-			});
-		}
+	$scope.removeComment = function(comment) {
+		if($scope.user !== comment.name) return false;
+		TaskDataService.removeComment($scope.task.id,comment.id).then(function () {
+			console.log("comment removed");
+			$scope.doRefresh();
+		}, function (error) {
+			console.log('An error occurred! ', error);
+		});
+	}
 //Check if user is the owner of the comment
     $scope.checkCommentOwner = function(name){
       if(name === $rootScope.globals.currentUser.user){
