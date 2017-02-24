@@ -244,6 +244,28 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 		TaskDataService.changeTaskState($scope.task.id, state).then(function (res) {
 			if(res.data.error) {
 				console.log('Error: ', res.data.cause);
+				if( res.data.cause === 'NOT_COMPLETED_BY_USERS' ) {
+					$ionicPopup.confirm({
+					  title: "Fehler",
+					  template: "Alle Teilnehmer haben die Aufgabe als fertig nicht markiert. Schließen die Aufgabe trotzdem ab?",
+					  okText: "Abschließen",
+					  cancelText: "Abbrechen"
+					}).then(function(res) {
+						if( !res ) {
+							return false;
+						}
+						else {
+							$scope.forceComplete();
+						}
+					});
+				} else {
+					console.log('Error: ', res.data.cause);
+					$ionicPopup.alert({
+					  title: "Task kann nicht abgeschlossen werden:",
+					  template: res.data.cause,
+					  okType: "button-positive button-outline"
+					});
+				}
 				return;
 			}
 			console.log("Task is completed");
@@ -251,7 +273,12 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 			$scope.updateFlags();
 			console.log(res);
 		}, function (error) {
-		  console.log('An error occurred!', error);
+			console.log('Error: ', error);
+			$ionicPopup.alert({
+			  title: "Task kann nicht abgeschlossen werden:",
+			  template: error,
+			  okType: "button-positive button-outline"
+			});
 		});
     }
 //Set a task as done
