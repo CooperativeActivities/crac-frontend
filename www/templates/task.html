@@ -58,9 +58,9 @@
 					<span class="icon-connector"></span>
 				<i class="icon ion-checkmark icon-step5" ng-class="{ current: task.taskState == 'COMPLETED' }"></i>
 			</div>
-			<div class="status-actions">
-				<button ng-if="participationType == 'LEADING' && task.taskState != 'COMPLETED' && allAreDone" ng-click="complete()" class="button button-small button-outline button-balanced ion-checkmark">Task ist fertig</button>
-				<button ng-if="participationType == 'LEADING' && task.taskState != 'COMPLETED' && !allAreDone" ng-click="forceComplete()" class="button button-small button-outline button-balanced ion-checkmark">Task Abschließen</button>
+			<div class="status-actions" ng-if="task.taskState != 'COMPLETED'">
+				<button ng-if="participationType == 'LEADING' && allAreDone" ng-click="complete()" class="button button-small button-outline button-balanced ion-checkmark">Task ist fertig</button>
+				<button ng-if="participationType == 'LEADING' && !allAreDone" ng-click="forceComplete()" class="button button-small button-outline button-balanced ion-checkmark">Task Abschließen</button>
 				<span ng-if="participationType == 'PARTICIPATING' && userIsDone">Ich bin fertig <button ng-click="notDone()" class="button button-small button-outline button-assertive ion-close">Lösen</button></span>
 				<button ng-if="participationType == 'PARTICIPATING' && !userIsDone" ng-click="done()" class="button button-small button-outline button-balanced ion-checkmark">Ich bin fertig</button>
 			</div>
