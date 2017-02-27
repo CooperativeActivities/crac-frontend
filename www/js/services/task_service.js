@@ -81,6 +81,14 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
   srv.removeCompetenceFromTask = function(taskId,competenceId){
     return $http.get(srv._baseURL + "task/" + taskId + "/competence/" + competenceId + "/remove");
   }
+  //Adds array of competence objects
+  srv.addCompetencesToTask = function(taskId, competences){
+    return $http.post(srv._baseURL + "task/" + taskId + "/competence/require", competences);
+  }
+  //Overrides task's competences with array of competence objects
+  srv.setCompetencesTask = function(taskId, competences){
+    return $http.put(srv._baseURL + "task/" + taskId + "/competence/overwrite", competences);
+  }
   //Get all Competences which are not added to that specific task
   srv.getAllAvailableCompetences = function(taskId){
     return $http.get(srv._baseURL + 'task/' + taskId + '/competence/available');
@@ -89,6 +97,7 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
   srv.getAllCompetences = function(){
     return $http.get(srv._baseURL + '/competence/all');
   }
+
   //Add new comment to a task
   srv.addComment = function(taskId, commentData){
     return $http.post(srv._baseURL + 'task/' + taskId + '/comment/add', commentData);

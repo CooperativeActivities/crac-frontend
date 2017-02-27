@@ -140,7 +140,7 @@
 
       <c-accordion title="'Unteraufgaben'" ng-show="task.childTasks.length > 0">
         <ion-list>
-          <div ng-repeat="subTask in task.childTasks | orderBy: 'startTime'" ng-cloak>
+          <div ng-repeat="subTask in task.childTasks | orderBy: ['startTime', 'name']" ng-cloak>
             <task-preview task="subTask" ng-click="loadSingleTask(subTask.id)"></task-preview>
           </div>
         </ion-list>

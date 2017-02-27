@@ -48,18 +48,18 @@
             <div  ng-cloak>
               <ion-item>
 
-                <div ng-repeat="competence in neededCompetences" ng-cloak>
+                <div ng-repeat="competence in neededCompetences | orderBy: 'name' " ng-cloak>
                   <c-accordion title="competence.name" class="">
 
                     <div class="internal-block">
                       <label class="item item-input range">
                         <span class="input-label">Wichtigkeit</span>
-                        <input type="range" min="0" max="100" ng-value="competence.importanceLevel"  >
+                        <input type="range" min="0" max="100" ng-model="competence.importanceLevel"  >
                         <p>{{competence.importanceLevel}}</p>
                       </label>
                       <label class="item item-input range">
                         <span class="input-label">Können</span>
-                        <input type="range" min="0" max="100" ng-value="competence.neededProficiencyLevel"  >
+                        <input type="range" min="0" max="100" ng-model="competence.neededProficiencyLevel"  >
                         <p>{{competence.neededProficiencyLevel}}</p>
                       </label>
                       <label class="item item-input item-toggle">
@@ -74,10 +74,6 @@
                       <button type="button" ng-click="removeCompetence(competence)"
                                             class="button button-full button-assertive ion-ios-trash-outline no-border-radius"> Löschen</button>
                     </div>
-
-
-
-
                   </c-accordion>
                 </div>
               </ion-item>
@@ -87,11 +83,11 @@
             <c-accordion title="' Kompetenz hinzufügen'" class="no-border-radius" >
               <label class="item item-input item-select">
                 <div class="input-label">
-                  Komepetenz
+                  Kompetenz
                 </div>
               <select ng-model="competenceToAdd.id">
                 <option>--bitte wählen--</option>
-                <option ng-repeat="competence in availableCompetences" ng-value="competence.id">
+                <option ng-repeat="competence in availableCompetences | orderBy: 'name'" ng-value="competence.id">
                 {{ competence.name }}
                 </option>
               </select>

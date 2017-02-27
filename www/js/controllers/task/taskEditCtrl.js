@@ -4,46 +4,50 @@
  */
 cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataService','UserDataService', "$ionicHistory", "$q", "$ionicPopup", "$state",
   // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
+  // You can include any angular dependencies as parameters for this function
+  // TIP: Access Route Parameters for your page via $stateParams.parameterName
   function ($scope, $route, $stateParams,TaskDataService, UserDataService, $ionicHistory, $q, $ionicPopup, $state) {
     $scope.task= {};
     $scope.showPublish = false;
     $scope.showReadyToPublishSingle = false;
     $scope.showReadyToPublishTree = false;
     $scope.isNewTask = true;
-		$scope.formTitle = "";
+    $scope.formTitle = "";
 
-    $scope.competenceToAdd = {};
+    $scope.competenceToAdd = {
+      //defaults
+      importanceLevel: 50,
+      neededProficiencyLevel: 50
+    };
     $scope.materialToAdd = {};
 
-		if($stateParams.id !== undefined) {
-		  $scope.isNewTask = false;
-			$scope.taskId = $stateParams.id;
-		}
+    if($stateParams.id !== undefined) {
+      $scope.isNewTask = false;
+      $scope.taskId = $stateParams.id;
+    }
 
     $scope.load = function(){
       if(!$scope.isNewTask){
-				$scope.formTitle = "Aufgabe Bearbeiten";
+        $scope.formTitle = "Aufgabe Bearbeiten";
         // @TODO: check if task.userIsLeading, if not, go back
         TaskDataService.getTaskById($scope.taskId).then(function (res) {
           var task = res.data;
           console.log("edit", task)
           if(!task) return;
           TaskDataService.getAllAvailableCompetences(task.id).then(function(res){ return res.data })
-          .then(function(availableCompetences){
-            $scope.neededCompetences = task.taskCompetences;
-            $scope.availableCompetences = availableCompetences;
-            $scope.task = task;
-            $scope.task.startTime = new Date($scope.task.startTime)
-            $scope.task.endTime = new Date($scope.task.endTime)
-            $scope.updateFlags()
-          })
+            .then(function(availableCompetences){
+              $scope.neededCompetences = task.taskCompetences;
+              $scope.availableCompetences = availableCompetences;
+              $scope.task = task;
+              $scope.task.startTime = new Date($scope.task.startTime)
+              $scope.task.endTime = new Date($scope.task.endTime)
+              $scope.updateFlags()
+            })
         }, function (error) {
           console.warn('An error occurred!', error);
         });
       } else {
-				$scope.formTitle = "Aufgabe Erstellen";
+        $scope.formTitle = "Aufgabe Erstellen";
         $scope.neededCompetences = [];
         $scope.task.materials = []
         TaskDataService.getAllCompetences().then(function(res){
@@ -86,7 +90,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       }
     };
 
-// Save task
+    // Save task
     $scope.save = function(){
       var task = $scope.task;
       var taskData = {};
@@ -118,11 +122,24 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       taskData.endTime= task.endTime.getTime();
 
       var promise;
+      var neededCompetences = $scope.neededCompetences.map(function(competence){
+        return {
+          competenceId: competence.id,
+          importanceLevel: competence.importanceLevel || 0,
+          neededProficiencyLevel: competence.neededProficiencyLevel || 0,
+          mandatory: competence.mandatory ? 1 : 0,
+        }
+      });
       if(!$scope.isNewTask){
 
         // @TODO: this shouldn't be necessary
         taskData.taskState = task.taskState;
-        promise = TaskDataService.updateTaskById(taskData, task.id)
+        promise = $q.all(TaskDataService.updateTaskById(taskData, task.id),
+          TaskDataService.setCompetencesTask(task.id, neededCompetences)
+        ).then(function(res){
+          // catch error of setCompetencesTask
+          return res[0]
+        })
       } else {
         var creation_promise;
         if(!$scope.parentTask){
@@ -131,18 +148,16 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           creation_promise = TaskDataService.createNewSubTask(taskData, $scope.parentTask.id)
         }
         promise = $q(function(resolve, reject){
-          var neededCompetences = $scope.neededCompetences;
           creation_promise.then(function(creation_res){
             var taskId = creation_res.data.task
             $q.all(
-            neededCompetences.map(function(competence){
-              return TaskDataService.addCompetenceToTask(taskId, competence.id, competence.neededProficiencyLevel || 50, competence.importanceLevel || 50, competence.mandatory || false)
-            }).concat(task.materials.map(function(material){
-              return TaskDataService.addMaterialToTask(taskId, material)
-            })
-            )).then(function(competences_and_material_res){
-              resolve(creation_res)
-            }, reject)
+              task.materials.map(function(material){
+                return TaskDataService.addMaterialToTask(taskId, material)
+              }).concat(
+                TaskDataService.addCompetencesToTask(taskId, neededCompetences)
+              )).then(function(competences_and_material_res){
+                resolve(creation_res)
+              }, reject)
           }, reject)
         })
       }
@@ -183,120 +198,89 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       })
     }*/
 
-		// Save changes only
-		$scope.save_changes = function() {
-			$scope.save().then(function(save_res) {
+    // Save changes only
+    $scope.save_changes = function() {
+      $scope.save().then(function(save_res) {
         if(!save_res) return;
         var taskId = save_res.data.task;
-				$ionicPopup.alert({
-					title: "Task gespeichert",
-					okType: "button-positive button-outline"
-				})
+        $ionicPopup.alert({
+          title: "Task gespeichert",
+          okType: "button-positive button-outline"
+        })
 
-				if($scope.isNewTask) {
-			    $scope.isNewTask = false;
-					$scope.load();
-				}
-			})
-		}
-
-    $scope.save_and_publish = function(){
-      //if(!$scope.isNewTask) return;
-      $scope.save().then(function(save_res){
-        if(!save_res || !save_res.data.success) return;
-        var taskId = save_res.data.task;
-				if(!$scope.task.readyToPublish) {
-					$scope.setAsReady(taskId).then(function(ready_res) {
-						if(!ready_res || !ready_res.data.success) return;
-						$scope.publish(taskId);
-					});
-				} else {
-					$scope.publish(taskId);
-				}
+        if($scope.isNewTask) {
+          // redirect to the edit page of the newly created task
+          // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
+          $state.go('tabsController.taskEdit', { id:taskId }, { location: "replace" }).then(function(res){
+            $ionicHistory.removeBackView()
+          });
+        }
       })
     }
 
-		$scope.publish = function(taskId) {
-			TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
-				if(res.data.success){
-					$state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
-						$ionicHistory.removeBackView()
-					});
-				} else {
-					var message = "";
-					switch(res.data.cause){
-						case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
-						case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
-						case "TASK_NOT_READY":  message = "Aufgabe ist nicht bereit veröffentlicht zu werden."; break;
-						default: message = "Anderer Fehler: " + res.data.cause;
-					}
-					$ionicPopup.alert({
-						title: "Task kann nicht veröffentlicht werden",
-						template: message,
-						okType: "button-positive button-outline"
-					})
-				}
-			})
-		}
+    $scope.save_and_publish = function(){
+      $scope.save().then(function(save_res){
+        if(!save_res || !save_res.data.success) return;
+        var taskId = save_res.data.task;
+        if(!$scope.task.readyToPublish) {
+          $scope.setAsReady(taskId).then(function(ready_res) {
+            if(!ready_res || !ready_res.data.success) return;
+            $scope.publish(taskId);
+          });
+        } else {
+          $scope.publish(taskId);
+        }
+      })
+    }
+
+    $scope.publish = function(taskId) {
+      TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
+        if(res.data.success){
+          $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
+            $ionicHistory.removeBackView()
+          });
+        } else {
+          var message = "";
+          switch(res.data.cause){
+            case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
+            case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
+            case "TASK_NOT_READY":  message = "Aufgabe ist nicht bereit veröffentlicht zu werden."; break;
+            default: message = "Anderer Fehler: " + res.data.cause;
+          }
+          $ionicPopup.alert({
+            title: "Task kann nicht veröffentlicht werden",
+            template: message,
+            okType: "button-positive button-outline"
+          })
+        }
+      })
+    }
 
     $scope.addCompetence = function(){
       var competenceId = $scope.competenceToAdd.id;
       if(!competenceId) return;
-      if(!$scope.isNewTask){
-        TaskDataService.addCompetenceToTask($scope.task.id, competenceId,
-          $scope.competenceToAdd.neededProficiencyLevel || 50,  $scope.competenceToAdd.importanceLevel || 50, $scope.competenceToAdd.mandatory || false).then(function(res){
-            var index = _.findIndex($scope.availableCompetences, { id: parseInt(competenceId) })
-            if(index === -1){
-              console.error("this shouldn't happen")
-              return;
-            }
-            //$scope.availableCompetences.forEach(function(val, ind, arr){ if(val.id === competenceId) index = ind; });
-            var competence = $scope.availableCompetences.splice(index, 1)[0]
-            $scope.neededCompetences.push({
-              id: $scope.competenceToAdd.id,
-              name: competence.name,
-              importanceLevel: $scope.competenceToAdd.importanceLevel,
-              neededProficiencyLevel: $scope.competenceToAdd.neededProficiencyLevel,
-              mandatory: $scope.competenceToAdd.mandatory
-            })
-          }, function(error){
-            console.log('An error occurred adding a competence!', error);
-          });
-      } else {
-        //save later
-        var index = _.findIndex($scope.availableCompetences, { id: parseInt(competenceId) })
-        if(index === -1){
-          console.error("this shouldn't happen")
-          return;
-        }
-        //$scope.availableCompetences.forEach(function(val, ind, arr){ if(val.id === competenceId) index = ind; });
-        var competence = $scope.availableCompetences.splice(index, 1)[0]
-        $scope.neededCompetences.push({
-          id: $scope.competenceToAdd.id,
-          name: competence.name,
-          importanceLevel: $scope.competenceToAdd.importanceLevel,
-          neededProficiencyLevel: $scope.competenceToAdd.neededProficiencyLevel,
-          mandatory: $scope.competenceToAdd.mandatory
-        })
+      //save later
+      var index = _.findIndex($scope.availableCompetences, { id: parseInt(competenceId) })
+      if(index === -1){
+        console.error("this shouldn't happen")
+        return;
       }
+      var competence = $scope.availableCompetences.splice(index, 1)[0]
+      $scope.neededCompetences.push({
+        id: $scope.competenceToAdd.id,
+        name: competence.name,
+        importanceLevel: $scope.competenceToAdd.importanceLevel,
+        neededProficiencyLevel: $scope.competenceToAdd.neededProficiencyLevel,
+        mandatory: $scope.competenceToAdd.mandatory
+      })
     };
 
     $scope.removeCompetence = function(competence){
       if(!competence) return;
       var competenceId = competence.id;
-      if(!$scope.isNewTask){
-        TaskDataService.removeCompetenceFromTask($scope.task.id, competenceId).then(function(res){
-          var index = _.findIndex($scope.neededCompetences, { id: competenceId })
-          $scope.neededCompetences.splice(index, 1)[0]
-          $scope.availableCompetences.push({ name: competence.name, id: competence.id })
-        }, function(error){
-          console.log('An error occurred removing a competence!', error);
-        });
-      } else {
-        var index = _.findIndex($scope.neededCompetences, { id: competenceId })
-        $scope.neededCompetences.splice(index, 1)[0]
-        $scope.availableCompetences.push({ name: competence.name, id: competence.id })
-      }
+      var index = _.findIndex($scope.neededCompetences, { id: competenceId })
+      $scope.neededCompetences.splice(index, 1)[0]
+      $scope.availableCompetences.push({ name: competence.name, id: competence.id })
     }
 
     //material
@@ -333,7 +317,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     }
 
 
-//publish task
+    //publish task
     /*$scope.publish = function(){
       if($scope.newTask){ return }
       TaskDataService.changeTaskState($scope.task.id, 'publish').then(function(res) {
@@ -352,7 +336,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           })
         }
         $scope.load()
-        //$ionicHistory.goBack();
+    //$ionicHistory.goBack();
       }, function(error) {
         console.log('An error occurred!', error);
         var message = "";
@@ -369,7 +353,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       });
     }*/
 
-		// Save task
+    // Save task
     $scope.setAsReady = function(taskId){
       var task = $scope.task;
       var taskData = {};
@@ -377,46 +361,46 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       var promise = TaskDataService.setReadyToPublishS(taskId);
 
       return promise.then(function (res) {
-				if(!res.data.success){
-					var message = "";
-					switch(res.data.cause){
-						case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
-						case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
-						case "TASK_NOT_READY":  message = "Bitte Felder ausfüllen (Beginn, Ende, Ort)"; break;
-						default: message = "Anderer Fehler: " + res.data.cause;
-					}
-					//server doesn't respond correctly
-					message = "Bitte füge Kompetenzen/Unteraufgaben hinzu oder setze Unteraufgaben auf 'bereit'.";
-					$ionicPopup.alert({
-						title: "Task kann nicht auf 'bereit' gesetzt werden",
-						template: message,
-						okType: "button-positive button-outline"
-					})
-				}
-				return res;
-			}, function(error) {
-				console.log('An error occurred!', error);
-				$ionicPopup.alert({
-					title: "Task kann nicht auf 'bereit' gesetzt werden",
-					template: "Fehler: "+ error.data.cause,
-					okType: "button-positive button-outline"
-				})
+        if(!res.data.success){
+          var message = "";
+          switch(res.data.cause){
+            case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
+            case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
+            case "TASK_NOT_READY":  message = "Bitte Felder ausfüllen (Beginn, Ende, Ort)"; break;
+            default: message = "Anderer Fehler: " + res.data.cause;
+          }
+          //server doesn't respond correctly
+          message = "Bitte füge Kompetenzen/Unteraufgaben hinzu oder setze Unteraufgaben auf 'bereit'.";
+          $ionicPopup.alert({
+            title: "Task kann nicht auf 'bereit' gesetzt werden",
+            template: message,
+            okType: "button-positive button-outline"
+          })
+        }
+        return res;
+      }, function(error) {
+        console.log('An error occurred!', error);
+        $ionicPopup.alert({
+          title: "Task kann nicht auf 'bereit' gesetzt werden",
+          template: "Fehler: "+ error.data.cause,
+          okType: "button-positive button-outline"
+        })
       });
     };
 
     $scope.readyToPublish = function(){
       //if($scope.newTask){ return }
-			$scope.save().then(function(save_res){
+      $scope.save().then(function(save_res){
         if(!save_res || !save_res.data.success) return;
         var taskId = save_res.data.task;
-				$scope.setAsReady(taskId).then(function(res) {
-					if(res.data.success){
-						$state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
-							$ionicHistory.removeBackView()
-						});
-					}
-				})
-			})
+        $scope.setAsReady(taskId).then(function(res) {
+          if(res.data.success){
+            $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
+              $ionicHistory.removeBackView()
+            });
+          }
+        })
+      })
     }
 
     $scope.readyToPublishTree = function(){
