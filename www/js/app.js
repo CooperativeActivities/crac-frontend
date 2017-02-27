@@ -46,6 +46,8 @@ cracApp.run(function ($ionicPlatform, $rootScope, $location,$cookieStore,$http) 
    });
 })
 
+/*
+ //this does not work together with ng-model
 // form polyfill
 webshim.setOptions("basePath", "lib/webshim-1.16.0/js-webshim/dev/shims/")
 webshim.setOptions("forms-ext", {
@@ -79,3 +81,4 @@ cracApp.directive('input', function() {
     }
   }
 })
+*/
