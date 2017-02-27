@@ -6,11 +6,11 @@ cracApp.directive('taskPreview', ["TaskDataService", function(TaskDataService) {
     },
     link: function(scope, element, attr){
       scope.isSubtask = scope.task.superTask !== null;
-			
+
 			scope.isSingleTime = scope.task.startTime == scope.task.endTime;
 			var startDate = new Date(scope.task.startTime);
 			var endDate = new Date(scope.task.endTime);
-			scope.isSingleDate = 
+			scope.isSingleDate =
 				(startDate.getDate() == endDate.getDate()) &&
 				(startDate.getFullYear() == endDate.getFullYear()) &&
 				(startDate.getMonth() == endDate.getMonth())
@@ -20,7 +20,6 @@ cracApp.directive('taskPreview', ["TaskDataService", function(TaskDataService) {
 				return res.data[1].participationType
 			},function(error){
 				return "NOT_PARTICIPATING";
-				console.log("error: ", error)
 			}).then(function(relation){
 				scope.participationType = relation;
 			});

@@ -62,9 +62,9 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
    *STARTED: Only allowed when the parent task is started and if sequential, the previous task is completed*
    *COMPLETED: A task can only be completed when its children are all completed or if it has none*
    */
-    srv.changeTaskState = function(taskId, state_name){
-     return $http.get(srv._baseURL + "task/" + taskId + "/state/" + state_name);
-    }
+  srv.changeTaskState = function(taskId, state_name){
+    return $http.get(srv._baseURL + "task/" + taskId + "/state/" + state_name);
+  }
   //Deletes the task with given id
   srv.deleteTaskById = function(taskId){
     return $http.delete(srv._baseURL + "admin/task/" + taskId);
@@ -129,4 +129,4 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
   }
 
   return srv
-  }])
+}])
