@@ -125,9 +125,10 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
         // @TODO: this shouldn't be necessary
         taskData.taskState = task.taskState;
-        promise = $q.all(TaskDataService.updateTaskById(taskData, task.id),
+        promise = $q.all([
+          TaskDataService.updateTaskById(taskData, task.id),
           TaskDataService.setCompetencesTask(task.id, neededCompetences)
-        ).then(function(res){
+        ]).then(function(res){
           // catch error of setCompetencesTask
           return res[0]
         })
@@ -153,7 +154,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         })
       }
       return promise.then(function (res) {
-        // this can be closed automatically (setTimeout and .close()) in case it annoys ppl
         return res;
       }, function(error) {
         console.log('An error occurred!', error);
