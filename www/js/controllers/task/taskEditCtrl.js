@@ -94,32 +94,23 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.save = function(){
       var task = $scope.task;
       var taskData = {};
-      if(!task.name || !task.description || !task.location){
+      if(!task.name){
         $ionicPopup.alert({
           title: "Task kann nicht gespeichert werden:",
-          template: "Name, Beschreibung und Ort müssen angegeben werden.",
+          template: "Name muss angegeben werden.",
           okType: "button-positive button-outline"
         })
         return
       }
       taskData.name= task.name;
-      taskData.description= task.description;
-      taskData.location= task.location;
 
-      //make required?
+      if(task.description) taskData.description = task.description;
+      if(task.location) taskData.location = task.location;
       if(task.minAmountOfVolunteers) taskData.minAmountOfVolunteers = task.minAmountOfVolunteers;
 
       // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
-      if(!task.startTime || !task.endTime){
-        $ionicPopup.alert({
-          title: "Task kann nicht gespeichert werden:",
-          template: "Beginn und Ende müssen angegeben werden.",
-          okType: "button-positive button-outline"
-        })
-        return
-      }
-      taskData.startTime= task.startTime.getTime();
-      taskData.endTime= task.endTime.getTime();
+      if(task.startTime) taskData.startTime= task.startTime.getTime();
+      if(task.endTime) taskData.endTime= task.endTime.getTime();
 
       var promise;
       var neededCompetences = $scope.neededCompetences.map(function(competence){
