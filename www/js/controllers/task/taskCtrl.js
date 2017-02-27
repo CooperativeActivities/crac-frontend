@@ -113,7 +113,6 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
           }
           break;
         case "PUBLISHED":
-
           if(relation !== "LEADING"){
             // @DISCUSS: we might remove that & allow participation on all tasks
             if(taskIsLeaf){
@@ -125,14 +124,15 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
               $scope.showFollow = !$scope.showUnfollow && !$scope.showCancel;
             }
           }
-          // @TODO: check for permissions
-          // if(task.userIsLeading){ //NYI
-          $scope.editableFlag = true;
+          if($scope.participationType === 'LEADING'){
+			$scope.editableFlag = true;
+		  }
           $scope.addSubTaskFlag = !taskIsLeaf && (!SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask);
           break;
         case "NOT_PUBLISHED":
-          // @TODO: check for permissions
-          $scope.editableFlag = true;
+          if($scope.participationType === 'LEADING'){
+			$scope.editableFlag = true;
+		  }
           $scope.addSubTaskFlag = !SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask;
           $scope.showDelete = true;
           break;
