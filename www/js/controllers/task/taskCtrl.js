@@ -342,6 +342,14 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
       return false;
     };
 
+    //Check if task has a location
+    $scope.checkLocation = function(location){
+      if(location == null){
+        return false
+      }
+      return true;
+    };
+
     $scope.getCompetenceColors = function(competence){
       var competenceUserRel = _.find($rootScope.globals.userInfoCompetences, function(rel){
         return rel.competence.id === competence.id
