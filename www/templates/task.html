@@ -29,7 +29,7 @@
             <div class="row"> Bis: {{ task.endTime | date : "medium" }} </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row" ng-if="checkLocation(task.location)">
           <div class="col-25">
             <div class="row"><span class="ion-location"> Ort </span></div>
           </div>
