@@ -213,9 +213,35 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       $scope.save().then(function(save_res){
         if(!save_res || !save_res.data.success) return;
         var taskId = save_res.data.task;
+				
         if(!$scope.task.readyToPublish) {
           $scope.setAsReady(taskId).then(function(ready_res) {
-            if(!ready_res || !ready_res.data.success) return;
+            if(!ready_res || !ready_res.data.success) {
+				if($scope.isNewTask) {
+				  switch(ready_res.data.cause){
+					case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
+					case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
+					case "TASK_NOT_READY":  message = "Aufgabe ist nicht bereit veröffentlicht zu werden."; break;
+					default: message = "Anderer Fehler: " + res.data.cause;
+				  }
+				  $ionicPopup.show({
+					title: "Task gespeichert, aber kann nicht veröffentlicht werden",
+					template: message,
+					buttons: [{
+						text: 'OK',
+						type: "button-positive button-outline",
+						onTap: function(e) {
+						  // redirect to the edit page of the newly created task
+						  // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
+						  $state.go('tabsController.taskEdit', { id:taskId }, { location: "replace" }).then(function(res){
+							$ionicHistory.removeBackView()
+						  });
+						}
+					}]
+				  })
+				}
+				return;
+			}
             $scope.publish(taskId);
           });
         } else {
@@ -344,7 +370,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       });
     }*/
 
-    // Save task
+    // Set task as ready
     $scope.setAsReady = function(taskId){
       var task = $scope.task;
       var taskData = {};
@@ -352,22 +378,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       var promise = TaskDataService.setReadyToPublishS(taskId);
 
       return promise.then(function (res) {
-        if(!res.data.success){
-          var message = "";
-          switch(res.data.cause){
-            case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
-            case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
-            case "TASK_NOT_READY":  message = "Bitte Felder ausfüllen (Beginn, Ende, Ort)"; break;
-            default: message = "Anderer Fehler: " + res.data.cause;
-          }
-          //server doesn't respond correctly
-          message = "Bitte füge Kompetenzen/Unteraufgaben hinzu oder setze Unteraufgaben auf 'bereit'.";
-          $ionicPopup.alert({
-            title: "Task kann nicht auf 'bereit' gesetzt werden",
-            template: message,
-            okType: "button-positive button-outline"
-          })
-        }
         return res;
       }, function(error) {
         console.log('An error occurred!', error);
@@ -376,6 +386,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           template: "Fehler: "+ error.data.cause,
           okType: "button-positive button-outline"
         })
+		return error;
       });
     };
 
@@ -385,11 +396,27 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         if(!save_res || !save_res.data.success) return;
         var taskId = save_res.data.task;
         $scope.setAsReady(taskId).then(function(res) {
-          if(res.data.success){
-            $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
-              $ionicHistory.removeBackView()
-            });
-          }
+			if(!res.data.success){
+			  var message = "";
+			  switch(res.data.cause){
+				case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
+				case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
+				case "TASK_NOT_READY":  message = "Bitte Felder ausfüllen (Beginn, Ende, Ort)"; break;
+				default: message = "Anderer Fehler: " + res.data.cause;
+			  }
+			  //server doesn't respond correctly
+			  message = "Bitte füge Kompetenzen/Unteraufgaben hinzu oder setze Unteraufgaben auf 'bereit'.";
+			  $ionicPopup.alert({
+				title: "Task kann nicht auf 'bereit' gesetzt werden",
+				template: message,
+				okType: "button-positive button-outline"
+			  })
+			}
+			return false;
+
+			$state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
+				$ionicHistory.removeBackView();
+			});
         })
       })
     }
