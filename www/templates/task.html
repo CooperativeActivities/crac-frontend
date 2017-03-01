@@ -144,8 +144,10 @@
             <task-preview task="subTask" ng-click="loadSingleTask(subTask.id)"></task-preview>
           </div>
         </ion-list>
-        <br>
-      </c-accordion>
+		<br>
+		<button ng-click="makeNewSubTask()" ng-if="addSubTaskFlag" class="button button-full button-small button-balanced ion-android-add-circle item-divider"> Unteraufgaben hinzufügen</button>
+		<br>
+	  </c-accordion>
 
       <c-accordion title="'Kommentare (' + task.comments.length + ')'">
         <ion-list can-swipe="true" ng-show="task.comments.length > 0">
