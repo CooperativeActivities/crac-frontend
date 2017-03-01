@@ -13,6 +13,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.showReadyToPublishTree = false;
     $scope.isNewTask = true;
     $scope.formTitle = "";
+    $scope.isChildTask = false;
 
     $scope.competenceToAdd = {
       //defaults
@@ -60,8 +61,10 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         });
       } else {
         if($stateParams.parentId !== ''){
+            $scope.isChildTask = true;
             $scope.formTitle = "Unteraufgabe Erstellen";
         } else {
+            $scope.isChildTask = false;
             $scope.formTitle = "Aufgabe Erstellen";
         }
 
@@ -135,15 +138,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
 
             var curDate = new Date();
-            //// can set error message if need to show
-            //if(new Date(startDate).getTime() > new Date(endDate).getTime()){
-            //    return true; // if invalid
-            //}
-            //if(new Date(startDate).getTime() < curDate.getTime()){
-            //    return true; // if invalid
-            //} else {
-            //    return false ;// if valid
-            //}
 
 
             if(task.startTime.getTime() > task.endTime.getTime()){
@@ -162,6 +156,28 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
                });
                return
            }
+
+          //Check if subtask in the time of supertask
+          if($scope.isChildTask){
+            console.log('parent', $scope.parentTask );
+            if($scope.parentTask.endTime < task.endTime.getTime()){
+              $ionicPopup.alert({
+                title: "Task kann nicht gespeichert werden:",
+                template: "Enddatum von Unteraufgabe liegt nach Enddatum von Übergeordneter Aufgabe",
+                okType: "button-positive button-outline"
+              });
+              return
+            }
+            if($scope.parentTask.startTime > task.startTime.getTime()){
+              $ionicPopup.alert({
+                title: "Task kann nicht gespeichert werden:",
+                template: "Startdatum von Unteraufgabe liegt vor Startdatum von Übergeordneter Aufgabe",
+                okType: "button-positive button-outline"
+              });
+              return
+            }
+          }
+
 
 
         if(task.startTime) taskData.startTime = task.startTime.getTime();
