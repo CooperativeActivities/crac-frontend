@@ -51,9 +51,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
                     $scope.task.endTime = new Date($scope.task.endTime);
                 }
 
-
-
-
               $scope.updateFlags()
             })
         }, function (error) {
@@ -68,6 +65,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
             $scope.formTitle = "Aufgabe Erstellen";
         }
 
+
         $scope.neededCompetences = [];
         $scope.task.materials = []
         TaskDataService.getAllCompetences().then(function(res){
@@ -78,6 +76,8 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         if($stateParams.parentId !== ""){
           TaskDataService.getTaskById($stateParams.parentId).then(function(res){
             $scope.parentTask = res.data;
+            $scope.task.startTime = new Date( $scope.parentTask.startTime);
+            $scope.task.endTime = new Date ($scope.parentTask.endTime);
           },function(error){
             console.warn('An error occurred!', error);
           });
@@ -127,7 +127,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
 
 
-        var curDate = new Date(Date.now());
+
         if(task.choice == 'slot' ){
             task.startTime = new Date(task.startTime);
             task.endTime = new Date(task.endTime);
