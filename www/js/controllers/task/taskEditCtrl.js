@@ -264,11 +264,30 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
             case "TASK_NOT_READY":  message = "Aufgabe ist nicht bereit veröffentlicht zu werden."; break;
             default: message = "Anderer Fehler: " + res.data.cause;
           }
-          $ionicPopup.alert({
-            title: "Task kann nicht veröffentlicht werden",
-            template: message,
-            okType: "button-positive button-outline"
-          })
+		  
+		  if($scope.isNewTask) {
+			  $ionicPopup.show({
+				title: "Task als 'bereit' gesetzt, aber kann nicht veröffentlicht werden.",
+				template: message,
+				buttons: [{
+					text: 'OK',
+					type: "button-positive button-outline",
+					onTap: function(e) {
+					  // redirect to the edit page of the newly created task
+					  // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
+					  $state.go('tabsController.taskEdit', { id:taskId }, { location: "replace" }).then(function(res){
+						$ionicHistory.removeBackView()
+					  });
+					}
+				}]
+			  })
+		  } else {
+			  $ionicPopup.alert({
+				title: "Task kann nicht veröffentlicht werden",
+				template: message,
+				okType: "button-positive button-outline"
+			  })
+		  }
         }
       })
     }
