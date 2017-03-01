@@ -11,7 +11,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
   function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskDataService,$state, $ionicPopup, $q, $ionicHistory) {
 
     //Flags to show/hide buttons
-    $scope.editableFlag =false; // @TODO: check for permissions
+    $scope.editableFlag =false;
     $scope.addSubTaskFlag =false;
 
     $scope.showEnroll =false;
@@ -33,13 +33,6 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
         var task = res.data;
         console.log("task detail view", task);
         if(!task) return;
-        /* var relation = _.find(task.userRelationships, { self: true });
-        if(!relation){
-          relation = "NOT_PARTICIPATING";
-        } else {
-          relation = relation.type;
-        } */
-        // @TODO: deprecate
 
         task.userRelationships.sort($scope.sortMemberListByRelationship);
 
@@ -113,7 +106,6 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
           }
           break;
         case "PUBLISHED":
-
           if(relation !== "LEADING"){
             // @DISCUSS: we might remove that & allow participation on all tasks
             if(taskIsLeaf){
@@ -125,14 +117,15 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
               $scope.showFollow = !$scope.showUnfollow && !$scope.showCancel;
             }
           }
-          // @TODO: check for permissions
-          // if(task.userIsLeading){ //NYI
-          $scope.editableFlag = true;
+          if($scope.participationType === 'LEADING'){
+			$scope.editableFlag = true;
+		  }
           $scope.addSubTaskFlag = !taskIsLeaf && (!SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask);
           break;
         case "NOT_PUBLISHED":
-          // @TODO: check for permissions
-          $scope.editableFlag = true;
+          if($scope.participationType === 'LEADING'){
+			$scope.editableFlag = true;
+		  }
           $scope.addSubTaskFlag = !SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask;
           $scope.showDelete = true;
           break;
@@ -186,42 +179,48 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     };
     // delete a task
     $scope.delete = function(){
-      var confirmPopup = $ionicPopup.confirm({
-        title: 'Löschen',
-        template: 'Wollen sie diese Aufgabe wirklich löschen? Es wird die Aufgabe mit ALLEN darunterliegenden Aufgaben permanent gelöscht.'
-      });
+		if( $scope.participationType !== 'LEADING' ) return false;
+		
+		var confirmPopup = $ionicPopup.confirm({
+			title: 'Löschen',
+			template: 'Wollen sie diese Aufgabe wirklich löschen? Es wird die Aufgabe mit ALLEN darunterliegenden Aufgaben permanent gelöscht.'
+		});
 
-      confirmPopup.then(function(res) {
-        if(res) {
-          TaskDataService.deleteTaskById($scope.task.id).then(function(res) {
-            $ionicHistory.goBack();
-          }, function(error) {
-            console.log('An error occurred!', error);
-            alert(error.data.cause);
-          });
-        }
-      });
+		confirmPopup.then(function(res) {
+			if(res) {
+			  TaskDataService.deleteTaskById($scope.task.id).then(function(res) {
+				$ionicHistory.goBack();
+			  }, function(error) {
+				console.log('An error occurred!', error);
+				alert(error.data.cause);
+			  });
+			}
+		});
     }
 
     //Set the task and all task under this one to ready to publish (only possible if every input field is filled out correctly)
     $scope.readyToPublishT = function() {
-      TaskDataService.setReadyToPublishT($scope.task.id).then(function (res) {
-        console.log('worksT');
-        console.log(res.data);
-      }, function (error) {
-        console.log('An error occurred!', error);
-        alert(error.data.cause);
-      });
+		if( $scope.participationType !== 'LEADING' ) return false;
+
+		TaskDataService.setReadyToPublishT($scope.task.id).then(function (res) {
+			console.log('worksT');
+			console.log(res.data);
+		}, function (error) {
+			console.log('An error occurred!', error);
+			alert(error.data.cause);
+		});
     }
     //Set only this task to ready to publish (only possible if every input field is filled out correctly)
     $scope.readyToPublishS = function(){
-      TaskDataService.setReadyToPublishS($scope.task.id).then(function(res) {
-        console.log('worksS');
-        console.log(res.data);
-      }, function(error) {
-        console.log('An error occurred!', error);
-        alert(error.data.cause);
-      });
+		if( $scope.participationType !== 'LEADING' ) return false;
+
+		TaskDataService.setReadyToPublishS($scope.task.id).then(function(res) {
+			console.log('worksS');
+			console.log(res.data);
+		}, function(error) {
+			console.log('An error occurred!', error);
+			alert(error.data.cause);
+		});
     }
 
     $scope.makeNewSubTask = function(){
@@ -236,10 +235,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     }
 
     $scope.completeTask = function(state) {
-      if(!$scope.participationType === "LEADING") {
-        console.log("Only task leader may complete the task");
-        return;
-      }
+      if(!$scope.participationType !== "LEADING") return false;
 
       TaskDataService.changeTaskState($scope.task.id, state).then(function (res) {
         if(res.data.error) {
@@ -283,28 +279,32 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     }
     //Set a task as done
     $scope.done = function(){
-      TaskDataService.setTaskDone($scope.task.id,"true").then(function (res) {
-        if(res.data.error) {
-          console.log('Error: ', res.data.cause);
-          return;
-        }
+		if(!$scope.participationType !== "PARTICIPATING") return false;
 
-        console.log("Task is done");
-        $scope.userIsDone = true;
-        $scope.allAreDone = $scope.areAllParticipantsDone();
-      }, function (error) {
-        console.log('An error occurred!', error);
-      });
+		TaskDataService.setTaskDone($scope.task.id,"true").then(function (res) {
+			if(res.data.error) {
+			  console.log('Error: ', res.data.cause);
+			  return;
+			}
+
+			console.log("Task is done");
+			$scope.userIsDone = true;
+			$scope.allAreDone = $scope.areAllParticipantsDone();
+		}, function (error) {
+			console.log('An error occurred!', error);
+		});
     }
     //unset task as done
     $scope.notDone = function() {
-      TaskDataService.setTaskDone($scope.task.id,"false").then(function (res) {
-        console.log("Task is no longer done");
-        $scope.userIsDone = false;
-        $scope.allAreDone = false;
-      }, function (error) {
-        console.log('An error occurred!', error);
-      });
+		if(!$scope.participationType !== "PARTICIPATING") return false;
+
+		TaskDataService.setTaskDone($scope.task.id,"false").then(function (res) {
+			console.log("Task is no longer done");
+			$scope.userIsDone = false;
+			$scope.allAreDone = false;
+		}, function (error) {
+			console.log('An error occurred!', error);
+		});
     }
 
     $scope.addCompetence = function(){
@@ -340,6 +340,14 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
         return true;
       }
       return false;
+    };
+
+    //Check if task has a location
+    $scope.checkLocation = function(location){
+      if(location == null){
+        return false
+      }
+      return true;
     };
 
     $scope.getCompetenceColors = function(competence){
