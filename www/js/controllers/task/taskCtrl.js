@@ -193,6 +193,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 			title: 'Löschen',
 			template: template,
 			okText: "Löschen",
+            okType: "button-assertive",
 			cancelText: "Abbrechen"
 		});
 
