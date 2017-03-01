@@ -225,7 +225,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 					default: message = "Anderer Fehler: " + res.data.cause;
 				  }
 				  $ionicPopup.show({
-					title: "Task gespeichert, aber kann nicht veröffentlicht werden.",
+					title: "Task wurde erstellt, kann aber nicht veröffentlicht werden.",
 					template: message,
 					buttons: [{
 						text: 'OK',
@@ -267,7 +267,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 		  
 		  if($scope.isNewTask) {
 			  $ionicPopup.show({
-				title: "Task als 'bereit' gesetzt, aber kann nicht veröffentlicht werden.",
+				title: "Task wurde erstellt und als 'bereit' gesetzt, kann aber nicht veröffentlicht werden.",
 				template: message,
 				buttons: [{
 					text: 'OK',
@@ -427,7 +427,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
 			  if($scope.isNewTask) {
 				  $ionicPopup.show({
-					title: "Task gespeichert, aber kann nicht auf 'bereit' gesetzt werden.",
+					title: "Task wurde erstellt, kann aber nicht auf 'bereit' gesetzt werden.",
 					template: message,
 					buttons: [{
 						text: 'OK',
