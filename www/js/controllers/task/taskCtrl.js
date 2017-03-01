@@ -94,7 +94,9 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
         case "COMPLETED":
           break;
         case "STARTED":
-          if(relation !== "LEADING"){
+          if(relation === "LEADING"){
+  			$scope.showDelete = true;
+		  } else {
             // @DISCUSS: cannot unfollow started task
             if(relation !== "PARTICIPATING") {
               $scope.showFollow = relation !== "FOLLOWING";
@@ -103,7 +105,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
             if(taskIsLeaf){
               $scope.showEnroll = relation !== "PARTICIPATING";
             }
-          }
+		  }
           break;
         case "PUBLISHED":
           if(relation !== "LEADING"){
@@ -119,6 +121,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
           }
           if($scope.participationType === 'LEADING'){
 			$scope.editableFlag = true;
+			$scope.showDelete = true;
 		  }
           $scope.addSubTaskFlag = !taskIsLeaf && (!SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask);
           break;
@@ -183,7 +186,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 		
 		var confirmPopup = $ionicPopup.confirm({
 			title: 'Löschen',
-			template: 'Wollen sie diese Aufgabe wirklich löschen? Es wird die Aufgabe mit ALLEN darunterliegenden Aufgaben permanent gelöscht.'
+			template: 'Wollen sie diese Task wirklich löschen? Es wird die Task mit ALLEN darunterliegenden Tasks permanent gelöscht.'
 		});
 
 		confirmPopup.then(function(res) {
@@ -243,7 +246,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
           if( res.data.cause === 'NOT_COMPLETED_BY_USERS' ) {
             $ionicPopup.confirm({
               title: "Task kann nicht als fertig markiert werden:",
-              template: "Noch nicht alle Teilnehmer haben die Aufgabe als fertig markiert. Aufgabe trotzdem abschließen?",
+              template: "Noch nicht alle Teilnehmer haben die Task als fertig markiert. Task trotzdem abschließen?",
               okText: "Abschließen",
               cancelText: "Abbrechen"
             }).then(function(res) {
