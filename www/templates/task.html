@@ -145,6 +145,8 @@
           </div>
         </ion-list>
 		<br>
+		<button ng-click="makeNewSubTask()" ng-if="addSubTaskFlag" class="button button-full button-small button-balanced ion-android-add-circle item-divider"> Unteraufgaben hinzufügen</button>
+		<br>
 	  </c-accordion>
 
       <c-accordion title="'Kommentare (' + task.comments.length + ')'">
