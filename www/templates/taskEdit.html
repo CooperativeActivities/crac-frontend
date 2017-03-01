@@ -24,18 +24,37 @@
         <div class="form-block" >
           <div class="item item-divider-top">Zeit und Ort</div>
 
-          <label class="item item-input item-stacked-label">
-            <span class="input-label bold">Beginn:</span>
-            <div>
-              <input type="datetime-local" ng-model="task.startTime"  ng-class="{'has-error' : !task.startTime}">
-            </div>
-          </label>
-          <label class="item item-input item-stacked-label">
-            <span class="input-label bold">Ende:</span>
-            <div>
-              <input type="datetime-local" ng-model="task.endTime" ng-class="{'has-error' : !task.endTime}">
-            </div>
-          </label>
+          <div class="time-select-box item item-input">
+            <ion-list>
+              <ion-radio ng-model="task.choice" ng-value="'slot'" class="no-border-radius" >Zeitraum</ion-radio>
+              <ion-radio ng-model="task.choice" ng-value="'point'" class="no-border-radius" >Zeitpunkt</ion-radio>
+            </ion-list>
+          </div>
+
+          <div ng-show="task.choice == 'slot'" class="time-slot">
+            <label class="item item-input item-stacked-label">
+              <span class="input-label bold">Beginn:</span>
+              <div>
+                <input type="datetime-local" ng-model="task.startTime"  ng-class="{'has-error' : !task.startTime}" >
+              </div>
+            </label>
+            <label class="item item-input item-stacked-label">
+              <span class="input-label bold">Ende:</span>
+              <div>
+                <input type="datetime-local" ng-model="task.endTime" ng-class="{'has-error' : !task.endTime}" >
+              </div>
+            </label>
+          </div>
+          <div ng-show="task.choice == 'point'" class="time-point ">
+            <label class="item item-input item-stacked-label">
+              <span class="input-label bold">Ende:</span>
+              <div>
+                <input type="datetime-local" ng-model="task.endTime" ng-class="{'has-error' : !task.endTime}" >
+              </div>
+            </label>
+          </div>
+
+
           <label class="item item-input item-stacked-label">
             <span class="input-label bold">Ort:</span>
             <input type="text" ng-model="task.location" placeholder="Ort..."  >
@@ -180,9 +199,9 @@
   </ion-content>
   <ion-footer-bar>
     <div class="button-bar">
-      <button ng-click="readyToPublish()"     ng-if="showReadyToPublishSingle || isNewTask" class="button button-small button-outline button-positive ion-checkmark"> Bereit </button>
-      <button ng-click="readyToPublishTree()" ng-if="showReadyToPublishTree" class="button button-small button-outline button-positive ion-checkmark"> Bereit (Alle) </button>
-      <button ng-click="save_and_publish()"   ng-if="showPublish || isNewTask" class="button button-small button-outline button-balanced ion-eye"> Veröffentlichen </button>
+      <button ng-click="readyToPublish()"     ng-if="showReadyToPublishSingle || isNewTask" class="button button-small button-full no-border-radius button-positive ion-checkmark"> Bereit </button>
+      <button ng-click="readyToPublishTree()" ng-if="showReadyToPublishTree" class="button button-small button-full no-border-radius button-positive ion-checkmark"> Bereit (Alle) </button>
+      <button ng-click="save_and_publish()"   ng-if="showPublish || isNewTask" class="button button-small button-full no-border-radius button-balanced ion-eye"> Veröffentlichen </button>
     </div>
   </ion-footer-bar>
 </ion-view>

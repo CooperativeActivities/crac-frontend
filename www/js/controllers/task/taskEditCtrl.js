@@ -26,6 +26,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       $scope.taskId = $stateParams.id;
     }
 
+
     $scope.load = function(){
       if(!$scope.isNewTask){
         $scope.formTitle = "Aufgabe Bearbeiten";
@@ -39,15 +40,32 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
               $scope.neededCompetences = task.taskCompetences;
               $scope.availableCompetences = availableCompetences;
               $scope.task = task;
-              $scope.task.startTime = new Date($scope.task.startTime)
-              $scope.task.endTime = new Date($scope.task.endTime)
+
+                if($scope.task.choice == 'slot' ){
+                    console.log('slot');
+                    $scope.task.startTime = new Date($scope.task.startTime);
+                    $scope.task.endTime = new Date($scope.task.endTime);
+                } else {
+                    console.log('Zeitpunkt - Start', Date.now());
+                    $scope.task.startTime = Date.now();
+                    $scope.task.endTime = new Date($scope.task.endTime);
+                }
+
+
+
+
               $scope.updateFlags()
             })
         }, function (error) {
           console.warn('An error occurred!', error);
         });
       } else {
-        $scope.formTitle = "Aufgabe Erstellen";
+        if($stateParams.parentId !== ''){
+            $scope.formTitle = "Unteraufgabe Erstellen";
+        } else {
+            $scope.formTitle = "Aufgabe Erstellen";
+        }
+
         $scope.neededCompetences = [];
         $scope.task.materials = []
         TaskDataService.getAllCompetences().then(function(res){
@@ -104,13 +122,63 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       }
       taskData.name= task.name;
 
+        // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
+
+
+        if(task.choice == 'slot' ){
+            task.startTime = new Date(task.startTime);
+            task.endTime = new Date(task.endTime);
+        } else {
+            task.startTime = new Date(Date.now());
+            task.endTime = new Date(task.endTime);
+        }
+
+
+            var curDate = new Date();
+            //// can set error message if need to show
+            //if(new Date(startDate).getTime() > new Date(endDate).getTime()){
+            //    return true; // if invalid
+            //}
+            //if(new Date(startDate).getTime() < curDate.getTime()){
+            //    return true; // if invalid
+            //} else {
+            //    return false ;// if valid
+            //}
+
+
+            if(task.startTime.getTime() > task.endTime.getTime()){
+                $ionicPopup.alert({
+                    title: "Task kann nicht gespeichert werden:",
+                    template: "Enddatum liegt vor Startdatum.",
+                    okType: "button-positive button-outline"
+                });
+                return
+            }
+           if(task.startTime.getTime() < curDate.getTime()){
+               $ionicPopup.alert({
+                   title: "Task kann nicht gespeichert werden:",
+                   template: "Startdatum liegt vor aktullem Datum",
+                   okType: "button-positive button-outline"
+               });
+               return
+           }
+
+
+
+
+
+        if(task.startTime) taskData.startTime = task.startTime.getTime();
+        if(task.endTime) taskData.endTime = task.endTime.getTime();
+
+
+
+
       if(task.description) taskData.description = task.description;
       if(task.location) taskData.location = task.location;
       if(task.minAmountOfVolunteers) taskData.minAmountOfVolunteers = task.minAmountOfVolunteers;
 
-      // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
-      if(task.startTime) taskData.startTime= task.startTime.getTime();
-      if(task.endTime) taskData.endTime= task.endTime.getTime();
+
+
 
       var promise;
       var neededCompetences = $scope.neededCompetences.map(function(competence){

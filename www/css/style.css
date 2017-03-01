@@ -127,10 +127,16 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 	border: 1px solid #f00;
 }
 
-.bar .button {
+.bar-1 .bar .button {
   background: none;
   color: #fff;
 }
+
+
+/*.bar .button {*/
+  /*background: none;*/
+  /*color: #fff;*/
+/*}*/
 
 .bold {
   font-weight: bold;
@@ -1068,6 +1074,16 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
 .scale {
   transform: scale(1.5);
 }
+
+.wordwrap {
+  white-space: normal !important;
+}
+
+.disable {
+  background-color: darkgrey;
+  color: dimgray;
+}
+
 
 /*--- mybutton--------------------------------------------------------*/
 

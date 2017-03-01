@@ -1,7 +1,7 @@
 <ion-view cache-view="false" title="Aufgabe" hide-nav-bar="false">
   <ion-nav-buttons side="right" class="has-header">
     <button ng-click="edit()" ng-show="editableFlag" class="button icon ion-edit"></button>
-    <button ng-click="makeNewSubTask()" ng-if="addSubTaskFlag" class="button icon ion-android-add-circle"></button>
+    <button ng-click="makeNewSubTask()" ng-if="addSubTaskFlag" class="button icon ion-android-add-circle scale"></button>
   </ion-nav-buttons>
   <ion-content padding="true" class="manual-ios-statusbar-padding has-footer">
     <ion-refresher on-refresh="doRefresh()"></ion-refresher>
@@ -22,7 +22,7 @@
       <c-accordion title="'Zeit und Ort'" shown="true">
         <div class="row">
           <div class="col-25">
-            <div class="row"><span class="ion-calendar"> Zeit </span></div>
+            <div class="row"><span class="ion-calendar"> Zeit: </span></div>
           </div>
           <div class="col">
             <div class="row"> Von: {{ task.startTime | date : "medium" }} </div>
@@ -31,7 +31,7 @@
         </div>
         <div class="row" ng-if="checkLocation(task.location)">
           <div class="col-25">
-            <div class="row"><span class="ion-location"> Ort </span></div>
+            <div class="row"><span class="ion-location"> Ort: </span></div>
           </div>
           <div class="col">
             <div class="row"> {{task.location}} </div>
@@ -39,7 +39,7 @@
         </div>
         <div class="row">
           <div class="col-25">
-            <div class="row"><span class="ion-information-circled"> Status </span></div>
+            <div class="row"><span class="ion-information-circled"> Status: </span></div>
           </div>
           <div class="col">
             <div class="row status-icons">
@@ -138,7 +138,7 @@
         <br>
       </c-accordion>
 
-      <c-accordion title="'Unteraufgaben'" ng-show="task.childTasks.length > 0">
+      <c-accordion title="'Unteraufgaben (' + task.childTasks.length + ')'" ng-show="task.childTasks.length > 0">
         <ion-list>
           <div ng-repeat="subTask in task.childTasks | orderBy: ['startTime', 'name']" ng-cloak>
             <task-preview task="subTask" ng-click="loadSingleTask(subTask.id)"></task-preview>
@@ -179,11 +179,11 @@
   </ion-content>
   <ion-footer-bar class="bar bar-footer">
     <div class="button-bar" ng-cloak>
-      <button ng-click="enroll()" ng-if="showEnroll" class="button button-small button-outline button-balanced ion-checkmark"> Ich arbeite mit! </button>
-      <button ng-click="cancel()" ng-if="showCancel"  class="button button-small button-outline button-assertive ion-close"> Absagen </button>
-      <button ng-click="follow()" ng-if="showFollow"  class="button button-small button-outline button-positive "> Folgen </button>
-      <button ng-click="cancel()" ng-if="showUnfollow" class="button button-small button-outline button-assertive"> Nicht mehr folgen </button>
-      <button ng-click="delete()" ng-if="showDelete"  class="button button-small button-outline button-assertive"> Löschen </button>
+      <button ng-click="enroll()" ng-if="showEnroll" class="button button-full no-border-radius button-balanced ion-checkmark"> Ich arbeite mit! </button>
+      <button ng-click="cancel()" ng-if="showCancel"  class="button button-full no-border-radius button-assertive ion-close"> Absagen </button>
+      <button ng-click="follow()" ng-if="showFollow"  class="button button-full no-border-radius button-positive "> Folgen </button>
+      <button ng-click="cancel()" ng-if="showUnfollow" class="button button-full no-border-radius button-assertive"> Nicht mehr folgen </button>
+      <button ng-click="delete()" ng-if="showDelete"  class="button button-full no-border-radius button-assertive"> Löschen </button>
     </div>
   </ion-footer-bar>
 </ion-view>
