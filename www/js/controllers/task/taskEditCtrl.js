@@ -221,9 +221,11 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 				  switch(ready_res.data.cause){
 					case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
 					case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
-					case "TASK_NOT_READY":  message = "Aufgabe ist nicht bereit veröffentlicht zu werden."; break;
+					case "TASK_NOT_READY":  message = "Bitte Felder ausfüllen (Beginn, Ende, Ort)"; break;
 					default: message = "Anderer Fehler: " + res.data.cause;
 				  }
+				  //server doesn't respond correctly
+				  message = "Bitte füge Kompetenzen/Unteraufgaben hinzu oder setze Unteraufgaben auf 'bereit'.";
 				  $ionicPopup.show({
 					title: "Task wurde erstellt, kann aber nicht veröffentlicht werden.",
 					template: message,
