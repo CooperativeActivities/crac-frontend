@@ -183,9 +183,15 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     $scope.delete = function(){
 		if( $scope.participationType !== 'LEADING' ) return false;
 		
+		var template = 'Wollen sie diese Task wirklich löschen? Es wird die Task mit ALLEN darunterliegenden Tasks permanent gelöscht.';
+		if( $scope.task.taskState === 'PUBLISHED' )
+			template += "<p><strong>Task is schon veröffentlicht. Task trotzdem Löschen?</strong></p>";
+		if( $scope.task.taskState === 'STARTED' )
+			template += "<p><strong>Task is schon gestartet. Task trotzdem Löschen?</strong></p>";
+
 		var confirmPopup = $ionicPopup.confirm({
 			title: 'Löschen',
-			template: 'Wollen sie diese Task wirklich löschen? Es wird die Task mit ALLEN darunterliegenden Tasks permanent gelöscht.'
+			template: template
 		});
 
 		confirmPopup.then(function(res) {
