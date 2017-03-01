@@ -46,8 +46,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
                     $scope.task.startTime = new Date($scope.task.startTime);
                     $scope.task.endTime = new Date($scope.task.endTime);
                 } else {
-                    console.log('Zeitpunkt - Start', Date.now());
-                    $scope.task.startTime = Date.now();
+                    $scope.task.startTime = new Date($scope.task.startTime);
                     $scope.task.endTime = new Date($scope.task.endTime);
                 }
 
@@ -125,6 +124,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
 
 
+        var curDate = new Date(Date.now());
         if(task.choice == 'slot' ){
             task.startTime = new Date(task.startTime);
             task.endTime = new Date(task.endTime);
@@ -162,9 +162,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
                });
                return
            }
-
-
-
 
 
         if(task.startTime) taskData.startTime = task.startTime.getTime();
