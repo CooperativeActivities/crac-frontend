@@ -138,14 +138,14 @@
         <br>
       </c-accordion>
 
-      <c-accordion title="'Unteraufgaben'" ng-show="task.childTasks.length > 0">
+      <c-accordion title="'Unteraufgaben ('+ task.childTasks.length + ')'" ng-show="task.childTasks.length > 0">
         <ion-list>
           <div ng-repeat="subTask in task.childTasks | orderBy: ['startTime', 'name']" ng-cloak>
             <task-preview task="subTask" ng-click="loadSingleTask(subTask.id)"></task-preview>
           </div>
         </ion-list>
-        <br>
-      </c-accordion>
+		<br>
+	  </c-accordion>
 
       <c-accordion title="'Kommentare (' + task.comments.length + ')'">
         <ion-list can-swipe="true" ng-show="task.comments.length > 0">
