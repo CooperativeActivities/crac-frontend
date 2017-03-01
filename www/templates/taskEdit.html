@@ -6,11 +6,17 @@
   <ion-content padding="true" class="manual-ios-statusbar-padding has-footer">
     <div class="item item-divider-top">Basisinformationen</div>
     <div>
-      <form onsubmit="event.preventDefault">
-        <div class="form-block" >
+      <form name="taskForm" onsubmit="event.preventDefault" novalidate>
+        <div class="form-block form-group" ng-class="{'has-error has-feedback': taskForm.name.$dirty && taskForm.name.$invalid, 'has-success has-feedback':taskForm.name.$dirty && taskForm.name.$valid}">
           <label class="item item-input item-stacked-label">
-            <span class="input-label bold">Name*:</span>
-            <input type="text" ng-model="task.name" style="background-color:white;" ng-class="{'has-error' : !task.name}" placeholder="Name...">
+            <span class="input-label bold">Titel*:</span>
+            <input type="text" ng-model="task.name" name="name" style="background-color:white;" placeholder="Name..."
+                   aria-describedby="inputError2Status" class="form-control" required>
+            <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" ng-if="taskForm.name.$dirty && taskForm.name.$invalid"></span>
+            <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-if="taskForm.name.$dirty && taskForm.name.$valid"></span>
+           <span id="inputError2Status" ng-show="taskForm.name.$dirty && taskForm.name.$invalid" class="help-block">
+                   Bitte geben Sie einen Tasktitel ein.
+               </span>
           </label>
           <label class="item item-input item-stacked-label">
             <span class="input-label bold">Beschreibung:</span>
