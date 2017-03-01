@@ -191,7 +191,9 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 
 		var confirmPopup = $ionicPopup.confirm({
 			title: 'Löschen',
-			template: template
+			template: template,
+			okText: "Löschen",
+			cancelText: "Abbrechen"
 		});
 
 		confirmPopup.then(function(res) {
