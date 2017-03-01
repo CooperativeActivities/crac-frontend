@@ -225,7 +225,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 					default: message = "Anderer Fehler: " + res.data.cause;
 				  }
 				  $ionicPopup.show({
-					title: "Task gespeichert, aber kann nicht veröffentlicht werden",
+					title: "Task gespeichert, aber kann nicht veröffentlicht werden.",
 					template: message,
 					buttons: [{
 						text: 'OK',
@@ -410,7 +410,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     };
 
     $scope.readyToPublish = function(){
-      //if($scope.newTask){ return }
       $scope.save().then(function(save_res){
         if(!save_res || !save_res.data.success) return;
         var taskId = save_res.data.task;
@@ -425,11 +424,30 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 			  }
 			  //server doesn't respond correctly
 			  message = "Bitte füge Kompetenzen/Unteraufgaben hinzu oder setze Unteraufgaben auf 'bereit'.";
-			  $ionicPopup.alert({
-				title: "Task kann nicht auf 'bereit' gesetzt werden",
-				template: message,
-				okType: "button-positive button-outline"
-			  })
+
+			  if($scope.isNewTask) {
+				  $ionicPopup.show({
+					title: "Task gespeichert, aber kann nicht auf 'bereit' gesetzt werden.",
+					template: message,
+					buttons: [{
+						text: 'OK',
+						type: "button-positive button-outline",
+						onTap: function(e) {
+						  // redirect to the edit page of the newly created task
+						  // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
+						  $state.go('tabsController.taskEdit', { id:taskId }, { location: "replace" }).then(function(res){
+							$ionicHistory.removeBackView()
+						  });
+						}
+					}]
+				  })
+			  } else {
+				  $ionicPopup.alert({
+					title: "Task kann nicht auf 'bereit' gesetzt werden",
+					template: message,
+					okType: "button-positive button-outline"
+				  })
+			  }
 			}
 			return false;
 
