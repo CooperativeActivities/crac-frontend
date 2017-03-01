@@ -1,15 +1,16 @@
 <ion-view id="page1">
+<div ng-controller="navCtrl as nav">
   <ion-tabs class="tabs-1 tabs-icon-top" id="tabsController-tabs1">
-    <ion-tab title="Startseite" icon="ion-android-home" href="#/tabcontroller/home" id="tabsController-tab1">
+    <ion-tab title="Startseite" icon="ion-android-home" ng-click="nav.onTabSelect('home')" id="tabsController-tab1">
       <ion-nav-view name="tab1"></ion-nav-view>
     </ion-tab>
-    <ion-tab title="Aufgabenliste" icon="ion-android-list" href="#/tabcontroller/tasklist" id="tabsController-tab2">
+    <ion-tab title="Aufgabenliste" icon="ion-android-list" ng-click="nav.onTabSelect('tasklist')" id="tabsController-tab2">
       <ion-nav-view name="tab2"></ion-nav-view>
     </ion-tab>
-    <ion-tab title="Meine Aufgaben" icon="ion-clipboard" href="#/tabcontroller/mytasks" id="tabsController-tab3">
+    <ion-tab title="Meine Aufgaben" icon="ion-clipboard" ng-click="nav.onTabSelect('myTasks')" id="tabsController-tab3">
       <ion-nav-view name="tab3"></ion-nav-view>
     </ion-tab>
-    <ion-tab title="Nachrichten" icon="ion-android-textsms" href="#/tabcontroller/messages" id="tabsController-tab4">
+    <ion-tab title="Nachrichten" icon="ion-android-textsms" ng-click="nav.onTabSelect('messages')" id="tabsController-tab4">
       <ion-nav-view name="tab4"></ion-nav-view>
     </ion-tab>
 
@@ -37,4 +38,5 @@
       <ion-nav-view name="tab11"></ion-nav-view>
     </ion-tab>
   </ion-tabs>
+</div>
 </ion-view>
