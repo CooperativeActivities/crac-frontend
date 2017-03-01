@@ -29,7 +29,7 @@
             <div class="row"> Bis: {{ task.endTime | date : "medium" }} </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row" ng-if="checkLocation(task.location)">
           <div class="col-25">
             <div class="row"><span class="ion-location"> Ort </span></div>
           </div>
@@ -83,7 +83,7 @@
       </c-accordion>
 
 
-      <c-accordion title="'Notwendige Kenntnisse ('+ neededCompetences.length + ')'" ng-show="neededCompetences.length > 0">
+      <c-accordion title="'Notwendige Kompetenzen ('+ neededCompetences.length + ')'" ng-show="neededCompetences.length > 0">
         <div>
           Anmerkung (Temporär, bitte Feedback) <br>
           Grün -> Rot ===  Unwichtig -> Wichtig <br>
@@ -122,7 +122,7 @@
                     <button ng-click="subscribe(material)"
                       class="button button-small button-outline button-balanced ion-checkmark">Material bringen</button>
                     <button ng-click="unsubscribe(material)"
-                      class="button button-small button-outline button-balanced ion-checkmark">Material nicht mehr bringen</button>
+                      class="button button-small button-outline button-assertive ion-close">Material nicht mehr bringen</button>
                   </custom-accordion-body>
                 </custom-accordion>
               </ion-item>

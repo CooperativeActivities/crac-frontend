@@ -18,7 +18,7 @@
           </label>
           <label class="item item-input item-stacked-label">
             <span class="input-label bold">Zahl der Freiwilligen:</span>
-            <input type="number" min="1" ng-model="task.minAmountOfVolunteers" placeholder="Anzahl...">
+            <input type="number" min="0" ng-model="task.minAmountOfVolunteers" placeholder="Anzahl...">
           </label>
         </div>
         <div class="form-block" >
@@ -43,94 +43,95 @@
         </div>
 
         <div class="form-block-border" >
-          <div class="item item-divider-top">Notwendige Kenntnisse:</div>
+          <div class="item item-divider-top">Notwendige Kompetenzen:</div>
           <ion-list>
-            <div  ng-cloak>
-              <ion-item>
+            <ion-item  ng-cloak class="no-border-radius">
+              <div ng-repeat="competence in neededCompetences | orderBy: 'name' " ng-cloak>
+                <c-accordion title="competence.name" class="">
 
-                <div ng-repeat="competence in neededCompetences | orderBy: 'name' " ng-cloak>
-                  <c-accordion title="competence.name" class="">
-
-                    <div class="internal-block">
-                      <label class="item item-input range">
-                        <span class="input-label">Wichtigkeit</span>
-                        <input type="range" min="0" max="100" ng-model="competence.importanceLevel"  >
-                        <p>{{competence.importanceLevel}}</p>
+                  <div class="internal-block">
+                    <label class="item item-input range">
+                      <span class="input-label">Wichtigkeit</span>
+                      <input type="range" min="0" max="100" ng-model="competence.importanceLevel"  >
+                      <p>{{competence.importanceLevel}}</p>
+                    </label>
+                    <label class="item item-input range">
+                      <span class="input-label">Können</span>
+                      <input type="range" min="0" max="100" ng-model="competence.neededProficiencyLevel"  >
+                      <p>{{competence.neededProficiencyLevel}}</p>
+                    </label>
+                    <label class="item item-input item-toggle">
+                      <span class="input-label">Zwingend</span>
+                      <label class="toggle toggle-assertive">
+                        <input type="checkbox" ng-model="competence.mandatory">
+                        <div class="track">
+                          <div class="handle"></div>
+                        </div>
                       </label>
-                      <label class="item item-input range">
-                        <span class="input-label">Können</span>
-                        <input type="range" min="0" max="100" ng-model="competence.neededProficiencyLevel"  >
-                        <p>{{competence.neededProficiencyLevel}}</p>
-                      </label>
-                      <label class="item item-input item-toggle">
-                        <span class="input-label">Zwingend</span>
-                        <label class="toggle toggle-assertive">
-                          <input type="checkbox" ng-model="competence.mandatory">
-                          <div class="track">
-                            <div class="handle"></div>
-                          </div>
-                        </label>
-                      </label>
-                      <button type="button" ng-click="removeCompetence(competence)"
-                                            class="button button-full button-assertive ion-ios-trash-outline no-border-radius"> Löschen</button>
-                    </div>
-                  </c-accordion>
-                </div>
-              </ion-item>
-            </div>
-          </ion-list>
-          <div class="new-competence">
-            <c-accordion title="' Kompetenz hinzufügen'" class="no-border-radius" >
-              <label class="item item-input item-select">
-                <div class="input-label">
-                  Kompetenz
-                </div>
-              <select ng-model="competenceToAdd.id">
-                <option>--bitte wählen--</option>
-                <option ng-repeat="competence in availableCompetences | orderBy: 'name'" ng-value="competence.id">
-                {{ competence.name }}
-                </option>
-              </select>
-              </label>
-              <label class="item item-input range">
-                <span class="input-label">Wichtigkeit</span>
-                <input type="range" min="0" max="100" ng-model="competenceToAdd.importanceLevel">
-                <p>{{competenceToAdd.importanceLevel}}</p>
-              </label>
-              <div>
-
-
-              </div>
-              <label class="item item-input range">
-                <span class="input-label">Können</span>
-                <input type="range" min="0" max="100" ng-model="competenceToAdd.neededProficiencyLevel">
-                <p>{{competenceToAdd.neededProficiencyLevel}}</p>
-              </label>
-
-              <div class="item item-toggle">
-                Zwingend
-                <label class="toggle toggle-assertive">
-                  <input type="checkbox" ng-model="competenceToAdd.mandatory">
-                  <div class="track">
-                    <div class="handle"></div>
+                    </label>
+                    <button type="button" ng-click="removeCompetence(competence)"
+                                          class="button button-full button-assertive ion-ios-trash-outline no-border-radius"> Löschen</button>
                   </div>
-                </label>
+                </c-accordion>
               </div>
-              <div>
-                <!--<span>-->
-                <!--<i class="ion-information-circled"></i>-->
-                <!--<span>-->
-                <!--Die Kategorie &bdquo;Wichtigkeit&ldquo; bezieht sich auf die Aufgabe, wie wichtig diese für mich ist-->
-                <!--bzw. für das Gelingen des Projekts.-->
-                <!--</span>-->
-                <!--</span>-->
+              <br>
+              <custom-accordion>
+                <custom-accordion-head>
+                  <div class="item item-divider ion-plus">
+                    Kompetenz hinzufügen
+                  </div>
+                </custom-accordion-head>
+                <custom-accordion-body>
+                  <label class="item item-input item-select">
+                    <div class="input-label">
+                      Kompetenz
+                    </div>
+                    <select ng-model="competenceToAdd.id">
+                      <option>--bitte wählen--</option>
+                      <option ng-repeat="competence in availableCompetences | orderBy: 'name'" ng-value="competence.id">
+                      {{ competence.name }}
+                      </option>
+                    </select>
+                  </label>
+                  <label class="item item-input range">
+                    <span class="input-label">Wichtigkeit</span>
+                    <input type="range" min="0" max="100" ng-model="competenceToAdd.importanceLevel">
+                    <p>{{competenceToAdd.importanceLevel}}</p>
+                  </label>
+                  <div>
 
-              </div>
-              <button type="button" ng-click="addCompetence()" class="button button-full button-positive ion-plus no-border-radius"> Hinzufügen</button>
 
-            </c-accordion>
+                  </div>
+                  <label class="item item-input range">
+                    <span class="input-label">Können</span>
+                    <input type="range" min="0" max="100" ng-model="competenceToAdd.neededProficiencyLevel">
+                    <p>{{competenceToAdd.neededProficiencyLevel}}</p>
+                  </label>
 
-          </div>
+                  <div class="item item-toggle">
+                    Zwingend
+                    <label class="toggle toggle-assertive">
+                      <input type="checkbox" ng-model="competenceToAdd.mandatory">
+                      <div class="track">
+                        <div class="handle"></div>
+                      </div>
+                    </label>
+                  </div>
+                  <div>
+                    <!--<span>-->
+                    <!--<i class="ion-information-circled"></i>-->
+                    <!--<span>-->
+                    <!--Die Kategorie &bdquo;Wichtigkeit&ldquo; bezieht sich auf die Aufgabe, wie wichtig diese für mich ist-->
+                    <!--bzw. für das Gelingen des Projekts.-->
+                    <!--</span>-->
+                    <!--</span>-->
+
+                  </div>
+                  <button type="button" ng-click="addCompetence()" class="button button-block button-positive ion-plus no-border-radius"> Hinzufügen</button>
+                </custom-accordion-body>
+              </custom-accordion>
+            </ion-item>
+          </ion-list>
         </div>
 
         <div class="form-block">
