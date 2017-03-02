@@ -174,9 +174,10 @@
                   <span class="material-header-description">Beschreibung: </span>
                 </div>
                 <div class="row row-content" ng-repeat="material in task.materials">
-                  <span class="material-content-name">{{ material.name }}</span>
-                  <span class="material-content-amount">{{ material.quantity }}</span>
-                  <span class="material-content-description"> {{ material.description }}</span>
+                  <input type="text" class="material-content-name"        ng-model="material.name">
+                  <input type="number" class="material-content-amount"    ng-model="material.quantity">
+                  <input type="text" class="material-content-description" ng-model="material.description">
+                  <button type="button" ng-click="removeMaterial(material)" class="button button-small button-assertive "> Entfernen</button>
                 </div>
                 <div class="new-material">
 

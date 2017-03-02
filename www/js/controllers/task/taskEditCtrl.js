@@ -36,22 +36,22 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           var task = res.data;
           console.log("edit", task)
           if(!task) return;
+          $scope.task = task;
+
+          if($scope.task.choice == 'slot' ){
+            console.log('slot');
+            $scope.task.startTime = new Date($scope.task.startTime);
+            $scope.task.endTime = new Date($scope.task.endTime);
+          } else {
+            $scope.task.startTime = new Date($scope.task.startTime);
+            $scope.task.endTime = new Date($scope.task.endTime);
+          }
+          $scope.neededCompetences = task.taskCompetences;
+
+          $scope.updateFlags()
           TaskDataService.getAllAvailableCompetences(task.id).then(function(res){ return res.data })
             .then(function(availableCompetences){
-              $scope.neededCompetences = task.taskCompetences;
               $scope.availableCompetences = availableCompetences;
-              $scope.task = task;
-
-              if($scope.task.choice == 'slot' ){
-                console.log('slot');
-                $scope.task.startTime = new Date($scope.task.startTime);
-                $scope.task.endTime = new Date($scope.task.endTime);
-              } else {
-                $scope.task.startTime = new Date($scope.task.startTime);
-                $scope.task.endTime = new Date($scope.task.endTime);
-              }
-
-              $scope.updateFlags()
             })
         }, function (error) {
           console.warn('An error occurred!', error);
