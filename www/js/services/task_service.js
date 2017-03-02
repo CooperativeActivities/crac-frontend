@@ -118,6 +118,14 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
   srv.removeMaterialFromTask = function(taskId,materialId){
     return $http.get(srv._baseURL + "task/" + taskId + "/material/remove/" + materialId);
   }
+  //Adds array of material objects
+  srv.addMaterialsToTask = function(taskId, materials){
+    return $http.post(srv._baseURL + "task/" + taskId + "/material/require", materials);
+  }
+  //Overrides task's materials with array of material objects
+  srv.setMaterialsTask = function(taskId, materials){
+    return $http.put(srv._baseURL + "task/" + taskId + "/material/overwrite", materials);
+  }
 
   //Current user subscribes to material with quantity (if already subscribed, change quantity)
   srv.subscribeToMaterial = function(taskId, materialId, quantity){
