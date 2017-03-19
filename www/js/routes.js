@@ -233,6 +233,24 @@ angular.module('app.routes', ['ionicUIRouter'])
           }
         }
       })
+	  
+	  .state('tabsController.taskEditAdv', {
+        url: '/task/:id/editAdv',
+        views: {
+          'tab1': {
+            templateUrl: 'templates/taskEditAdv.html',
+            controller: 'taskEditAdvCtrl'
+          },
+          'tab2': {
+            templateUrl: 'templates/taskEditAdv.html',
+            controller: 'taskEditAdvCtrl'
+          },
+          'tab3': {
+            templateUrl: 'templates/taskEditAdv.html',
+            controller: 'taskEditAdvCtrl'
+          }
+        }
+      })
 
 
       .state('tabsController.myCompetenciesInfo', {

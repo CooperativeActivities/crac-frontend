@@ -2,7 +2,7 @@
 /**
  * Created by md@x-net on 2017-01-31
  */
-cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataService','UserDataService', "$ionicHistory", "$q", "$ionicPopup", "$state",
+cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDataService','UserDataService', "$ionicHistory", "$q", "$ionicPopup", "$state",
   // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
   // You can include any angular dependencies as parameters for this function
   // TIP: Access Route Parameters for your page via $stateParams.parameterName
@@ -14,6 +14,13 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.isNewTask = true;
     $scope.formTitle = "";
     $scope.isChildTask = false;
+
+    $scope.competenceToAdd = {
+      //defaults
+      importanceLevel: 50,
+      neededProficiencyLevel: 50
+    };
+    $scope.materialToAdd = {};
 
     if($stateParams.id !== undefined) {
       $scope.isNewTask = false;
@@ -59,8 +66,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         }
 
 
-		$scope.task.type = 'ORGANISATIONAL';
-		$scope.task.choice = 'slot';
+		$scope.task.type = "ORGANISATIONAL";
         $scope.neededCompetences = [];
         $scope.task.materials = []
         TaskDataService.getAllCompetences().then(function(res){
