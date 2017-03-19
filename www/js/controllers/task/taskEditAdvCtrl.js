@@ -13,6 +13,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       neededProficiencyLevel: 50
     };
     $scope.materialToAdd = {};
+	$scope.shiftToAdd = {};
     $scope.taskId = $stateParams.id;
 
     $scope.load = function(){
@@ -32,6 +33,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
             })
 			
 			//TODO get all shifts?
+			$scope.task.shifts = [];
         }, function (error) {
           console.warn('An error occurred!', error);
         });
@@ -99,12 +101,22 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
           quantity: material.quantity || 0,
         }
       });
+	  
+	  // @TODO: implement proper shift creation
+	  var shifts = ($scope.task.shifts || []).map(function(shift) {
+		  return {
+			  type: 'shift',
+			  title: shift.starttime + ' - ' + shift.endtime,
+			  starttime: shift.starttime,
+			  endtime: shift.endtime
+		  }
 
         // @TODO: this shouldn't be necessary
         taskData.taskState = task.taskState;
         promise = $q.all([
           TaskDataService.setCompetencesTask(task.id, neededCompetences),
           TaskDataService.setMaterialsTask(task.id, materials)
+		  //TaskDataService.setTimeShifts(task.id, shifts)
         ]).then(function(res){
           // catch error of setCompetencesTask
           return res[0]
@@ -278,6 +290,20 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       if(!material) return;
       var index = _.findIndex($scope.task.materials, material)
       $scope.task.materials.splice(index, 1)[0]
+    }
+	
+	// @TODO implement shifts properly
+	//shifts
+	$scope.addShift = function() {
+		if(!$scope.shiftToAdd.startTime || !$scope.shiftToAdd.endtime) return;
+		if( !$scope.task.shifts) $scope.task.shifts = [];
+		$scope.task.shifts.push(_.clone($scope.shiftToAdd));
+		$scope.shiftToAdd = {};
+	}
+    $scope.removeShift = function(shift){
+      if(!shift) return;
+      var index = _.findIndex($scope.task.shifts, shift)
+      $scope.task.shifts.splice(index, 1)[0]
     }
 
 
