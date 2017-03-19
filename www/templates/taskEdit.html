@@ -73,7 +73,7 @@
       </form>
     </div>
 	
-	<ion-list>
+	<ion-list ng-if="!isNewTask">
 		<ion-item class="item-icon-right" ng-click="advancedEdit('competences')">
 			Kompetenzen ({{task.taskCompetences.length}})
 			<i class="icon ion-chevron-right"></i>
@@ -91,9 +91,7 @@
   </ion-content>
   <ion-footer-bar>
     <div class="button-bar">
-      <button ng-click="readyToPublish()"     ng-if="showReadyToPublishSingle || isNewTask" class="button button-small button-full no-border-radius button-positive ion-checkmark"> Bereit </button>
-      <button ng-click="readyToPublishTree()" ng-if="showReadyToPublishTree" class="button button-small button-full no-border-radius button-positive ion-checkmark"> Bereit (Alle) </button>
-      <button ng-click="save_and_publish()"   ng-if="showPublish || isNewTask" class="button button-small button-full no-border-radius button-balanced ion-eye"> Veröffentlichen </button>
+      <button ng-click="save_and_publish()"   ng-if="showPublish" class="button button-small button-full no-border-radius button-balanced ion-eye"> Speichern und Veröffentlichen </button>
     </div>
   </ion-footer-bar>
 </ion-view>

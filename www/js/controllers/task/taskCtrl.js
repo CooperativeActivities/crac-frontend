@@ -95,6 +95,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
           break;
         case "STARTED":
           if(relation === "LEADING"){
+			$scope.editableFlag = true;
   			$scope.showDelete = true;
 		  } else {
             // @DISCUSS: cannot unfollow started task
