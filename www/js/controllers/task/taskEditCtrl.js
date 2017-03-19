@@ -179,13 +179,20 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           return res[0]
         })
       } else {
-        var creation_promise;
         if(!$scope.parentTask){
-          creation_promise = TaskDataService.createNewTask(taskData)
+			promise = $q.all([
+				TaskDataService.createNewTask(taskData)
+			]).then(function(res) {
+				return res;
+			});
         } else {
-          creation_promise = TaskDataService.createNewSubTask(taskData, $scope.parentTask.id)
+          promise = TaskDataService.createNewSubTask(taskData, $scope.parentTask.id)
+			promise = $q.all([
+				TaskDataService.createNewSubTask(taskData, $scope.parentTask.id)
+			]).then(function(res) {
+				return res;
+			});
         }
-        promise = creation_promise;
 	  }
       return promise.then(function (res) {
         return res;
@@ -215,18 +222,26 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.save_changes = function() {
       $scope.save().then(function(save_res) {
         if(!save_res) return;
-        var taskId = save_res.data.task;
+        var taskId = save_res[0].data.task;
         $ionicPopup.alert({
           title: "Task gespeichert",
           okType: "button-positive button-outline"
         })
 
         if($scope.isNewTask) {
-          // redirect to the edit page of the newly created task
-          // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
-          $state.go('tabsController.taskEdit', { id:taskId }, { location: "replace" }).then(function(res){
-            $ionicHistory.removeBackView()
-          });
+			if($scope.task.type === 'ORGANISATIONAL') {			
+			  // redirect to the edit page of the newly created org task
+			  // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
+			  $state.go('tabsController.taskEdit', { id:taskId }, { location: "replace" }).then(function(res){
+				$ionicHistory.removeBackView()
+			  });
+			} else {
+			  // redirect to the advanced edit page of the newly created workable task
+			  // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
+			  $state.go('tabsController.taskEditAdv', { id:taskId }, { location: "replace" }).then(function(res){
+				$ionicHistory.removeBackView()
+			  });
+			}
         }
       })
     }
