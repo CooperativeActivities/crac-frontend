@@ -7,6 +7,10 @@
     <div class="item item-divider-top">Basisinformationen</div>
     <div>
       <form name="taskForm" onsubmit="event.preventDefault" novalidate>
+		<div class="form-block form-group" ng-if="isNewTask">
+			<ion-radio ng-model="task.type" value="ORGANISATIONAL">ORGANISATIONAL</ion-radio>
+			<ion-radio ng-model="task.type" value="WORKABLE">WORKABLE</ion-radio>
+		</div>
         <div class="form-block form-group" ng-class="{'has-error has-feedback': taskForm.name.$dirty && taskForm.name.$invalid, 'has-success has-feedback':taskForm.name.$dirty && taskForm.name.$valid}">
           <label class="item item-input item-stacked-label">
             <span class="input-label bold">Titel*:</span>
@@ -22,7 +26,7 @@
             <span class="input-label bold">Beschreibung:</span>
             <textarea ng-model="task.description" placeholder="Beschreibung..." ></textarea>
           </label>
-          <label class="item item-input item-stacked-label">
+          <label class="item item-input item-stacked-label" ng-if="task.type == 'WORKABLE'">
             <span class="input-label bold">Zahl der Freiwilligen:</span>
             <input type="number" min="0" ng-model="task.minAmountOfVolunteers" placeholder="Anzahl...">
           </label>
