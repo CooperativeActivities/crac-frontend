@@ -180,6 +180,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   border-top-right-radius: 20px;
 }
 
+.form-block > .item:last-child, 
 .list > .item:last-child,
 .item-stable:not(.active),
 .item-stable:not(.active) .item {
@@ -225,6 +226,10 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   left: 3px;
   top: -3px;
   margin: 0 0 0 -50px;
+}
+
+.item-input.item-input-table {
+	padding: 0;
 }
 
 .form-block {
