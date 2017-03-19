@@ -106,17 +106,20 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 	  var shifts = ($scope.task.shifts || []).map(function(shift) {
 		  return {
 			  type: 'shift',
-			  title: shift.starttime + ' - ' + shift.endtime,
+			  name: shift.starttime + ' - ' + shift.endtime,
 			  starttime: shift.starttime,
 			  endtime: shift.endtime
 		  }
-
+	  });
+	  
         // @TODO: this shouldn't be necessary
         taskData.taskState = task.taskState;
+		
+		// @TODO: implement time shift add
+		//TaskDataService.setTimeShifts(task.id, shifts)
         promise = $q.all([
           TaskDataService.setCompetencesTask(task.id, neededCompetences),
           TaskDataService.setMaterialsTask(task.id, materials)
-		  //TaskDataService.setTimeShifts(task.id, shifts)
         ]).then(function(res){
           // catch error of setCompetencesTask
           return res[0]
