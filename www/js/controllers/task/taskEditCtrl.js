@@ -39,13 +39,8 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
             $scope.task.startTime = new Date($scope.task.startTime);
             $scope.task.endTime = new Date($scope.task.endTime);
           }
-          $scope.neededCompetences = task.taskCompetences;
 
           $scope.updateFlags()
-          TaskDataService.getAllAvailableCompetences(task.id).then(function(res){ return res.data })
-            .then(function(availableCompetences){
-              $scope.availableCompetences = availableCompetences;
-            })
         }, function (error) {
           console.warn('An error occurred!', error);
         });
@@ -61,13 +56,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
 		$scope.task.type = 'ORGANISATIONAL';
 		$scope.task.choice = 'slot';
-        $scope.neededCompetences = [];
-        $scope.task.materials = []
-        TaskDataService.getAllCompetences().then(function(res){
-          $scope.availableCompetences = res.data;
-        }, function(error){
-          console.warn('An error occurred!', error);
-        })
         if($stateParams.parentId !== ""){
           TaskDataService.getTaskById($stateParams.parentId).then(function(res){
             $scope.parentTask = res.data;
@@ -173,45 +161,19 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         }
       }
 
-
-
       if(task.startTime) taskData.startTime = task.startTime.getTime();
       if(task.endTime) taskData.endTime = task.endTime.getTime();
-
-
-
-
       if(task.description) taskData.description = task.description;
       if(task.location) taskData.location = task.location;
       if(task.minAmountOfVolunteers) taskData.minAmountOfVolunteers = task.minAmountOfVolunteers;
 
-
-
-
       var promise;
-      var neededCompetences = $scope.neededCompetences.map(function(competence){
-        return {
-          competenceId: competence.id,
-          importanceLevel: competence.importanceLevel || 0,
-          neededProficiencyLevel: competence.neededProficiencyLevel || 0,
-          mandatory: competence.mandatory ? 1 : 0,
-        }
-      });
-      var materials = ($scope.task.materials || []).map(function(material){
-        return {
-          name: material.name,
-          description: material.description || "",
-          quantity: material.quantity || 0,
-        }
-      });
       if(!$scope.isNewTask){
 
         // @TODO: this shouldn't be necessary
         taskData.taskState = task.taskState;
         promise = $q.all([
           TaskDataService.updateTaskById(taskData, task.id),
-          TaskDataService.setCompetencesTask(task.id, neededCompetences),
-          TaskDataService.setMaterialsTask(task.id, materials)
         ]).then(function(res){
           // catch error of setCompetencesTask
           return res[0]
@@ -223,18 +185,8 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         } else {
           creation_promise = TaskDataService.createNewSubTask(taskData, $scope.parentTask.id)
         }
-        promise = $q(function(resolve, reject){
-          creation_promise.then(function(creation_res){
-            var taskId = creation_res.data.task
-            $q.all([
-              TaskDataService.addCompetencesToTask(taskId, neededCompetences),
-              TaskDataService.addMaterialsToTask(task.id, materials),
-            ]).then(function(competences_and_material_res){
-              resolve(creation_res)
-            }, reject)
-          }, reject)
-        })
-      }
+        promise = creation_promise;
+	  }
       return promise.then(function (res) {
         return res;
       }, function(error) {
@@ -258,18 +210,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       });
 
     };
-    /*$scope.save_and_back = function(){
-      $scope.save().then(function(save_res){
-        var taskId = save_res.data.task;
-        if($scope.isNewTask){
-          $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
-            $ionicHistory.removeBackView()
-          });
-        } else {
-          $ionicHistory.goBack();
-        }
-      })
-    }*/
 
     // Save changes only
     $scope.save_changes = function() {
@@ -375,84 +315,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         }
       })
     }
-
-    $scope.addCompetence = function(){
-      var competenceId = $scope.competenceToAdd.id;
-      if(!competenceId) return;
-      //save later
-      var index = _.findIndex($scope.availableCompetences, { id: parseInt(competenceId) })
-      if(index === -1){
-        console.error("this shouldn't happen")
-        return;
-      }
-      var competence = $scope.availableCompetences.splice(index, 1)[0]
-      $scope.neededCompetences.push({
-        id: $scope.competenceToAdd.id,
-        name: competence.name,
-        importanceLevel: $scope.competenceToAdd.importanceLevel,
-        neededProficiencyLevel: $scope.competenceToAdd.neededProficiencyLevel,
-        mandatory: $scope.competenceToAdd.mandatory
-      })
-    };
-
-    $scope.removeCompetence = function(competence){
-      if(!competence) return;
-      var competenceId = competence.id;
-      var index = _.findIndex($scope.neededCompetences, { id: competenceId })
-      $scope.neededCompetences.splice(index, 1)[0]
-      $scope.availableCompetences.push({ name: competence.name, id: competence.id })
-    }
-
-    //material
-    $scope.addMaterial = function(){
-      if(!$scope.materialToAdd.name) return;
-      //save later
-      if(!$scope.task.materials){ $scope.task.materials = [] }
-      $scope.task.materials.push(_.clone($scope.materialToAdd))
-      $scope.materialToAdd = { };
-    };
-    $scope.removeMaterial = function(material){
-      if(!material) return;
-      var index = _.findIndex($scope.task.materials, material)
-      $scope.task.materials.splice(index, 1)[0]
-    }
-
-
-    //publish task
-    /*$scope.publish = function(){
-      if($scope.newTask){ return }
-      TaskDataService.changeTaskState($scope.task.id, 'publish').then(function(res) {
-        if(!res.data.success){
-          var message = "";
-          switch(res.data.cause){
-            case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
-            case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
-            case "TASK_NOT_READY":  message = "Bitte Felder ausfüllen (Beginn, Ende, Ort)"; break;
-            default: message = "Anderer Fehler: " + res.data.cause;
-          }
-          $ionicPopup.alert({
-            title: "Task kann nicht veröffentlicht werden",
-            template: message,
-            okType: "button-positive button-outline"
-          })
-        }
-        $scope.load()
-    //$ionicHistory.goBack();
-      }, function(error) {
-        console.log('An error occurred!', error);
-        var message = "";
-        switch(error.data.cause){
-          case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
-          case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
-          default: message = "Anderer Fehler: " + error.data.cause;
-        }
-        $ionicPopup.alert({
-          title: "Task kann nicht veröffentlicht werden",
-          template: message,
-          okType: "button-positive button-outline"
-        })
-      });
-    }*/
 
     // Set task as ready
     $scope.setAsReady = function(taskId){
