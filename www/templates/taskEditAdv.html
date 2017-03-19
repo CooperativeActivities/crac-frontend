@@ -148,7 +148,7 @@
 	  </ion-list>
 	</div>
 	
-	<!-- TODO convert this from materials to actual shifts...
+	<!-- TODO implement actual shift functionality when backend is available -->
 	
 	<div class="form-block" ng-if="view == 'shifts'">
 	  <div class="item item-divider-top">Schichten</div>
@@ -156,33 +156,27 @@
 		<div  ng-cloak>
 		  <ion-item>
 			<div class="row row-header">
-			  <span class="material-header-name">Name: </span>
-			  <span class="material-header-amount">Menge: </span>
-			  <span class="material-header-description">Beschreibung: </span>
+			  <span class="shift-header-start">Beginn: </span>
+			  <span class="shift-header-end">Ende: </span>
 			</div>
-			<div class="row row-content" ng-repeat="material in task.materials">
-			  <input type="text" class="material-content-name"        ng-model="material.name">
-			  <input type="number" class="material-content-amount"    ng-model="material.quantity">
-			  <input type="text" class="material-content-description" ng-model="material.description">
-			  <button type="button" ng-click="removeMaterial(material)" class="button button-small button-assertive "> Entfernen</button>
+			<div class="row row-content" ng-repeat="shift in task.shifts">
+			  <input type="number" class="shift-content-start"    ng-model="shift.starttime">
+			  <input type="text" class="shift-content-end" ng-model="shift.endtime">
+			  <button type="button" ng-click="removeShift(shift)" class="button button-small button-assertive "> Entfernen</button>
 			</div>
-			<div class="new-material">
+			<div class="new-shift">
 
-			  <c-accordion title="' Material hinzufügen'" >
+			  <c-accordion title="' Schicht hinzufügen'" >
 				<div class="list">
 				  <label class="item item-input item-stacked-label">
-					<span class="input-label new-material-label">Name</span>
-					<input ng-model="materialToAdd.name" placeholder="Name" type="text" class="new-material-input">
+					<span class="input-label new-shift-label">Beginn</span>
+					<input type="datetime-local" ng-model="shiftToAdd.starttime"  ng-class="{'has-error' : !shiftToAdd.starttime}" >
 				  </label>
 				  <label class="item item-input item-stacked-label">
-					<span class="input-label new-material-label">Menge</span>
-					<input type="number" ng-model="materialToAdd.quantity" placeholder="Menge" class="new-material-input">
+					<span class="input-label new-shift-label">Ende</span>
+					<input type="datetime-local" ng-model="shiftToAdd.endtime"  ng-class="{'has-error' : !shiftToAdd.endtime}" >
 				  </label>
-				  <label class="item item-input item-stacked-label">
-					<span class="input-label new-material-label">Beschreibung</span>
-					<textarea ng-model="materialToAdd.description" placeholder="Beschreibung" class="new-material-input"></textarea>
-				  </label>
-				  <button type="button" ng-click="addMaterial()" class="button button-full button-positive ion-plus no-border-radius"> Hinzufügen</button>
+				  <button type="button" ng-click="addShift()" class="button button-full button-positive ion-plus no-border-radius"> Hinzufügen</button>
 				</div>
 
 			  </c-accordion>
@@ -191,5 +185,4 @@
 		</div>
 	  </ion-list>
 	</div>
-	-->
 </div>

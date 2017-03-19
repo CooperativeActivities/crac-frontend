@@ -952,6 +952,48 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
   display: inline-table;
 }
 
+/* -- shifts ------------------------------------------------------------------------------------------------------ */
+
+.shift-header-start {
+  color: black;
+  font-weight: bold;
+  font-size: 1em;
+  padding: 2px;
+  width: 100px;
+  margin-right:5px;
+  display: inline-table;
+}
+
+.shift-header-end {
+  color: black;
+  font-weight: bold;
+  font-size: 1em;
+  padding: 2px;
+  width: 60px;
+  margin-right:5px;
+  display: inline-table;
+}
+
+.shift-content-start {
+  font-size: 0.8em;
+  padding: 2px;
+  width: 100px;
+  margin-right:5px;
+  white-space: pre-line;
+  display: inline-table;
+
+}
+
+.shift-content-end {
+  font-size: 0.8em;
+  padding: 2px;
+  width: 60px;
+  margin-right:5px;
+  text-align: center;
+  white-space: pre-line;
+  display: inline-table;
+}
+
 /*-- description media queries  ---------*/
 
 .material-content-description {

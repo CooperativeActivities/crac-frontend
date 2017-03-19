@@ -30,6 +30,8 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
             .then(function(availableCompetences){
               $scope.availableCompetences = availableCompetences;
             })
+			
+			//TODO get all shifts?
         }, function (error) {
           console.warn('An error occurred!', error);
         });
