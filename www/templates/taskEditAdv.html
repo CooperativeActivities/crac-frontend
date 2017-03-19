@@ -160,8 +160,8 @@
 			  <span class="shift-header-end">Ende: </span>
 			</div>
 			<div class="row row-content" ng-repeat="shift in task.shifts">
-			  <span class="shift-content-start">{{shift.starttime | date : "shortTime"}}</span>
-			  <span class="shift-content-end">{{shift.endtime | date : "shortTime"}}</span>
+			  <input type="time" disabled ng-model="shift.starttime" class="shift-content-start" />
+			  <input type="time" disabled ng-model="shift.endtime" class="shift-content-end" />
 			  <i ng-click="removeShift(shift)" class="icon icon-table-action ion-trash-a"></i>
 			</div>
 			<div class="new-shift">

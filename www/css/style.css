@@ -235,9 +235,8 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 .icon-table-action {
 	cursor: pointer;
 	display: block;
-	font-size: 14px;
+	font-size: 24px;
 	line-height: 34px;
-	padding-top: 2px;
 	padding-left: 0;
 	height: 34px;
 	vertical-align: middle;
@@ -980,7 +979,7 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
   font-weight: bold;
   font-size: 1em;
   padding: 2px;
-  width: 60px;
+  width: 100px;
   margin-right:5px;
   display: inline-table;
 }
@@ -998,7 +997,7 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
 .shift-content-end {
   font-size: 0.8em;
   padding: 2px;
-  width: 60px;
+  width: 100px;
   margin-right:5px;
   white-space: pre-line;
   display: inline-table;
