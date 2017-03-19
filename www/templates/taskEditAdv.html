@@ -120,7 +120,7 @@
 			  <input type="text" class="material-content-name"        ng-model="material.name">
 			  <input type="number" class="material-content-amount"    ng-model="material.quantity">
 			  <input type="text" class="material-content-description" ng-model="material.description">
-			  <button type="button" ng-click="removeMaterial(material)" class="button button-small button-assertive "> Entfernen</button>
+			  <i ng-click="removeMaterial(material)" class="icon icon-table-action ion-trash-a"></i>
 			</div>
 			<div class="new-material">
 
@@ -162,7 +162,7 @@
 			<div class="row row-content" ng-repeat="shift in task.shifts">
 			  <span class="shift-content-start">{{shift.starttime | date : "shortTime"}}</span>
 			  <span class="shift-content-end">{{shift.endtime | date : "shortTime"}}</span>
-			  <button type="button" ng-click="removeShift(shift)" class="button button-small button-assertive "> Entfernen</button>
+			  <i ng-click="removeShift(shift)" class="icon icon-table-action ion-trash-a"></i>
 			</div>
 			<div class="new-shift">
 
