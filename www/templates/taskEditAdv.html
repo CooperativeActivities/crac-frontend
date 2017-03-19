@@ -46,7 +46,6 @@
 			  </div>
 			</c-accordion>
 		  </div>
-		  <br>
 		  <custom-accordion>
 			<custom-accordion-head>
 			  <div class="item item-divider ion-plus">
@@ -109,9 +108,9 @@
 	<div class="form-block" ng-if="view == 'materials'">
 	  <div class="item item-divider-top">Benötigte Materialien</div>
 	  <ion-list>
-		<div  ng-cloak>
+		<div ng-cloak>
 		  <ion-item>
-			<div class="row row-header">
+			<div class="row row-header" ng-if="task.materials.length > 0">
 			  <span class="material-header-name">Name: </span>
 			  <span class="material-header-amount">Menge: </span>
 			  <span class="material-header-description">Beschreibung: </span>
@@ -155,7 +154,7 @@
 	  <ion-list>
 		<div  ng-cloak>
 		  <ion-item>
-			<div class="row row-header">
+			<div class="row row-header" ng-if="task.shifts.length > 0">
 			  <span class="shift-header-start">Beginn: </span>
 			  <span class="shift-header-end">Ende: </span>
 			</div>
