@@ -39,6 +39,9 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
             $scope.task.startTime = new Date($scope.task.startTime);
             $scope.task.endTime = new Date($scope.task.endTime);
           }
+		  
+		  //TODO - remove when shifts are implemented
+		  $scope.task.shifts = [];
 
           $scope.updateFlags()
         }, function (error) {
@@ -238,7 +241,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 			} else {
 			  // redirect to the advanced edit page of the newly created workable task
 			  // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
-			  $state.go('tabsController.taskEditAdv', { id:taskId }, { location: "replace" }).then(function(res){
+			  $state.go('tabsController.taskEditAdv', { id:taskId, section: 'competences' }, { location: "replace" }).then(function(res){
 				$ionicHistory.removeBackView()
 			  });
 			}
@@ -430,6 +433,11 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         })
       })
     }
+	
+	$scope.advancedEdit = function(section){
+      $state.go('tabsController.taskEditAdv', { id: $scope.taskId, section: section });
+    }
+
 
     $scope.load();
   }])

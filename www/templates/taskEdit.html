@@ -72,7 +72,13 @@
         </div>
       </form>
     </div>
-    <br>
+	
+	<ion-list>
+		<ion-item ng-click="advancedEdit('competences')">Kompetenzen ({{task.taskCompetences.length}})</ion-item>
+		<ion-item ng-click="advancedEdit('materials')">Materialen ({{task.materials.length}})</ion-item>
+		<ion-item ng-click="advancedEdit('shifts')">Schichten ({{task.shifts.length}})</ion-item>
+	</ion-list>
+	
   </ion-content>
   <ion-footer-bar>
     <div class="button-bar">

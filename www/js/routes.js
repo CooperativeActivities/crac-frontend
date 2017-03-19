@@ -235,7 +235,7 @@ angular.module('app.routes', ['ionicUIRouter'])
       })
 	  
 	  .state('tabsController.taskEditAdv', {
-        url: '/task/:id/editAdv',
+        url: '/task/:id/editAdv/:section',
         views: {
           'tab1': {
             templateUrl: 'templates/taskEditAdv.html',

@@ -3,7 +3,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
   // You can include any angular dependencies as parameters for this function
   // TIP: Access Route Parameters for your page via $stateParams.parameterName
   function ($scope, $route, $stateParams,TaskDataService, UserDataService, $ionicHistory, $q, $ionicPopup, $state) {
-    $scope.view = 'competences';
+    $scope.view = $stateParams.section || 'competences';
 	$scope.task= {};
     $scope.isChildTask = false;
 
