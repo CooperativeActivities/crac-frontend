@@ -3,12 +3,8 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
   // You can include any angular dependencies as parameters for this function
   // TIP: Access Route Parameters for your page via $stateParams.parameterName
   function ($scope, $route, $stateParams,TaskDataService, UserDataService, $ionicHistory, $q, $ionicPopup, $state) {
-    $scope.task= {};
-    $scope.showPublish = false;
-    $scope.showReadyToPublishSingle = false;
-    $scope.showReadyToPublishTree = false;
-    $scope.isNewTask = true;
-    $scope.formTitle = "";
+    $scope.view = 'competences';
+	$scope.task= {};
     $scope.isChildTask = false;
 
     $scope.competenceToAdd = {
@@ -17,16 +13,9 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       neededProficiencyLevel: 50
     };
     $scope.materialToAdd = {};
-
-    if($stateParams.id !== undefined) {
-      $scope.isNewTask = false;
-      $scope.taskId = $stateParams.id;
-    }
-
+    $scope.taskId = $stateParams.id;
 
     $scope.load = function(){
-      if(!$scope.isNewTask){
-        $scope.formTitle = "Aufgabe Bearbeiten";
         // @TODO: check if task.userIsLeading, if not, go back
         TaskDataService.getTaskById($scope.taskId).then(function (res) {
           var task = res.data;
@@ -34,14 +23,6 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
           if(!task) return;
           $scope.task = task;
 
-          if($scope.task.choice == 'slot' ){
-            console.log('slot');
-            $scope.task.startTime = new Date($scope.task.startTime);
-            $scope.task.endTime = new Date($scope.task.endTime);
-          } else {
-            $scope.task.startTime = new Date($scope.task.startTime);
-            $scope.task.endTime = new Date($scope.task.endTime);
-          }
           $scope.neededCompetences = task.taskCompetences;
 
           $scope.updateFlags()
@@ -52,17 +33,6 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
         }, function (error) {
           console.warn('An error occurred!', error);
         });
-      } else {
-        if($stateParams.parentId !== ''){
-          $scope.isChildTask = true;
-          $scope.formTitle = "Unteraufgabe Erstellen";
-        } else {
-          $scope.isChildTask = false;
-          $scope.formTitle = "Aufgabe Erstellen";
-        }
-
-
-		$scope.task.type = "ORGANISATIONAL";
         $scope.neededCompetences = [];
         $scope.task.materials = []
         TaskDataService.getAllCompetences().then(function(res){
@@ -70,17 +40,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
         }, function(error){
           console.warn('An error occurred!', error);
         })
-        if($stateParams.parentId !== ""){
-          TaskDataService.getTaskById($stateParams.parentId).then(function(res){
-            $scope.parentTask = res.data;
-            $scope.task.startTime = new Date( $scope.parentTask.startTime);
-            $scope.task.endTime = new Date ($scope.parentTask.endTime);
-          },function(error){
-            console.warn('An error occurred!', error);
-          });
-        }
-      }
-    };
+    }
 
     $scope.updateFlags = function(){
       var task = $scope.task;
@@ -121,75 +81,6 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       }
       taskData.name= task.name;
 
-      // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
-
-
-
-      if(task.choice == 'slot' ){
-        task.startTime = new Date(task.startTime);
-        task.endTime = new Date(task.endTime);
-      } else {
-        task.startTime = new Date(Date.now());
-        task.endTime = new Date(task.endTime);
-      }
-
-
-      var curDate = new Date();
-
-
-      if(task.startTime.getTime() > task.endTime.getTime()){
-        $ionicPopup.alert({
-          title: "Task kann nicht gespeichert werden:",
-          template: "Enddatum liegt vor Startdatum.",
-          okType: "button-positive button-outline"
-        });
-        return
-      }
-      if(task.startTime.getTime() < curDate.getTime()){
-        $ionicPopup.alert({
-          title: "Task kann nicht gespeichert werden:",
-          template: "Startdatum liegt vor aktullem Datum",
-          okType: "button-positive button-outline"
-        });
-        return
-      }
-
-      //Check if subtask in the time of supertask
-      if($scope.isChildTask){
-        console.log('parent', $scope.parentTask );
-        if($scope.parentTask.endTime < task.endTime.getTime()){
-          $ionicPopup.alert({
-            title: "Task kann nicht gespeichert werden:",
-            template: "Enddatum von Unteraufgabe liegt nach Enddatum von Übergeordneter Aufgabe",
-            okType: "button-positive button-outline"
-          });
-          return
-        }
-        if($scope.parentTask.startTime > task.startTime.getTime()){
-          $ionicPopup.alert({
-            title: "Task kann nicht gespeichert werden:",
-            template: "Startdatum von Unteraufgabe liegt vor Startdatum von Übergeordneter Aufgabe",
-            okType: "button-positive button-outline"
-          });
-          return
-        }
-      }
-
-
-
-      if(task.startTime) taskData.startTime = task.startTime.getTime();
-      if(task.endTime) taskData.endTime = task.endTime.getTime();
-
-
-
-
-      if(task.description) taskData.description = task.description;
-      if(task.location) taskData.location = task.location;
-      if(task.minAmountOfVolunteers) taskData.minAmountOfVolunteers = task.minAmountOfVolunteers;
-
-
-
-
       var promise;
       var neededCompetences = $scope.neededCompetences.map(function(competence){
         return {
@@ -206,72 +97,40 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
           quantity: material.quantity || 0,
         }
       });
-      if(!$scope.isNewTask){
 
         // @TODO: this shouldn't be necessary
         taskData.taskState = task.taskState;
         promise = $q.all([
-          TaskDataService.updateTaskById(taskData, task.id),
           TaskDataService.setCompetencesTask(task.id, neededCompetences),
           TaskDataService.setMaterialsTask(task.id, materials)
         ]).then(function(res){
           // catch error of setCompetencesTask
           return res[0]
         })
-      } else {
-        var creation_promise;
-        if(!$scope.parentTask){
-          creation_promise = TaskDataService.createNewTask(taskData)
-        } else {
-          creation_promise = TaskDataService.createNewSubTask(taskData, $scope.parentTask.id)
-        }
-        promise = $q(function(resolve, reject){
-          creation_promise.then(function(creation_res){
-            var taskId = creation_res.data.task
-            $q.all([
-              TaskDataService.addCompetencesToTask(taskId, neededCompetences),
-              TaskDataService.addMaterialsToTask(task.id, materials),
-            ]).then(function(competences_and_material_res){
-              resolve(creation_res)
-            }, reject)
-          }, reject)
-        })
-      }
-      return promise.then(function (res) {
-        return res;
-      }, function(error) {
-        console.log('An error occurred!', error);
-        var message = "";
-        if(error.data.cause){
-          switch(error.data.cause){
-              // @TODO: welche fehler gibt es hier?
-            default: message = "Anderer Fehler: " + error.data.cause;
-          }
-        } else if(error.status == 403){
-          message = "Du hast keine Berechtigungen Tasks zu speichern.";
-        } else if(error.status == 500){
-          message = "Server Fehler";
-        }
-        $ionicPopup.alert({
-          title: "Task kann nicht gespeichert werden",
-          template: message,
-          okType: "button-positive button-outline"
-        })
-      });
+		  
+		  return promise.then(function (res) {
+			return res;
+		  }, function(error) {
+			console.log('An error occurred!', error);
+			var message = "";
+			if(error.data.cause){
+			  switch(error.data.cause){
+				  // @TODO: welche fehler gibt es hier?
+				default: message = "Anderer Fehler: " + error.data.cause;
+			  }
+			} else if(error.status == 403){
+			  message = "Du hast keine Berechtigungen Tasks zu speichern.";
+			} else if(error.status == 500){
+			  message = "Server Fehler";
+			}
+			$ionicPopup.alert({
+			  title: "Task kann nicht gespeichert werden",
+			  template: message,
+			  okType: "button-positive button-outline"
+			})
+		  });
 
     };
-    /*$scope.save_and_back = function(){
-      $scope.save().then(function(save_res){
-        var taskId = save_res.data.task;
-        if($scope.isNewTask){
-          $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
-            $ionicHistory.removeBackView()
-          });
-        } else {
-          $ionicHistory.goBack();
-        }
-      })
-    }*/
 
     // Save changes only
     $scope.save_changes = function() {

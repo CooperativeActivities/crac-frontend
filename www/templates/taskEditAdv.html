@@ -4,6 +4,15 @@
     <button class="button icon ion-checkmark"  ng-click="save_changes()"></button>
   </ion-nav-buttons>
   <ion-content padding="true" class="manual-ios-statusbar-padding has-footer">			
+  <div class="form-block-border">
+	<div class="item item-divider-top">{{task.name}}</div>
+	<select ng-model="view">
+		<option value="competences">Kompetenzen</option>
+		<option value="materials">Materialien</option>
+		<option value="shifts">Schichten</option>
+	</select>
+  </div>
+  
   <div class="form-block-border" ng-if="view == 'competences'">
 	  <div class="item item-divider-top">Notwendige Kompetenzen</div>
 	  <ion-list>
