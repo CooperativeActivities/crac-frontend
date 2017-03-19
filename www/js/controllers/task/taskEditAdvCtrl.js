@@ -298,8 +298,8 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 	// @TODO implement shifts properly
 	//shifts
 	$scope.addShift = function() {
-		if(!$scope.shiftToAdd.startTime || !$scope.shiftToAdd.endtime) return;
-		if( !$scope.task.shifts) $scope.task.shifts = [];
+		if(!$scope.shiftToAdd.starttime || !$scope.shiftToAdd.endtime) return;
+		if(!$scope.task.shifts) $scope.task.shifts = [];
 		$scope.task.shifts.push(_.clone($scope.shiftToAdd));
 		$scope.shiftToAdd = {};
 	}
