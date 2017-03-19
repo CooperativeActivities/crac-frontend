@@ -74,9 +74,18 @@
     </div>
 	
 	<ion-list>
-		<ion-item ng-click="advancedEdit('competences')">Kompetenzen ({{task.taskCompetences.length}})</ion-item>
-		<ion-item ng-click="advancedEdit('materials')">Materialen ({{task.materials.length}})</ion-item>
-		<ion-item ng-click="advancedEdit('shifts')">Schichten ({{task.shifts.length}})</ion-item>
+		<ion-item class="item-icon-right" ng-click="advancedEdit('competences')">
+			Kompetenzen ({{task.taskCompetences.length}})
+			<i class="icon ion-chevron-right"></i>
+		</ion-item>
+		<ion-item class="item-icon-right" ng-click="advancedEdit('materials')">
+			Materialen ({{task.materials.length}})
+			<i class="icon ion-chevron-right"></i>
+		</ion-item>
+		<ion-item class="item-icon-right" ng-click="advancedEdit('shifts')">
+			Schichten ({{task.shifts.length}})
+			<i class="icon ion-chevron-right"></i>	
+		</ion-item>
 	</ion-list>
 	
   </ion-content>
