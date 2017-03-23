@@ -96,13 +96,11 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
           description: material.description || "",
           quantity: material.quantity || 0,
         }
-      });
-	  
-	  // @TODO: implement proper shift creation
+      });	  
 	  var shifts = ($scope.task.shifts || []).map(function(shift) {
 		  return {
-			  type: 'shift',
-			  name: shift.starttime + ' - ' + shift.endtime,
+			  taskType: 'SHIFT',
+			  name: $scope.task.name,
 			  starttime: shift.starttime,
 			  endtime: shift.endtime
 		  }
@@ -111,12 +109,16 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
         // @TODO: this shouldn't be necessary
         taskData.taskState = task.taskState;
 		
-		// @TODO: implement time shift add
-		//TaskDataService.setTimeShifts(task.id, shifts)
-        promise = $q.all([
-          TaskDataService.setCompetencesTask(task.id, neededCompetences),
-          TaskDataService.setMaterialsTask(task.id, materials)
-        ]).then(function(res){
+		// @TODO: implement time shift add - new endpoint for batch adding
+		var promises = [
+			TaskDataService.setCompetencesTask(task.id, neededCompetences),
+			TaskDataService.setMaterialsTask(task.id, materials)
+		];
+		for(var i=0; i<shifts.length; i++) {
+			//@TODO: add shift to array
+		}
+		
+        promise = $q.all(promises).then(function(res){
           // catch error of setCompetencesTask
           return res[0]
         })

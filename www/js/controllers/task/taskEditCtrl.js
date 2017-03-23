@@ -57,7 +57,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         }
 
 
-		$scope.task.type = 'ORGANISATIONAL';
+		$scope.task.taskType = 'ORGANISATIONAL';
 		$scope.task.choice = 'slot';
         if($stateParams.parentId !== ""){
           TaskDataService.getTaskById($stateParams.parentId).then(function(res){
@@ -225,7 +225,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.save_changes = function() {
       $scope.save().then(function(save_res) {
         if(!save_res) return;
-        var taskId = save_res.data.task;
+        var taskId = save_res[0].data.task;
         $ionicPopup.alert({
           title: "Task gespeichert",
           okType: "button-positive button-outline"
