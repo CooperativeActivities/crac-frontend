@@ -42,9 +42,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
             $scope.task.endTime = new Date($scope.task.endTime);
           }
 		  
-		  //TODO - remove when shifts are implemented
-		  $scope.task.shifts = [];
-
           $scope.updateFlags()
         }, function (error) {
           console.warn('An error occurred!', error);
@@ -193,7 +190,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 				return res;
 			});
         } else {
-          promise = TaskDataService.createNewSubTask(taskData, $scope.parentTask.id)
 			promise = $q.all([
 				TaskDataService.createNewSubTask(taskData, $scope.parentTask.id)
 			]).then(function(res) {
@@ -229,7 +225,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.save_changes = function() {
       $scope.save().then(function(save_res) {
         if(!save_res) return;
-        var taskId = save_res[0].data.task;
+        var taskId = save_res[0].data.object.id;
         $ionicPopup.alert({
           title: "Task gespeichert",
           okType: "button-positive button-outline"

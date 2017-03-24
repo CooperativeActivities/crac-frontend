@@ -73,7 +73,7 @@
       </form>
     </div>
 	
-	<ion-list ng-if="!isNewTask">
+	<ion-list ng-if="!isNewTask && task.taskType == 'WORKABLE'">
 		<ion-item class="item-icon-right" ng-click="advancedEdit('competences')">
 			Kompetenzen ({{task.taskCompetences.length}})
 			<i class="icon ion-chevron-right"></i>
@@ -83,7 +83,7 @@
 			<i class="icon ion-chevron-right"></i>
 		</ion-item>
 		<ion-item class="item-icon-right" ng-click="advancedEdit('shifts')">
-			Schichten ({{task.shifts.length}})
+			Schichten ({{task.childTasks.length}})
 			<i class="icon ion-chevron-right"></i>	
 		</ion-item>
 	</ion-list>
