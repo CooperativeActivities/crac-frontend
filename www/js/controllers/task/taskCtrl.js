@@ -180,35 +180,6 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
         alert(error.data.cause);
       });
     };
-    // delete a task
-    $scope.delete = function(){
-		if( $scope.participationType !== 'LEADING' ) return false;
-		
-		var template = 'Wollen sie diese Task wirklich löschen? Es wird die Task mit ALLEN darunterliegenden Tasks permanent gelöscht.';
-		if( $scope.task.taskState === 'PUBLISHED' )
-			template += "<p><strong>Task is schon veröffentlicht. Task trotzdem löschen?</strong></p>";
-		if( $scope.task.taskState === 'STARTED' )
-			template += "<p><strong>Task is schon gestartet. Task trotzdem löschen?</strong></p>";
-
-		var confirmPopup = $ionicPopup.confirm({
-			title: 'Löschen',
-			template: template,
-			okText: "Löschen",
-            okType: "button-assertive",
-			cancelText: "Abbrechen"
-		});
-
-		confirmPopup.then(function(res) {
-			if(res) {
-			  TaskDataService.deleteTaskById($scope.task.id).then(function(res) {
-				$ionicHistory.goBack();
-			  }, function(error) {
-				console.log('An error occurred!', error);
-				alert(error.data.cause);
-			  });
-			}
-		});
-    }
 
     //Set the task and all task under this one to ready to publish (only possible if every input field is filled out correctly)
     $scope.readyToPublishT = function() {

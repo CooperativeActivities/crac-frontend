@@ -288,9 +288,9 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 				  title: "Task kann nicht zurückziehen werden",
 				  template: message,
 				  okType: "button-positive button-outline"
-				})
+				});
 			}
-		}
+		});
 	}
 
     $scope.publish = function(taskId) {
@@ -335,6 +335,35 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       })
     }
 
+	$scope.delete = function(){		
+		var template = 'Wollen sie diese Task wirklich löschen? Es wird die Task mit ALLEN darunterliegenden Tasks permanent gelöscht.';
+		if( $scope.task.taskState === 'PUBLISHED' )
+			template += "<p><strong>Task is schon veröffentlicht. Task trotzdem löschen?</strong></p>";
+		if( $scope.task.taskState === 'STARTED' )
+			template += "<p><strong>Task is schon gestartet. Task trotzdem löschen?</strong></p>";
+
+		var confirmPopup = $ionicPopup.confirm({
+			title: 'Löschen',
+			template: template,
+			okText: "Löschen",
+            okType: "button-assertive",
+			cancelText: "Abbrechen"
+		});
+
+		confirmPopup.then(function(res) {
+			if(res) {
+			  TaskDataService.deleteTaskById($scope.task.id).then(function(res) {
+                $state.go('tabsController.myTasks', { location: "replace" }).then(function(res){
+                    $ionicHistory.removeBackView();
+                });
+			  }, function(error) {
+				console.log('An error occurred!', error);
+				alert(error.data.cause);
+			  });
+			}
+		});
+    }
+	
 	$scope.advancedEdit = function(section){
       $state.go('tabsController.taskEditAdv', { id: $scope.taskId, section: section });
     }
