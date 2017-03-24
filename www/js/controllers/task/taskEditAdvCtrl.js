@@ -5,18 +5,49 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
   function ($scope, $route, $stateParams,TaskDataService, UserDataService, $ionicHistory, $q, $ionicPopup, $state) {
     $scope.view = $stateParams.section || 'competences';
 	$scope.task= {};
-	$scope.shifts = [];
     $scope.isChildTask = false;
 
     $scope.competenceToAdd = {
       //defaults
-      importanceLevel: 50,
-      neededProficiencyLevel: 50
     };
-    $scope.materialToAdd = {};
-	$scope.shiftToAdd = {};
-	$scope.shiftsToRemove = [];
+	
     $scope.taskId = $stateParams.id;
+	$scope.materials = {
+		newObj: {},
+		toAdd: [],
+		toRemove: [],
+		all: []
+	};
+	$scope.shifts = {
+		newObj: {},
+		toAdd: [],
+		toRemove: [],
+		all: []
+	};
+	$scope.competences = {
+		newObj: {
+			importanceLevel: 50,
+			neededProficiencyLevel: 50
+		},
+		toAdd: [],
+		toRemove: [],
+		all: []
+	};
+
+	$scope.resetObjects = function() {
+		$scope.materials.newObj = {};
+		$scope.materials.toAdd = [];
+		$scope.materials.toRemove = [];
+		$scope.shifts.newObj = {};
+		$scope.shifts.toAdd = [];
+		$scope.shifts.toRemove = [];
+		$scope.competences.newObj = {
+				importanceLevel: 50,
+				neededProficiencyLevel: 50
+			};
+		$scope.competences.toAdd = [];
+		$scope.competences.toRemove = [];
+	};
 
     $scope.load = function(){
         // @TODO: check if task.userIsLeading, if not, go back
@@ -26,8 +57,6 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
           if(!task) return;
           $scope.task = task;
 
-          $scope.neededCompetences = task.taskCompetences;
-
           $scope.updateFlags()
           TaskDataService.getAllAvailableCompetences(task.id).then(function(res){ return res.data })
             .then(function(availableCompetences){
@@ -36,9 +65,13 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 			
 			task.startTime = new Date(task.startTime);
 			task.endTime = new Date(task.endTime);
-			$scope.shiftToAdd.startTime = task.startTime;
-			$scope.shiftToAdd.endTime = task.endTime;
-			$scope.shifts = task.childTasks;
+			
+			$scope.competences.all = _.clone(task.taskCompetences);
+			$scope.materials.all = _.clone(task.materials);
+			$scope.shifts.newObj.startTime = task.startTime;
+			$scope.shifts.newObj.endTime = task.endTime;
+			$scope.shifts.all = _.clone(task.childTasks);
+			
 			for(var i=0; i<$scope.shifts.length; i++) {
 				$scope.shifts[i].startTime = new Date($scope.shifts[i].startTime);
 				$scope.shifts[i].endTime = new Date($scope.shifts[i].endTime);
@@ -46,13 +79,6 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
         }, function (error) {
           console.warn('An error occurred!', error);
         });
-        $scope.neededCompetences = [];
-        $scope.task.materials = []
-        TaskDataService.getAllCompetences().then(function(res){
-          $scope.availableCompetences = res.data;
-        }, function(error){
-          console.warn('An error occurred!', error);
-        })
     }
 
     $scope.updateFlags = function(){
@@ -91,7 +117,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       taskData.name= task.name;
 
       var promise;
-      var neededCompetences = $scope.neededCompetences.map(function(competence){
+      var competencesToAdd = $scope.competences.toAdd.map(function(competence){
         return {
           competenceId: competence.id,
           importanceLevel: competence.importanceLevel || 0,
@@ -99,38 +125,46 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
           mandatory: competence.mandatory ? 1 : 0,
         }
       });
-      var materials = ($scope.task.materials || []).map(function(material){
+      var materialsToAdd = ($scope.materials.toAdd).map(function(material){
         return {
           name: material.name,
           description: material.description || "",
           quantity: material.quantity || 0,
         }
       });	  
-	  var shifts = ($scope.shifts || []).map(function(shift) {
+	  var shiftsToAdd = ($scope.shifts.toAdd).map(function(shift) {
 		  return {
-			  id: shift.id,
 			  taskType: 'SHIFT',
-			  name: $scope.task.name,
+			  name: task.name,
 			  startTime: shift.startTime,
 			  endTime: shift.endTime
 		  }
 	  });
 	  
-        // @TODO: this shouldn't be necessary
-        taskData.taskState = task.taskState;
-		
 		// @TODO: implement time shift add - new endpoint for batch adding
-		var promises = [
-			TaskDataService.setCompetencesTask(task.id, neededCompetences),
-			TaskDataService.setMaterialsTask(task.id, materials)
-		];
-		for(var i=0; i<shifts.length; i++) {
-			if(!shifts[i].id) {
-				promises.push(TaskDataService.createNewSubTask(shifts[i], $scope.task.id));
-			}
+		var promises = [];
+		
+		if(competencesToAdd.length > 0 ) {
+			promises.push(TaskDataService.addCompetencesToTask(task.id, competencesToAdd));
 		}
-		for(var i=0; i<$scope.shiftsToRemove.length; i++) {
-			promises.push(TaskDataService.deleteTaskById($scope.shiftsToRemove[i]));
+		if(materialsToAdd.length > 0 ) {
+			promises.push(TaskDataService.addMaterialsToTask(task.id, materialsToAdd));
+		}
+		for(var i=0; i<$scope.shifts.toAdd.length; i++) {
+			promises.push(TaskDataService.createNewSubTask($scope.shifts.toAdd[i], task.id));
+		}
+		for(var i=0; i<$scope.competences.toRemove.length; i++) {
+			promises.push(TaskDataService.removeCompetenceFromTask(task.id, $scope.competences.toRemove[i]));
+		}
+		for(var i=0; i<$scope.materials.toRemove.length; i++) {
+			promises.push(TaskDataService.removeMaterialFromTask(task.id, $scope.materials.toRemove[i]));
+		}
+		for(var i=0; i<$scope.shifts.toRemove.length; i++) {
+			promises.push(TaskDataService.deleteTaskById($scope.shifts.toRemove[i].id));
+		}
+		
+		if( promises.length === 0 ) {
+			return false;
 		}
 		
         promise = $q.all(promises).then(function(res){
@@ -139,6 +173,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
         })
 		  
 		  return promise.then(function (res) {
+			$scope.resetObjects();
 			return res;
 		  }, function(error) {
 			console.log('An error occurred!', error);
@@ -223,7 +258,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
     }
 
     $scope.addCompetence = function(){
-      var competenceId = $scope.competenceToAdd.id;
+      var competenceId = $scope.competences.newObj.id;
       if(!competenceId) return;
       //save later
       var index = _.findIndex($scope.availableCompetences, { id: parseInt(competenceId) })
@@ -231,53 +266,69 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
         console.error("this shouldn't happen")
         return;
       }
-      var competence = $scope.availableCompetences.splice(index, 1)[0]
-      $scope.neededCompetences.push({
-        id: $scope.competenceToAdd.id,
+      var competence = $scope.availableCompetences.splice(index, 1)[0];
+	  var newComp = {
+        id: competenceId,
         name: competence.name,
-        importanceLevel: $scope.competenceToAdd.importanceLevel,
-        neededProficiencyLevel: $scope.competenceToAdd.neededProficiencyLevel,
-        mandatory: $scope.competenceToAdd.mandatory
-      })
+        importanceLevel: $scope.competences.newObj.importanceLevel,
+        neededProficiencyLevel: $scope.competences.newObj.neededProficiencyLevel,
+        mandatory: $scope.competences.newObj.mandatory
+      };
+	  
+      $scope.competences.toAdd.push(newComp);
+	  $scope.competences.all.push(newComp);
     };
 
     $scope.removeCompetence = function(competence){
       if(!competence) return;
-      var competenceId = competence.id;
-      var index = _.findIndex($scope.neededCompetences, { id: competenceId })
-      $scope.neededCompetences.splice(index, 1)[0]
+      var index = _.findIndex($scope.competences.all, { id: competence.id });
+	  var newIndex = _.findIndex($scope.competences.toAdd, { id: competence.id });
+      $scope.competences.all.splice(index, 1)[0];
       $scope.availableCompetences.push({ name: competence.name, id: competence.id })
+	  if(newIndex < 0) {
+		$scope.competences.toRemove.push(competence.id);
+	  } else {
+		$scope.competences.toAdd.splice(newIndex, 1)[0];
+	  }
     }
 
     //material
     $scope.addMaterial = function(){
-      if(!$scope.materialToAdd.name) return;
+      if(!$scope.materials.newObj.name) return;
       //save later
-      if(!$scope.task.materials){ $scope.task.materials = [] }
-      $scope.task.materials.push(_.clone($scope.materialToAdd))
-      $scope.materialToAdd = { };
+	  var newMaterial = _.clone($scope.materials.newObj);
+      $scope.materials.all.push(newMaterial);
+	  $scope.materials.toAdd.push(newMaterial);
+      $scope.materials.newObj = {};
     };
     $scope.removeMaterial = function(material){
       if(!material) return;
-      var index = _.findIndex($scope.task.materials, material)
-      $scope.task.materials.splice(index, 1)[0]
+      var index = _.findIndex($scope.materials.all, { id: material.id });
+	  var newIndex = _.findIndex($scope.materials.toAdd, { id: material.id });
+      $scope.materials.all.splice(index, 1)[0];
+	  if(newIndex < 0) {
+		  $scope.materials.toRemove.push(material.id);
+	  } else {
+		  $scope.materials.toAdd.splice(newIndex, 1)[0];
+	  }
     }
 	
-	// @TODO implement shifts properly
 	//shifts
 	$scope.addShift = function() {
-		if(!$scope.shiftToAdd.startTime || !$scope.shiftToAdd.endTime) return;
-		$scope.shifts.push(_.clone($scope.shiftToAdd));
+		if(!$scope.shifts.newObj.startTime || !$scope.shifts.newObj.endTime) return;
+		$scope.shifts.all.push(_.clone($scope.shifts.newObj));
+		$scope.shifts.toAdd.push(_.clone($scope.shifts.newObj));
 	}
     $scope.removeShift = function(shift){
       if(!shift) return;
-	  var index = _.findIndex($scope.shifts, shift);
-	  var id = $scope.shifts[index].id;
-	  if(id) {
-		$scope.shiftsToRemove.push(id);
+	  var index = _.findIndex($scope.shifts.all, shift);
+	  var newIndex = _.findIndex($scope.shifts.toAdd, shift);
+	  $scope.shifts.all.splice(index, 1)[0];
+	  if( newIndex < 0 ) {
+		$scope.shifts.toRemove.push(id);
+	  } else {
+		$scope.shifts.toAdd.splice(newIndex, 1)[0];
 	  }
-	  
-	  $scope.shifts.splice(index, 1)[0];
     }
 
     $scope.load();
