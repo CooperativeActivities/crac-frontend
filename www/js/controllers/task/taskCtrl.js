@@ -123,14 +123,14 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
               $scope.showFollow = !$scope.showUnfollow && !$scope.showCancel;
             }
           }
-          $scope.addSubTaskFlag = !taskIsLeaf && (!SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask);
+          $scope.addSubTaskFlag = $scope.task.taskType === 'ORGANISATIONAL' && (!SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask);
           break;
         case "NOT_PUBLISHED":
           if($scope.participationType === 'LEADING'){
 			$scope.editableFlag = true;
 			$scope.showDelete = true;
 		  }
-          $scope.addSubTaskFlag = !SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask;
+          $scope.addSubTaskFlag = $scope.task.taskType === 'ORGANISATIONAL' && !SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask;
           break;
       }
     };
