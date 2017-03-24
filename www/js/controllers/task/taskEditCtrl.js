@@ -9,6 +9,8 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
   function ($scope, $route, $stateParams,TaskDataService, UserDataService, $ionicHistory, $q, $ionicPopup, $state) {
     $scope.task= {};
     $scope.showPublish = false;
+	$scope.showUnpublish = false;
+	$scope.showDelete = false;
     $scope.showReadyToPublishSingle = false;
     $scope.showReadyToPublishTree = false;
     $scope.isNewTask = true;
@@ -76,22 +78,24 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
       //initialize all flags to false
       $scope.showPublish =false;
-      $scope.showReadyToPublishSingle =false;
-      $scope.showReadyToPublishTree = false;
+      $scope.showUnpublish = false;
+      $scope.showDelete = false;
 
       switch(task.taskState){
         case "COMPLETED":
           //disable all fields
           break;
         case "STARTED":
-          //disable all fields
+		  $scope.showUnpublish = true;
+  		  $scope.showDelete = true;
           break;
         case "PUBLISHED":
+          $scope.showUnpublish = true;
+		  $scope.showDelete = true;
           break;
         case "NOT_PUBLISHED":
-          $scope.showPublish = $scope.task.superTask === null;
-          $scope.showReadyToPublishSingle = !$scope.task.readyToPublish;
-          $scope.showReadyToPublishTree = !$scope.task.readyToPublish && $scope.task.childTasks.length > 0;
+		  $scope.showPublish = $scope.task.superTask === null;
+  		  $scope.showDelete = true;
           break;
       }
     };
@@ -252,10 +256,42 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.save_and_publish = function(){
       $scope.save().then(function(save_res){
         if(!save_res || !save_res.data.success) return;
-        var taskId = save_res.data.task;
+        var taskId = save_res.data.object.id;
         $scope.publish(taskId);
       })
     }
+	
+	$scope.save_and_unpublish = function(){
+      $scope.save().then(function(save_res){
+        if(!save_res || !save_res.data.success) return;
+        $scope.unpublish();
+      })
+    }
+
+	$scope.unpublish = function() {
+		TaskDataService.changeTaskState($scope.taskId, 'unpublish').then(function(res) {
+			if(res.data.success) {
+				$state.go('tabsController.task', { id: $scope.taskId }, { location: 'replace' }).then(function(res) {
+					$ionicHistory.removeBackView();
+				});
+			} else {
+				var message = "";
+				// @TODO implement actual error scenarios for unpublish
+				switch(res.data.cause){
+					//case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
+					//case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
+					//case "TASK_NOT_READY":  message = "Aufgabe ist nicht bereit veröffentlicht zu werden."; break;
+					default: message = "Anderer Fehler: " + res.data.cause;
+				}
+				
+	            $ionicPopup.alert({
+				  title: "Task kann nicht zurückziehen werden",
+				  template: message,
+				  okType: "button-positive button-outline"
+				})
+			}
+		}
+	}
 
     $scope.publish = function(taskId) {
       TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
