@@ -158,9 +158,9 @@
 			  <span class="shift-header-start">Beginn: </span>
 			  <span class="shift-header-end">Ende: </span>
 			</div>
-			<div class="row row-content" ng-repeat="shift in task.shifts">
-			  <input type="time" disabled ng-model="shift.starttime" class="shift-content-start" />
-			  <input type="time" disabled ng-model="shift.endtime" class="shift-content-end" />
+			<div class="row row-content" ng-repeat="shift in shifts">
+			  <input type="datetime-local" disabled ng-model="shift.startTime" class="shift-content-start" />
+			  <input type="datetime-local" disabled ng-model="shift.endTime" class="shift-content-end" />
 			  <i ng-click="removeShift(shift)" class="icon icon-table-action ion-trash-a"></i>
 			</div>
 			<div class="new-shift">
@@ -169,11 +169,11 @@
 				<div class="list">
 				  <label class="item item-input item-stacked-label">
 					<span class="input-label new-shift-label">Beginn</span>
-					<input type="time" ng-model="shiftToAdd.starttime"  ng-class="{'has-error' : !shiftToAdd.starttime}" >
+					<input type="datetime-local" ng-model="shiftToAdd.startTime"  ng-class="{'has-error' : !shiftToAdd.starttime}" >
 				  </label>
 				  <label class="item item-input item-stacked-label">
 					<span class="input-label new-shift-label">Ende</span>
-					<input type="time" ng-model="shiftToAdd.endtime"  ng-class="{'has-error' : !shiftToAdd.endtime}" >
+					<input type="datetime-local" ng-model="shiftToAdd.endTime"  ng-class="{'has-error' : !shiftToAdd.endtime}" >
 				  </label>
 				  <button type="button" ng-click="addShift()" class="button button-full button-positive ion-plus no-border-radius"> Hinzufügen</button>
 				</div>

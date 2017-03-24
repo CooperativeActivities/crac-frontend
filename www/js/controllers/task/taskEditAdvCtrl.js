@@ -5,6 +5,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
   function ($scope, $route, $stateParams,TaskDataService, UserDataService, $ionicHistory, $q, $ionicPopup, $state) {
     $scope.view = $stateParams.section || 'competences';
 	$scope.task= {};
+	$scope.shifts = [];
     $scope.isChildTask = false;
 
     $scope.competenceToAdd = {
@@ -14,6 +15,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
     };
     $scope.materialToAdd = {};
 	$scope.shiftToAdd = {};
+	$scope.shiftsToRemove = [];
     $scope.taskId = $stateParams.id;
 
     $scope.load = function(){
@@ -32,8 +34,15 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
               $scope.availableCompetences = availableCompetences;
             })
 			
-			//TODO get all shifts?
-			$scope.task.shifts = [];
+			task.startTime = new Date(task.startTime);
+			task.endTime = new Date(task.endTime);
+			$scope.shiftToAdd.startTime = task.startTime;
+			$scope.shiftToAdd.endTime = task.endTime;
+			$scope.shifts = task.childTasks;
+			for(var i=0; i<$scope.shifts.length; i++) {
+				$scope.shifts[i].startTime = new Date($scope.shifts[i].startTime);
+				$scope.shifts[i].endTime = new Date($scope.shifts[i].endTime);
+			}
         }, function (error) {
           console.warn('An error occurred!', error);
         });
@@ -97,12 +106,13 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
           quantity: material.quantity || 0,
         }
       });	  
-	  var shifts = ($scope.task.shifts || []).map(function(shift) {
+	  var shifts = ($scope.shifts || []).map(function(shift) {
 		  return {
+			  id: shift.id,
 			  taskType: 'SHIFT',
 			  name: $scope.task.name,
-			  starttime: shift.starttime,
-			  endtime: shift.endtime
+			  startTime: shift.startTime,
+			  endTime: shift.endTime
 		  }
 	  });
 	  
@@ -115,7 +125,12 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 			TaskDataService.setMaterialsTask(task.id, materials)
 		];
 		for(var i=0; i<shifts.length; i++) {
-			//@TODO: add shift to array
+			if(!shifts[i].id) {
+				promises.push(TaskDataService.createNewSubTask(shifts[i], $scope.task.id));
+			}
+		}
+		for(var i=0; i<$scope.shiftsToRemove.length; i++) {
+			promises.push(TaskDataService.deleteTaskById($scope.shiftsToRemove[i]));
 		}
 		
         promise = $q.all(promises).then(function(res){
@@ -155,14 +170,6 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
           title: "Task gespeichert",
           okType: "button-positive button-outline"
         })
-
-        if($scope.isNewTask) {
-          // redirect to the edit page of the newly created task
-          // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
-          $state.go('tabsController.taskEdit', { id:$scope.taskId }, { location: "replace" }).then(function(res){
-            $ionicHistory.removeBackView()
-          });
-        }
       })
     }
 
@@ -259,15 +266,18 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 	// @TODO implement shifts properly
 	//shifts
 	$scope.addShift = function() {
-		if(!$scope.shiftToAdd.starttime || !$scope.shiftToAdd.endtime) return;
-		if(!$scope.task.shifts) $scope.task.shifts = [];
-		$scope.task.shifts.push(_.clone($scope.shiftToAdd));
-		$scope.shiftToAdd = {};
+		if(!$scope.shiftToAdd.startTime || !$scope.shiftToAdd.endTime) return;
+		$scope.shifts.push(_.clone($scope.shiftToAdd));
 	}
     $scope.removeShift = function(shift){
       if(!shift) return;
-      var index = _.findIndex($scope.task.shifts, shift)
-      $scope.task.shifts.splice(index, 1)[0]
+	  var index = _.findIndex($scope.shifts, shift);
+	  var id = $scope.shifts[index].id;
+	  if(id) {
+		$scope.shiftsToRemove.push(id);
+	  }
+	  
+	  $scope.shifts.splice(index, 1)[0];
     }
 
     $scope.load();
