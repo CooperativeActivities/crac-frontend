@@ -232,10 +232,10 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         })
 
         if($scope.isNewTask) {
-			if($scope.task.type === 'ORGANISATIONAL') {			
+			if($scope.task.taskType === 'ORGANISATIONAL') {			
 			  // redirect to the edit page of the newly created org task
 			  // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
-			  $state.go('tabsController.taskEdit', { id:taskId }, { location: "replace" }).then(function(res){
+			  $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
 				$ionicHistory.removeBackView()
 			  });
 			} else {
