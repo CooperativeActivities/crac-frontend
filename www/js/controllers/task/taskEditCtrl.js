@@ -11,8 +11,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.showPublish = false;
 	$scope.showUnpublish = false;
 	$scope.showDelete = false;
-    $scope.showReadyToPublishSingle = false;
-    $scope.showReadyToPublishTree = false;
     $scope.isNewTask = true;
     $scope.formTitle = "";
     $scope.isChildTask = false;

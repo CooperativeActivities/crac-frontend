@@ -17,11 +17,7 @@
 			<!-- only show non-published status for task owner -->
 			<i ng-if="participationType == 'LEADING'"
 					class="icon ion-compose icon-step1"
-					ng-class="{ current : (task.taskState == 'NOT_PUBLISHED' && !task.readyToPublish) }"></i>
-			<span ng-if="participationType == 'LEADING'" class="icon-connector"></span>
-			<i ng-if="participationType == 'LEADING'"
-				class="icon ion-eye-disabled icon-step2" 
-				ng-class="{ current  : (task.taskState == 'NOT_PUBLISHED' && task.readyToPublish) }" ></i>
+					ng-class="{ current : (task.taskState == 'NOT_PUBLISHED') }"></i>
 			<span ng-if="participationType == 'LEADING'" class="icon-connector"></span>
 			<i class="icon ion-eye icon-step3"  ng-class="{ current: task.taskState == 'PUBLISHED' }"></i>
 				<span class="icon-connector"></span>

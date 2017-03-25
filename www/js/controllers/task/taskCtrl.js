@@ -181,31 +181,6 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
       });
     };
 
-    //Set the task and all task under this one to ready to publish (only possible if every input field is filled out correctly)
-    $scope.readyToPublishT = function() {
-		if( $scope.participationType !== 'LEADING' ) return false;
-
-		TaskDataService.setReadyToPublishT($scope.task.id).then(function (res) {
-			console.log('worksT');
-			console.log(res.data);
-		}, function (error) {
-			console.log('An error occurred!', error);
-			alert(error.data.cause);
-		});
-    }
-    //Set only this task to ready to publish (only possible if every input field is filled out correctly)
-    $scope.readyToPublishS = function(){
-		if( $scope.participationType !== 'LEADING' ) return false;
-
-		TaskDataService.setReadyToPublishS($scope.task.id).then(function(res) {
-			console.log('worksS');
-			console.log(res.data);
-		}, function(error) {
-			console.log('An error occurred!', error);
-			alert(error.data.cause);
-		});
-    }
-
     $scope.makeNewSubTask = function(){
       $state.go('tabsController.newTask', { parentId: $scope.task.id });
     }
