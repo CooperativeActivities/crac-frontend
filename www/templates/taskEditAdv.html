@@ -154,14 +154,12 @@
 	  <ion-list>
 		<div  ng-cloak>
 		  <ion-item>
-			<div class="row row-header" ng-if="shifts.all.length > 0">
-			  <span class="shift-header-start">Beginn: </span>
-			  <span class="shift-header-end">Ende: </span>
-			</div>
 			<div class="row row-content" ng-repeat="shift in shifts.all">
-			  <input type="datetime-local" disabled ng-model="shift.startTime" class="shift-content-start" />
-			  <input type="datetime-local" disabled ng-model="shift.endTime" class="shift-content-end" />
-			  <i ng-click="removeShift(shift)" class="icon icon-table-action ion-trash-a"></i>
+				<span class="shift-content">
+					{{shift.startTime | date: "short"}} -
+					{{shift.endTime | date: "short"}}
+				</span>
+				<i ng-click="removeShift(shift)" class="icon icon-table-action ion-trash-a"></i>
 			</div>
 			<div class="new-shift">
 

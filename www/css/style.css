@@ -247,11 +247,12 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 .icon-table-action {
 	cursor: pointer;
 	display: block;
+	position: absolute;
 	font-size: 24px;
 	line-height: 34px;
 	padding-left: 0;
 	height: 34px;
-	vertical-align: middle;
+	right: 20px;
 }
 
 .form-block {
@@ -981,43 +982,14 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
 
 /* -- shifts ------------------------------------------------------------------------------------------------------ */
 
-.shift-header-start {
-  color: black;
-  font-weight: bold;
-  font-size: 1em;
-  padding: 2px;
-  width: 100px;
-  margin-right:5px;
-  display: inline-table;
-}
-
-.shift-header-end {
-  color: black;
-  font-weight: bold;
-  font-size: 1em;
-  padding: 2px;
-  width: 100px;
-  margin-right:5px;
-  display: inline-table;
-}
-
-.shift-content-start {
+.shift-content {
+  display: block;
   font-size: 0.8em;
-  padding: 2px;
-  width: 100px;
+  line-height: 2.5em;
   margin-right:5px;
-  white-space: pre-line;
-  display: inline-table;
-
-}
-
-.shift-content-end {
-  font-size: 0.8em;
-  padding: 2px;
-  width: 100px;
-  margin-right:5px;
-  white-space: pre-line;
-  display: inline-table;
+  padding: 2px 20px 2px 2px;
+  white-space: nowrap;
+  width: 100%;
 }
 
 /*-- description media queries  ---------*/
