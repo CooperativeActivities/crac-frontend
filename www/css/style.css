@@ -236,6 +236,10 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 	padding-right: 40px;
 }
 
+.item-radio .radio-icon {
+	font-size: 20px;
+}
+
 .input-label {
 	width: 25%;
 }
