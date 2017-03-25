@@ -42,9 +42,9 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 		$scope.shifts.toAdd = [];
 		$scope.shifts.toRemove = [];
 		$scope.competences.newObj = {
-				importanceLevel: 50,
-				neededProficiencyLevel: 50
-			};
+			importanceLevel: 50,
+			neededProficiencyLevel: 50
+		};
 		$scope.competences.toAdd = [];
 		$scope.competences.toRemove = [];
 	};
@@ -136,8 +136,8 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 		  return {
 			  taskType: 'SHIFT',
 			  name: task.name,
-			  startTime: shift.startTime,
-			  endTime: shift.endTime
+			  startTime: shift.startTime.getTime(),
+			  endTime: shift.endTime.getTime()
 		  }
 	  });
 	  
@@ -151,7 +151,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 			promises.push(TaskDataService.addMaterialsToTask(task.id, materialsToAdd));
 		}
 		for(var i=0; i<$scope.shifts.toAdd.length; i++) {
-			promises.push(TaskDataService.createNewSubTask($scope.shifts.toAdd[i], task.id));
+			promises.push(TaskDataService.createNewSubTask(shiftsToAdd, task.id));
 		}
 		for(var i=0; i<$scope.competences.toRemove.length; i++) {
 			promises.push(TaskDataService.removeCompetenceFromTask(task.id, $scope.competences.toRemove[i]));
@@ -192,7 +192,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 			  title: "Task kann nicht gespeichert werden",
 			  template: message,
 			  okType: "button-positive button-outline"
-			})
+			});
 		  });
 
     };
