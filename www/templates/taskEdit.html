@@ -4,13 +4,16 @@
     <button class="button icon ion-checkmark"  ng-click="save_changes()"></button>
   </ion-nav-buttons>
   <ion-content padding="true" class="manual-ios-statusbar-padding has-footer">
-    <div class="item item-divider-top">Basisinformationen</div>
     <div>
       <form name="taskForm" onsubmit="event.preventDefault" novalidate>
-		<div class="form-block form-group" ng-if="isNewTask">
-			<ion-radio ng-model="task.taskType" name="type" value="ORGANISATIONAL">Übersicht</ion-radio>
-			<ion-radio ng-model="task.taskType" name="type" value="WORKABLE">Aufgabe</ion-radio>
+		<div class="form-group" ng-if="isNewTask">
+			<div class="half-container">
+				<ion-radio ng-model="task.taskType" name="type" value="ORGANISATIONAL">Übersicht</ion-radio>
+			</div><div class="half-container">
+				<ion-radio ng-model="task.taskType" name="type" value="WORKABLE">Aufgabe</ion-radio>
+			</div>
 		</div>
+		<div class="item item-divider-top">Basisinformationen</div>
         <div class="form-block form-group" ng-class="{'has-error has-feedback': taskForm.name.$dirty && taskForm.name.$invalid, 'has-success has-feedback':taskForm.name.$dirty && taskForm.name.$valid}">
           <label class="item item-input item-stacked-label">
             <span class="input-label bold">Titel*:</span>

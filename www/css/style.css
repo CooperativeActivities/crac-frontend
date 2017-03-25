@@ -232,6 +232,14 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 	padding: 0;
 }
 
+.item-radio .item-content {
+	padding-right: 40px;
+}
+
+.input-label {
+	width: 25%;
+}
+
 .icon-table-action {
 	cursor: pointer;
 	display: block;
@@ -779,6 +787,11 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
 .status-actions span,
 .status-actions button {
 	vertical-align: middle;
+}
+
+.half-container {
+	display: inline-block;
+	width: 50%;
 }
 
 /* -- toggle -------------------------------------------------------------------------------------------------------- */
