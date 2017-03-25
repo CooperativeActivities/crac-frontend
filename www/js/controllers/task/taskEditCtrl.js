@@ -66,7 +66,14 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           },function(error){
             console.warn('An error occurred!', error);
           });
-        }
+        } else {
+			var now = new Date();
+			now.setHours(now.getHours() + Math.round(now.getMinutes()/60));
+			now.setMinutes(0);
+			now.setSeconds(0);
+			now.setMilliseconds(0);
+			$scope.task.startTime = now;
+		}
       }
     };
 
@@ -119,12 +126,12 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         task.startTime = new Date(task.startTime);
         task.endTime = new Date(task.endTime);
       } else {
-        task.startTime = new Date(Date.now());
+        task.startTime = new Date(task.endTime);
         task.endTime = new Date(task.endTime);
       }
 
 
-      var curDate = new Date();
+      /*var curDate = new Date();
 
 
       if(task.startTime.getTime() > task.endTime.getTime()){
@@ -163,7 +170,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           });
           return
         }
-      }
+      }*/
 
       if(task.startTime) taskData.startTime = task.startTime.getTime();
       if(task.endTime) taskData.endTime = task.endTime.getTime();
