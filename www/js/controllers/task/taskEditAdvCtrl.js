@@ -281,8 +281,8 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 
     $scope.removeCompetence = function(competence){
       if(!competence) return;
-      var index = _.findIndex($scope.competences.all, { id: competence.id });
-	  var newIndex = _.findIndex($scope.competences.toAdd, { id: competence.id });
+      var index = _.findIndex($scope.competences.all, competence);
+	  var newIndex = _.findIndex($scope.competences.toAdd, competence);
       $scope.competences.all.splice(index, 1)[0];
       $scope.availableCompetences.push({ name: competence.name, id: competence.id })
 	  if(newIndex < 0) {
@@ -303,8 +303,8 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
     };
     $scope.removeMaterial = function(material){
       if(!material) return;
-      var index = _.findIndex($scope.materials.all, { id: material.id });
-	  var newIndex = _.findIndex($scope.materials.toAdd, { id: material.id });
+      var index = _.findIndex($scope.materials.all, material);
+	  var newIndex = _.findIndex($scope.materials.toAdd, material);
       $scope.materials.all.splice(index, 1)[0];
 	  if(newIndex < 0) {
 		  $scope.materials.toRemove.push(material.id);
@@ -316,8 +316,9 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 	//shifts
 	$scope.addShift = function() {
 		if(!$scope.shifts.newObj.startTime || !$scope.shifts.newObj.endTime) return;
-		$scope.shifts.all.push(_.clone($scope.shifts.newObj));
-		$scope.shifts.toAdd.push(_.clone($scope.shifts.newObj));
+		var newShift = _.clone($scope.shifts.newObj);
+		$scope.shifts.all.push(newShift);
+		$scope.shifts.toAdd.push(newShift);
 	}
     $scope.removeShift = function(shift){
       if(!shift) return;
@@ -325,7 +326,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 	  var newIndex = _.findIndex($scope.shifts.toAdd, shift);
 	  $scope.shifts.all.splice(index, 1)[0];
 	  if( newIndex < 0 ) {
-		$scope.shifts.toRemove.push(id);
+		$scope.shifts.toRemove.push(shift.id);
 	  } else {
 		$scope.shifts.toAdd.splice(newIndex, 1)[0];
 	  }
