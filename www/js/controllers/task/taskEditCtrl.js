@@ -170,7 +170,8 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       if(task.description) taskData.description = task.description;
       if(task.location) taskData.location = task.location;
       if(task.minAmountOfVolunteers) taskData.minAmountOfVolunteers = task.minAmountOfVolunteers;
-
+	  taskData.taskType = task.taskType;
+	  
       var promise;
       if(!$scope.isNewTask){
 
