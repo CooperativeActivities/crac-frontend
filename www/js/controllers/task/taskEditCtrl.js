@@ -33,11 +33,14 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           if(!task) return;
           $scope.task = task;
 
-          if($scope.task.choice == 'slot' ){
+          if($scope.task.startTime != $scope.task.endTime ){
             console.log('slot');
+			$scope.timeChoice = 'slot';
             $scope.task.startTime = new Date($scope.task.startTime);
             $scope.task.endTime = new Date($scope.task.endTime);
           } else {
+			console.log('point');
+			$scope.timeChoice = 'point';
             $scope.task.startTime = new Date($scope.task.startTime);
             $scope.task.endTime = new Date($scope.task.endTime);
           }
@@ -57,7 +60,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
 
 		$scope.task.taskType = 'ORGANISATIONAL';
-		$scope.task.choice = 'slot';
+		$scope.timeChoice = 'slot';
         if($stateParams.parentId !== ""){
           TaskDataService.getTaskById($stateParams.parentId).then(function(res){
             $scope.parentTask = res.data;
@@ -122,7 +125,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
 
 
-      if(task.choice == 'slot' ){
+      if($scope.timeChoice == 'slot' ){
         task.startTime = new Date(task.startTime);
         task.endTime = new Date(task.endTime);
       } else {
