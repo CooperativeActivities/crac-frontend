@@ -7,15 +7,14 @@
 
 	<div class="form-block">
 		<h2>{{task.name}}</h2>
-		<select ng-model="view">
-			<option value="competences">Kompetenzen</option>
-			<option value="materials">Materialien</option>
+		<select class="select-bar" ng-model="view">
+			<option value="competences">Notwendige Kompetenzen</option>
+			<option value="materials">Benötigte Materialien</option>
 			<option value="shifts">Schichten</option>
 		</select>
 	</div>
   
   <div class="form-block-border" ng-if="view == 'competences'">
-	  <div class="item item-divider-top">Notwendige Kompetenzen</div>
 	  <ion-list>
 		<ion-item  ng-cloak class="no-border-radius">
 		  <div ng-repeat="competence in competences.all | orderBy: 'name' " ng-cloak>
@@ -106,7 +105,6 @@
 	</div>
 
 	<div class="form-block" ng-if="view == 'materials'">
-	  <div class="item item-divider-top">Benötigte Materialien</div>
 	  <ion-list>
 		<div ng-cloak>
 		  <ion-item>
@@ -150,7 +148,6 @@
 	<!-- TODO implement actual shift functionality when backend is available -->
 	
 	<div class="form-block" ng-if="view == 'shifts'">
-	  <div class="item item-divider-top">Schichten</div>
 	  <ion-list>
 		<div  ng-cloak>
 		  <ion-item>
