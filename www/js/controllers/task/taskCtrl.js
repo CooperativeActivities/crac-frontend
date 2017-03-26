@@ -4,11 +4,11 @@
 // @TODO: move this to some global config file
 var SUBTASKS_LIMITED_TO_SHALLOW = false;
 
-cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window', '$stateParams','$routeParams','TaskDataService','$state','$ionicPopup', "$q", "$ionicHistory",
+cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window', '$stateParams','$routeParams','TaskDataService','ErrorDisplayService','$state','$ionicPopup', "$q", "$ionicHistory",
   // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
   // You can include any angular dependencies as parameters for this function
   // TIP: Access Route Parameters for your page via $stateParams.parameterName
-  function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskDataService,$state, $ionicPopup, $q, $ionicHistory) {
+  function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskDataService,ErrorDisplayService, $state, $ionicPopup, $q, $ionicHistory) {
 
     //Flags to show/hide buttons
     $scope.editableFlag =false;
@@ -30,22 +30,35 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 
     $scope.doRefresh = function(){
       TaskDataService.getTaskById($stateParams.id).then(function (res) {
+		// @TODO: object not structured correctly
+		// if( !res || !res.success ) {
+		if( !res || !res.data || res.status != 200 ) {
+			ErrorDisplayService.showError(
+				res,
+				"Aufgabe konnte nicht geladen werden"
+			);
+		}
+		
         var task = res.data;
         console.log("task detail view", task);
-        if(!task) return;
 
         task.userRelationships.sort($scope.sortMemberListByRelationship);
 
         TaskDataService.getTaskRelatById($stateParams.id).then(function(res){
-          $scope.participationType = res.data[1].participationType;
-          $scope.userIsDone = res.data[1].completed;
+			if( !res || !res.data || res.status != 200 ) {
+				console.warn("Could not retrieve user-task relationships");
+				return;
+			}
+			$scope.participationType = res.data[1].participationType;
+			$scope.userIsDone = res.data[1].completed;
         }, function(error) {
-          $scope.participationType = 'NOT_PARTICIPATING';
+			//@TODO this should probably be handled differently
+			$scope.participationType = 'NOT_PARTICIPATING';
         }).then(function() {
-          $scope.neededCompetences = task.taskCompetences;
-          $scope.task = task;
-          $scope.updateFlags();
-          $scope.$broadcast('scroll.refreshComplete');
+			$scope.neededCompetences = task.taskCompetences;
+			$scope.task = task;
+			$scope.updateFlags();
+			$scope.$broadcast('scroll.refreshComplete');
         });
       })
     }
@@ -137,12 +150,22 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
       //failsafe, so you dont accidentally cancel leading a task
       if($scope.participationType !== "LEADING"){
         TaskDataService.removeOpenTask($scope.task.id).then(function (res) {
-          console.log("unfollowed/cancelled");
-          $scope.participationType = "NOT_PARTICIPATING"
-          $scope.updateFlags();
+			if( !res || !res.data.success ) {
+				ErrorDisplayService.showError(
+					res,
+					"Aufgabe kann nicht abgesagt werden"
+				);
+				return;
+			}
+			
+			console.log("unfollowed/cancelled");
+			$scope.participationType = "NOT_PARTICIPATING"
+			$scope.updateFlags();
         }, function (error) {
-          console.log('An error occurred!', error);
-          alert(error.data.cause);
+			ErrorDisplayService.showError(
+				error,
+				"Aufgabe kann nicht abgesagt werden"
+			);
         });
       }
     }
@@ -158,50 +181,79 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 		}
 		
       TaskDataService.changeTaskPartState($stateParams.id ,'participate').then(function(res) {
+		if( !res || !res.data.success ) {
+			ErrorDisplayService.showError(
+				res,
+				"Aufgabe kann nicht teilgenommen werden"
+			);
+			return;
+		}
+		
         $scope.participationType = "PARTICIPATING"
         $scope.updateFlags();
         //$state.reload();
         // $window.location.reload();
       }, function(error) {
-        console.log('An error occurred!', error);
-        alert(error.data.cause);
+		ErrorDisplayService.showError(
+			error,
+			"Aufgabe kann nicht teilgenommen werden"
+		);
       });
     }
 	//add self to a shift
 	$scope.addToShift = function(shift) {
 		TaskDataService.changeTaskPartState(shift.id ,'participate').then(function(res) {
+			if( !res || !res.data.success ) {
+				ErrorDisplayService.showError(
+					res,
+					"Schicht kann nicht teilgenommen werden"
+				);
+				return;
+			}
 			console.log('Participating in shift ' + shift.id);
 		}, function(error) {
-			console.log('An error occurred!', error);
-			$ionicPopup.alert({
-			  title: "Schicht kann nicht teilgenommen werden:",
-			  template: error.data.cause,
-			  okType: "button-positive button-outline"
-			});
+			ErrorDisplayService.showError(
+				error,
+				"Schicht kann nicht teilgenommen werden"
+			);
 		});
 	};
 	//remove self from shift
 	$scope.removeFromShift = function(shift) {
         TaskDataService.removeOpenTask(shift.id).then(function (res) {
-			console.log('Participating in shift ' + shift.id);
+			if( !res || !res.data.success ) {
+				ErrorDisplayService.showError(
+					res,
+					"Schicht kann nicht zurückgezogen werden"
+				);
+				return;
+			}
+			console.log('Not participating in shift ' + shift.id);
 		}, function(error) {
-			console.log('An error occurred!', error);
-			$ionicPopup.alert({
-			  title: "Schicht kann nicht zurückgezogen werden:",
-			  template: error.data.cause,
-			  okType: "button-positive button-outline"
-			});
+			ErrorDisplayService.showError(
+				error,
+				"Schicht kann nicht zurückgezogen werden"
+			);
 		});
 
 	};
     // follow a task
     $scope.follow = function(){
       TaskDataService.changeTaskPartState($scope.task.id,'follow').then(function(res) {
+		if( !res || !res.data.success ) {
+			ErrorDisplayService.showError(
+				res,
+				"Aufgabe kann nicht gefolgt werden"
+			);
+			return;
+		}
         $scope.participationType = "FOLLOWING"
         $scope.updateFlags();
       }, function(error) {
-        console.log('An error occurred!', error);
-        alert(error.data.cause);
+		ErrorDisplayService.showError(
+			error,
+			"Aufgabe kann nicht gefolgt werden"
+		);
       });
     };
 
@@ -230,19 +282,17 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
               cancelText: "Abbrechen"
             }).then(function(res) {
               if( !res ) {
-                return false;
+                return;
               }
               else {
                 $scope.forceComplete();
               }
             });
           } else {
-            console.log('Error: ', res.data.cause);
-            $ionicPopup.alert({
-              title: "Task kann nicht abgeschlossen werden:",
-              template: res.data.cause,
-              okType: "button-positive button-outline"
-            });
+			ErrorDisplayService.showError(
+				res,
+				"Aufgabe kann nicht abgeschlossen werden"
+			);
           }
           return;
         }
@@ -251,12 +301,10 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
         $scope.updateFlags();
         console.log(res);
       }, function (error) {
-        console.log('Error: ', error);
-        $ionicPopup.alert({
-          title: "Task kann nicht abgeschlossen werden:",
-          template: error,
-          okType: "button-positive button-outline"
-        });
+		ErrorDisplayService.showError(
+			res,
+			"Aufgabe kann nicht abgeschlossen werden"
+		);
       });
     }
     //Set a task as done
@@ -264,16 +312,22 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 		if(!$scope.participationType !== "PARTICIPATING") return false;
 
 		TaskDataService.setTaskDone($scope.task.id,"true").then(function (res) {
-			if(res.data.error) {
-			  console.log('Error: ', res.data.cause);
-			  return;
+			if( !res || !res.data.success ) {
+				ErrorDisplayService.showError(
+					res,
+					"Aufgabe kann nicht als fertig markiert werden"
+				);
+				return;
 			}
 
 			console.log("Task is done");
 			$scope.userIsDone = true;
 			$scope.allAreDone = $scope.areAllParticipantsDone();
 		}, function (error) {
-			console.log('An error occurred!', error);
+			ErrorDisplayService.showError(
+				res,
+				"Aufgabe kann nicht als fertig markiert werden"
+			);
 		});
     }
     //unset task as done
@@ -281,11 +335,20 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 		if(!$scope.participationType !== "PARTICIPATING") return false;
 
 		TaskDataService.setTaskDone($scope.task.id,"false").then(function (res) {
-			console.log("Task is no longer done");
+			if( !res || !res.data.success ) {
+				ErrorDisplayService.showError(
+					res,
+					"Aufgabe kann nicht gelost werden"
+				);
+				return;
+			}
 			$scope.userIsDone = false;
 			$scope.allAreDone = false;
 		}, function (error) {
-			console.log('An error occurred!', error);
+			ErrorDisplayService.showError(
+				res,
+				"Aufgabe kann nicht gelost werden"
+			);
 		});
     }
 	
@@ -304,48 +367,26 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 
 		var taskId = $scope.task.id;
 		TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
-			if(res.data.success){
-				$ionicPopup.alert({
-				  title: "Task veröffentlicht",
-				  okType: "button-positive button-outline"
-				})
-				$scope.showPublish = false;
-			} else {
-			  var message = "";
-			  switch(res.data.cause){
-				case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
-				case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
-				case "TASK_NOT_READY":  message = "Aufgabe ist nicht bereit veröffentlicht zu werden."; break;
-				default: message = "Anderer Fehler: " + res.data.cause;
-			  }
-
-			  if($scope.isNewTask) {
-				$ionicPopup.show({
-				  title: "Task wurde erstellt und als 'bereit' gesetzt, kann aber nicht veröffentlicht werden.",
-				  template: message,
-				  buttons: [{
-					text: 'OK',
-					type: "button-positive button-outline",
-					onTap: function(e) {
-					  // redirect to the edit page of the newly created task
-					  // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
-					  $state.go('tabsController.taskEdit', { id:taskId }, { location: "replace" }).then(function(res){
-						$ionicHistory.removeBackView()
-					  });
-					}
-				  }]
-				})
-			  } else {
-				$ionicPopup.alert({
-				  title: "Task kann nicht veröffentlicht werden",
-				  template: message,
-				  okType: "button-positive button-outline"
-				})
-			  }
+			if( !res || !res.data.success ) {
+				ErrorDisplayService.showError(
+					res,
+					"Aufgabe kann nicht veröffentlicht werden"
+				);
+				return;
 			}
-		})
+			
+			$ionicPopup.alert({
+			  title: "Task veröffentlicht",
+			  okType: "button-positive button-outline"
+			})
+			$scope.showPublish = false;
+		}, function(error) {
+			ErrorDisplayService.showError(
+				error,
+				"Aufgabe kann nicht veröffentlicht werden"
+			);
+		});
     }
-
 
     $scope.addCompetence = function(){
       $state.go('tabsController.addCompetenceToTask', { id:$scope.task.id });
@@ -355,23 +396,49 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     $scope.addNewComment = function() {
       if(!$scope.newComment.content) return false;
       $scope.newComment.name = $scope.user;
-      TaskDataService.addComment($scope.task.id,$scope.newComment).then(function () {
+      TaskDataService.addComment($scope.task.id,$scope.newComment).then(function (res) {
+		// @TODO: object not structured correctly
+		// if( !res || !res.success ) {
+		if( !res || !res.data || res.status != 200 ) {
+			ErrorDisplayService.showError(
+				res,
+				"Kommentar kann nicht hinzufügen werden"
+			);
+			return;
+		}
+		
         console.log("comment added");
         $scope.newComment = {name:'', content: ''};
         $scope.doRefresh();
       }, function (error) {
-        console.log('An error occurred! ', error);
+		ErrorDisplayService.showError(
+			error,
+			"Kommentar kann nicht hinzufügen werden"
+		);
       });
     }
 
     //Delete a comment from the task
     $scope.removeComment = function(comment) {
       if($scope.user !== comment.name) return false;
-      TaskDataService.removeComment($scope.task.id,comment.id).then(function () {
+      TaskDataService.removeComment($scope.task.id,comment.id).then(function (res) {
+		// @TODO: object not structured correctly
+		// if( !res || !res.success ) {
+		if( !res || !res.data || res.status != 200 ) {
+			ErrorDisplayService.showError(
+				res,
+				"Kommentar kann nicht gelöscht werden"
+			);
+			return;
+		}
+
         console.log("comment removed");
         $scope.doRefresh();
       }, function (error) {
-        console.log('An error occurred! ', error);
+		ErrorDisplayService.showError(
+			res,
+			"Kommentar kann nicht gelöscht werden"
+		);
       });
     }
     //Check if user is the owner of the comment
@@ -415,21 +482,37 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 		}
 		
 		TaskDataService.subscribeToMaterial($scope.task.id, material.id, material.subscribedQuantity).then(function(res){
-			if(!res.data.success){
-			  return alert(res.data.cause)
+			if( !res || !res.data.success ) {
+				ErrorDisplayService.showError(
+					res,
+					"Materialien können nicht gespeichert werden"
+				);
+				return;				
 			}
-		}, function(err){
-			console.log(err)
+			console.log("Material subscribed");
+		}, function(error){
+			ErrorDisplayService.showError(
+				error,
+				"Materialien können nicht gespeichert werden"
+			);
 		});
     };
     $scope.unsubscribe = function(material){
-      TaskDataService.unsubscribeFromMaterial($scope.task.id, material.id).then(function(res){
-        if(!res.data.success){
-			return alert(res.data.cause)
-        }
-			material.subscribedQuantity = 0
-		}, function(err){
-			console.log(err)
+		TaskDataService.unsubscribeFromMaterial($scope.task.id, material.id).then(function(res){
+			if(!res || !res.data.success){
+				ErrorDisplayService.showError(
+					res,
+					"Materialien können nicht gespeichert werden"
+				);
+				return;
+			}
+			
+			console.log("Material unsubscribed");
+		}, function(error){
+			ErrorDisplayService.showError(
+				error,
+				"Materialien können nicht gespeichert werden"
+			);
 		})
     };
 

@@ -311,7 +311,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
     $scope.publish = function(taskId) {
       TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
-        if(res.data.success){
+        if(res && res.data.success){
 			$ionicPopup.alert({
 			  title: "Aufgabe veröffentlicht",
 			  okType: "button-positive button-outline"

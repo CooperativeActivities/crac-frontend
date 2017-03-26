@@ -57,7 +57,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 			if( !res || !res.data || res.status != 200 ) {
 				ErrorDisplayService.showError(
 					res,
-					"Aufgabe konnte nicht geladen werden"
+					"Aufgabe kann nicht geladen werden"
 				);
 			}
 			var task = res.data;
@@ -94,7 +94,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
         }, function (error) {
 			ErrorDisplayService.showError(
 				res,
-				"Aufgabe konnte nicht geladen werden"
+				"Aufgabe kann nicht geladen werden"
 			)
         });
     }
@@ -195,7 +195,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 			if(!res || !res[0].data.success) {
 				ErrorDisplayService.showError(
 					res,
-					"Aufgabe konnte nicht gespeichert werden"
+					"Aufgabe kann nicht gespeichert werden"
 				);
 			} else {			
 				$scope.resetObjects();
@@ -206,7 +206,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 		}, function(error) {
 			ErrorDisplayService.showError(
 				error,
-				"Aufgabe konnte nicht gespeichert werden"
+				"Aufgabe kann nicht gespeichert werden"
 			);
 		});
 
