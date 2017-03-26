@@ -35,7 +35,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 		if( !res || !res.data || res.status != 200 ) {
 			ErrorDisplayService.showError(
 				res,
-				"Aufgabe konnte nicht geladen werden"
+				"Aufgabe kann nicht geladen werden"
 			);
 		}
 		
@@ -45,6 +45,8 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
         task.userRelationships.sort($scope.sortMemberListByRelationship);
 
         TaskDataService.getTaskRelatById($stateParams.id).then(function(res){
+			// @TODO: object not structured correctly
+			// if( !res || !res.success ) {
 			if( !res || !res.data || res.status != 200 ) {
 				console.warn("Could not retrieve user-task relationships");
 				return;
