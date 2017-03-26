@@ -136,6 +136,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 		  return {
 			  taskType: 'SHIFT',
 			  name: task.name,
+			  minAmountOfVolunteers: shift.minAmountOfVolunteers,
 			  startTime: shift.startTime.getTime(),
 			  endTime: shift.endTime.getTime()
 		  }

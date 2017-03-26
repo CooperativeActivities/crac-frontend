@@ -155,6 +155,7 @@
 				<span class="shift-content">
 					{{shift.startTime | date: "short"}} -
 					{{shift.endTime | date: "short"}}
+					({{shift.minAmountOfVolunteers}})
 				</span>
 				<i ng-click="removeShift(shift)" class="icon icon-table-action ion-trash-a"></i>
 			</div>
@@ -170,6 +171,11 @@
 					<span class="input-label new-shift-label">Ende</span>
 					<input type="datetime-local" ng-model="shifts.newObj.endTime"  ng-class="{'has-error' : !shiftToAdd.endtime}" >
 				  </label>
+				  <label class="item item-input item-stacked-label">
+					<span class="input-label new-shift-label">Menge</span>
+					<input type="number" ng-model="shifts.newObj.minAmountOfVolunteers" placeholder="Menge" class="new-material-input">
+				  </label>
+
 				  <button type="button" ng-click="addShift()" class="button button-full button-positive ion-plus no-border-radius"> Hinzufügen</button>
 				</div>
 
