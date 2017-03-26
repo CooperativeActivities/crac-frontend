@@ -148,7 +148,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     }
     //enable editing-mode
     $scope.edit = function(){
-      $state.go('tabsController.taskEdit', { id: $scope.task.id, reload: true });
+      $state.go('tabsController.taskEdit', {id: $scope.task.id}, {reload: true});
     };
     //Enroll for a task
     $scope.enroll = function(){

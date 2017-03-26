@@ -55,7 +55,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         }, function (error) {
 			$ionicPopup.alert({
 			  title: "Aufgabe konnte nicht geladen werden",
-			  template: error,
+			  template: error.data.message,
 			  okType: "button-positive button-outline"
 			})
 			console.warn('An error occurred!', error);
@@ -222,16 +222,16 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       return promise.then(function (res) {
         return res;
       }, function(error) {
-        console.log('An error occurred!', error);
+        console.log('Error saving: ', error);
         var message = "";
         if(error.data.cause){
-          switch(error.data.cause){
+          switch(error.data.message){
 			// @TODO implement actual error scenarios
-            default: message = "Anderer Fehler: " + error.data.cause;
+            default: message = "Anderer Fehler: " + error.data.message;
           }
-        } else if(error.status == 403){
+        } else if(error.data.status == 403){
           message = "Du hast keine Berechtigungen Aufgaben zu speichern.";
-        } else if(error.status == 500){
+        } else if(error.data.status == 500){
           message = "Server Fehler";
         }
         $ionicPopup.alert({
@@ -291,24 +291,64 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       }, function(error) {
 		$ionicPopup.alert({
 			title: "Aufgabe kann nicht gespeichert werden:",
-			template: error,
+			template: error.data.message,
 			okType: "button-positive button-outline"
 		})
-		console.log("Error saving: " + error);
+		console.warn("Error saving: " + error);
 	  });
     }
 
     $scope.save_and_publish = function(){
       $scope.save().then(function(save_res){
-        if(!save_res || !save_res.data.success) return;
-        var taskId = save_res.data.object.id;
+        if(!save_res) {
+			$ionicPopup.alert({
+				title: "Aufgabe kann nicht gespeichert werden",
+				okType: "button-positive button-outline"
+			})
+			return;
+        }
+		
+		if(!save_res[0].data.success) {
+			// @TODO implement actual error scenarios
+			var errors = "";
+			for(var i=0; i<save_res[0].data.errors; i++) {
+				errors += "<br>" + save_res[0].data.errors[i];
+			}
+			$ionicPopup.alert({
+				title: "Aufgabe kann nicht gespeichert werden:",
+				template: errors,
+				okType: "button-positive button-outline"
+			})
+		}
+
+        var taskId = save_res[0].data.object.id;
         $scope.publish(taskId);
       })
     }
 	
 	$scope.save_and_unpublish = function(){
       $scope.save().then(function(save_res){
-        if(!save_res || !save_res.data.success) return;
+        if(!save_res) {
+			$ionicPopup.alert({
+				title: "Aufgabe kann nicht gespeichert werden",
+				okType: "button-positive button-outline"
+			})
+			return;
+        }
+		
+		if(!save_res[0].data.success) {
+			// @TODO implement actual error scenarios
+			var errors = "";
+			for(var i=0; i<save_res[0].data.errors; i++) {
+				errors += "<br>" + save_res[0].data.errors[i];
+			}
+			$ionicPopup.alert({
+				title: "Aufgabe kann nicht gespeichert werden:",
+				template: errors,
+				okType: "button-positive button-outline"
+			})
+		}
+
         $scope.unpublish();
       })
     }
@@ -406,15 +446,9 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 		confirmPopup.then(function(res) {
 			if(res) {
 			  TaskDataService.deleteTaskById($scope.task.id).then(function(res) {
-				if( res.data.success ) {
-					$ionicPopup.alert({
-					  title: "Aufgabe gelöscht",
-					  okType: "button-positive button-outline"
-					})
-					$state.go('tabsController.myTasks', { location: "replace" }).then(function(res){
-						$ionicHistory.removeBackView();
-					});
-				} else {
+				// @TODO: object not structured correctly
+				// if( res.data.success ) {
+				if( !res || res.status != 200 ) {
 					// @TODO implement actual error scenarios
 					var errors = "";
 					for(var i=0; i<res.data.errors; i++) {
@@ -422,16 +456,24 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 					}
 
 					$ionicPopup.alert({
-					  title: "Aufgabe kann nicht zurückgezogen werden",
+					  title: "Aufgabe kann nicht gelöscht werden",
 					  template: errors,
 					  okType: "button-positive button-outline"
 					});
+				} else {
+					$ionicPopup.alert({
+					  title: "Aufgabe gelöscht",
+					  okType: "button-positive button-outline"
+					})
+					$state.go('tabsController.myTasks', { location: "replace" }).then(function(res){
+						$ionicHistory.removeBackView();
+					});
 				}
 			  }, function(error) {
-				console.log('Task could not be deleted: ', error);
+				console.warn('Task could not be deleted: ', error);
 				$ionicPopup.alert({
 				  title: "Aufgabe kann nicht gelöscht werden:",
-				  template: error,
+				  template: error.data.message,
 				  okType: "button-positive button-outline"
 				})
 			  });
