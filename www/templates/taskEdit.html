@@ -29,7 +29,7 @@
             <span class="input-label bold">Beschreibung:</span>
             <textarea ng-model="task.description" placeholder="Beschreibung..." ></textarea>
           </label>
-          <label class="item item-input item-stacked-label" ng-if="task.type == 'WORKABLE'">
+          <label class="item item-input item-stacked-label" ng-if="task.taskType == 'WORKABLE'">
             <span class="input-label bold">Zahl der Freiwilligen:</span>
             <input type="number" min="0" ng-model="task.minAmountOfVolunteers" placeholder="Anzahl...">
           </label>

@@ -189,7 +189,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           TaskDataService.updateTaskById(taskData, task.id),
         ]).then(function(res){
           // catch error of setCompetencesTask
-          return res[0]
+          return res;
         })
       } else {
         if(!$scope.parentTask){
