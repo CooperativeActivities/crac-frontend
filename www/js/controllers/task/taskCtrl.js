@@ -409,23 +409,28 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     };
 
     $scope.subscribe = function(material){
-      TaskDataService.subscribeToMaterial($scope.task.id, material.id, material.subscribedQuantity).then(function(res){
-        if(!res.data.success){
-          return alert(res.data.cause)
-        }
-      }, function(err){
-        console.log(err)
-      })
-    }
+		if( material.subscribedQuantity === 0 ) {
+			$scope.unsubscribe(material);
+			return;
+		}
+		
+		TaskDataService.subscribeToMaterial($scope.task.id, material.id, material.subscribedQuantity).then(function(res){
+			if(!res.data.success){
+			  return alert(res.data.cause)
+			}
+		}, function(err){
+			console.log(err)
+		});
+    };
     $scope.unsubscribe = function(material){
       TaskDataService.unsubscribeFromMaterial($scope.task.id, material.id).then(function(res){
         if(!res.data.success){
-          return alert(res.data.cause)
+			return alert(res.data.cause)
         }
-        material.subscribedQuantity = 0
-      }, function(err){
-        console.log(err)
-      })
-    }
+			material.subscribedQuantity = 0
+		}, function(err){
+			console.log(err)
+		})
+    };
 
   }])
