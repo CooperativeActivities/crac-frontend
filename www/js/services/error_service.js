@@ -1,4 +1,4 @@
-cracApp.factory('ErrorDisplayService', ["$ionicAlert", function($rootScope){
+cracApp.factory('ErrorDisplayService', ["$ionicPopup", function($ionicPopup){
 
 	var errorFactory = {
 		code: {
@@ -13,10 +13,10 @@ cracApp.factory('ErrorDisplayService', ["$ionicAlert", function($rootScope){
 			SHIFT_EXTENDS: "",
 			USER_NOT_PARTICIPATING: "",
 			TASK_NOT_STARTED: "",
-			TASK_NOT_READY: "",
+			TASK_NOT_READY: "Aufgabe ist nicht bereit veröffentlicht zu werden.",
 			TASK_NOT_JOINABLE: "",
 			TASK_ALREADY_IN_PROCESS: "",
-			CHILDREN_NOT_READY: "",
+			CHILDREN_NOT_READY: "Unteraufgaben sind noch nicht bereit.",
 			UNDEFINED_ERROR: "",
 			START_NOT_ALLOWED: "",
 			NOT_COMPLETED_BY_USERS: "",
@@ -37,24 +37,24 @@ cracApp.factory('ErrorDisplayService', ["$ionicAlert", function($rootScope){
 			CANNOT_BE_COPIED: ""
 		},
 		
-		showError: function(error, title, okType) {
+		showError: function(obj, title, okType) {
 			if( !title ) title = "Fehler";
 			if( !okType ) okType = "button-positive button-outline";
 
-			console.log('Error: ', error);
+			console.log('Error: ', obj);
 			var message = "";
 			
-			if(error.data.status == 403){
+			if(obj.data.status == 403){
 			  message += "<br>Du hast die Berechtigungen nicht";
 			} 
-			if(error.data.status == 500){
+			if(obj.data.status == 500){
 			  message += "<br>Server Fehler";
 			}
 
-			for(error.data.errors){
-				var errMsg = this.code[error.data.errors[i]];
+			for(var i=0; i<obj.data.errors.length; i++){
+				var errMsg = this.code[obj.data.errors[i]];
 				if(!errMsg) {
-					errMsg = "Unbekannten Fehler: " + error.data.errors[i];
+					errMsg = "Unbekannten Fehler: " + obj.data.errors[i];
 				}
 				message += "<br>"+errMsg;
 			}
