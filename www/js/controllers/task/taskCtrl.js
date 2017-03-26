@@ -18,7 +18,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     $scope.showCancel =false;
     $scope.showFollow = false;
     $scope.showUnfollow = false;
-    $scope.showDelete = false;
+    $scope.showPublish = false;
 
     $scope.team = [];
     $scope.neededCompetences = [];
@@ -82,7 +82,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
       //initialize all flags to false
       $scope.editableFlag =false;
       $scope.addSubTaskFlag =false;
-      $scope.showDelete = false;
+      $scope.showPublish = false;
 
       $scope.showEnroll =false;
       $scope.showCancel =false;
@@ -96,7 +96,6 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
         case "STARTED":
           if(relation === "LEADING"){
 			$scope.editableFlag = true;
-  			$scope.showDelete = true;
 		  } else {
             // @DISCUSS: cannot unfollow started task
             if(relation !== "PARTICIPATING") {
@@ -111,7 +110,6 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
         case "PUBLISHED":
           if(relation === "LEADING"){
 			$scope.editableFlag = true;
-			$scope.showDelete = true;
 		  } else {
             // @DISCUSS: we might remove that & allow participation on all tasks
             if(taskIsLeaf){
@@ -128,7 +126,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
         case "NOT_PUBLISHED":
           if($scope.participationType === 'LEADING'){
 			$scope.editableFlag = true;
-			$scope.showDelete = true;
+			$scope.showPublish = true;
 		  }
           $scope.addSubTaskFlag = $scope.task.taskType === 'ORGANISATIONAL' && !SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask;
           break;
@@ -156,7 +154,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     }
     //enable editing-mode
     $scope.edit = function(){
-      $state.go('tabsController.taskEdit', { id: $scope.task.id });
+      $state.go('tabsController.taskEdit', { id: $scope.task.id, reload: true });
     };
     //Enroll for a task
     $scope.enroll = function(){
@@ -264,6 +262,52 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 			console.log('An error occurred!', error);
 		});
     }
+	
+	$scope.publish = function() {
+		var taskId = $scope.task.id;
+		TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
+			if(res.data.success){
+				$ionicPopup.alert({
+				  title: "Task veröffentlicht",
+				  okType: "button-positive button-outline"
+				})
+				$scope.showPublish = false;
+			} else {
+			  var message = "";
+			  switch(res.data.cause){
+				case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
+				case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
+				case "TASK_NOT_READY":  message = "Aufgabe ist nicht bereit veröffentlicht zu werden."; break;
+				default: message = "Anderer Fehler: " + res.data.cause;
+			  }
+
+			  if($scope.isNewTask) {
+				$ionicPopup.show({
+				  title: "Task wurde erstellt und als 'bereit' gesetzt, kann aber nicht veröffentlicht werden.",
+				  template: message,
+				  buttons: [{
+					text: 'OK',
+					type: "button-positive button-outline",
+					onTap: function(e) {
+					  // redirect to the edit page of the newly created task
+					  // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
+					  $state.go('tabsController.taskEdit', { id:taskId }, { location: "replace" }).then(function(res){
+						$ionicHistory.removeBackView()
+					  });
+					}
+				  }]
+				})
+			  } else {
+				$ionicPopup.alert({
+				  title: "Task kann nicht veröffentlicht werden",
+				  template: message,
+				  okType: "button-positive button-outline"
+				})
+			  }
+			}
+		})
+    }
+
 
     $scope.addCompetence = function(){
       $state.go('tabsController.addCompetenceToTask', { id:$scope.task.id });

@@ -43,7 +43,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
             $scope.task.endTime = new Date($scope.task.endTime);
           }
 		  
-          $scope.updateFlags()
+          $scope.updateFlags();
         }, function (error) {
           console.warn('An error occurred!', error);
         });
@@ -276,6 +276,10 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 	$scope.unpublish = function() {
 		TaskDataService.changeTaskState($scope.taskId, 'unpublish').then(function(res) {
 			if(res.data.success) {
+				$ionicPopup.alert({
+				  title: "Task zurückgezogen",
+				  okType: "button-positive button-outline"
+				})
 				$state.go('tabsController.task', { id: $scope.taskId }, { location: 'replace' }).then(function(res) {
 					$ionicHistory.removeBackView();
 				});
@@ -290,7 +294,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 				}
 				
 	            $ionicPopup.alert({
-				  title: "Task kann nicht zurückziehen werden",
+				  title: "Task kann nicht zurückgezogen werden",
 				  template: message,
 				  okType: "button-positive button-outline"
 				});
@@ -301,9 +305,13 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.publish = function(taskId) {
       TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
         if(res.data.success){
-          $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
-            $ionicHistory.removeBackView()
-          });
+			$ionicPopup.alert({
+			  title: "Task veröffentlicht",
+			  okType: "button-positive button-outline"
+			})
+			$state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
+				$ionicHistory.removeBackView()
+			});
         } else {
           var message = "";
           switch(res.data.cause){
