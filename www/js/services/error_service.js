@@ -27,7 +27,7 @@ cracApp.factory('ErrorDisplayService', ["$ionicPopup", function($ionicPopup){
 			JSON_READ_ERROR: "",
 			JSON_MAP_ERROR: "",
 			JSON_WRITE_ERROR: "",
-			RESSOURCE_UNCHANGEABLE: "",
+			RESOURCE_UNCHANGEABLE: "",
 			TASK_IS_FULL: "",
 			USERS_NOT_FRIENDS: "",
 			WRONG_TYPE: "",
@@ -51,12 +51,14 @@ cracApp.factory('ErrorDisplayService', ["$ionicPopup", function($ionicPopup){
 			  message += "<br>Server Fehler";
 			}
 
-			for(var i=0; i<obj.data.errors.length; i++){
-				var errMsg = this.code[obj.data.errors[i]];
-				if(!errMsg) {
-					errMsg = "Unbekannten Fehler: " + obj.data.errors[i];
+			if(obj.data.errors) {
+				for(var i=0; i<obj.data.errors.length; i++){
+					var errMsg = this.code[obj.data.errors[i]];
+					if(!errMsg) {
+						errMsg = "Unbekannten Fehler: " + obj.data.errors[i];
+					}
+					message += "<br>"+errMsg;
 				}
-				message += "<br>"+errMsg;
 			}
 			
 			$ionicPopup.alert({

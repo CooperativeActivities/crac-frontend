@@ -28,7 +28,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         TaskDataService.getTaskById($scope.taskId).then(function (res) {
 			// @TODO: object not structured correctly
 			// if( !res || !res.success ) {
-			if( !res || res.status != 200 ) {
+			if( !res || !res.data || res.status != 200 ) {
 				ErrorDisplayService.showError(
 					res,
 					"Aufgabe konnte nicht geladen werden"
@@ -55,7 +55,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           $scope.updateFlags();
         }, function (error) {
 			ErrorDisplayService.showError(
-				res.data.error,
+				res,
 				"Aufgabe konnte nicht geladen werden"
 			)
         });
@@ -193,10 +193,10 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
         // @TODO: this shouldn't be necessary
         taskData.taskState = task.taskState;
+		
         promise = $q.all([
           TaskDataService.updateTaskById(taskData, task.id),
         ]).then(function(res){
-          // catch error of setCompetencesTask
           return res;
         })
       } else {
@@ -215,11 +215,17 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         }
 	  }
       return promise.then(function (res) {
-        return res;
+		if(!res || !res[0].data.success) {
+			ErrorDisplayService.showError(
+				res[0],
+				"Aufgabe kann nicht gespeichert werden"
+			);
+		}
+		return res[0];
       }, function(error) {
 		ErrorDisplayService.showError(
 			error,
-			"Aufgabe konnte nicht gespeichert werden"
+			"Aufgabe kann nicht gespeichert werden"
 		);
       });
 
@@ -228,22 +234,11 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     // Save changes only
     $scope.save_changes = function() {
       $scope.save().then(function(save_res) {
-        if(!save_res) {
-			ErrorDisplayService.showCustomError(
-				"",
-				"Aufgabe konnte nicht gespeichert werden"
-			);
+        if(!save_res || !save_res.data.success) {
 			return;
-        }
-		
-		if(!save_res[0].data.success) {
-			ErrorDisplayService.showError(
-				save_res[0],
-				"Aufgabe konnte nicht gespeichert werden"
-			);
 		}
 		
-		var taskId = save_res[0].data.object.id;
+		var taskId = save_res.data.object.id;
         $ionicPopup.alert({
           title: "Aufgabe gespeichert",
           okType: "button-positive button-outline"
@@ -275,41 +270,19 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
     $scope.save_and_publish = function(){
       $scope.save().then(function(save_res){
-        if(!save_res) {
-			ErrorDisplayService.showCustomError(
-				"",
-				"Aufgabe kann nicht gespeichert werden"
-			);
+        if(!save_res || !save_res.data.success) {
 			return;
-        }
-		
-		if(!save_res[0].data.success) {
-			ErrorDisplayService.showError(
-				save_res[0],
-				"Aufgabe kann nicht gespeichert werden"
-			);
 		}
 
-        var taskId = save_res[0].data.object.id;
+        var taskId = save_res.data.object.id;
         $scope.publish(taskId);
       })
     }
 	
 	$scope.save_and_unpublish = function(){
       $scope.save().then(function(save_res){
-        if(!save_res) {
-			ErrorDisplayService.showCustomError(
-				"",
-				"Aufgabe kann nicht gespeichert werden"
-			);
+        if(!save_res || !save_res.data.success) {
 			return;
-        }
-		
-		if(!save_res[0].data.success) {
-			ErrorDisplayService.showError(
-				save_res[0],
-				"Aufgabe kann nicht gespeichert werden"
-			);
 		}
 
         $scope.unpublish();
@@ -318,20 +291,21 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
 	$scope.unpublish = function() {
 		TaskDataService.changeTaskState($scope.taskId, 'unpublish').then(function(res) {
-			if(res.data.success) {
-				$ionicPopup.alert({
-				  title: "Aufgabe zurückgezogen",
-				  okType: "button-positive button-outline"
-				})
-				$state.go('tabsController.task', { id: $scope.taskId }, { location: 'replace' }).then(function(res) {
-					$ionicHistory.removeBackView();
-				});
-			} else {
+			if(!res || !res.data.success) {
 				ErrorDisplayService.showError(
 					res,
 					"Aufgabe kann nicht zurückgezogen werden"
 				);
+				return;
 			}
+
+			$ionicPopup.alert({
+				title: "Aufgabe zurückgezogen",
+				okType: "button-positive button-outline"
+			})
+			$state.go('tabsController.task', { id: $scope.taskId }, { location: 'replace' }).then(function(res) {
+				$ionicHistory.removeBackView();
+			});
 		});
 	}
 
