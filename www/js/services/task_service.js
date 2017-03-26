@@ -116,7 +116,7 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
     return $http.post(srv._baseURL + "task/" + taskId + "/material/add", material);
   }
   srv.removeMaterialFromTask = function(taskId,materialId){
-    return $http.get(srv._baseURL + "task/" + taskId + "/material/remove/" + materialId);
+    return $http.get(srv._baseURL + "task/" + taskId + "/material/" + materialId + "/remove");
   }
   //Adds array of material objects
   srv.addMaterialsToTask = function(taskId, materials){

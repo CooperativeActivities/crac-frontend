@@ -174,6 +174,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 		  
 		  return promise.then(function (res) {
 			$scope.resetObjects();
+			$scope.load();
 			return res;
 		  }, function(error) {
 			console.log('An error occurred!', error);
