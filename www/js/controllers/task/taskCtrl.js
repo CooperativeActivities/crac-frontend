@@ -264,6 +264,18 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     }
 	
 	$scope.publish = function() {
+		if( !$scope.task.readyToPublish ) {
+			// @TODO - display popup with reason(s) why it's not ready
+			/*
+			var message = "";
+			$ionicPopup.alert({
+				title: "Task kann nicht veröffentlicht werden",
+				template: message,
+				okType: "button-positive button-outline"
+			})*/
+			return;
+		}
+
 		var taskId = $scope.task.id;
 		TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
 			if(res.data.success){
