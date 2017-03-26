@@ -224,7 +224,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       }, function(error) {
         console.log('Error saving: ', error);
         var message = "";
-        if(error.data.cause){
+        if(error.data.message){
           switch(error.data.message){
 			// @TODO implement actual error scenarios
             default: message = "Anderer Fehler: " + error.data.message;
