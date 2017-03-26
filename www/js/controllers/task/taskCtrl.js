@@ -76,8 +76,9 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     $scope.updateFlags = function(){
       var relation = $scope.participationType,
         task = $scope.task,
-        taskIsLeaf = task.childTasks.length < 1,
-        taskIsSubtask = task.superTask !== null;
+        taskIsWorkable = task.taskType === 'WORKABLE';
+		taskHasShifts = task.childTasks.length > 0 && taskIsWorkable;
+		
 
       //initialize all flags to false
       $scope.editableFlag =false;
@@ -95,40 +96,33 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
           break;
         case "STARTED":
           if(relation === "LEADING"){
+			  // @TODO allow leaders to also participate/follow
 			$scope.editableFlag = true;
 		  } else {
-            // @DISCUSS: cannot unfollow started task
-            if(relation !== "PARTICIPATING") {
-              $scope.showFollow = relation !== "FOLLOWING";
-            }
-            // @DISCUSS: we might remove that & allow participation on all tasks
-            if(taskIsLeaf){
-              $scope.showEnroll = relation !== "PARTICIPATING";
-            }
+            // @DISCUSS: cannot unfollow started task?
+			$scope.showEnroll = relation !== "PARTICIPATING" && !taskHasShifts;
+			$scope.showFollow = relation !== "FOLLOWING" && relation !== "PARTICIPATING";
+			$scope.showCancel = relation === "PARTICIPATING";
 		  }
           break;
         case "PUBLISHED":
           if(relation === "LEADING"){
+			  // @TODO allow leaders to also participate/follow
 			$scope.editableFlag = true;
+			$scope.addSubTaskFlag = $scope.task.taskType === 'ORGANISATIONAL' && (!SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask);
 		  } else {
-            // @DISCUSS: we might remove that & allow participation on all tasks
-            if(taskIsLeaf){
-              $scope.showCancel = relation === "PARTICIPATING";
-              $scope.showEnroll = !$scope.showCancel;
-            }
-            if(!relation !== "PARTICIPATING") {
-              $scope.showUnfollow = relation === "FOLLOWING";
-              $scope.showFollow = !$scope.showUnfollow && !$scope.showCancel;
-            }
-          }
-          $scope.addSubTaskFlag = $scope.task.taskType === 'ORGANISATIONAL' && (!SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask);
+			$scope.showEnroll = relation !== "PARTICIPATING" && !taskHasShifts;
+			$scope.showFollow = relation !== "FOLLOWING" && relation !== "PARTICIPATING";
+			$scope.showCancel = relation === "PARTICIPATING";
+            $scope.showUnfollow = relation === "FOLLOWING";
+		  } 
           break;
         case "NOT_PUBLISHED":
           if($scope.participationType === 'LEADING'){
 			$scope.editableFlag = true;
 			$scope.showPublish = true;
+			$scope.addSubTaskFlag = $scope.task.taskType === 'ORGANISATIONAL' && !SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask;
 		  }
-          $scope.addSubTaskFlag = $scope.task.taskType === 'ORGANISATIONAL' && !SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask;
           break;
       }
     };
@@ -158,6 +152,11 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
     };
     //Enroll for a task
     $scope.enroll = function(){
+		if( $scope.task.taskType === 'WORKABLE' && $scope.task.childTasks.length > 0 ) {
+			//if a task has shifts, general enrolment is forbidden, this shouldn't happen
+			return;
+		}
+		
       TaskDataService.changeTaskPartState($stateParams.id ,'participate').then(function(res) {
         $scope.participationType = "PARTICIPATING"
         $scope.updateFlags();
@@ -168,6 +167,33 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
         alert(error.data.cause);
       });
     }
+	//add self to a shift
+	$scope.addToShift = function(shift) {
+		TaskDataService.changeTaskPartState(shift.id ,'participate').then(function(res) {
+			console.log('Participating in shift ' + shift.id);
+		}, function(error) {
+			console.log('An error occurred!', error);
+			$ionicPopup.alert({
+			  title: "Schicht kann nicht teilgenommen werden:",
+			  template: error.data.cause,
+			  okType: "button-positive button-outline"
+			});
+		});
+	};
+	//remove self from shift
+	$scope.removeFromShift = function(shift) {
+        TaskDataService.removeOpenTask(shift.id).then(function (res) {
+			console.log('Participating in shift ' + shift.id);
+		}, function(error) {
+			console.log('An error occurred!', error);
+			$ionicPopup.alert({
+			  title: "Schicht kann nicht zurückgezogen werden:",
+			  template: error.data.cause,
+			  okType: "button-positive button-outline"
+			});
+		});
+
+	};
     // follow a task
     $scope.follow = function(){
       TaskDataService.changeTaskPartState($scope.task.id,'follow').then(function(res) {

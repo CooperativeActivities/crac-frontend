@@ -25,8 +25,8 @@
             <div class="row"><span class="ion-calendar"> Zeit: </span></div>
           </div>
           <div class="col">
-            <div class="row"> Von: {{ task.startTime | date : "medium" }} </div>
-            <div class="row"> Bis: {{ task.endTime | date : "medium" }} </div>
+            <div class="row"> Von: {{ task.startTime | date : "short" }} </div>
+            <div class="row"> Bis: {{ task.endTime | date : "short" }} </div>
           </div>
         </div>
         <div class="row" ng-if="checkLocation(task.location)">
@@ -145,6 +145,26 @@
 		<br>
 	  </c-accordion>
 
+	  <c-accordion title-"'Schichten (' + task.childTasks.length + ''" ng-if="task.taskType == 'WORKABLE' && task.childTasks.length > 0">
+        <ion-list>
+          <div  ng-cloak>
+            <ion-item>
+              <ion-item ng-repeat="shift in task.childTasks">
+				<span>
+					{{shift.startTime | date: "short"}} -
+					{{shift.endTime | date: "short"}}
+				</span>
+                <button ng-click="addToShift(shift)"
+					class="button button-small button-outline button-balanced ion-checkmark">Ich arbeite mit!</button>
+                <button ng-click="removeFromShift(shift)"
+                    class="button button-small button-outline button-assertive ion-close">Absagen</button>
+              </ion-item>
+            </ion-item>
+          </div>
+        </ion-list>
+        <br>
+	  </c-accordion>
+	  
       <c-accordion title="'Kommentare (' + task.comments.length + ')'">
         <ion-list can-swipe="true" ng-show="task.comments.length > 0">
           <div ng-repeat="comment in task.comments" ng-cloak>
@@ -180,8 +200,8 @@
 		<button ng-click="publish()" ng-if="showPublish" ng-class="{'button-balanced': task.readyToPublish, 'button-stable': !task.readyToPublish}" class="button button-full button-small no-border-radius ion-eye"> Veröffentlichen </button>
 		<button ng-click="enroll()" ng-if="showEnroll" class="button button-full button-small no-border-radius button-balanced ion-checkmark"> Ich arbeite mit! </button>
 		<button ng-click="cancel()" ng-if="showCancel"  class="button button-full button-small no-border-radius button-assertive ion-close"> Absagen </button>
-		<button ng-click="follow()" ng-if="showFollow"  class="button button-full button-small no-border-radius button-positive "> Folgen </button>
-		<button ng-click="cancel()" ng-if="showUnfollow" class="button button-full button-small no-border-radius button-assertive"> Nicht mehr folgen </button>
+		<button ng-click="follow()" ng-if="showFollow"  class="button button-full button-small no-border-radius button-positive ion-eye"> Folgen </button>
+		<button ng-click="cancel()" ng-if="showUnfollow" class="button button-full button-small no-border-radius button-assertive ion-eye-disabled"> Nicht mehr folgen </button>
     </div>
   </ion-footer-bar>
 </ion-view>
