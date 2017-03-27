@@ -13,12 +13,13 @@ cracApp.directive('taskPreview', ["TaskDataService", function(TaskDataService) {
 			scope.isSingleDate =
 				(startDate.getDate() == endDate.getDate()) &&
 				(startDate.getFullYear() == endDate.getFullYear()) &&
-				(startDate.getMonth() == endDate.getMonth())
+				(startDate.getMonth() == endDate.getMonth());
 
       // @TODO: get this info from the task
 			TaskDataService.getTaskRelatById(scope.task.id).then(function(res){
-				return res.data[1].participationType
+				return res.data[1].participationType;
 			},function(error){
+			  console.log("Error: " + error);
 				return "NOT_PARTICIPATING";
 			}).then(function(relation){
 				scope.participationType = relation;
@@ -32,8 +33,8 @@ cracApp.directive('taskPreview', ["TaskDataService", function(TaskDataService) {
         //failsafe, so you dont accidentally follow a task you were leading/participating
         if(scope.participationType === "NOT_PARTICIPATING"){
           TaskDataService.changeTaskPartState(id,'follow').then(function(res) {
+            console.log("Following task");
             scope.participationType = "FOLLOWING";
-            //scope.updateFlags();
           }, function(error) {
             console.log('An error occurred!', error);
           });
@@ -43,11 +44,10 @@ cracApp.directive('taskPreview', ["TaskDataService", function(TaskDataService) {
         //failsafe, so you dont accidentally cancel leading/participating a task
         if(scope.participationType === "FOLLOWING"){
           TaskDataService.removeOpenTask(id).then(function (res) {
+            console.log("No longer participating");
             scope.participationType = "NOT_PARTICIPATING";
-            //scope.updateFlags();
           }, function (error) {
             console.log('An error occurred!', error);
-            alert(error.data.cause);
           });
         }
       };
