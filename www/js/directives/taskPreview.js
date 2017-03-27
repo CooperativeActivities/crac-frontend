@@ -1,4 +1,4 @@
-cracApp.directive('taskPreview', ["TaskDataService", function(TaskDataService) {
+cracApp.directive('taskPreview', ['TaskDataService', '$ionicPopup', function(TaskDataService, $ionicPopup) {
   return {
     scope: {
       task: "=",
@@ -19,7 +19,6 @@ cracApp.directive('taskPreview', ["TaskDataService", function(TaskDataService) {
 			TaskDataService.getTaskRelatById(scope.task.id).then(function(res){
 				return res.data[1].participationType;
 			},function(error){
-			  console.log("Error: " + error);
 				return "NOT_PARTICIPATING";
 			}).then(function(relation){
 				scope.participationType = relation;
@@ -36,7 +35,11 @@ cracApp.directive('taskPreview', ["TaskDataService", function(TaskDataService) {
             console.log("Following task");
             scope.participationType = "FOLLOWING";
           }, function(error) {
-            console.log('An error occurred!', error);
+            $ionicPopup.alert({
+              title: "Aufgabe kann nicht gefolgt werden",
+              template: error.message,
+              okType: 'button-positive button-outline'
+            });
           });
         }
       };
@@ -47,15 +50,14 @@ cracApp.directive('taskPreview', ["TaskDataService", function(TaskDataService) {
             console.log("No longer participating");
             scope.participationType = "NOT_PARTICIPATING";
           }, function (error) {
-            console.log('An error occurred!', error);
+            $ionicPopup.alert({
+              title: "Aufgabe kann nicht gelost werden",
+              template: error.message,
+              okType: 'button-positive button-outline'
+            });
           });
         }
       };
-      /*scope.updateFlags = function(){
-        scope.showFollow = true;
-        scope.showUnfollow = false;
-      };
-      scope.updateFlags();*/
     },
     templateUrl: 'templates/directives/taskPreview.html'
   };
