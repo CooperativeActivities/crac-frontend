@@ -1,57 +1,55 @@
 <ion-view cache-view="false" title="Aufgabenliste" id="page3">
   <ion-content padding="true" class="has-header">
     <ion-refresher on-refresh="doRefresh()"></ion-refresher>
-    <div class="container">
-      <!--
-      <ion-search-bar class="bar-light bar-subheader">
-        <label class="item item-input">
-          <input type="search"
-                 placeholder="Filter Task..."
-                 ng-model="search"
-                 ng-focus="searchFocused = true"
-                 ng-blur="searchFocused = false"
-                 ng-change="scrollTop()"
-                 class="full-width">
-        </label>
-        <button ng-if="search.length"
-                class="button button-icon ion-android-close input-button"
-                ng-click="clearSearch()">
-        </button>
-      </ion-search-bar>-->
-      <div class="item item-divider">Vorgeschlagene Aufgaben</div>
-      <ion-list ng-controller="swipeCtrl"
-                show-delete="shouldShowDelete"
-                show-reorder="shouldShowReorder"
-                can-swipe="true">
-        <div ng-repeat="match in matchingTasks | orderBy: 'startTime'" class="parent item">
-          <!-- @TODO: additional (matching) info? sort? -->
-          <task-preview task="match.task" action="'follow'" ng-click="loadSingleTask(match.task.id)"></task-preview>
+    <!--
+    <ion-search-bar class="bar-light bar-subheader">
+      <label class="item item-input">
+        <input type="search"
+               placeholder="Filter Task..."
+               ng-model="search"
+               ng-focus="searchFocused = true"
+               ng-blur="searchFocused = false"
+               ng-change="scrollTop()"
+               class="full-width">
+      </label>
+      <button ng-if="search.length"
+              class="button button-icon ion-android-close input-button"
+              ng-click="clearSearch()">
+      </button>
+    </ion-search-bar>-->
+    <div class="item item-divider">Vorgeschlagene Aufgaben</div>
+    <ion-list ng-controller="swipeCtrl"
+              show-delete="shouldShowDelete"
+              show-reorder="shouldShowReorder"
+              can-swipe="true">
+      <div ng-repeat="match in matchingTasks | orderBy: 'startTime'" class="parent item">
+        <!-- @TODO: additional (matching) info? sort? -->
+        <task-preview task="match.task" action="'follow'" ng-click="loadSingleTask(match.task.id)"></task-preview>
+      </div>
+      <p ng-if="matchingTasks.length < 1">
+        Keine Vorschläge gefunden; füge vielleicht ein paar Kompetenzen hinzu?
+      </p>
+    </ion-list>
+    <hr>
+    <div class="item item-divider">Alle Aufgaben</div>
+    <ion-list ng-controller="swipeCtrl"
+              show-delete="shouldShowDelete"
+              show-reorder="shouldShowReorder"
+              can-swipe="true">
+      <!--<div ng-repeat="task in parentTasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search" class="parent">-->
+      <!-- @TODO: sort-->
+      <div ng-repeat="task in parentTasks | orderBy: 'startTime'" class="parent">
+        <div class="item-stable" ng-class="{active: isGroupShown(task)}">
+          <i class="icon" ng-click="toggleGroup(task)" ng-if="task.childTasks.length > 0" ng-class="isGroupShown(task) ? 'ion-minus' : 'ion-plus'"></i>
+          <task-preview task="task" action="'follow'" ng-click="loadSingleTask(task.id)"></task-preview>
         </div>
-        <p ng-if="matchingTasks.length < 1">
-          Keine Vorschläge gefunden; füge vielleicht ein paar Kompetenzen hinzu?
-        </p>
-      </ion-list>
-      <hr>
-      <div class="item item-divider">Alle Aufgaben</div>
-      <ion-list ng-controller="swipeCtrl"
-                show-delete="shouldShowDelete"
-                show-reorder="shouldShowReorder"
-                can-swipe="true">
-        <!--<div ng-repeat="task in parentTasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search" class="parent">-->
-        <!-- @TODO: sort-->
-        <div ng-repeat="task in parentTasks | orderBy: 'startTime'" class="parent">
-          <div class="item-stable" ng-class="{active: isGroupShown(task)}">
-            <i class="icon" ng-click="toggleGroup(task)" ng-if="checkChildTask(task.childTasks)" ng-class="isGroupShown(task) ? 'ion-minus' : 'ion-plus'"></i>
-            <task-preview task="task" action="'follow'" ng-click="loadSingleTask(task.id)"></task-preview>
-          </div>
-          <!--<div ng-repeat="childTask in task.childTasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search" class="child">-->
-          <div class="item-accordion"
-                    ng-repeat="childTask in task.childTasks | orderBy: 'startTime'"
-                    ng-show="isGroupShown(task)">
-            <task-preview task="childTask" action="'follow'" ng-click="loadSingleTask(childTask.id)"></task-preview>
-          </div>
+        <!--<div ng-repeat="childTask in task.childTasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search" class="child">-->
+        <div class="item-accordion"
+                  ng-repeat="childTask in task.childTasks | orderBy: 'startTime'"
+                  ng-show="isGroupShown(task)">
+          <task-preview task="childTask" action="'follow'" ng-click="loadSingleTask(childTask.id)"></task-preview>
         </div>
-      </ion-list>
-    </div>
+      </div>
+    </ion-list>
   </ion-content>
 </ion-view>
