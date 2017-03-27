@@ -1,16 +1,19 @@
 /**
  * Created by x-net on 14.11.2016.
  */
-cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ionicModal,UserDataService, $state) {
-
+cracApp.controller('addCompetenceCtrl', ['$rootScope', '$scope', 'UserDataService', '$ionicPopup', '$state',
+function($rootScope,$scope,UserDataService, $ionicPopup, $state) {
   UserDataService.getAllAvailableCompetences().then(function(res){
-        $scope.competences = res.data;
-        console.log($scope.competences);
-        console.log(res);
-  }), function(error){
-    console.log('An error occurred!', error);
-    alert(error.data.cause);
-  }
+    $scope.competences = res.object;
+    console.log($scope.competences);
+    console.log(res);
+  }, function(error){
+    $ionicPopup.alert({
+      title: "Kompetenzen können nicht geladen werden",
+      template: error.message,
+      okType: 'button-positive button-outline'
+    });
+  });
 
   /* $scope.allCompetences= [];
   $scope.myCompetences= [];
@@ -60,7 +63,6 @@ cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ioni
     return kickOut;
   } */
 
-
   $scope.addCompetenceInfo = function(compId){
     $state.go('tabsController.addCompetenceInfo', { id:compId });
   };
@@ -72,7 +74,4 @@ cracApp.controller('addCompetenceCtrl', function($rootScope,$scope, $http, $ioni
   $scope.scrollTop = function() {
     $ionicScrollDelegate.scrollTop();
   };
-
-
-
-  })
+}]);
