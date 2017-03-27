@@ -4,9 +4,6 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
 
   // URL to REST-Service
   srv._baseURL = "https://core.crac.at/crac-core/";
-  function noConnectionError(error){
-    throw { error: error, message: "Keine Verbindung" };
-  }
   function throwIfErrors (response){
     if(response.data.success){ return response.data; }
     else {
@@ -15,67 +12,93 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
     }
   }
 
-  function handleCommonErrors(response){
-    if(response.status === 401){
-      throw { error: response.data, message: "Sie sind nicht eingeloggt." };
+  function ajax(url, method, handleSpecificErrors, payload){
+    if(!handleSpecificErrors || !(handleSpecificErrors instanceof Function)){
+      handleSpecificErrors = function(){}
     }
+    return $http[method](srv._baseURL + url, payload)
+      .then(function(response){
+        if(response && response.data && response.data.success){ return response.data; }
+        else {
+          // handle specific errors first since we might want to have a special message for 404, for example
+          handleSpecificErrors(response)
+          //handle common errors (fallbacks)
+          if(response.status === 401){
+            throw { error: response.data, message: "Sie sind nicht eingeloggt." };
+          }
+          if(response.status === 404){
+            throw { error: response.data, message: "Resource nicht gefunden" };
+          }
+          throw { error: response.data, message: "Anderer Fehler" };
+        }
+      }, function noConnectionError(error){
+        throw { error: error, message: "Keine Verbindung" };
+      });
   }
 
   // Get all task
   srv.getAllParentTasks = function(){
-    return $http.get(srv._baseURL + "task/parents").then(function(response){
-      if(response && response.data && response.data.success){ return response.data; }
-      else {
-        handleCommonErrors(response)
-        // switch error.data.cause here
-        throw { error: response.data, message: "Aufgabenliste konnte nicht geladen werden" };
-      }
-    }, noConnectionError);
+    return ajax("task/parents", "get", function(response){
+      // switch .data.cause here
+      throw { error: response.data, message: "Aufgabenliste konnte nicht geladen werden" };
+    })
   }
   //Get a TAsk by ID
   srv.getTaskById = function(id){
-    return $http.get(srv._baseURL + "task/" + id).then(throwIfErrors);
+    return ajax("task/" + id, "get", function(response){
+      // switch .data.cause here
+      //throw { error: response.data, message: "Task #" + id + " konnte nicht geladen werden" };
+    })
   }
   //Update the Task data if there are changes
   srv.updateTaskById = function(taskData, id){
-    return $http.put(srv._baseURL + "task/" + id, taskData).then(throwIfErrors);
+    return ajax("task/" + id, "put", function(response){
+      // switch .data.cause here
+      //throw { error: response.data, message: "Task #" + id + " konnte nicht gespeichert werden" };
+    })
   }
   //Adds target task to the open-tasks of the logged-in user or changes it's state; Choose either 'participate', 'follow', or 'lead'
   srv.changeTaskPartState = function(id, stateName){
-    return $http.get(srv._baseURL + "user/task/" + id + "/" + stateName).then(throwIfErrors);
+    return ajax("user/task/" + id + "/" + stateName, "get", function(response){
+      // switch .data.cause here
+      //throw { error: response.data, message: "Task #" + id + " konnte nicht verändert werden" };
+    })
   }
   //Returns all tasks of logged in user, divided in the TaskParticipationTypes
   srv.getMyTasks = function(){
-    return $http.get(srv._baseURL + "user/task").then(throwIfErrors);
+    return ajax("user/task", "get", function(response){
+      // switch .data.cause here
+      //throw { error: response.data, message: "Task #" + id + " konnte nicht gespeichert werden" };
+    })
   }
   //Creates a new task
   srv.createNewTask= function(taskData){
-    return $http.post(srv._baseURL + "admin/task", taskData).then(throwIfErrors);
+    return ajax("admin/task", "post", function(response){}, taskData);
   }
   //Removes the task with given id from the open-tasks of the currently logged in user
   srv.removeOpenTask= function(id){
-    return $http.get(srv._baseURL + "user/task/" + id + "/remove").then(throwIfErrors);
+    return ajax("user/task/" + id + "/remove", "get", function(response){});
   }
   //Returns target task and its relationship to the logged in user
   srv.getTaskRelatById = function(id){
-    return $http.get(srv._baseURL + "user/task/" + id).then(throwIfErrors);
+    return ajax("user/task/" + id, "get", function(response){});
   }
   //Returns a sorted list of elements with the best fitting tasks for the logged in user
   srv.getMatchingTasks = function(number){
-    if(number) return $http.get(srv._baseURL + "user/findMatchingTasks/" + number).then(throwIfErrors);
-    else return $http.get(srv._baseURL + "user/findMatchingTasks").then(throwIfErrors);
+    if(number) return ajax("user/findMatchingTasks/" + number, "get");
+    else return ajax("user/findMatchingTasks", "get")
   }
   //Sets a single task ready to be published, only works if it's children are ready
   srv.setReadyToPublishS = function(taskId){
-    return $http.get(srv._baseURL + "task/" + taskId + "/publish/ready/single").then(throwIfErrors);
+    return ajax("task/" + taskId + "/publish/ready/single", "get")
   }
   //Sets target task and all children ready to be published
   srv.setReadyToPublishT = function(taskId){
-    return $http.get(srv._baseURL + "task/" + taskId + "/publish/ready/tree").then(throwIfErrors);
+    return ajax("task/" + taskId + "/publish/ready/tree", "get")
   }
   //Sets the relation between the logged in user and target task to done, meaning the user completed the task
   srv.setTaskDone = function(taskId, done_boolean){
-    return $http.get(srv._baseURL + "task/" + taskId + "/done/" + done_boolean).then(throwIfErrors);
+    return ajax("task/" + taskId + "/done", "get")
   }
   /*
    **Change the state of target task; Choose either 'publish', 'start', or 'complete'**
