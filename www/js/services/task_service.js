@@ -1,4 +1,4 @@
-cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootScope){
+cracApp.factory('TaskDataService', ["$http","$rootScope", "ErrorDisplayService", function($http,$rootScope, ErrorDisplayService){
 
   var srv = {};
 
@@ -32,23 +32,29 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
           throw response
         }
       }, function(response){
-        //console.log("error",response);
         // handle specific errors first since we might want to have a special message for 404, for example
         var res = handleSpecificErrors(response);
         // if the function returned something instead of throwing, we return that - prevents errors from throwing
         if(res){ return res; }
 
-        //handle common errors (fallbacks)
-        if(response.status === -1){
-          throw { error: response, message: "Keine Verbindung" };
+        switch(response.status){
+          case -1:
+            throw { error: response, message: "Keine Verbindung" };
+            break;
+          case 401:
+            throw { error: response.data, message: "Sie sind nicht eingeloggt." };
+            break;
+          case 404:
+            throw { error: response.data, message: "Resource nicht gefunden" };
+            break;
+          case 400:
+            if(response.data && response.data.errors){
+              console.warn("400", response.data.errors)
+              throw { error: response.data.errors, message: ErrorDisplayService.getMessagesFromCodes(response.data.errors) };
+            }
+            break;
         }
-        if(response.status === 401){
-          throw { error: response.data, message: "Sie sind nicht eingeloggt." };
-        }
-        if(response.status === 404){
-          throw { error: response.data, message: "Resource nicht gefunden" };
-        }
-        throw { error: response.data, message: "Anderer Fehler" };
+        throw { error: response, message: "Anderer Fehler" };
       });
   }
 
@@ -98,13 +104,7 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
   }
   //Returns target task and its relationship to the logged in user
   srv.getTaskRelatById = function(id){
-    return ajax("user/task/" + id, "get", { handleSpecificErrors: function(response){
-      if(response.status === 400){
-        //return { object: [null, { participationType: "NOT_PARTICIPATING", completed: false }] }
-        //temporary
-        return { data: [null, { participationType: "NOT_PARTICIPATING", completed: false }] }
-      }
-    }});
+    return ajax("user/task/" + id, "get");
   }
   //Returns a sorted list of elements with the best fitting tasks for the logged in user
   srv.getMatchingTasks = function(number){
