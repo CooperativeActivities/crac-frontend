@@ -36,7 +36,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
       TaskDataService.getTaskRelatById($stateParams.id).then(function(res){
         $scope.participationType = res.meta.relationship.participationType;
-        $scope.userIsDone = res.data[1].completed;
+        $scope.userIsDone = res.meta.relationship.completed;
       }, function(error) {
         //@TODO this should probably be handled differently
         $scope.participationType = 'NOT_PARTICIPATING';

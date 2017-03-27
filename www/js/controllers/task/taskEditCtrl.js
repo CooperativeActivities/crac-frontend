@@ -64,7 +64,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         $scope.timeChoice = 'slot';
         if($stateParams.parentId !== ""){
           TaskDataService.getTaskById($stateParams.parentId).then(function(res){
-            $scope.parentTask = res.data;
+            $scope.parentTask = res.object;
             $scope.task.startTime = new Date( $scope.parentTask.startTime);
             $scope.task.endTime = new Date ($scope.parentTask.endTime);
           },function(error){
@@ -222,7 +222,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.save_changes = function() {
       $scope.save().then(function(save_res) {
         if(!save_res) return;
-        var taskId = save_res.data.object.id;
+        var taskId = save_res.object.id;
           $ionicPopup.alert({
             title: "Aufgabe gespeichert",
             okType: "button-positive button-outline"
@@ -249,7 +249,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.save_and_publish = function(){
       $scope.save().then(function(save_res){
         if(!save_res) return;
-        var taskId = save_res.data.object.id;
+        var taskId = save_res.object.id;
         $scope.publish(taskId);
       })
     };
