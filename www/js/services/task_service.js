@@ -109,77 +109,77 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
    *COMPLETED: A task can only be completed when its children are all completed or if it has none*
    */
   srv.changeTaskState = function(taskId, state_name){
-    return $http.get(srv._baseURL + "task/" + taskId + "/state/" + state_name).then(throwIfErrors);
+    return ajax("task/" + taskId + "/state/" + state_name, "get")
   }
   //Deletes the task with given id
   srv.deleteTaskById = function(taskId){
-    return $http.delete(srv._baseURL + "admin/task/" + taskId).then(throwIfErrors);
+    return ajax("admin/task/" + taskId, "delete")
   }
   //Creates a task, that is set as the child of the chosen existing task
   srv.createNewSubTask= function(taskData, taskId){
-    return $http.post(srv._baseURL + "task/" + taskId + "/extend", taskData).then(throwIfErrors);
+    return ajax("task/" + taskId + "/extend", "post", function(response){}, taskData)
   }
   //Adds target competence to target task, it is mandatory to add the proficiency and importanceLvl
   srv.addCompetenceToTask = function(taskId,competenceId,proficiency,importance,mandatory){
-    return $http.get(srv._baseURL + "task/" + taskId + "/competence/" + competenceId + "/require/" + proficiency + "/" + importance+ "/" + mandatory).then(throwIfErrors);
+    return ajax("task/" + taskId + "/competence/" + competenceId + "/require/" + proficiency + "/" + importance+ "/" + mandatory, "get")
   }
   //removes target competence from target task
   srv.removeCompetenceFromTask = function(taskId,competenceId){
-    return $http.get(srv._baseURL + "task/" + taskId + "/competence/" + competenceId + "/remove").then(throwIfErrors);
+    return ajax("task/" + taskId + "/competence/" + competenceId + "/remove", "get")
   }
   //Adds array of competence objects
   srv.addCompetencesToTask = function(taskId, competences){
-    return $http.post(srv._baseURL + "task/" + taskId + "/competence/require", competences).then(throwIfErrors);
+    return ajax("task/" + taskId + "/competence/require", "post", function(response){}, competences)
   }
   //Overrides task's competences with array of competence objects
   srv.setCompetencesTask = function(taskId, competences){
-    return $http.put(srv._baseURL + "task/" + taskId + "/competence/overwrite", competences).then(throwIfErrors);
+    return ajax("task/" + taskId + "/competence/overwrite", "put", function(response){}, competences)
   }
   //Get all Competences which are not added to that specific task
   srv.getAllAvailableCompetences = function(taskId){
-    return $http.get(srv._baseURL + 'task/' + taskId + '/competence/available').then(throwIfErrors);
+    return ajax("task/" + taskId + "/competence/available", "get")
   }
   //Get all competences
   srv.getAllCompetences = function(){
-    return $http.get(srv._baseURL + '/competence/all').then(throwIfErrors);
+    return ajax("/competence/all", "get")
   }
 
   //Add new comment to a task
   srv.addComment = function(taskId, commentData){
-    return $http.post(srv._baseURL + 'task/' + taskId + '/comment/add', commentData).then(throwIfErrors);
+    return ajax("task/" + taskId + "/comment/add", "post", function(response){}, commentData)
   }
   //Remove a comment from a task
   srv.removeComment = function(taskId, commentId){
-    return $http.delete(srv._baseURL + 'task/' + taskId + '/comment/' + commentId + '/remove').then(throwIfErrors);
+    return ajax("task/" + taskId + "/comment/" + commentId + "/remove", "delete")
   }
   //Get all comments for a task
   srv.getAllCommentsForTask = function(taskId){
-    return $http.get(srv._baseURL + 'task/' + taskId + '/comments').then(throwIfErrors);
+    return ajax("task/" + taskId + "/comments", "get")
   }
 
   //Adds target material to target task
   srv.addMaterialToTask = function(taskId,material){
-    return $http.post(srv._baseURL + "task/" + taskId + "/material/add", material).then(throwIfErrors);
+    return ajax("task/" + taskId + "/material/add", "post", function(response){}, material)
   }
   srv.removeMaterialFromTask = function(taskId,materialId){
-    return $http.get(srv._baseURL + "task/" + taskId + "/material/" + materialId + "/remove").then(throwIfErrors);
+    return ajax("task/" + taskId + "/material/" + materialId + "/remove", "get")
   }
   //Adds array of material objects
   srv.addMaterialsToTask = function(taskId, materials){
-    return $http.post(srv._baseURL + "task/" + taskId + "/material/multiple/add", materials).then(throwIfErrors);
+    return ajax("task/" + taskId + "/material/multiple/add", "post", function(response){}, materials)
   }
   //Overrides task's materials with array of material objects
   srv.setMaterialsTask = function(taskId, materials){
-    return $http.post(srv._baseURL + "task/" + taskId + "/material/multiple/overwrite", materials).then(throwIfErrors);
+    return ajax("task/" + taskId + "/material/multiple/overwrite", "post", function(response){}, materials)
   }
 
   //Current user subscribes to material with quantity (if already subscribed, change quantity)
   srv.subscribeToMaterial = function(taskId, materialId, quantity){
-    return $http.get(srv._baseURL + "task/" + taskId + "/material/" + materialId + "/subscribe/" + quantity).then(throwIfErrors);
+    return ajax("task/" + taskId + "/material/" + materialId + "/subscribe/" + quantity, "get")
   }
   //Current user unsubscribes from material
   srv.unsubscribeFromMaterial = function(taskId, materialId){
-    return $http.get(srv._baseURL + "task/" + taskId + "/material/" + materialId + "/unsubscribe").then(throwIfErrors);
+    return ajax("task/" + taskId + "/material/" + materialId + "/unsubscribe", "get")
   }
 
   return srv
