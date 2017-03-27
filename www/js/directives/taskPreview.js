@@ -17,12 +17,7 @@ cracApp.directive('taskPreview', ['TaskDataService', '$ionicPopup', function(Tas
 
       // @TODO: get this info from the task
       TaskDataService.getTaskRelatById(scope.task.id).then(function(res){
-        if(res.object instanceof Array){
-          debugger
-          return res.data[1].participationType;
-        } else {
-          return "NOT_PARTICIPATING";
-        }
+        return res.meta.relationship.participationType;
       },function(error){
         console.warn("error: user relation to task", error)
         return "NOT_PARTICIPATING";
