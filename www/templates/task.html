@@ -65,7 +65,7 @@
 
       </c-accordion>
 
-      <c-accordion title="'Team'" ng-show="task.userRelationship.length > 0" shown="true">
+      <c-accordion title="'Team'" ng-show="task.userRelationships.length > 0" shown="true">
         <div class="row">
           <div ng-repeat="member in task.userRelationships" style="margin: 0.5em;">
             <img class="img-responsive" src="img/1lZ3VOkiRqOOdIDOu9mn_avatar.png" style="margin: 0 auto; width: 4em; height: 4em;">
@@ -162,7 +162,7 @@
         </ion-list>
         <br>
 	  </c-accordion>
-	  
+
       <c-accordion title="'Kommentare (' + task.comments.length + ')'">
         <ion-list can-swipe="true" ng-show="task.comments.length > 0">
           <div ng-repeat="comment in task.comments" ng-cloak>
