@@ -1,14 +1,18 @@
 /**
  * Created by P23460 on 13.10.2016.
  */
-cracApp.controller('myProfileCtrl', function($rootScope,$scope, $http, $ionicModal,UserDataService) {
-  console.log("Userid: " +$rootScope.globals.currentUser.id)
+cracApp.controller('myProfileCtrl', ['$rootScope','$scope','UserDataService','$ionicPopup',
+function($rootScope,$scope,UserDataService,$ionicPopup) {
+  console.log("Userid: " +$rootScope.globals.currentUser.id);
   UserDataService.getUserById($rootScope.globals.currentUser.id).then(function(res) {
-    $scope.user = res.data;
+    $scope.user = res.object;
     console.log($scope.user)
-
   }, function(error) {
-    console.log('An error occurred!', error);
+    $ionicPopup.alert({
+      title: "Benutzerinformation kann nicht gefolgt werden",
+      template: error.message,
+      okType: 'button-positive button-outline'
+    });
   });
 
   $scope.editFlag =true;
@@ -25,12 +29,17 @@ cracApp.controller('myProfileCtrl', function($rootScope,$scope, $http, $ionicMod
 
     UserDataService.updateCurrentUser(profileData).then(function(res) {
       console.log(profileData);
-      console.log(res.data)
+      console.log(res.data);
       $scope.editFlag =true;
     }, function(error) {
-      console.log('An error occurred!', error);
+      $ionicPopup.alert({
+        title: "Account kann nicht gespeichert werden",
+        template: error.message,
+        okType: 'button-positive button-outline'
+      });
     });
   };
+
   $scope.edit = function(){
     $scope.editFlag =false;
   };
@@ -95,4 +104,4 @@ cracApp.controller('myProfileCtrl', function($rootScope,$scope, $http, $ionicMod
     // Execute action
   }); */
 
-})
+}]);
