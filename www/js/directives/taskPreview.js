@@ -51,7 +51,7 @@ cracApp.directive('taskPreview', ['TaskDataService', '$ionicPopup', function(Tas
             scope.participationType = "NOT_PARTICIPATING";
           }, function (error) {
             $ionicPopup.alert({
-              title: "Aufgabe kann nicht gelost werden",
+              title: "Aufgabe kann nicht abgesagt werden",
               template: error.message,
               okType: 'button-positive button-outline'
             });
