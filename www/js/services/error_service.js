@@ -40,7 +40,7 @@ cracApp.factory('ErrorDisplayService', ["$ionicPopup", function($ionicPopup){
     getMessagesFromCodes: function(errors){
       return errors.map(function(error){
         return code[error.name] || (code.UNKNOWN_ERROR + ": "+ error.name)
-      }).join("\n")
+      }).join("<br>")
     },
 
     showError: function(errorMessage, title, okType) {
