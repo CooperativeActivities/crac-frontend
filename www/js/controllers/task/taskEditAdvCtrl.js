@@ -1,103 +1,96 @@
-cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDataService','ErrorDisplayService','$ionicHistory','$q','$ionicPopup','$state',
+cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDataService','$ionicHistory','$q','$ionicPopup','$state',
   // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
   // You can include any angular dependencies as parameters for this function
   // TIP: Access Route Parameters for your page via $stateParams.parameterName
-  function ($scope, $route, $stateParams,TaskDataService,ErrorDisplayService, $ionicHistory, $q, $ionicPopup, $state) {
+  function ($scope, $route, $stateParams,TaskDataService, $ionicHistory, $q, $ionicPopup, $state) {
     $scope.view = $stateParams.section || 'competences';
-	$scope.task= {};
+	  $scope.task= {};
     $scope.isChildTask = false;
 
     $scope.competenceToAdd = {
       //defaults
     };
-	
-    $scope.taskId = $stateParams.id;
-	$scope.materials = {
-		newObj: {},
-		toAdd: [],
-		toRemove: [],
-		all: []
-	};
-	$scope.shifts = {
-		newObj: {},
-		toAdd: [],
-		toRemove: [],
-		all: []
-	};
-	$scope.competences = {
-		newObj: {
-			importanceLevel: 50,
-			neededProficiencyLevel: 50
-		},
-		toAdd: [],
-		toRemove: [],
-		all: []
-	};
 
-	$scope.resetObjects = function() {
-		$scope.materials.newObj = {};
-		$scope.materials.toAdd = [];
-		$scope.materials.toRemove = [];
-		$scope.shifts.newObj = {};
-		$scope.shifts.toAdd = [];
-		$scope.shifts.toRemove = [];
-		$scope.competences.newObj = {
-			importanceLevel: 50,
-			neededProficiencyLevel: 50
-		};
-		$scope.competences.toAdd = [];
-		$scope.competences.toRemove = [];
-	};
+    $scope.taskId = $stateParams.id;
+	  $scope.materials = {
+      newObj: {},
+      toAdd: [],
+      toRemove: [],
+      all: []
+    };
+    $scope.shifts = {
+      newObj: {},
+      toAdd: [],
+      toRemove: [],
+      all: []
+    };
+    $scope.competences = {
+      newObj: {
+        importanceLevel: 50,
+        neededProficiencyLevel: 50
+      },
+      toAdd: [],
+      toRemove: [],
+      all: []
+    };
+
+    $scope.resetObjects = function() {
+      $scope.materials.newObj = {};
+      $scope.materials.toAdd = [];
+      $scope.materials.toRemove = [];
+      $scope.shifts.newObj = {};
+      $scope.shifts.toAdd = [];
+      $scope.shifts.toRemove = [];
+      $scope.competences.newObj = {
+        importanceLevel: 50,
+        neededProficiencyLevel: 50
+      };
+      $scope.competences.toAdd = [];
+      $scope.competences.toRemove = [];
+    };
 
     $scope.load = function(){
-        // @TODO: check if task.userIsLeading, if not, go back
-        TaskDataService.getTaskById($scope.taskId).then(function (res) {
-			// @TODO: object not structured correctly
-			// if( !res || !res.success ) {
-			if( !res || !res.data || res.status != 200 ) {
-				ErrorDisplayService.showError(
-					res,
-					"Aufgabe kann nicht geladen werden"
-				);
-			}
-			var task = res.data;
-			console.log("edit", task)
-			$scope.task = task;
+      // @TODO: check if task.userIsLeading, if not, go back
+      TaskDataService.getTaskById($scope.taskId).then(function (res) {
+        var task = res.object;
+        console.log("edit", task);
+        $scope.task = task;
+        $scope.updateFlags();
+        TaskDataService.getAllAvailableCompetences(task.id)
+        .then(function(res){ return res.object })
+        .then(function(availableCompetences){
+          if(!availableCompetences) {
+            console.warn('Could not load available competences: ', error);
+            return;
+          }
 
-			$scope.updateFlags();
-			TaskDataService.getAllAvailableCompetences(task.id)
-				.then(function(res){ return res.data })
-				.then(function(availableCompetences){
-					if(!availableCompetences) {
-						console.warn('Could not load available competences: ', error);
-						return;
-					}
-
-					$scope.availableCompetences = availableCompetences;
-				}, function() {
-					console.warn('Could not load available competences: ', error);
-				});
-				
-			task.startTime = new Date(task.startTime);
-			task.endTime = new Date(task.endTime);
-			
-			$scope.competences.all = _.clone(task.taskCompetences);
-			$scope.materials.all = _.clone(task.materials);
-			$scope.shifts.newObj.startTime = task.startTime;
-			$scope.shifts.newObj.endTime = task.endTime;
-			$scope.shifts.all = _.clone(task.childTasks);
-			
-			for(var i=0; i<$scope.shifts.length; i++) {
-				$scope.shifts[i].startTime = new Date($scope.shifts[i].startTime);
-				$scope.shifts[i].endTime = new Date($scope.shifts[i].endTime);
-			}
-        }, function (error) {
-			ErrorDisplayService.showError(
-				res,
-				"Aufgabe kann nicht geladen werden"
-			)
+          $scope.availableCompetences = availableCompetences;
+        }, function() {
+          console.warn('Could not load available competences: ', error);
         });
-    }
+
+        task.startTime = new Date(task.startTime);
+        task.endTime = new Date(task.endTime);
+
+        $scope.competences.all = _.clone(task.taskCompetences);
+        $scope.materials.all = _.clone(task.materials);
+        $scope.shifts.newObj.startTime = task.startTime;
+        $scope.shifts.newObj.endTime = task.endTime;
+        $scope.shifts.all = _.clone(task.childTasks);
+
+        for(var i=0; i<$scope.shifts.length; i++) {
+          $scope.shifts[i].startTime = new Date($scope.shifts[i].startTime);
+          $scope.shifts[i].endTime = new Date($scope.shifts[i].endTime);
+        }
+      }, function (error) {
+        $ionicPopup.alert({
+          title: "Aufgabe kann nicht geladen werden",
+          template: error.message,
+          okType: 'button-positive button-outline'
+        });
+      });
+
+    };
 
     $scope.updateFlags = function(){
       var task = $scope.task;
@@ -129,7 +122,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
           title: "Task kann nicht gespeichert werden:",
           template: "Name muss angegeben werden.",
           okType: "button-positive button-outline"
-        })
+        });
         return
       }
       taskData.name= task.name;
@@ -140,190 +133,178 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
           competenceId: competence.id,
           importanceLevel: competence.importanceLevel || 0,
           neededProficiencyLevel: competence.neededProficiencyLevel || 0,
-          mandatory: competence.mandatory ? 1 : 0,
+          mandatory: competence.mandatory ? 1 : 0
         }
       });
       var materialsToAdd = ($scope.materials.toAdd).map(function(material){
         return {
           name: material.name,
           description: material.description || "",
-          quantity: material.quantity || 0,
+          quantity: material.quantity || 0
         }
-      });	  
-	  var shiftsToAdd = ($scope.shifts.toAdd).map(function(shift) {
-		  return {
-			  taskType: 'SHIFT',
-			  name: task.name,
-			  minAmountOfVolunteers: shift.minAmountOfVolunteers,
-			  startTime: shift.startTime.getTime(),
-			  endTime: shift.endTime.getTime()
-		  }
-	  });
-	  
-		// @TODO: implement time shift add - new endpoint for batch adding
-		var promises = [];
-		
-		if(competencesToAdd.length > 0 ) {
-			promises.push(TaskDataService.addCompetencesToTask(task.id, competencesToAdd));
-		}
-		if(materialsToAdd.length > 0 ) {
-			promises.push(TaskDataService.addMaterialsToTask(task.id, materialsToAdd));
-		}
-		for(var i=0; i<$scope.shifts.toAdd.length; i++) {
-			promises.push(TaskDataService.createNewSubTask(shiftsToAdd, task.id));
-		}
-		for(var i=0; i<$scope.competences.toRemove.length; i++) {
-			promises.push(TaskDataService.removeCompetenceFromTask(task.id, $scope.competences.toRemove[i]));
-		}
-		for(var i=0; i<$scope.materials.toRemove.length; i++) {
-			promises.push(TaskDataService.removeMaterialFromTask(task.id, $scope.materials.toRemove[i]));
-		}
-		for(var i=0; i<$scope.shifts.toRemove.length; i++) {
-			promises.push(TaskDataService.deleteTaskById($scope.shifts.toRemove[i].id));
-		}
-		
-		if( promises.length === 0 ) {
-			return false;
-		}
-		
-        promise = $q.all(promises).then(function(res){
-          return res;
-        })
-		  
-		return promise.then(function (res) {
-			//@TODO need to handle all elements, not just first
-			if(!res || !res[0].data.success) {
-				ErrorDisplayService.showError(
-					res,
-					"Aufgabe kann nicht gespeichert werden"
-				);
-			} else {			
-				$scope.resetObjects();
-				$scope.load();
-			}
-			
-			return res[0];
-		}, function(error) {
-			ErrorDisplayService.showError(
-				error,
-				"Aufgabe kann nicht gespeichert werden"
-			);
-		});
+      });
+      var shiftsToAdd = ($scope.shifts.toAdd).map(function(shift) {
+        return {
+          taskType: 'SHIFT',
+          name: task.name,
+          minAmountOfVolunteers: shift.minAmountOfVolunteers,
+          startTime: shift.startTime.getTime(),
+          endTime: shift.endTime.getTime()
+        }
+      });
 
+      // @TODO: implement time shift add - new endpoint for batch adding
+      var promises = [];
+
+      if(competencesToAdd.length > 0 ) {
+        promises.push(TaskDataService.addCompetencesToTask(task.id, competencesToAdd));
+      }
+      if(materialsToAdd.length > 0 ) {
+        promises.push(TaskDataService.addMaterialsToTask(task.id, materialsToAdd));
+      }
+      for(var i=0; i<$scope.shifts.toAdd.length; i++) {
+        promises.push(TaskDataService.createNewSubTask(shiftsToAdd, task.id));
+      }
+      for(var i=0; i<$scope.competences.toRemove.length; i++) {
+        promises.push(TaskDataService.removeCompetenceFromTask(task.id, $scope.competences.toRemove[i]));
+      }
+      for(var i=0; i<$scope.materials.toRemove.length; i++) {
+        promises.push(TaskDataService.removeMaterialFromTask(task.id, $scope.materials.toRemove[i]));
+      }
+      for(var i=0; i<$scope.shifts.toRemove.length; i++) {
+        promises.push(TaskDataService.deleteTaskById($scope.shifts.toRemove[i].id));
+      }
+
+      if( promises.length === 0 ) {
+        return false;
+      }
+
+      promise = $q.all(promises).then(function(res){
+        return res;
+      });
+
+      return promise.then(function (res) {
+        //@TODO need to handle all elements, not just first
+        $scope.resetObjects();
+        $scope.load();
+        return res[0];
+      }, function(error) {
+        $ionicPopup.alert({
+          title: "Aufgabe kann nicht gespeichert werden",
+          template: error.message,
+          okType: 'button-positive button-outline'
+        });
+        return false;
+      });
     };
 
     // Save changes only
     $scope.save_changes = function() {
       $scope.save().then(function(save_res) {
-        if(!save_res || !save_res.data.success) {
-			return;
-		}
+        if(!save_res) return;
 
         $ionicPopup.alert({
           title: "Task gespeichert",
           okType: "button-positive button-outline"
-        })
-      })
-    }
+        });
+      });
+    };
 
     $scope.save_and_publish = function(){
       $scope.save().then(function(save_res){
-		if(!save_res || !save_res.data.success) {
-			return;
-		}
+        if(!save_res) return;
         $scope.publish($scope.taskId);
-      })
-    }
+      });
+    };
 
     $scope.publish = function(taskId) {
       TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
-        if(!res || !res.data.success){
-			ErrorDisplayService.showError(
-				res,
-				"Aufgabe kann nicht veröffentlicht werden"
-			);
-		} else {
-          $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
-            $ionicHistory.removeBackView()
-          });
-        }
-      })
-    }
+        $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
+          $ionicHistory.removeBackView()
+        });
+      }, function(error) {
+        $ionicPopup.alert({
+          title: "Aufgabe kann nicht veröffentlicht werden",
+          template: error.message,
+          okType: 'button-positive button-outline'
+        });
+      });
+    };
 
     $scope.addCompetence = function(){
       var competenceId = $scope.competences.newObj.id;
       if(!competenceId) return;
       //save later
-      var index = _.findIndex($scope.availableCompetences, { id: parseInt(competenceId) })
+      var index = _.findIndex($scope.availableCompetences, { id: parseInt(competenceId) });
       if(index === -1){
         console.error("this shouldn't happen")
         return;
       }
       var competence = $scope.availableCompetences.splice(index, 1)[0];
-	  var newComp = {
+      var newComp = {
         id: competenceId,
         name: competence.name,
         importanceLevel: $scope.competences.newObj.importanceLevel,
         neededProficiencyLevel: $scope.competences.newObj.neededProficiencyLevel,
         mandatory: $scope.competences.newObj.mandatory
       };
-	  
+
       $scope.competences.toAdd.push(newComp);
-	  $scope.competences.all.push(newComp);
+	    $scope.competences.all.push(newComp);
     };
 
     $scope.removeCompetence = function(competence){
       if(!competence) return;
       var index = _.findIndex($scope.competences.all, competence);
-	  var newIndex = _.findIndex($scope.competences.toAdd, competence);
+	    var newIndex = _.findIndex($scope.competences.toAdd, competence);
       $scope.competences.all.splice(index, 1)[0];
       $scope.availableCompetences.push({ name: competence.name, id: competence.id })
-	  if(newIndex < 0) {
-		$scope.competences.toRemove.push(competence.id);
-	  } else {
-		$scope.competences.toAdd.splice(newIndex, 1)[0];
-	  }
-    }
+      if(newIndex < 0) {
+      $scope.competences.toRemove.push(competence.id);
+      } else {
+      $scope.competences.toAdd.splice(newIndex, 1)[0];
+      }
+    };
 
     //material
     $scope.addMaterial = function(){
       if(!$scope.materials.newObj.name) return;
       //save later
-	  var newMaterial = _.clone($scope.materials.newObj);
+	    var newMaterial = _.clone($scope.materials.newObj);
       $scope.materials.all.push(newMaterial);
-	  $scope.materials.toAdd.push(newMaterial);
+	    $scope.materials.toAdd.push(newMaterial);
       $scope.materials.newObj = {};
     };
     $scope.removeMaterial = function(material){
       if(!material) return;
       var index = _.findIndex($scope.materials.all, material);
-	  var newIndex = _.findIndex($scope.materials.toAdd, material);
+	    var newIndex = _.findIndex($scope.materials.toAdd, material);
       $scope.materials.all.splice(index, 1)[0];
-	  if(newIndex < 0) {
-		  $scope.materials.toRemove.push(material.id);
-	  } else {
-		  $scope.materials.toAdd.splice(newIndex, 1)[0];
-	  }
-    }
-	
-	//shifts
-	$scope.addShift = function() {
-		if(!$scope.shifts.newObj.startTime || !$scope.shifts.newObj.endTime) return;
-		var newShift = _.clone($scope.shifts.newObj);
-		$scope.shifts.all.push(newShift);
-		$scope.shifts.toAdd.push(newShift);
-	}
+      if(newIndex < 0) {
+        $scope.materials.toRemove.push(material.id);
+      } else {
+        $scope.materials.toAdd.splice(newIndex, 1)[0];
+      }
+    };
+
+    //shifts
+    $scope.addShift = function() {
+      if(!$scope.shifts.newObj.startTime || !$scope.shifts.newObj.endTime) return;
+      var newShift = _.clone($scope.shifts.newObj);
+      $scope.shifts.all.push(newShift);
+      $scope.shifts.toAdd.push(newShift);
+    };
     $scope.removeShift = function(shift){
       if(!shift) return;
-	  var index = _.findIndex($scope.shifts.all, shift);
-	  var newIndex = _.findIndex($scope.shifts.toAdd, shift);
-	  $scope.shifts.all.splice(index, 1)[0];
-	  if( newIndex < 0 ) {
-		$scope.shifts.toRemove.push(shift.id);
-	  } else {
-		$scope.shifts.toAdd.splice(newIndex, 1)[0];
-	  }
-    }
+      var index = _.findIndex($scope.shifts.all, shift);
+      var newIndex = _.findIndex($scope.shifts.toAdd, shift);
+      $scope.shifts.all.splice(index, 1)[0];
+      if( newIndex < 0 ) {
+        $scope.shifts.toRemove.push(shift.id);
+      } else {
+        $scope.shifts.toAdd.splice(newIndex, 1)[0];
+      }
+    };
 
     $scope.load();
-  }])
+  }]);
