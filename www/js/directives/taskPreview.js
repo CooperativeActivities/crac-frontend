@@ -19,7 +19,7 @@ cracApp.directive('taskPreview', ['TaskDataService', '$ionicPopup', function(Tas
       TaskDataService.getTaskRelatById(scope.task.id).then(function(res){
         return res.meta.relationship.participationType;
       },function(error){
-        console.warn("error: user relation to task", error)
+        //@TODO this is not ideal, NOT_PARTICIPATING should be handled in success and this should have a warn
         return "NOT_PARTICIPATING";
       }).then(function(relation){
         scope.participationType = relation;

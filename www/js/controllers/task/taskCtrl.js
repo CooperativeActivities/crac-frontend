@@ -38,7 +38,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
         $scope.participationType = res.meta.relationship.participationType;
         $scope.userIsDone = res.meta.relationship.completed;
       }, function(error) {
-        //@TODO this should probably be handled differently
+        //@TODO this is not ideal, NOT_PARTICIPATING should be handled in success and this should have a warn
         $scope.participationType = 'NOT_PARTICIPATING';
       }).then(function() {
         $scope.neededCompetences = task.taskCompetences;
