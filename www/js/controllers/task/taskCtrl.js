@@ -35,7 +35,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       task.userRelationships.sort($scope.sortMemberListByRelationship);
 
       TaskDataService.getTaskRelatById($stateParams.id).then(function(res){
-        $scope.participationType = res.data[1].participationType;
+        $scope.participationType = res.meta.relationship.participationType;
         $scope.userIsDone = res.data[1].completed;
       }, function(error) {
         //@TODO this should probably be handled differently

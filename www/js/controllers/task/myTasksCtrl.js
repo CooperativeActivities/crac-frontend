@@ -10,9 +10,9 @@ function ($scope,$window, $route, $stateParams, $routeParams, TaskDataService, $
     TaskDataService.getMyTasks().then(function(res) {
       console.log("My Tasks: ");
 		  console.log(res);
-      $scope.participatingTasks = res.data.participating;
-      $scope.followingTasks = res.data.following;
-      $scope.leadingTasks = res.data.leading;
+      $scope.participatingTasks = res.meta.participating;
+      $scope.followingTasks = res.meta.following;
+      $scope.leadingTasks = res.meta.leading;
       $scope.$broadcast('scroll.refreshComplete');
     }, function(error) {
       $ionicPopup.alert({
