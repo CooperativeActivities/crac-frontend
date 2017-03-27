@@ -13,6 +13,7 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
   }
 
   function ajax(url, method, args){
+    args = args || {}
     var handleSpecificErrors, transformResponse
     if(!args.handleSpecificErrors || !(args.handleSpecificErrors instanceof Function)){
       handleSpecificErrors = function(){}
@@ -21,6 +22,8 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
     }
     if(!args.transformResponse || !(args.transformResponse instanceof Function)){
       transformResponse = function(response){ return response.data }
+    } else {
+      transformResponse = args.transformResponse
     }
     return $http[method](srv._baseURL + url, args.payload)
       .then(function(response){
