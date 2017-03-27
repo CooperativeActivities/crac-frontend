@@ -1,8 +1,8 @@
-cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDataService','UserDataService', "$ionicHistory", "$q", "$ionicPopup", "$state",
+cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDataService','ErrorDisplayService','$ionicHistory','$q','$ionicPopup','$state',
   // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
   // You can include any angular dependencies as parameters for this function
   // TIP: Access Route Parameters for your page via $stateParams.parameterName
-  function ($scope, $route, $stateParams,TaskDataService, UserDataService, $ionicHistory, $q, $ionicPopup, $state) {
+  function ($scope, $route, $stateParams,TaskDataService,ErrorDisplayService, $ionicHistory, $q, $ionicPopup, $state) {
     $scope.view = $stateParams.section || 'competences';
 	$scope.task= {};
     $scope.isChildTask = false;
@@ -52,17 +52,32 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
     $scope.load = function(){
         // @TODO: check if task.userIsLeading, if not, go back
         TaskDataService.getTaskById($scope.taskId).then(function (res) {
-          var task = res.data;
-          console.log("edit", task)
-          if(!task) return;
-          $scope.task = task;
+			// @TODO: object not structured correctly
+			// if( !res || !res.success ) {
+			if( !res || !res.data || res.status != 200 ) {
+				ErrorDisplayService.showError(
+					res,
+					"Aufgabe kann nicht geladen werden"
+				);
+			}
+			var task = res.data;
+			console.log("edit", task)
+			$scope.task = task;
 
-          $scope.updateFlags()
-          TaskDataService.getAllAvailableCompetences(task.id).then(function(res){ return res.data })
-            .then(function(availableCompetences){
-              $scope.availableCompetences = availableCompetences;
-            })
-			
+			$scope.updateFlags();
+			TaskDataService.getAllAvailableCompetences(task.id)
+				.then(function(res){ return res.data })
+				.then(function(availableCompetences){
+					if(!availableCompetences) {
+						console.warn('Could not load available competences: ', error);
+						return;
+					}
+
+					$scope.availableCompetences = availableCompetences;
+				}, function() {
+					console.warn('Could not load available competences: ', error);
+				});
+				
 			task.startTime = new Date(task.startTime);
 			task.endTime = new Date(task.endTime);
 			
@@ -77,7 +92,10 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 				$scope.shifts[i].endTime = new Date($scope.shifts[i].endTime);
 			}
         }, function (error) {
-          console.warn('An error occurred!', error);
+			ErrorDisplayService.showError(
+				res,
+				"Aufgabe kann nicht geladen werden"
+			)
         });
     }
 
@@ -169,40 +187,38 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 		}
 		
         promise = $q.all(promises).then(function(res){
-          // catch error of setCompetencesTask
-          return res[0]
+          return res;
         })
 		  
-		  return promise.then(function (res) {
-			$scope.resetObjects();
-			$scope.load();
-			return res;
-		  }, function(error) {
-			console.log('An error occurred!', error);
-			var message = "";
-			if(error.data.cause){
-			  switch(error.data.cause){
-				  // @TODO: welche fehler gibt es hier?
-				default: message = "Anderer Fehler: " + error.data.cause;
-			  }
-			} else if(error.status == 403){
-			  message = "Du hast keine Berechtigungen Tasks zu speichern.";
-			} else if(error.status == 500){
-			  message = "Server Fehler";
+		return promise.then(function (res) {
+			//@TODO need to handle all elements, not just first
+			if(!res || !res[0].data.success) {
+				ErrorDisplayService.showError(
+					res,
+					"Aufgabe kann nicht gespeichert werden"
+				);
+			} else {			
+				$scope.resetObjects();
+				$scope.load();
 			}
-			$ionicPopup.alert({
-			  title: "Task kann nicht gespeichert werden",
-			  template: message,
-			  okType: "button-positive button-outline"
-			});
-		  });
+			
+			return res[0];
+		}, function(error) {
+			ErrorDisplayService.showError(
+				error,
+				"Aufgabe kann nicht gespeichert werden"
+			);
+		});
 
     };
 
     // Save changes only
     $scope.save_changes = function() {
       $scope.save().then(function(save_res) {
-        if(!save_res) return;
+        if(!save_res || !save_res.data.success) {
+			return;
+		}
+
         $ionicPopup.alert({
           title: "Task gespeichert",
           okType: "button-positive button-outline"
@@ -212,49 +228,24 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 
     $scope.save_and_publish = function(){
       $scope.save().then(function(save_res){
-        if(!save_res || !save_res.data.success) return;
+		if(!save_res || !save_res.data.success) {
+			return;
+		}
         $scope.publish($scope.taskId);
       })
     }
 
     $scope.publish = function(taskId) {
       TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
-        if(res.data.success){
+        if(!res || !res.data.success){
+			ErrorDisplayService.showError(
+				res,
+				"Aufgabe kann nicht veröffentlicht werden"
+			);
+		} else {
           $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
             $ionicHistory.removeBackView()
           });
-        } else {
-          var message = "";
-          switch(res.data.cause){
-            case "MISSING_COMPETENCES": message = "Bitte füge Kompetenzen hinzu."; break;
-            case "CHILDREN_NOT_READY":  message = "Unteraufgaben sind noch nicht bereit."; break;
-            case "TASK_NOT_READY":  message = "Aufgabe ist nicht bereit veröffentlicht zu werden."; break;
-            default: message = "Anderer Fehler: " + res.data.cause;
-          }
-
-          if($scope.isNewTask) {
-            $ionicPopup.show({
-              title: "Task wurde erstellt und als 'bereit' gesetzt, kann aber nicht veröffentlicht werden.",
-              template: message,
-              buttons: [{
-                text: 'OK',
-                type: "button-positive button-outline",
-                onTap: function(e) {
-                  // redirect to the edit page of the newly created task
-                  // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
-                  $state.go('tabsController.taskEdit', { id:taskId }, { location: "replace" }).then(function(res){
-                    $ionicHistory.removeBackView()
-                  });
-                }
-              }]
-            })
-          } else {
-            $ionicPopup.alert({
-              title: "Task kann nicht veröffentlicht werden",
-              template: message,
-              okType: "button-positive button-outline"
-            })
-          }
         }
       })
     }

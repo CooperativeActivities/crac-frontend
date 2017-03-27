@@ -11,14 +11,31 @@ cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, 
   $scope.doRefresh = function(){
     $q.all(
       TaskDataService.getMatchingTasks(3).then(function(res){
-        $scope.matchingTasks = res.object;
-				console.log("Matching tasks: ", res.object);
-      }, function(error){ console.log('An error occurred!', error) }),
-      TaskDataService.getAllParentTasks().then(function (res) {
-        $scope.parentTasks = res.object;
-				console.log("Parent tasks: ", res.object);
-      }, function (error) { console.log('An error occurred!', error) })
-    ).then(function(res){
+        // @TODO: object not structured correctly
+        // if( !res || !res.success ) {
+        if( !res || !res.data || res.status != 200 ) {
+          console.warn("Matching tasks could not be retrieved", res);
+        }
+
+            $scope.matchingTasks = res.data;
+        console.log("Matching tasks: ");
+        console.log(res.data);
+          }, function(error){
+        console.warn("Matching tasks could not be retrieved", error);
+        }),
+          TaskDataService.getAllParentTasks().then(function (res) {
+        // @TODO: object not structured correctly
+        // if( !res || !res.success ) {
+        if( !res || !res.data || res.status != 200 ) {
+          console.warn("All task list could not be retrieved", res);
+        }
+           $scope.parentTasks = res.data;
+        console.log("Matching tasks: ");
+        console.log(res.data);
+          }, function (error) {
+        console.warn("All task list could not be retrieved", res);
+        })
+      ).then(function(res){
       //Stop the ion-refresher from spinning
       $scope.$broadcast('scroll.refreshComplete');
     })

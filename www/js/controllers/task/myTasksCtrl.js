@@ -8,14 +8,27 @@ function ($scope,$window, $route, $stateParams, $routeParams, TaskDataService, $
   $scope.completed ="'!' + 'COMPLETED'";
   $scope.doRefresh = function(){
     TaskDataService.getMyTasks().then(function(res) {
-			console.log("My Tasks: ");
-			console.log(res);
-      $scope.participatingTasks = res.data.participating
-      $scope.followingTasks = res.data.following
-      $scope.leadingTasks = res.data.leading
-      $scope.$broadcast('scroll.refreshComplete');
+		// @TODO: object not structured correctly
+		// if( !res || !res.success ) {
+		if( !res || !res.data || res.status != 200 ) {
+			ErrorDisplayService.showError(
+				res,
+				"Aufgabe kann nicht geladen werden"
+			);
+			return;
+		}
+		
+		console.log("My Tasks: ");
+		console.log(res);
+		$scope.participatingTasks = res.data.participating
+		$scope.followingTasks = res.data.following
+		$scope.leadingTasks = res.data.leading
+		$scope.$broadcast('scroll.refreshComplete');
     }, function(error) {
-      console.log('An error occurred!', error);
+		ErrorDisplayService.showError(
+			error,
+			"Aufgabe kann nicht geladen werden"
+		);
     })
   }
 
@@ -28,21 +41,4 @@ function ($scope,$window, $route, $stateParams, $routeParams, TaskDataService, $
   $scope.loadSingleTask = function(taskId){
     $state.go('tabsController.task', { id:taskId }, {reload:true});
   }
-  $scope.cancle = function(id){
-    TaskDataService.removeOpenTask(id).then(function(res) {
-      console.log("deleted");
-      $state.reload();
-      $window.location.reload();
-    }, function(error) {
-      console.log('An error occurred!', error);
-    });
-  }
-
-  $scope.notCompleted = function(item)
-  {
-    return (item.type !== 'foo');
-  };
-
-
-
 }])
