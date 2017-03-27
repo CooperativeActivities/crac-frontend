@@ -4,14 +4,33 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
 
   // URL to REST-Service
   srv._baseURL = "https://core.crac.at/crac-core/";
-  function throwIfErrors(response){
+  function noConnectionError(error){
+    throw { error: error, message: "Keine Verbindung" };
+  }
+  function throwIfErrors (response){
     if(response.data.success){ return response.data; }
-    else { throw response.data; }
+    else {
+      // switch error.data.cause here
+      throw { error: response.data, message: "Nicht gefunden oder so" };
+    }
+  }
+
+  function handleCommonErrors(response){
+    if(response.status === 401){
+      throw { error: response.data, message: "Sie sind nicht eingeloggt." };
+    }
   }
 
   // Get all task
   srv.getAllParentTasks = function(){
-    return $http.get(srv._baseURL + "task/parents").then(throwIfErrors);
+    return $http.get(srv._baseURL + "task/parents").then(function(response){
+      if(response && response.data && response.data.success){ return response.data; }
+      else {
+        handleCommonErrors(response)
+        // switch error.data.cause here
+        throw { error: response.data, message: "Aufgabenliste konnte nicht geladen werden" };
+      }
+    }, noConnectionError);
   }
   //Get a TAsk by ID
   srv.getTaskById = function(id){
