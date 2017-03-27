@@ -17,16 +17,7 @@ cracApp.factory('UserDataService', ["$http","$rootScope", function($http,$rootSc
 
     // Get specified user by id (integer)
     srv.getUserById = function(id){
-      console.log($rootScope.globals)
-      var req = {
-        method: 'GET',
-        url: srv._baseURL + 'user/' + id,
-        headers: {
-          'Authorization': "Basic " + $rootScope.globals.currentUser.authdata
-        }
-      }
-      //return $http(req);
-      return $http.get(srv._baseURL + 'user/' + id);
+      return $http.get(srv._baseURL + 'user/' + id).then(function(res){ return res.data.object });
     }
 
     /*

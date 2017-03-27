@@ -7,14 +7,13 @@ cracApp.controller('homeCtrl', ['$scope', '$stateParams', 'TaskDataService','$st
   function ($scope, $stateParams, TaskDataService, $state) {
 
       TaskDataService.getMatchingTasks().then(function(res){
-        $scope.tasks = res.data;
-        console.log($scope.tasks);
+        $scope.tasks = res.object;
       })
 
 
     $scope.follow = function(id){
-      TaskDataService.changeTaskState(id,'follow').then(function(res) {
-        console.log(res.data);
+      TaskDataService.changeTaskState(id,'follow').then(function(data) {
+        console.log(data);
       }, function(error) {
         console.log('An error occurred!', error);
       });

@@ -30,7 +30,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 
     $scope.doRefresh = function(){
       TaskDataService.getTaskById($stateParams.id).then(function (res) {
-        var task = res.data;
+        var task = res.object;
         console.log("task detail view", task);
         if(!task) return;
 
@@ -78,7 +78,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
         task = $scope.task,
         taskIsWorkable = task.taskType === 'WORKABLE';
 		taskHasShifts = task.childTasks.length > 0 && taskIsWorkable;
-		
+
 
       //initialize all flags to false
       $scope.editableFlag =false;
@@ -115,7 +115,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 			$scope.showFollow = relation !== "FOLLOWING" && relation !== "PARTICIPATING";
 			$scope.showCancel = relation === "PARTICIPATING";
             $scope.showUnfollow = relation === "FOLLOWING";
-		  } 
+		  }
           break;
         case "NOT_PUBLISHED":
           if($scope.participationType === 'LEADING'){
@@ -156,7 +156,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 			//if a task has shifts, general enrolment is forbidden, this shouldn't happen
 			return;
 		}
-		
+
       TaskDataService.changeTaskPartState($stateParams.id ,'participate').then(function(res) {
         $scope.participationType = "PARTICIPATING"
         $scope.updateFlags();
@@ -288,7 +288,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 			console.log('An error occurred!', error);
 		});
     }
-	
+
 	$scope.publish = function() {
 		if( !$scope.task.readyToPublish ) {
 			// @TODO - display popup with reason(s) why it's not ready
@@ -413,7 +413,7 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
 			$scope.unsubscribe(material);
 			return;
 		}
-		
+
 		TaskDataService.subscribeToMaterial($scope.task.id, material.id, material.subscribedQuantity).then(function(res){
 			if(!res.data.success){
 			  return alert(res.data.cause)

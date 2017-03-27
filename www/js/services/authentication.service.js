@@ -24,7 +24,7 @@
 
       $http.get(baseURL + '/user/login')
         .success(function (response, status, headers) {
-          if (response.success || response.cause =="toke already created") {
+          if (response.success) {
             console.log("Login successful");
 
             // SetCredentials(username,headers('Authorization'));
@@ -32,16 +32,12 @@
             //$http.defaults.headers.common['Authorization'] = headers('Authorization');
             //$http.defaults.headers.common["X-AUTH-TOKEN"] = response.token;
             //$cookieStore.put('globals', $rootScope.globals);
-            response.success = true;
             //$cookieStore.put('basic', 'Basic ' + authdata);
             $cookieStore.put('basic', 'Basic Og==');
 
             //response = {success: true, id: response.user};
             //return response;
-          } //else {
-            //response = {success: false, message: 'Username or password is incorrect'};
-            //return response;
-          //}
+          }
           callback(response);
         })
         .error(function (response, status, headers) {
@@ -55,11 +51,11 @@
 
       $rootScope.globals = {
         currentUser: {
-          user: response.user,
-          id: response.id,
+          user: response.meta.user,
+          id: response.object.userId,
           //authdata: authdata,
-          token : response.token,
-          roles : response.roles
+          token : response.object.code,
+          roles : response.meta.roles
         }
       };
 
@@ -72,13 +68,13 @@
       $http.get(baseURL+'/user/logout').success(function(response){
         ClearCredentials();
       }).
-      error(function(response){
-        console.log("Logout failed");
-      });
+        error(function(response){
+          console.log("Logout failed");
+        });
 
     }
     function Logout() {
-        ClearCredentials();
+      ClearCredentials();
     }
 
     function ClearCredentials() {
