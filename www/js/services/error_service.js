@@ -3,8 +3,8 @@ cracApp.factory('ErrorDisplayService', ["$ionicPopup", function($ionicPopup){
     ACTION_NOT_VALID: "",
     ID_NOT_VALID: "",
     ID_NOT_FOUND: "ID nicht gefunden",
-    TASK_NOT_EXTENDABLE: "",
-    PERMISSIONS_NOT_SUFFICIENT: "",
+    TASK_NOT_EXTENDABLE: "Aufgabe kann nicht erweitert werden",
+    PERMISSIONS_NOT_SUFFICIENT: "Sie besitzen nicht die nötigen Berechtigungen",
     ORGANISATIONAL_EXTENDS_SHIFT: "",
     WORKABLE_EXTENDS_ORGANISATIONAL: "",
     WORKABLE_EXTENDS_WORKABLE: "",
@@ -12,8 +12,8 @@ cracApp.factory('ErrorDisplayService', ["$ionicPopup", function($ionicPopup){
     USER_NOT_PARTICIPATING: "",
     TASK_NOT_STARTED: "",
     TASK_NOT_READY: "Aufgabe ist nicht bereit veröffentlicht zu werden.",
-    TASK_NOT_JOINABLE: "",
-    TASK_ALREADY_IN_PROCESS: "",
+    TASK_NOT_JOINABLE: "An dieser Aufgabe kann nicht teilgenommen werden",
+    TASK_ALREADY_IN_PROCESS: "Aufgabe bereits gestartet",
     CHILDREN_NOT_READY: "Unteraufgaben sind noch nicht bereit.",
     UNDEFINED_ERROR: "",
     START_NOT_ALLOWED: "",
@@ -33,6 +33,7 @@ cracApp.factory('ErrorDisplayService', ["$ionicPopup", function($ionicPopup){
     NOT_FOUND: "",
     TASK_HAS_OPEN_AMOUNT: "",
     CANNOT_BE_COPIED: "",
+    EMPTY_DATA: "Nichts vorhanden",
     UNKNOWN_ERROR: "Unbekannter Fehler"
   }
   return {
