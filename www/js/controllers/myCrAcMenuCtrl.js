@@ -9,10 +9,14 @@ cracApp.controller('myCrAcMenuCtrl', ['$scope','$rootScope', '$stateParams','Use
     console.log("globals", $rootScope.globals);
     $rootScope.$watch(['globals.hasOwnProperty'], function() {
       if ($rootScope.globals.hasOwnProperty("currentUser")) {
-        UserDataService.getUserById($rootScope.globals.currentUser.id).then(function (user) {
+        UserDataService.getUserById($rootScope.globals.currentUser.id).then(function (res) {
           UserDataService.getCompRelationships().then(function(res){
             $rootScope.globals.userInfoCompetences = res.data;
+          }, function(error){
+            // this error happens when the user has no competences assigned
+            // just catching this error cause i don't want it to clutter the console
           })
+          var user = res.object;
           $scope.user = user;
           $rootScope.globals.userInfo = user;
           console.log("user", $scope.user);
