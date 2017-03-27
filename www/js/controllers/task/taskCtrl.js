@@ -4,11 +4,11 @@
 // @TODO: move this to some global config file
 var SUBTASKS_LIMITED_TO_SHALLOW = false;
 
-cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window', '$stateParams','$routeParams','TaskDataService','$state','$ionicPopup',
+cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window', '$stateParams','$routeParams','TaskDataService','$state','$ionicPopup', "ErrorDisplayService",
 // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskDataService, $state, $ionicPopup) {
+function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskDataService, $state, $ionicPopup, ErrorDisplayService) {
 
   //Flags to show/hide buttons
   $scope.editableFlag =false;
@@ -46,6 +46,8 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
         $scope.updateFlags();
         $scope.$broadcast('scroll.refreshComplete');
       });
+    },function(error){
+      ErrorDisplayService.showError(error.message)
     })
   };
 

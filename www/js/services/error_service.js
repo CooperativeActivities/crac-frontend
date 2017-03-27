@@ -43,38 +43,7 @@ cracApp.factory('ErrorDisplayService', ["$ionicPopup", function($ionicPopup){
       }).join("\n")
     },
 
-    showError: function(obj, title, okType) {
-      if( !title ) title = "Fehler";
-      if( !okType ) okType = "button-positive button-outline";
-
-      console.log('Error: ', obj);
-      var message = "";
-
-      if(obj.data.status == 403){
-        message += "<br>Du hast die Berechtigungen nicht";
-      }
-      if(obj.data.status == 500){
-        message += "<br>Server Fehler";
-      }
-
-      if(obj.data.errors) {
-        for(var i=0; i<obj.data.errors.length; i++){
-          var errMsg = this.code[obj.data.errors[i]];
-          if(!errMsg) {
-            errMsg = "Unbekannten Fehler: " + obj.data.errors[i];
-          }
-          message += "<br>"+errMsg;
-        }
-      }
-
-      $ionicPopup.alert({
-        title: title,
-        template: message,
-        okType: okType
-      })
-    },
-
-    showCustomError: function(errorMessage, title, okType) {
+    showError: function(errorMessage, title, okType) {
       if( !title ) title = "Fehler";
       if( !okType ) okType = "button-positive button-outline";
 

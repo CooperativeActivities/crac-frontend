@@ -42,15 +42,14 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", "ErrorDisplayService",
             throw { error: response, message: "Keine Verbindung" };
             break;
           case 401:
-            throw { error: response.data, message: "Sie sind nicht eingeloggt." };
+            throw { error: response, message: "Sie sind nicht eingeloggt." };
             break;
           case 404:
-            throw { error: response.data, message: "Resource nicht gefunden" };
+            throw { error: response, message: "Resource nicht gefunden" };
             break;
           case 400:
             if(response.data && response.data.errors){
-              console.warn("400", response.data.errors)
-              throw { error: response.data.errors, message: ErrorDisplayService.getMessagesFromCodes(response.data.errors) };
+              throw { error: response, message: ErrorDisplayService.getMessagesFromCodes(response.data.errors) };
             }
             break;
         }
