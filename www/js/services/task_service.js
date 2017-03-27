@@ -68,7 +68,7 @@ cracApp.factory('TaskDataService', ["$http","$rootScope", function($http,$rootSc
   }
   //Update the Task data if there are changes
   srv.updateTaskById = function(taskData, id){
-    return ajax("task/" + id, "put", { handleSpecificErrors: function(response){
+    return ajax("task/" + id, "put", { payload: taskData, handleSpecificErrors: function(response){
       // switch .data.cause here
       //throw { error: response.data, message: "Task #" + id + " konnte nicht gespeichert werden" };
     }})
