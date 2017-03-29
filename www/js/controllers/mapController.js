@@ -17,7 +17,8 @@ cracApp.controller('MapController',
           defaults: {
             tileLayer: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
             maxZoom: 18,
-            zoomControlPosition: 'bottomleft'
+            zoomControlPosition: 'bottomleft',
+            scrollWheelZoom:'center'
           },
           markers : {},
           events: {
@@ -53,17 +54,59 @@ cracApp.controller('MapController',
             $scope.map.markers.now = {
               lat:position.coords.latitude,
               lng:position.coords.longitude,
-              message: "You Are Here",
+              //message: "Standort",
               focus: true,
-              draggable: false
+              draggable: true
             };
 
           }, function(err) {
-            // error
-            console.log("Location error!");
+            // Error
             console.log(err);
+
+            // If user denies access to location services
+            // or other error, load map with center on Austria
+
+            $scope.map.center  = {
+              lat : 47.67,
+              lng : 13.35,
+              zoom : 6
+            };
+
           });
 
       };
 
-    }]);
+      $scope.$on('leafletDirectiveMap.move', function(event, args) {
+      // Get the Leaflet map from the triggered event.
+      var map = args.leafletEvent.target;
+      var center = map.getCenter();
+
+      // Update the marker.
+        $scope.map.markers = {
+          marker: {
+            lat: center.lat,
+            lng: center.lng,
+          }
+        };
+
+      });
+
+      $scope.$on('leafletDirectiveMap.moveend', function(event, args) {
+      // Get the Leaflet map from the triggered event.
+      var map = args.leafletEvent.target;
+      var center = map.getCenter();
+
+
+      $("#map-search-field").val(function(i) {
+        return parseFloat(center.lat).toFixed(5) + " | " + parseFloat(center.lng).toFixed(5);
+      });
+
+      });
+
+
+
+
+
+
+
+  }]);
