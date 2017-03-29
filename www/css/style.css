@@ -1186,3 +1186,20 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
 .add:before {
   content: "\271A";
 }
+
+
+/*--- Leaflet--------------------------------------------------------*/
+.mapContainer {
+  margin: -6px 0 -5px -16px;
+  height: 400px;
+  position: relative;
+}
+
+.scroll, .angular-leaflet-map {
+  height: 100%;
+  width: 100%;
+}
+
+.leaflet-bottom {
+  bottom : 10px;
+}

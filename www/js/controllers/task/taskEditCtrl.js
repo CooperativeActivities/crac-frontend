@@ -355,5 +355,10 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       $state.go('tabsController.taskEditAdv', { id: $scope.taskId, section: section });
     };
 
+    // Open Leaflet Map //
+    $scope.openMap = function() {
+      $state.go('tabsController.openMap');
+    }
+
     $scope.load();
   }]);

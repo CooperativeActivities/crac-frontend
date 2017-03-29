@@ -1,0 +1,13 @@
+<ion-view hide-nav-bar="false">
+  <ion-nav-title>Ortsuche</ion-nav-title>
+  <ion-nav-buttons side="right">
+    <button class="button icon ion-checkmark"  ng-click="save_changes()"></button>
+  </ion-nav-buttons>
+
+  <ion-content data-tap-disabled="true">
+
+    <leaflet defaults="map.defaults" center="map.center" markers="map.markers" ng-if="map"></leaflet>
+
+  </ion-content>
+
+</ion-view>
