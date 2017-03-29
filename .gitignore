@@ -8,3 +8,5 @@ plugins/
 *.xml
 .idea/*
 www/lib/*
+!www/lib/leaflet
+!www/lib/leaflet/*
