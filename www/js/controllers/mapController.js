@@ -1,12 +1,18 @@
 cracApp.controller('MapController',
   [ '$scope',
+    '$http',
     '$cordovaGeolocation',
     'LocationsService',
+    'leafletData',
     function(
       $scope,
+      $http,
       $cordovaGeolocation,
-      LocationsService
+      LocationsService,
+      leafletData
       ) {
+
+      var map;
 
       /**
        * Once state loaded, get put map on scope.
@@ -30,6 +36,24 @@ cracApp.controller('MapController',
         };
 
         $scope.locate();
+
+        leafletData.getMap().then(function(map) {
+
+          var parameters = {
+            "boundary.country": "AT"
+          };
+          var geocoderOptions = {
+            autocomplete: true,
+            expanded: true,
+            collapsible: false,
+            fullWidth: true,
+            markers: false,
+            placeholder: "Ort suchen",
+            params: parameters
+          };
+
+          L.Mapzen.geocoder("mapzen-FZZdZ5c", geocoderOptions).addTo(map);
+        });
 
       });
 
@@ -92,21 +116,61 @@ cracApp.controller('MapController',
       });
 
       $scope.$on('leafletDirectiveMap.moveend', function(event, args) {
-      // Get the Leaflet map from the triggered event.
-      var map = args.leafletEvent.target;
-      var center = map.getCenter();
+        // Get the Leaflet map from the triggered event.
+        var map = args.leafletEvent.target;
+        var center = map.getCenter();
+        //var curLL = parseFloat(center.lat).toFixed(6) + ", " + parseFloat(center.lng).toFixed(6);
+        curLat = parseFloat(center.lat);
+        curLon = parseFloat(center.lng);
 
+        $http({
+          url: "//search.mapzen.com/v1/reverse",
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+            "Token": undefined // Disabling the Token header field, as it is not allowed by Access-Control-Allow-Headers in preflight response.
+          },
+          params: {
+            "point.lat": curLat,
+            "point.lon": curLon,
+            "boundary.country": "AT",
+            "size": 1,
+            "api_key": "mapzen-FZZdZ5c"
+          },
+        })
+        .success(function( data, status ) {
+          console.log( "Request received:", data );
 
-      $("#map-search-field").val(function(i) {
-        return parseFloat(center.lat).toFixed(5) + " | " + parseFloat(center.lng).toFixed(5);
+          var rStreet = data.features[0].properties.street || data.features[0].properties.name;
+          var rHouse = data.features[0].properties.housenumber || "";
+          var rPost = data.features[0].properties.postalcode || "";
+          var rCity = data.features[0].properties.locality || data.features[0].properties.county;
+
+          if (rStreet != "") {
+            if (rHouse != "") {
+              rStreet += " ";
+              rHouse += ", ";
+            } else {
+              rStreet += ", ";
+            }
+          }
+          if (rPost != "") {
+            rPost += " ";
+          }
+
+          var result = rStreet + rHouse + rPost + rCity;
+
+          $(".leaflet-pelias-input").val(result);
+
+        })
+        .error(function( data, status ) {
+          console.log( "Something went wrong!" );
+        });
       });
 
-      });
-
-
-
-
-
-
-
+      $scope.save_address = function(){
+        //TODO: Save Address
+        alert("TODO: Save Address");
+      }
+      
   }]);
