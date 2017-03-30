@@ -2,7 +2,7 @@ cracApp.controller('messagingCtrl', ['$scope', '$stateParams','UserDataService',
   function ($scope, $stateParams, UserDataService, $q) {
     $scope.reload = function(){
       UserDataService.getNotification().then(function(res){
-        var notifications = JSON.parse(res.object);
+        var notifications = res.object
         var promises = []
         notifications.forEach(function(notification){
           if(notification.name = "Friend Request"){
