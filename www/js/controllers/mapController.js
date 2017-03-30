@@ -55,6 +55,11 @@ cracApp.controller('MapController',
           L.Mapzen.geocoder("mapzen-FZZdZ5c", geocoderOptions).addTo(map);
         });
 
+        // Select all Text when clicking/tapping on Input field
+        $(".leaflet-pelias-input").click(function(){
+          this.setSelectionRange(0, 9999);
+        });
+
       });
 
       /**
