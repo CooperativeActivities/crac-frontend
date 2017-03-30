@@ -39,11 +39,11 @@ cracApp.factory('UserDataService', ["Helpers", function(Helpers){
     return ajax("user/all", "get");
   }
 
+
   //Returns the competences of the currently logged in user, wrapped in the relationship-object
   srv.getCompRelationships = function(){
     return ajax("user/competence", "get");
   }
-
   srv.createNewCompetence = function(competenceData){
     return ajax("admin/competence", "post", { payload: competenceData });
   }
@@ -72,14 +72,27 @@ cracApp.factory('UserDataService', ["Helpers", function(Helpers){
     return ajax("user/competence/available", "get");
   }
 
+
   //Returns all notifications, which target the logged in user
   srv.getNotification = function(){
     return ajax("notification", "get");
   }
-
   //Returns all notifications in the system
   srv.getNotificationAll = function(){
     return ajax("notification/admin", "get");
+  }
+  // accept given notification
+  srv.acceptNotification = function(notificationId){
+    return ajax("notification/" + notificationId + "/accept", "get");
+  }
+  // decline given notification
+  srv.declineNotification = function(notificationId){
+    return ajax("notification/" + notificationId + "/deny", "get");
+  }
+
+  // send a friend request notification to specified user
+  srv.friendRequest = function(userId){
+    return ajax("user/" + userId + "/friend", "get");
   }
 
   return srv
