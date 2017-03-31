@@ -16,6 +16,7 @@ cracApp.directive('taskPreview', ['TaskDataService', '$ionicPopup', function(Tas
 				(startDate.getMonth() == endDate.getMonth());
 
       // @TODO: get this info from the task
+      /*
       TaskDataService.getTaskRelatById(scope.task.id).then(function(res){
         return res.meta.relationship.participationType;
       },function(error){
@@ -24,6 +25,7 @@ cracApp.directive('taskPreview', ['TaskDataService', '$ionicPopup', function(Tas
       }).then(function(relation){
         scope.participationType = relation;
       });
+      */
 
       //initialize to false
       scope.showFollow = false;

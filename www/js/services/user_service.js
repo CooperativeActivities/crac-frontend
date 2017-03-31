@@ -42,7 +42,7 @@ cracApp.factory('UserDataService', ["Helpers", function(Helpers){
 
   //Returns the competences of the currently logged in user, wrapped in the relationship-object
   srv.getCompRelationships = function(){
-    return ajax("user/competence", "get");
+    return ajax("competence", "get");
   }
   srv.createNewCompetence = function(competenceData){
     return ajax("admin/competence", "post", { payload: competenceData });

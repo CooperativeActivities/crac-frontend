@@ -34,7 +34,7 @@ cracApp.factory('TaskDataService', ["Helpers", function(Helpers){
   }
   //Returns all tasks of logged in user, divided in the TaskParticipationTypes
   srv.getMyTasks = function(){
-    return ajax("user/task", "get", { handleSpecificErrors: function(response){
+    return ajax("task/type", "get", { handleSpecificErrors: function(response){
       // switch .data.cause here
       //throw { error: response.data, message: "Task #" + id + " konnte nicht gespeichert werden" };
     }, transformResponse: function(response){ return response.data }
@@ -48,14 +48,16 @@ cracApp.factory('TaskDataService', ["Helpers", function(Helpers){
   srv.removeOpenTask= function(id){
     return ajax("user/task/" + id + "/remove", "get");
   }
+  /*
   //Returns target task and its relationship to the logged in user
   srv.getTaskRelatById = function(id){
     return ajax("user/task/" + id, "get");
   }
+  */
   //Returns a sorted list of elements with the best fitting tasks for the logged in user
   srv.getMatchingTasks = function(number){
-    if(number) return ajax("user/findMatchingTasks/" + number, "get");
-    else return ajax("user/findMatchingTasks", "get")
+    if(number) return ajax("user/find/" + number, "get");
+    else return ajax("user/find", "get")
   }
   //Sets a single task ready to be published, only works if it's children are ready
   srv.setReadyToPublishS = function(taskId){
