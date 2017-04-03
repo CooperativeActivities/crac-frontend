@@ -3,7 +3,7 @@
   <ion-nav-buttons side="right">
     <button class="button icon ion-checkmark"  ng-click="save_changes()"></button>
   </ion-nav-buttons>
-  <ion-content padding="true" class="manual-ios-statusbar-padding has-footer">			
+  <ion-content padding="true" class="manual-ios-statusbar-padding has-footer">
 
 	<div class="form-block">
 		<h2>{{task.name}}</h2>
@@ -13,7 +13,7 @@
 			<option value="shifts">Schichten</option>
 		</select>
 	</div>
-  
+
   <div class="form-block-border" ng-if="view == 'competences'">
 	  <ion-list>
 		<ion-item  ng-cloak class="no-border-radius">
@@ -45,6 +45,7 @@
 			  </div>
 			</c-accordion>
 		  </div>
+
 		  <custom-accordion>
 			<custom-accordion-head>
 			  <div class="item item-divider ion-plus">
@@ -100,6 +101,7 @@
 			  <button type="button" ng-click="addCompetence()" class="button button-block button-positive ion-plus no-border-radius"> Hinzufügen</button>
 			</custom-accordion-body>
 		  </custom-accordion>
+
 		</ion-item>
 	  </ion-list>
 	</div>
@@ -121,7 +123,15 @@
 				  </div>
 			<div class="new-material">
 
-			  <c-accordion title="' Material hinzufügen'" >
+
+				<custom-accordion>
+					<custom-accordion-head>
+						<div class="item item-divider ion-plus">
+							Material hinzufügen
+						</div>
+					</custom-accordion-head>
+					<custom-accordion-body>
+
 				<div class="list">
 				  <label class="item item-input item-stacked-label">
 					<span class="input-label new-material-label">Name</span>
@@ -137,16 +147,17 @@
 				  </label>
 				  <button type="button" ng-click="addMaterial()" class="button button-full button-positive ion-plus no-border-radius"> Hinzufügen</button>
 				</div>
+						</custom-accordion-body>
+					</custom-accordion>
 
-			  </c-accordion>
 			</div>
 		  </ion-item>
 		</div>
 	  </ion-list>
 	</div>
-	
+
 	<!-- TODO implement actual shift functionality when backend is available -->
-	
+
 	<div class="form-block" ng-if="view == 'shifts'">
 	  <ion-list>
 		<div  ng-cloak>
@@ -161,7 +172,13 @@
 			</div>
 			<div class="new-shift">
 
-			  <c-accordion title="' Schicht hinzufügen'" >
+                <custom-accordion>
+                    <custom-accordion-head>
+                        <div class="item item-divider ion-plus">
+                            Schicht hinzufügen
+                        </div>
+                    </custom-accordion-head>
+                    <custom-accordion-body>
 				<div class="list">
 				  <label class="item item-input item-stacked-label">
 					<span class="input-label new-shift-label">Beginn</span>
@@ -176,10 +193,17 @@
 					<input type="number" ng-model="shifts.newObj.minAmountOfVolunteers" placeholder="Menge" class="new-material-input">
 				  </label>
 
-				  <button type="button" ng-click="addShift()" class="button button-full button-positive ion-plus no-border-radius"> Hinzufügen</button>
+
+				   <button type="button" ng-click="addShift()" class="button button-full button-positive ion-plus no-border-radius"> Hinzufügen</button>
+
+                    <br />
+				  <button type="button" ng-click="saveShift()" class="button button-full button-positive ion-plus no-border-radius"> Save Shift</button>
+
+
 				</div>
 
-			  </c-accordion>
+			    </custom-accordion-body>
+             </custom-accordion>
 			</div>
 		  </ion-item>
 		</div>
