@@ -30,7 +30,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
   $scope.doRefresh = function(){
     TaskDataService.getTaskById($stateParams.id).then(function (res) {
-      var task = res.meta.task;
+      var task = res.object;
       console.log("task detail view", task);
       if(task.userRelationships) task.userRelationships.sort($scope.sortMemberListByRelationship);
 
@@ -86,8 +86,9 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
   $scope.updateFlags = function(){
     var relation = $scope.participationType,
       task = $scope.task,
-      taskIsWorkable = task.taskType === 'WORKABLE';
-      taskHasShifts = task.childTasks.length > 0 && taskIsWorkable;
+      taskIsWorkable = task.taskType === 'WORKABLE',
+      taskHasShifts = task.childTasks.length > 0 && taskIsWorkable,
+      taskIsSubtask = !!task.superTask;
 
 
     //initialize all flags to false
@@ -131,7 +132,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
         if($scope.participationType === 'LEADING'){
           $scope.editableFlag = true;
           $scope.showPublish = true;
-          $scope.addSubTaskFlag = $scope.task.taskType === 'ORGANISATIONAL' && !SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask;
+          $scope.addSubTaskFlag = $scope.task.taskType === 'ORGANISATIONAL' && (!SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask);
         }
         break;
     }

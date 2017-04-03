@@ -56,8 +56,8 @@ cracApp.factory('TaskDataService', ["Helpers", function(Helpers){
   */
   //Returns a sorted list of elements with the best fitting tasks for the logged in user
   srv.getMatchingTasks = function(number){
-    if(number) return ajax("user/find/" + number, "get");
-    else return ajax("user/find", "get")
+    if(number) return ajax("task/find/" + number, "get");
+    else return ajax("task/find", "get")
   }
   //Sets a single task ready to be published, only works if it's children are ready
   srv.setReadyToPublishS = function(taskId){
