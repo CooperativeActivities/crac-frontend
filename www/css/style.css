@@ -1186,3 +1186,14 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
 .add:before {
   content: "\271A";
 }
+
+
+.width-80{
+  width: 80%;
+  margin: 0 auto;
+}
+
+.mar-bot-15 {
+  margin-bottom: 15px;
+  display: block;
+}

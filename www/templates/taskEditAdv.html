@@ -107,18 +107,18 @@
 	<div class="form-block" ng-if="view == 'materials'">
 	  <ion-list>
 		<div ng-cloak>
-		  <ion-item>
-			<div class="row row-header" ng-if="materials.all.length > 0">
-			  <span class="material-header-name">Name: </span>
-			  <span class="material-header-amount">Menge: </span>
-			  <span class="material-header-description">Beschreibung: </span>
-			</div>
-			<div class="row row-content" ng-repeat="material in materials.all">
-			  <input type="text" disabled class="material-content-name"        ng-model="material.name">
-			  <input type="number" disabled class="material-content-amount"    ng-model="material.quantity">
-			  <input type="text" disabled class="material-content-description" ng-model="material.description">
-			  <i ng-click="removeMaterial(material)" class="icon icon-table-action ion-trash-a"></i>
-			</div>
+			  <ion-item>
+				  <div class="row row-header" ng-if="materials.all.length > 0">
+					  <span class="material-header-name">Name: </span>
+					  <span class="material-header-amount">Menge: </span>
+					  <span class="material-header-description">Beschreibung: </span>
+				  </div>
+				  <div class="row row-content" ng-repeat="material in materials.all">
+					  <input type="text" disabled class="material-content-name"        ng-model="material.name">
+					  <input type="number" disabled class="material-content-amount"    ng-model="material.quantity">
+					  <input type="text" disabled class="material-content-description" ng-model="material.description">
+					  <i ng-click="removeMaterial(material)" class="icon icon-table-action ion-trash-a"></i>
+				  </div>
 			<div class="new-material">
 
 			  <c-accordion title="' Material hinzufügen'" >

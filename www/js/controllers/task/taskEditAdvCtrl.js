@@ -207,6 +207,9 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
           title: "Task gespeichert",
           okType: "button-positive button-outline"
         });
+        $state.go('tabsController.task', { id:$scope.taskId }, { location: "replace" }).then(function(save_res){
+          $ionicHistory.removeBackView();
+        });
       });
     };
 
@@ -220,7 +223,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
     $scope.publish = function(taskId) {
       TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
         $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
-          $ionicHistory.removeBackView()
+          $ionicHistory.removeBackView();
         });
       }, function(error) {
         $ionicPopup.alert({
