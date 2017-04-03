@@ -46,7 +46,7 @@ cracApp.factory('TaskDataService', ["Helpers", function(Helpers){
   }
   //Removes the task with given id from the open-tasks of the currently logged in user
   srv.removeOpenTask= function(id){
-    return ajax("user/task/" + id + "/remove", "get");
+    return ajax("task/" + id + "/remove", "delete");
   }
   /*
   //Returns target task and its relationship to the logged in user
@@ -69,7 +69,7 @@ cracApp.factory('TaskDataService', ["Helpers", function(Helpers){
   }
   //Sets the relation between the logged in user and target task to done, meaning the user completed the task
   srv.setTaskDone = function(taskId, done_boolean){
-    return ajax("task/" + taskId + "/done", "get")
+    return ajax("task/" + taskId + "/done/"+done_boolean, "put")
   }
   /*
    **Change the state of target task; Choose either 'publish', 'start', or 'complete'**
@@ -80,7 +80,7 @@ cracApp.factory('TaskDataService', ["Helpers", function(Helpers){
    *COMPLETED: A task can only be completed when its children are all completed or if it has none*
    */
   srv.changeTaskState = function(taskId, state_name){
-    return ajax("task/" + taskId + "/state/" + state_name, "get")
+    return ajax("task/" + taskId + "/state/" + state_name, "put")
   }
   //Deletes the task with given id
   srv.deleteTaskById = function(taskId){
@@ -133,7 +133,7 @@ cracApp.factory('TaskDataService', ["Helpers", function(Helpers){
     return ajax("task/" + taskId + "/material/add", "post", { payload: material })
   }
   srv.removeMaterialFromTask = function(taskId,materialId){
-    return ajax("task/" + taskId + "/material/" + materialId + "/remove", "get")
+    return ajax("task/" + taskId + "/material/" + materialId + "/remove", "delete")
   }
   //Adds array of material objects
   srv.addMaterialsToTask = function(taskId, materials){
@@ -146,11 +146,11 @@ cracApp.factory('TaskDataService', ["Helpers", function(Helpers){
 
   //Current user subscribes to material with quantity (if already subscribed, change quantity)
   srv.subscribeToMaterial = function(taskId, materialId, quantity){
-    return ajax("task/" + taskId + "/material/" + materialId + "/subscribe/" + quantity, "get")
+    return ajax("task/" + taskId + "/material/" + materialId + "/subscribe/" + quantity, "put")
   }
   //Current user unsubscribes from material
   srv.unsubscribeFromMaterial = function(taskId, materialId){
-    return ajax("task/" + taskId + "/material/" + materialId + "/unsubscribe", "get")
+    return ajax("task/" + taskId + "/material/" + materialId + "/unsubscribe", "delete")
   }
 
   return srv

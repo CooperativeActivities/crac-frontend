@@ -53,11 +53,11 @@ cracApp.factory('UserDataService', ["Helpers", function(Helpers){
   }
   //Add a competence with given ID to the currently logged in user, likeValue and proficiencyValue are mandatory
   srv.addLikeProfValue = function(id,likeValue,proficiencyValue){
-    return ajax("user/competence/" + id + "/add/" + likeValue + "/" + proficiencyValue, "get")
+    return ajax("competence/" + id + "/add", "post", { payload: {  likeValue: likeValue, proficiencyValue: proficiencyValue } })
   }
   // Remove a competence with given ID from the currently logged in user
   srv.removeCompetence = function(id){
-    return ajax("user/competence/" + id + "/remove", "get")
+    return ajax("competence/" + id + "/remove", "delete")
   }
   //Returns a user object with given id
   srv.getCompetenceById = function(id){
@@ -65,11 +65,11 @@ cracApp.factory('UserDataService', ["Helpers", function(Helpers){
   }
   //Adjust the values of a user-competence connection
   srv.updateCompetence = function(id,likeValue,proficiencyValue){
-    return ajax("user/competence/" + id + "/adjust/" + likeValue + "/" + proficiencyValue, "get")
+    return ajax("competence/" + id + "/adjust", "put", { payload: {  likeValue: likeValue, proficiencyValue: proficiencyValue } })
   }
   //Show all competences, that are and not yet connected available to a user
   srv.getAllAvailableCompetences = function(){
-    return ajax("user/competence/available", "get");
+    return ajax("competence/available", "get");
   }
 
 
