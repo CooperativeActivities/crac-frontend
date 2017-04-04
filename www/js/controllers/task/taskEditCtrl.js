@@ -177,6 +177,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       if(task.endTime) taskData.endTime = task.endTime.getTime();
       if(task.description) taskData.description = task.description;
       if(task.location) taskData.location = task.location;
+      if(task.address) taskData.address = task.address;
       if(task.minAmountOfVolunteers) taskData.minAmountOfVolunteers = task.minAmountOfVolunteers;
       taskData.taskType = task.taskType;
 
@@ -357,8 +358,16 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
     // Open Leaflet Map //
     $scope.openMap = function() {
-      $state.go('tabsController.openMap');
+      $state.go('tabsController.openMap', {address: $scope.task.address});
     }
+
+    // Check if Address field has been updated on Map Page
+    $scope.$on("$ionicView.enter", function(event, data){
+      if (data.stateParams.address != null) {
+        $scope.task.address = data.stateParams.address;
+        console.log("Import Address: " + data.stateParams.address);
+      }
+    });
 
     $scope.load();
   }]);
