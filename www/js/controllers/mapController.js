@@ -2,13 +2,11 @@ cracApp.controller('MapController',
   [ '$scope',
     '$http',
     '$cordovaGeolocation',
-    'LocationsService',
     'leafletData',
     function(
       $scope,
       $http,
       $cordovaGeolocation,
-      LocationsService,
       leafletData
       ) {
 
@@ -138,7 +136,7 @@ cracApp.controller('MapController',
           params: {
             "point.lat": curLat,
             "point.lon": curLon,
-            "boundary.country": "AT",
+            //"boundary.country": "AT", // Search on ly in Austria
             "size": 1,
             "api_key": "mapzen-FZZdZ5c"
           },
