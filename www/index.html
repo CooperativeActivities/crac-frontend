@@ -61,6 +61,11 @@
     }
   </style>
 
+  <!-- Leaflet stylesheet -->
+  <link rel="stylesheet" href="css/leaflet.css" />
+  <!-- Mapzen stylesheet -->
+  <link rel="stylesheet" href="https://mapzen.com/js/mapzen.standalone.css">
+
   <!-- Custom stylesheet-->
   <link href="css/style.css" rel="stylesheet">
   <link href="css/taskDetail.css" rel="stylesheet">
@@ -69,6 +74,11 @@
   <script src="lib/angular-modules/angular-cookies.min.js"></script>
   <script src="lib/angular-modules/angular-route.js"></script>
   <script src="lib/angular-modules/angular-locale_de-at.js"></script>
+
+  <script src="lib/leaflet/leaflet.js"></script>
+  <script src="lib/leaflet/angular-leaflet-directive.min.js"></script>
+  <script src="lib/leaflet/ng-cordova.min.js"></script>
+  <script src="https://mapzen.com/js/mapzen.standalone.min.js"></script>
 
   <!-- load services -->
   <script src="js/services.js"></script>
@@ -105,6 +115,7 @@
   <script src="js/controllers/navCtrl.js"></script>
   <script src="js/controllers/user/logout_controller.js"></script>
   <script src="js/controllers/task/swipeCtrl.js"></script>
+  <script src="js/controllers/mapController.js"></script>
 
   <!-- load directives, ... -->
   <script src="js/directives/taskPreview.js"></script>
