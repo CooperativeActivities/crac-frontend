@@ -17,7 +17,7 @@ cracApp.controller('myCompetenciesInfoCtrl', ['$rootScope','$scope', '$statePara
     });
 
     UserDataService.getCompRelationships().then(function(res){
-      $scope.competenceInfo = res.data[$stateParams.index];
+      $scope.competenceInfo = res.object[$stateParams.index];
       console.log($scope.competenceInfo);
     }, function(error) {
       //@TODO error shows when user has no competences, should come as success

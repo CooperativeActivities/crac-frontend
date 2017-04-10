@@ -97,31 +97,29 @@
       <c-accordion title="'Notwendiges Material (' + task.materials.length + ')'" ng-show="task.materials.length > 0">
         <ion-list>
           <div  ng-cloak>
-            <ion-item>
-              <ion-item ng-repeat="material in task.materials">
-                <custom-accordion>
-                  <custom-accordion-head>
-                    <div>
-                      <span>{{ material.quantity }}x</span>
-                      <span>{{ material.name }}</span>
-                    </div>
-                  </custom-accordion-head>
-                  <custom-accordion-body>
-                    <br>
-                    <div>
-                      {{ material.description }}
-                    </div>
-                    <br>
-                    <label>
-                      Ich bringe: <input type="number" placeholder="Anzahl..." ng-model="material.subscribedQuantity">
-                    </label>
-                    <button ng-click="subscribe(material)"
-                      class="button button-small button-outline button-balanced ion-checkmark">Speichern</button>
-                  </custom-accordion-body>
-                </custom-accordion>
-              </ion-item>
-
+            <ion-item ng-repeat="material in task.materials">
+              <custom-accordion>
+                <custom-accordion-head>
+                  <div>
+                    <span>{{ material.quantity }}x</span>
+                    <span>{{ material.name }}</span>
+                  </div>
+                </custom-accordion-head>
+                <custom-accordion-body>
+                  <br>
+                  <div>
+                    {{ material.description }}
+                  </div>
+                  <br>
+                  <label>
+                    Ich bringe: <input type="number" placeholder="Anzahl..." ng-model="material.subscribedQuantity">
+                  </label>
+                  <button ng-click="subscribe(material)"
+                    class="button button-small button-outline button-balanced ion-checkmark">Speichern</button>
+                </custom-accordion-body>
+              </custom-accordion>
             </ion-item>
+
           </div>
         </ion-list>
         <br>
@@ -143,7 +141,7 @@
 		<br>
 	  </c-accordion>
 
-	  <c-accordion title-"'Schichten (' + task.childTasks.length + ''" ng-if="task.taskType == 'WORKABLE' && task.childTasks.length > 0">
+	  <c-accordion title="'Schichten (' + task.childTasks.length + ')'" ng-if="task.taskType == 'WORKABLE' && task.childTasks.length > 0">
         <ion-list>
           <div  ng-cloak>
             <ion-item>

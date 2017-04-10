@@ -1214,4 +1214,13 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
 
 .map-locationSearch > label {
   border-radius: 0 !important;
+
+.width-80{
+  width: 80%;
+  margin: 0 auto;
+}
+
+.mar-bot-15 {
+  margin-bottom: 15px;
+  display: block;
 }

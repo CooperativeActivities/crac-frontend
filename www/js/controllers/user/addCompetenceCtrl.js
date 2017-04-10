@@ -1,12 +1,10 @@
 /**
  * Created by x-net on 14.11.2016.
  */
-cracApp.controller('addCompetenceCtrl', ['$rootScope', '$scope', 'UserDataService', '$ionicPopup', '$state',
-function($rootScope,$scope,UserDataService, $ionicPopup, $state) {
+cracApp.controller('addCompetenceCtrl', ['$rootScope', '$scope', 'UserDataService', '$ionicPopup', '$state', '$ionicScrollDelegate',
+function($rootScope,$scope,UserDataService, $ionicPopup, $state, $ionicScrollDelegate) {
   UserDataService.getAllAvailableCompetences().then(function(res){
     $scope.competences = res.object;
-    console.log($scope.competences);
-    console.log(res);
   }, function(error){
     $ionicPopup.alert({
       title: "Kompetenzen können nicht geladen werden",

@@ -32,8 +32,9 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
     TaskDataService.getTaskById($stateParams.id).then(function (res) {
       var task = res.object;
       console.log("task detail view", task);
-      task.userRelationships.sort($scope.sortMemberListByRelationship);
+      if(task.userRelationships) task.userRelationships.sort($scope.sortMemberListByRelationship);
 
+      /*
       TaskDataService.getTaskRelatById($stateParams.id).then(function(res){
         $scope.participationType = res.meta.relationship.participationType;
         $scope.userIsDone = res.meta.relationship.completed;
@@ -41,11 +42,19 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
         //@TODO this is not ideal, NOT_PARTICIPATING should be handled in success and this should have a warn
         $scope.participationType = 'NOT_PARTICIPATING';
       }).then(function() {
-        $scope.neededCompetences = task.taskCompetences;
-        $scope.task = task;
-        $scope.updateFlags();
-        $scope.$broadcast('scroll.refreshComplete');
-      });
+      */
+      if(task.participationDetails){
+        $scope.participationType = task.participationDetails[0].participationType
+        $scope.userIsDone = task.participationDetails[0].completed
+      } else {
+        $scope.participationType = "NOT_PARTICIPATING"
+        $scope.userIsDone = false
+      }
+      $scope.neededCompetences = task.taskCompetences;
+      $scope.task = task;
+      $scope.updateFlags();
+      $scope.$broadcast('scroll.refreshComplete');
+      //});
     },function(error){
       ErrorDisplayService.showError(error.message)
     })
@@ -77,8 +86,9 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
   $scope.updateFlags = function(){
     var relation = $scope.participationType,
       task = $scope.task,
-      taskIsWorkable = task.taskType === 'WORKABLE';
-      taskHasShifts = task.childTasks.length > 0 && taskIsWorkable;
+      taskIsWorkable = task.taskType === 'WORKABLE',
+      taskHasShifts = task.childTasks.length > 0 && taskIsWorkable,
+      taskIsSubtask = !!task.superTask;
 
 
     //initialize all flags to false
@@ -122,7 +132,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
         if($scope.participationType === 'LEADING'){
           $scope.editableFlag = true;
           $scope.showPublish = true;
-          $scope.addSubTaskFlag = $scope.task.taskType === 'ORGANISATIONAL' && !SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask;
+          $scope.addSubTaskFlag = $scope.task.taskType === 'ORGANISATIONAL' && (!SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask);
         }
         break;
     }

@@ -118,11 +118,23 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           template: "Name muss angegeben werden",
           okType: 'button-positive button-outline'
         });
-        return
+        return;
       }
       taskData.name= task.name;
 
       // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
+
+
+      if(!angular.isDate($scope.task.endTime)){
+        $ionicPopup.alert({
+          title: "Aufgabe kann nicht gespeichert werden",
+          template: "Bitte ein gültiges Enddatum eingeben!",
+          okType: 'button-positive button-outline'
+        });
+        return;
+      }
+
+
       if($scope.timeChoice == 'slot' ){
         task.startTime = new Date(task.startTime);
         task.endTime = new Date(task.endTime);
@@ -131,47 +143,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         task.endTime = new Date(task.endTime);
       }
 
-
-      /*var curDate = new Date();
-
-
-      if(task.startTime.getTime() > task.endTime.getTime()){
-        $ionicPopup.alert({
-          title: "Aufgabe kann nicht gespeichert werden:",
-          template: "Enddatum liegt vor Startdatum.",
-          okType: "button-positive button-outline"
-        });
-        return
-      }
-      if(task.startTime.getTime() < curDate.getTime()){
-        $ionicPopup.alert({
-          title: "Aufgabe kann nicht gespeichert werden:",
-          template: "Startdatum liegt vor aktullem Datum",
-          okType: "button-positive button-outline"
-        });
-        return
-      }
-
-      //Check if subtask in the time of supertask
-      if($scope.isChildTask){
-        console.log('parent', $scope.parentTask );
-        if($scope.parentTask.endTime < task.endTime.getTime()){
-          $ionicPopup.alert({
-            title: "Aufgabe kann nicht gespeichert werden:",
-            template: "Enddatum von Unteraufgabe liegt nach Enddatum von Übergeordneter Aufgabe",
-            okType: "button-positive button-outline"
-          });
-          return
-        }
-        if($scope.parentTask.startTime > task.startTime.getTime()){
-          $ionicPopup.alert({
-            title: "Aufgabe kann nicht gespeichert werden:",
-            template: "Startdatum von Unteraufgabe liegt vor Startdatum von Übergeordneter Aufgabe",
-            okType: "button-positive button-outline"
-          });
-          return
-        }
-      }*/
 
       if(task.startTime) taskData.startTime = task.startTime.getTime();
       if(task.endTime) taskData.endTime = task.endTime.getTime();
@@ -234,13 +205,13 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
             // redirect to the edit page of the newly created org task
             // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
             $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
-            $ionicHistory.removeBackView()
+            $ionicHistory.removeBackView();
             });
           } else {
             // redirect to the advanced edit page of the newly created workable task
             // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
             $state.go('tabsController.taskEditAdv', { id:taskId, section: 'competences' }, { location: "replace" }).then(function(res){
-            $ionicHistory.removeBackView()
+              $ionicHistory.removeBackView();
             });
           }
         }

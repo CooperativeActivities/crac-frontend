@@ -163,7 +163,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
         promises.push(TaskDataService.addMaterialsToTask(task.id, materialsToAdd));
       }
       for(var i=0; i<$scope.shifts.toAdd.length; i++) {
-        promises.push(TaskDataService.createNewSubTask(shiftsToAdd, task.id));
+        promises.push(TaskDataService.createNewSubTask(shiftsToAdd[i], task.id));
       }
       for(var i=0; i<$scope.competences.toRemove.length; i++) {
         promises.push(TaskDataService.removeCompetenceFromTask(task.id, $scope.competences.toRemove[i]));
@@ -207,6 +207,9 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
           title: "Task gespeichert",
           okType: "button-positive button-outline"
         });
+        $state.go('tabsController.task', { id:$scope.taskId }, { location: "replace" }).then(function(save_res){
+          $ionicHistory.removeBackView();
+        });
       });
     };
 
@@ -220,7 +223,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
     $scope.publish = function(taskId) {
       TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
         $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
-          $ionicHistory.removeBackView()
+          $ionicHistory.removeBackView();
         });
       }, function(error) {
         $ionicPopup.alert({
@@ -294,6 +297,14 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       $scope.shifts.all.push(newShift);
       $scope.shifts.toAdd.push(newShift);
     };
+
+    $scope.saveShift = function() {
+     console.log('---Start Shift stuff ----');
+      console.log($scope.shifts);
+    };
+
+
+
     $scope.removeShift = function(shift){
       if(!shift) return;
       var index = _.findIndex($scope.shifts.all, shift);

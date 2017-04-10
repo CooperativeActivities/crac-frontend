@@ -79,21 +79,33 @@
         </div>
       </form>
     </div>
-	
-	<ion-list ng-if="!isNewTask && task.taskType == 'WORKABLE'">
-		<ion-item class="item-icon-right" ng-click="advancedEdit('competences')">
-			Kompetenzen ({{task.taskCompetences.length}})
-			<i class="icon ion-chevron-right"></i>
-		</ion-item>
-		<ion-item class="item-icon-right" ng-click="advancedEdit('materials')">
-			Materialen ({{task.materials.length}})
-			<i class="icon ion-chevron-right"></i>
-		</ion-item>
-		<ion-item class="item-icon-right" ng-click="advancedEdit('shifts')">
-			Schichten ({{task.childTasks.length}})
-			<i class="icon ion-chevron-right"></i>	
-		</ion-item>
-	</ion-list>
+
+      <div ng-if="isNewTask && task.taskType == 'WORKABLE'">
+
+          <button type="button" ng-click="save_changes()" class="button button-full button-positive ion-plus no-border-radius"> Details hinzufügen</button>
+
+      </div>
+
+      <div ng-if="!isNewTask && task.taskType == 'WORKABLE'">
+          <c-accordion title="' Details '">
+          <ion-list >
+              <ion-item class="item-icon-right" ng-click="advancedEdit('competences')">
+                  Kompetenzen ({{task.taskCompetences.length}})
+                  <i class="icon ion-chevron-right"></i>
+              </ion-item>
+              <ion-item class="item-icon-right" ng-click="advancedEdit('materials')">
+                  Materialen ({{task.materials.length}})
+                  <i class="icon ion-chevron-right"></i>
+              </ion-item>
+              <ion-item class="item-icon-right" ng-click="advancedEdit('shifts')">
+                  Schichten ({{task.childTasks.length}})
+                  <i class="icon ion-chevron-right"></i>
+              </ion-item>
+          </ion-list>
+              </c-accordion>
+      </div>
+
+
 	
   </ion-content>
   <ion-footer-bar>
