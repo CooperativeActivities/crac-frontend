@@ -28,10 +28,17 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
   $scope.userIsDone = false;
   $scope.allAreDone = false;
 
+  $scope.childCounter = 0;
+  $scope.shiftCounter = 0;
+
   $scope.doRefresh = function(){
     TaskDataService.getTaskById($stateParams.id).then(function (res) {
       var task = res.object;
       console.log("task detail view", task);
+
+      for(var i = 0; i < task.childTasks.length; i++){
+          $scope.countChildTask(task.childTasks[i].id);
+      }
       if(task.userRelationships) task.userRelationships.sort($scope.sortMemberListByRelationship);
 
       /*
@@ -44,11 +51,11 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       }).then(function() {
       */
       if(task.participationDetails){
-        $scope.participationType = task.participationDetails[0].participationType
-        $scope.userIsDone = task.participationDetails[0].completed
+        $scope.participationType = task.participationDetails[0].participationType;
+        $scope.userIsDone = task.participationDetails[0].completed;
       } else {
-        $scope.participationType = "NOT_PARTICIPATING"
-        $scope.userIsDone = false
+        $scope.participationType = "NOT_PARTICIPATING";
+        $scope.userIsDone = false;
       }
       $scope.neededCompetences = task.taskCompetences;
       $scope.task = task;
@@ -56,7 +63,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       $scope.$broadcast('scroll.refreshComplete');
       //});
     },function(error){
-      ErrorDisplayService.showError(error.message)
+      ErrorDisplayService.showError(error.message);
     })
   };
 
@@ -142,6 +149,20 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
   $scope.loadSingleTask = function(taskId){
     $state.go('tabsController.task', { id:taskId });
   };
+
+  //Count all ChildTask which are no Shifts
+  $scope.countChildTask = function (taskId) {
+      TaskDataService.getTaskById(taskId).then(function (res) {
+          var tempTask = res.object;
+          if(tempTask.taskType === 'SHIFT'){
+              $scope.shiftCounter++;
+          } else {
+              $scope.childCounter++;
+          }
+          console.log('Child Counter: ', $scope.childCounter);
+      });
+  };
+
 
   // Deleting all participating types
   $scope.cancel = function() {

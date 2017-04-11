@@ -130,7 +130,7 @@
         <br>
       </c-accordion>
 
-      <c-accordion title="'Unteraufgaben (' + task.childTasks.length + ')'" ng-show="task.childTasks.length > 0">
+      <c-accordion title="'Unteraufgaben (' + childCounter + ')'" ng-show="childCounter > 0">
         <ion-list>
           <div ng-repeat="subTask in task.childTasks | orderBy: ['startTime', 'name']" ng-cloak>
             <task-preview task="subTask" ng-click="loadSingleTask(subTask.id)"></task-preview>
@@ -141,7 +141,7 @@
 		<br>
 	  </c-accordion>
 
-	  <c-accordion title="'Schichten (' + task.childTasks.length + ')'" ng-if="task.taskType == 'WORKABLE' && task.childTasks.length > 0">
+	  <c-accordion title="'Schichten (' + shiftCounter + ')'" ng-if="shiftCounter > 0">
         <ion-list>
           <div  ng-cloak>
             <ion-item>
