@@ -321,6 +321,19 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
   //Publish a task
   $scope.publish = function() {
+    console.log('publish');
+    if($scope.task.taskType === 'ORGANISATIONAL'){
+      if($scope.task.childTasks.length <= 0){
+          var message = "Übersicht hat noch keine Unteraufgabe! Bitte füge eine Unteraufgabe hinzu!";
+          $ionicPopup.alert({
+              title: "Task kann nicht veröffentlicht werden",
+              template: message,
+              okType: "button-positive button-outline"
+          });
+          return;
+      }
+    }
+
     if( !$scope.task.readyToPublish ) {
       // @TODO - display popup with reason(s) why it's not ready
       /*

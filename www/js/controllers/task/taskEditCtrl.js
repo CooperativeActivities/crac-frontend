@@ -219,6 +219,21 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     };
 
     $scope.save_and_publish = function(){
+
+        console.log('save and publish');
+        if($scope.task.taskType === 'ORGANISATIONAL'){
+            if($scope.task.childTasks.length <= 0){
+                var message = "Übersicht hat noch keine Unteraufgabe! Bitte füge eine Unteraufgabe hinzu!";
+                $ionicPopup.alert({
+                    title: "Task kann nicht veröffentlicht werden",
+                    template: message,
+                    okType: "button-positive button-outline"
+                });
+                return;
+            }
+        }
+
+
       $scope.save().then(function(save_res){
         if(!save_res) return;
         var taskId = save_res.object.id;
