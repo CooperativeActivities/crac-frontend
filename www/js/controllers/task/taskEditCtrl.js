@@ -290,9 +290,9 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.delete = function(){
       var template = 'Wollen sie diese Aufgabe wirklich löschen? Es wird die Aufgabe mit ALLEN darunterliegenden Aufgabes permanent gelöscht.';
       if( $scope.task.taskState === 'PUBLISHED' )
-        template += "<p><strong>Aufgabe is schon veröffentlicht. Aufgabe trotzdem löschen?</strong></p>";
+        template += "<p><strong>Aufgabe ist schon veröffentlicht. Aufgabe trotzdem löschen?</strong></p>";
       if( $scope.task.taskState === 'STARTED' )
-        template += "<p><strong>Aufgabe is schon gestartet. Aufgabe trotzdem löschen?</strong></p>";
+        template += "<p><strong>Aufgabe ist schon gestartet. Aufgabe trotzdem löschen?</strong></p>";
 
       var confirmPopup = $ionicPopup.confirm({
         title: 'Löschen',
