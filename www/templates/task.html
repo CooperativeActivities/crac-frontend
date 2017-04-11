@@ -150,6 +150,9 @@
 					{{shift.startTime | date: "short"}} -
 					{{shift.endTime | date: "short"}}
 				</span>
+                  <span>
+                     Benötigte Helfer: {{shiftHelperCounter}}
+                  </span>
                 <button ng-click="addToShift(shift)"
 					class="button button-small button-outline button-balanced ion-checkmark">Ich arbeite mit!</button>
                 <button ng-click="removeFromShift(shift)"

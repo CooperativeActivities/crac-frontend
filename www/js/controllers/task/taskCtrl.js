@@ -30,6 +30,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
   $scope.childCounter = 0;
   $scope.shiftCounter = 0;
+  $scope.shiftHelperCounter = 0;
 
   $scope.doRefresh = function(){
     TaskDataService.getTaskById($stateParams.id).then(function (res) {
@@ -156,6 +157,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
           var tempTask = res.object;
           if(tempTask.taskType === 'SHIFT'){
               $scope.shiftCounter++;
+              $scope.shiftHelperCounter = tempTask.minAmountOfVolunteers;
           } else {
               $scope.childCounter++;
           }
@@ -213,7 +215,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       console.log('Participating in shift ' + shift.id);
     }, function(error) {
       $ionicPopup.alert({
-        title: "Schicht kann nicht teilgenommen werden",
+        title: "An der Schicht kann nicht teilgenommen werden",
         template: error.message,
         okType: 'button-positive button-outline'
       });
@@ -226,7 +228,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       console.log('Not participating in shift ' + shift.id);
     }, function(error) {
       $ionicPopup.alert({
-        title: "Schicht kann nicht zurückgezogen werden",
+        title: "An der Schicht kann nicht zurückgezogen werden",
         template: error.message,
         okType: 'button-positive button-outline'
       });
