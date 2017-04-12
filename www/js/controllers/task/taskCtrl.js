@@ -100,7 +100,6 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       taskHasShifts = task.childTasks.length > 0 && taskIsWorkable,
       taskIsSubtask = !!task.superTask;
 
-
     //initialize all flags to false
     $scope.editableFlag =false;
     $scope.addSubTaskFlag =false;
@@ -157,10 +156,14 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
   $scope.countChildTask = function (taskId) {
       TaskDataService.getTaskById(taskId).then(function (res) {
           var tempTask = res.object;
-          console.log('tempTask child -- ', tempTask);
           if(tempTask.taskType === 'SHIFT'){
               $scope.shiftCounter++;
               $scope.shiftHelperCounter = tempTask.minAmountOfVolunteers;
+              if(tempTask.participationDetails){
+                  if(tempTask.participationDetails[0].user === $rootScope.globals.currentUser.id){
+                      $scope.working = true;
+                  }
+              }
           } else {
               $scope.childCounter++;
           }
