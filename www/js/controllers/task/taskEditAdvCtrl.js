@@ -307,14 +307,31 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 
     $scope.removeShift = function(shift){
       if(!shift) return;
-      var index = _.findIndex($scope.shifts.all, shift);
-      var newIndex = _.findIndex($scope.shifts.toAdd, shift);
-      $scope.shifts.all.splice(index, 1)[0];
-      if( newIndex < 0 ) {
-        $scope.shifts.toRemove.push(shift.id);
-      } else {
-        $scope.shifts.toAdd.splice(newIndex, 1)[0];
-      }
+      // var index = _.findIndex($scope.shifts.all, shift);
+      // var newIndex = _.findIndex($scope.shifts.toAdd, shift);
+      // $scope.shifts.all.splice(index, 1)[0];
+      // if( newIndex < 0 ) {
+      //   $scope.shifts.toRemove.push(shift.id);
+      // } else {
+      //   $scope.shifts.toAdd.splice(newIndex, 1)[0];
+      // }
+
+        TaskDataService.deleteTaskById(shift.id).then(function (res) {
+            var message = 'Schicht wurde erfolgreich gelöscht';
+            $ionicPopup.alert({
+                title: "Schicht wurde gelöscht",
+                template: message,
+                okType: "button-positive button-outline"
+            });
+        }, function (error) {
+            $ionicPopup.alert({
+                title: "Schicht kann nicht gelöscht werden",
+                template: error.message,
+                okType: 'button-positive button-outline'
+            });
+        });
+
+        $scope.load();
     };
 
     $scope.load();
