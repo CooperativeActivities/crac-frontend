@@ -292,6 +292,17 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 
     //shifts
     $scope.addShift = function() {
+
+      if(!$scope.shifts.newObj.minAmountOfVolunteers){
+          var message = 'Bitte geben Sie die Anzahl an Helfer an!';
+          $ionicPopup.alert({
+              title: "Schicht kontte nicht hinzugefügt werden",
+              template: message,
+              okType: "button-positive button-outline"
+          });
+        return;
+      }
+
       if(!$scope.shifts.newObj.startTime || !$scope.shifts.newObj.endTime) return;
       var newShift = _.clone($scope.shifts.newObj);
       $scope.shifts.all.push(newShift);
