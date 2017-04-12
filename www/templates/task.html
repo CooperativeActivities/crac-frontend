@@ -154,9 +154,9 @@
                      Benötigte Helfer: {{shiftHelperCounter}}
                   </span>
                 <button ng-click="addToShift(shift)"
-					class="button button-small button-outline button-balanced ion-checkmark">Ich arbeite mit!</button>
+					class="button button-small button-outline button-balanced ion-checkmark" ng-if="!working">Ich arbeite mit!</button>
                 <button ng-click="removeFromShift(shift)"
-                    class="button button-small button-outline button-assertive ion-close">Absagen</button>
+                    class="button button-small button-outline button-assertive ion-close" ng-if="working">Absagen</button>
               </ion-item>
             </ion-item>
           </div>

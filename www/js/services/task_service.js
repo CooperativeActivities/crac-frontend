@@ -27,7 +27,9 @@ cracApp.factory('TaskDataService', ["Helpers", function(Helpers){
   };
   //Adds target task to the open-tasks of the logged-in user or changes it's state; Choose either 'participate', 'follow', or 'lead'
   srv.changeTaskPartState = function(id, stateName){
-    return ajax("user/task/" + id + "/" + stateName, "get", { handleSpecificErrors: function(response){
+
+    console.log('id: ' + id + ' stateName: ' + stateName );
+    return ajax("user/task/" + id + "/" + stateName, "put", { handleSpecificErrors: function(response){
       // switch .data.cause here
       //throw { error: response.data, message: "Task #" + id + " konnte nicht verändert werden" };
     }});
@@ -112,8 +114,8 @@ cracApp.factory('TaskDataService', ["Helpers", function(Helpers){
   };
   //Get all competences
   srv.getAllCompetences = function(){
-    return ajax("/competence/all", "get")
-  }
+    return ajax("/competence/all", "get");
+  };
 
   //Add new comment to a task
   srv.addComment = function(taskId, commentData){

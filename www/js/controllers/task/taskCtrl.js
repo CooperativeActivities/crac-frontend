@@ -20,6 +20,8 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
   $scope.showUnfollow = false;
   $scope.showPublish = false;
 
+  $scope.working = false;
+
   $scope.team = [];
   $scope.neededCompetences = [];
 
@@ -155,13 +157,14 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
   $scope.countChildTask = function (taskId) {
       TaskDataService.getTaskById(taskId).then(function (res) {
           var tempTask = res.object;
+          console.log('tempTask child -- ', tempTask);
           if(tempTask.taskType === 'SHIFT'){
               $scope.shiftCounter++;
               $scope.shiftHelperCounter = tempTask.minAmountOfVolunteers;
           } else {
               $scope.childCounter++;
           }
-          console.log('Child Counter: ', $scope.childCounter);
+
       });
   };
 
@@ -210,6 +213,9 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
   //add self to a shift
   $scope.addToShift = function(shift) {
+
+    console.log('shift to paticipate', shift);
+
     TaskDataService.changeTaskPartState(shift.id ,'participate').then(function(res) {
       //@TODO update task object
       console.log('Participating in shift ' + shift.id);
