@@ -207,7 +207,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       $scope.updateFlags();
     }, function(error) {
       $ionicPopup.alert({
-        title: "Aufgabe kann nicht teilgenommen werden",
+        title: "An der Aufgabe kann nicht teilgenommen werden",
         template: error.message,
         okType: 'button-positive button-outline'
       });
@@ -222,6 +222,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
     TaskDataService.changeTaskPartState(shift.id ,'participate').then(function(res) {
       //@TODO update task object
       console.log('Participating in shift ' + shift.id);
+        $scope.working = true;
     }, function(error) {
       $ionicPopup.alert({
         title: "An der Schicht kann nicht teilgenommen werden",
@@ -229,12 +230,15 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
         okType: 'button-positive button-outline'
       });
     });
+
+
   };
 
   //remove self from shift
   $scope.removeFromShift = function(shift) {
     TaskDataService.removeOpenTask(shift.id).then(function (res) {
       console.log('Not participating in shift ' + shift.id);
+        $scope.working = false;
     }, function(error) {
       $ionicPopup.alert({
         title: "An der Schicht kann nicht zurückgezogen werden",
@@ -242,6 +246,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
         okType: 'button-positive button-outline'
       });
     });
+
   };
 
   // follow a task
@@ -457,6 +462,17 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
         okType: 'button-positive button-outline'
       });
     });
+    var comment_message = 'Ich bringe ' + material.subscribedQuantity;
+    TaskDataService.addComment($scope.task.id, comment_message).then(function (res) {
+        console.log("add comment");
+    }, function(error){
+        $ionicPopup.alert({
+            title: "Kommenatr konnte nicht gespeichert werden",
+            template: error.message,
+            okType: 'button-positive button-outline'
+        });
+    });
+
   };
 
   $scope.unsubscribe = function(material){

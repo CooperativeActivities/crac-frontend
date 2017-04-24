@@ -2,7 +2,7 @@ cracApp.factory('TaskDataService', ["Helpers", function(Helpers){
 
   var srv = {};
 
-  var ajax = Helpers.ajax
+  var ajax = Helpers.ajax;
 
   // Get all task
   srv.getAllParentTasks = function(){
@@ -29,11 +29,13 @@ cracApp.factory('TaskDataService', ["Helpers", function(Helpers){
   srv.changeTaskPartState = function(id, stateName){
 
     console.log('id: ' + id + ' stateName: ' + stateName );
-    return ajax("user/task/" + id + "/" + stateName, "put", { handleSpecificErrors: function(response){
+    return ajax("task/" + id + "/" + stateName, "put", { handleSpecificErrors: function(response){
       // switch .data.cause here
       //throw { error: response.data, message: "Task #" + id + " konnte nicht verändert werden" };
     }});
   };
+
+
   //Returns all tasks of logged in user, divided in the TaskParticipationTypes
   srv.getMyTasks = function(){
     return ajax("task/type", "get", { handleSpecificErrors: function(response){
