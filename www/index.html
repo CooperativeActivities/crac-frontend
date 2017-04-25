@@ -105,6 +105,7 @@
   <script src="js/controllers/user/addCompetenceInfoCtrl.js"></script>
   <script src="js/controllers/user/addCompetenceCtrl.js"></script>
   <script src="js/controllers/user/myProfileCtrl.js"></script>
+  <script src="js/controllers/user/myFriendsCtrl.js"></script>
   <script src="js/controllers/user/profileAssistentCtrl.js"></script>
   <script src="js/controllers/user/settingsCtrl.js"></script>
   <script src="js/controllers/user/typographyCtrl.js"></script>
@@ -169,30 +170,34 @@
             <img src="img/B27MBEuwSJ6wsdkIwFL6_avatar.png" width="100" height="auto">
           </a>
         </div>
-        <h4 id="myCrAcMenu-heading14"data-componentid="heading14">{{user.firstName}} {{user.lastName}}</h4>
+        <h4 id="myCrAcMenu-heading14" data-componentid="heading14">{{user.firstName}} {{user.lastName}}</h4>
         <div class="spacer" data-componentid="spacer10"></div>
         <ion-list id="myCrAcMenu-list1" data-componentid="list1">
-          <ion-item class="item-icon-left positive  side-menu-item" id="myCrAcMenu-list-item20"
+          <ion-item class="item-icon-left positive  side-menu-item"
                     ui-sref="tabsController.myProfile" menu-close="" data-componentid="list-item20">
             <i class="icon ion-android-person"></i>Mein Profil
           </ion-item>
-          <ion-item class="item-icon-left positive  side-menu-item" id="myCrAcMenu-list-item12"
-                    ui-sref="tabsController.myCompetencies_tab6" menu-close="" data-componentid="list-item12">
+          <ion-item class="item-icon-left positive side-menu-item"
+                    ui-sref="tabsController.myFriends" menu-close="" data-componentid="list-item12">
+            <i class="icon ion-android-people"></i>Meine Freunde
+          </ion-item>
+          <ion-item class="item-icon-left positive  side-menu-item"
+                    ui-sref="tabsController.myCompetencies" menu-close="" data-componentid="list-item12">
             <i class="icon ion-ios-list-outline"></i>Meine Kompetenzen
           </ion-item>
-          <ion-item class="item-icon-left positive  side-menu-item" id="myCrAcMenu-list-item19"
+          <ion-item class="item-icon-left positive  side-menu-item"
                     ui-sref="tabsController.organisations" menu-close="" data-componentid="list-item19">
             <i class="icon ion-briefcase"></i>Organisationen
           </ion-item>
-          <ion-item class="item-icon-left positive  side-menu-item" id="myCrAcMenu-list-item11"
+          <ion-item class="item-icon-left positive  side-menu-item"
                     ui-sref="tabsController.settings" menu-close="" data-componentid="list-item11">
             <i class="icon ion-ios-settings"></i>Einstellungen
           </ion-item>
-          <ion-item class="item-icon-left positive side-menu-item" id="myCrAcMenu-list-item10"
+          <ion-item class="item-icon-left positive side-menu-item"
                     ui-sref="tabsController.typography" menu-close="" data-componentid="list-item10">
             <i class="icon ion-android-color-palette"></i>Typography
           </ion-item>
-          <ion-item class="item-icon-left positive  side-menu-item" id="myCrAcMenu-list-item6"
+          <ion-item class="item-icon-left positive  side-menu-item"
                     menu-close="" data-componentid="list-item6" ng-click="modal.show()">
             <i class="icon ion-log-out"></i>Abmelden
           </ion-item>

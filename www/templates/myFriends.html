@@ -1,0 +1,90 @@
+
+<ion-view title="Meine Freunde">
+  <ion-nav-buttons side="right" class="has-header">
+    <button class="button button-energized2 icon ion-edit" ng-show="editFlag" ng-click="edit()"></button>
+    <button class="button button-energized2 icon ion-checkmark "ng-hide="editFlag"  ng-click="save()"></button>
+  </ion-nav-buttons>
+  <ion-content padding="true" class="has-header">
+    MEINE FREUNDE!!!
+    <div class="container">
+      <form class="list">
+
+        <div class="content-title assertive">Mein Account</div>
+        <div class="row">
+          <div class="col">
+            <label class="item item-input">
+              <input type="text" placeholder="Username" ng-readonly="editFlag" ng-model="user.name">
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label class="item item-input">
+              <input type="text" placeholder="Email-Adresse" ng-readonly="editFlag" ng-model="user.email">
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label class="item item-input">
+              <input type="text" placeholder="Password" ng-readonly="editFlag" ng-model="user.password">
+            </label>
+          </div>
+        </div>
+      </form>
+
+      <form class="list">
+        <div class="content-title assertive">Über mich</div>
+
+        <div class="row">
+          <div class="col">
+            <label class="item item-input">
+              <input type="text" placeholder="Vorname" ng-readonly="editFlag">
+            </label>
+          </div>
+          <div class="col">
+            <label class="item item-input">
+              <input type="text" placeholder="Nachname" ng-readonly="editFlag">
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label class="item item-input">
+              <input type="text" placeholder="PLZ" ng-readonly="editFlag">
+            </label>
+          </div>
+          <div class="col">
+            <label class="item item-input">
+              <input type="text" placeholder="Ort" ng-readonly="editFlag">
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label class="item item-input">
+              <input type="text" placeholder="Handy" ng-readonly="editFlag" ng-model="user.phone">
+            </label>
+          </div>
+          <div class="col">
+            <label class="item item-input">
+              <input type="text" placeholder="Telefonnummer" ng-readonly="editFlag">
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label class="item item-input">
+              <input type="text" placeholder="Geburtstag" ng-readonly="editFlag" ng-model="birthDate">
+            </label>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ion-content>
+</ion-view>

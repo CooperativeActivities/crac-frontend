@@ -89,24 +89,30 @@ angular.module('app.routes', ['ionicUIRouter'])
         }
       })
 
+      .state('tabsController.myFriends', {
+        url: '/myfriends',
+        views: {
+          'tab5': {
+            templateUrl: 'templates/myFriends.html',
+            controller: 'myFriendsCtrl'
+          }
+        }
+      })
+
       .state('tabsController.myCompetencies', {
         url: '/mycompetencies',
         views: {
-          'tab6': {
+          'tab5': {
             templateUrl: 'templates/myCompetencies.html',
             controller: 'myCompetenciesCtrl'
           },
-          'tab8': {
-            templateUrl: 'templates/myCompetencies.html',
-            controller: 'myCompetenciesCtrl'
-          }
         }
       })
 
       .state('tabsController.organisations', {
         url: '/organisations',
         views: {
-          'tab9': {
+          'tab5': {
             templateUrl: 'templates/organisations.html',
             controller: 'organisationsCtrl'
           }
@@ -116,7 +122,7 @@ angular.module('app.routes', ['ionicUIRouter'])
       .state('tabsController.settings', {
         url: '/settings',
         views: {
-          'tab7': {
+          'tab5': {
             templateUrl: 'templates/settings.html',
             controller: 'settingsCtrl'
           }
@@ -172,14 +178,10 @@ angular.module('app.routes', ['ionicUIRouter'])
       .state('tabsController.organisation_rk', {
         url: '/organisation_rk',
         views: {
-          'tab9': {
+          'tab5': {
             templateUrl: 'templates/organisation_rk.html',
             controller: 'rkLinzCtrl'
           },
-          'tab11': {
-            templateUrl: 'templates/organisation_rk.html',
-            controller: 'rkLinzCtrl'
-          }
         }
       })
 
@@ -246,7 +248,7 @@ angular.module('app.routes', ['ionicUIRouter'])
           }
         }
       })
-	  
+
 	  .state('tabsController.taskEditAdv', {
         url: '/task/:id/editAdv/:section',
         views: {
@@ -269,56 +271,40 @@ angular.module('app.routes', ['ionicUIRouter'])
       .state('tabsController.myCompetenciesInfo', {
         url: '/mycompetencies/:index',
         views: {
-          'tab6': {
+          'tab5': {
             templateUrl: 'templates/myCompetenciesInfo.html',
             controller: 'myCompetenciesInfoCtrl'
           },
-          'tab8': {
-            templateUrl: 'templates/myCompetenciesInfo.html',
-            controller: 'myCompetenciesInfoCtrl'
-          }
         }
       })
 
       .state('tabsController.addCompetenceInfo', {
         url: '/addcompetence/:id',
         views: {
-          'tab6': {
+          'tab5': {
             templateUrl: 'templates/addCompetenceInfo.html',
             controller: 'addCompetenceInfoCtrl'
           },
-          'tab8': {
-            templateUrl: 'templates/addCompetenceInfo.html',
-            controller: 'addCompetenceInfoCtrl'
-          }
         }
       })
 
       .state('tabsController.newCompetence', {
         url: '/newcompetence',
         views: {
-          'tab6': {
+          'tab5': {
             templateUrl: 'templates/newCompetence.html',
             controller: 'newCompetenceCtrl'
           },
-          'tab8': {
-            templateUrl: 'templates/newCompetence.html',
-            controller: 'newCompetenceCtrl'
-          }
         }
       })
 
       .state('tabsController.addCompetence', {
         url: '/addcompetence',
         views: {
-          'tab6': {
+          'tab5': {
             templateUrl: 'templates/addCompetence.html',
             controller: 'addCompetenceCtrl'
           },
-          'tab8': {
-            templateUrl: 'templates/addCompetence.html',
-            controller: 'addCompetenceCtrl'
-          }
         }
       })
 
