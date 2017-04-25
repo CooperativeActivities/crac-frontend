@@ -90,6 +90,12 @@ cracApp.factory('UserDataService', ["Helpers", function(Helpers){
     return ajax("notification/" + notificationId + "/deny", "get");
   }
 
+
+
+  //get friends of logged in user
+  srv.getFriends = function(){
+    return ajax("user/friends", "get");
+  }
   // send a friend request notification to specified user
   srv.friendRequest = function(userId){
     return ajax("user/" + userId + "/friend", "get");
