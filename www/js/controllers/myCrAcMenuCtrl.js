@@ -28,6 +28,7 @@ cracApp.controller('myCrAcMenuCtrl', ['$scope','$rootScope', '$stateParams','Use
             template: error.message,
             okType: 'button-positive button-outline'
           });
+          $state.go('login');
         });
       }
     })
