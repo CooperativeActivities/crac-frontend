@@ -13,36 +13,21 @@ cracApp.factory('TaskDataService', ["Helpers", function(Helpers){
   };
   //Get a TAsk by ID
   srv.getTaskById = function(id){
-    return ajax("task/" + id, "get", { handleSpecificErrors: function(response){
-      // switch .data.cause here
-      //throw { error: response.data, message: "Task #" + id + " konnte nicht geladen werden" };
-    }});
+    return ajax("task/" + id, "get");
   };
   //Update the Task data if there are changes
   srv.updateTaskById = function(taskData, id){
-    return ajax("task/" + id, "put", { payload: taskData, handleSpecificErrors: function(response){
-      // switch .data.cause here
-      //throw { error: response.data, message: "Task #" + id + " konnte nicht gespeichert werden" };
-    }});
+    return ajax("task/" + id, "put", { payload: taskData });
   };
   //Adds target task to the open-tasks of the logged-in user or changes it's state; Choose either 'participate', 'follow', or 'lead'
   srv.changeTaskPartState = function(id, stateName){
-
-    console.log('id: ' + id + ' stateName: ' + stateName );
-    return ajax("task/" + id + "/" + stateName, "put", { handleSpecificErrors: function(response){
-      // switch .data.cause here
-      //throw { error: response.data, message: "Task #" + id + " konnte nicht verändert werden" };
-    }});
+    return ajax("task/" + id + "/add/" + stateName, "put");
   };
 
 
   //Returns all tasks of logged in user, divided in the TaskParticipationTypes
   srv.getMyTasks = function(){
-    return ajax("task/type", "get", { handleSpecificErrors: function(response){
-      // switch .data.cause here
-      //throw { error: response.data, message: "Task #" + id + " konnte nicht gespeichert werden" };
-    }, transformResponse: function(response){ return response.data }
-    });
+    return ajax("task/type", "get", { transformResponse: function(response){ return response.data } });
   };
   //Creates a new task
   srv.createNewTask= function(taskData){

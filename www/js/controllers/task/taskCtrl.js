@@ -44,15 +44,6 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       }
       if(task.userRelationships) task.userRelationships.sort($scope.sortMemberListByRelationship);
 
-      /*
-      TaskDataService.getTaskRelatById($stateParams.id).then(function(res){
-        $scope.participationType = res.meta.relationship.participationType;
-        $scope.userIsDone = res.meta.relationship.completed;
-      }, function(error) {
-        //@TODO this is not ideal, NOT_PARTICIPATING should be handled in success and this should have a warn
-        $scope.participationType = 'NOT_PARTICIPATING';
-      }).then(function() {
-      */
       if(task.participationDetails){
         $scope.participationType = task.participationDetails[0].participationType;
         $scope.userIsDone = task.participationDetails[0].completed;
@@ -95,10 +86,11 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
   $scope.updateFlags = function(){
     var relation = $scope.participationType,
-      task = $scope.task,
-      taskIsWorkable = task.taskType === 'WORKABLE',
-      taskHasShifts = task.childTasks.length > 0 && taskIsWorkable,
-      taskIsSubtask = !!task.superTask;
+    task = $scope.task,
+    userHasPermissions = task.permissions,
+    taskIsWorkable = task.taskType === 'WORKABLE',
+    taskHasShifts = task.childTasks.length > 0 && taskIsWorkable,
+    taskIsSubtask = !!task.superTask;
 
     //initialize all flags to false
     $scope.editableFlag =false;
@@ -115,9 +107,11 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       case "COMPLETED":
         break;
       case "STARTED":
-        if(relation === "LEADING"){
-          // @TODO allow leaders to also participate/follow
+        if(userHasPermissions){
           $scope.editableFlag = true;
+        }
+        if(relation === "LEADING"){
+          // @TODO allow leaders to also participate/follow?
         } else {
           // @DISCUSS: cannot unfollow started task?
           $scope.showEnroll = relation !== "PARTICIPATING" && !taskHasShifts;
@@ -126,10 +120,13 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
         }
         break;
       case "PUBLISHED":
-        if(relation === "LEADING"){
-          // @TODO allow leaders to also participate/follow
+        if(userHasPermissions){
           $scope.editableFlag = true;
           $scope.addSubTaskFlag = $scope.task.taskType === 'ORGANISATIONAL' && (!SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask);
+          $scope.editableFlag = true;
+        }
+        if(relation === "LEADING"){
+          // @TODO allow leaders to also participate/follow
         } else {
           $scope.showEnroll = relation !== "PARTICIPATING" && !taskHasShifts;
           $scope.showFollow = relation !== "FOLLOWING" && relation !== "PARTICIPATING";
@@ -138,7 +135,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
         }
         break;
       case "NOT_PUBLISHED":
-        if($scope.participationType === 'LEADING'){
+        if(userHasPermissions){
           $scope.editableFlag = true;
           $scope.showPublish = true;
           $scope.addSubTaskFlag = $scope.task.taskType === 'ORGANISATIONAL' && (!SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask);
@@ -275,7 +272,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
     $scope.completeTask('forceComplete');
   };
   $scope.completeTask = function(state) {
-    if(!$scope.participationType !== "LEADING") return false;
+    if(!$scope.task.permissions) return false;
 
     TaskDataService.changeTaskState($scope.task.id, state).then(function (res) {
       console.log("Task is completed");
@@ -304,7 +301,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
   //Set a task as done
   $scope.done = function(){
-    if(!$scope.participationType !== "PARTICIPATING") return false;
+    if(!$scope.task.permissions) return false;
 
     TaskDataService.setTaskDone($scope.task.id,"true").then(function (res) {
       console.log("Task is done");
@@ -321,7 +318,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
   //unset task as done
   $scope.notDone = function() {
-    if(!$scope.participationType !== "PARTICIPATING") return false;
+    if(!$scope.task.permissions) return false;
 
     TaskDataService.setTaskDone($scope.task.id,"false").then(function (res) {
       $scope.userIsDone = false;

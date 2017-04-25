@@ -2,7 +2,8 @@ cracApp.directive('taskPreview', ['TaskDataService', '$ionicPopup', function(Tas
   return {
     scope: {
       task: "=",
-			action: "="
+      action: "=",
+      showAllIcons: "=",
     },
     link: function(scope, element, attr){
       scope.isSubtask = scope.task.superTask !== null;
@@ -33,10 +34,10 @@ cracApp.directive('taskPreview', ['TaskDataService', '$ionicPopup', function(Tas
 
       scope.follow = function(id){
         //failsafe, so you dont accidentally follow a task you were leading/participating
-        if(scope.participationType === "NOT_PARTICIPATING"){
+        //if(scope.participationType === "NOT_PARTICIPATING"){
           TaskDataService.changeTaskPartState(id,'follow').then(function(res) {
             console.log("Following task");
-            scope.participationType = "FOLLOWING";
+            //scope.participationType = "FOLLOWING";
           }, function(error) {
             $ionicPopup.alert({
               title: "Aufgabe kann nicht gefolgt werden",
@@ -44,14 +45,14 @@ cracApp.directive('taskPreview', ['TaskDataService', '$ionicPopup', function(Tas
               okType: 'button-positive button-outline'
             });
           });
-        }
+        //}
       };
       scope.unfollow = function(id) {
         //failsafe, so you dont accidentally cancel leading/participating a task
-        if(scope.participationType === "FOLLOWING"){
+        //if(scope.participationType === "FOLLOWING"){
           TaskDataService.removeOpenTask(id).then(function (res) {
             console.log("No longer participating");
-            scope.participationType = "NOT_PARTICIPATING";
+            //scope.participationType = "NOT_PARTICIPATING";
           }, function (error) {
             $ionicPopup.alert({
               title: "Aufgabe kann nicht abgesagt werden",
@@ -59,7 +60,7 @@ cracApp.directive('taskPreview', ['TaskDataService', '$ionicPopup', function(Tas
               okType: 'button-positive button-outline'
             });
           });
-        }
+        //}
       };
     },
     templateUrl: 'templates/directives/taskPreview.html'
