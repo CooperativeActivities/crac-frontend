@@ -26,7 +26,6 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
     };
     $scope.competences = {
       newObj: {
-        importanceLevel: 50,
         neededProficiencyLevel: 50
       },
       toAdd: [],
@@ -42,7 +41,6 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       $scope.shifts.toAdd = [];
       $scope.shifts.toRemove = [];
       $scope.competences.newObj = {
-        importanceLevel: 50,
         neededProficiencyLevel: 50
       };
       $scope.competences.toAdd = [];
@@ -131,7 +129,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       var competencesToAdd = $scope.competences.toAdd.map(function(competence){
         return {
           competenceId: competence.id,
-          importanceLevel: competence.importanceLevel || 0,
+          importanceLevel: competence.neededProficiencyLevel || 0,
           neededProficiencyLevel: competence.neededProficiencyLevel || 0,
           mandatory: competence.mandatory ? 1 : 0
         }
@@ -247,7 +245,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       var newComp = {
         id: competenceId,
         name: competence.name,
-        importanceLevel: $scope.competences.newObj.importanceLevel,
+        importanceLevel: $scope.competences.newObj.neededProficiencyLevel,
         neededProficiencyLevel: $scope.competences.newObj.neededProficiencyLevel,
         mandatory: $scope.competences.newObj.mandatory
       };
