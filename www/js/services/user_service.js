@@ -51,6 +51,14 @@ cracApp.factory('UserDataService', ["Helpers", function(Helpers){
   srv.allCompetences = function(){
     return ajax("competence/all", "get");
   }
+  //Returns an array containing all competence areas
+  srv.getCompetenceAreas = function(){
+    return ajax("competence/area", "get");
+  }
+  //Returns an array of all competences within an area
+  srv.getCompetencesForArea = function(id){
+    return ajax("competence/area/" + id, "get");
+  }
   //Add a competence with given ID to the currently logged in user, likeValue and proficiencyValue are mandatory
   srv.addLikeProfValue = function(id,likeValue,proficiencyValue){
     return ajax("competence/" + id + "/add", "post", { payload: {  likeValue: likeValue, proficiencyValue: proficiencyValue } })

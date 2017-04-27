@@ -1,15 +1,14 @@
-cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDataService','$ionicHistory','$q','$ionicPopup','$state',
+cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDataService','UserDataService','$ionicHistory','$q','$ionicPopup','$state',
   // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
   // You can include any angular dependencies as parameters for this function
   // TIP: Access Route Parameters for your page via $stateParams.parameterName
-  function ($scope, $route, $stateParams,TaskDataService, $ionicHistory, $q, $ionicPopup, $state) {
+  function ($scope, $route, $stateParams,TaskDataService, UserDataService, $ionicHistory, $q, $ionicPopup, $state) {
     $scope.view = $stateParams.section || 'competences';
 	  $scope.task= {};
     $scope.isChildTask = false;
 
-    $scope.competenceToAdd = {
-      //defaults
-    };
+    $scope.competenceAreaList = [];
+    $scope.competenceArea = -1;
 
     $scope.taskId = $stateParams.id;
 	  $scope.materials = {
@@ -54,18 +53,18 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
         console.log("edit", task);
         $scope.task = task;
         $scope.updateFlags();
-        TaskDataService.getAllAvailableCompetences(task.id)
-        .then(function(res){ return res.object })
-        .then(function(availableCompetences){
-          if(!availableCompetences) {
-            console.warn('Could not load available competences: ', error);
-            return;
-          }
 
-          $scope.availableCompetences = availableCompetences;
-        }, function() {
-          console.warn('Could not load available competences: ', error);
-        });
+        UserDataService.getCompetenceAreas()
+          .then(function(res) {
+            if(res.object.length === 0) {
+              console.warn("No competence areas found");
+              return;
+            }
+
+            $scope.competenceAreas = res.object.areas;
+          }, function(error) {
+            console.warn('Could not load competence areas: ', error.message);
+          });
 
         task.startTime = new Date(task.startTime);
         task.endTime = new Date(task.endTime);
@@ -87,6 +86,21 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
           okType: 'button-positive button-outline'
         });
       });
+    };
+
+    $scope.onCompetenceAreaChange = function(){
+      if($scope.competenceArea === -1) return;
+      UserDataService.getCompetencesForArea($scope.competenceArea)
+        .then(function(res) {
+          if(!res.object.competences) {
+            console.warn("Could not load competence areas: ", res.error.message);
+            return;
+          }
+
+          $scope.availableCompetences = res.object.competences;
+        }, function(error) {
+          console.warn('Could not load competence areas: ', error.message);
+        });
 
     };
 

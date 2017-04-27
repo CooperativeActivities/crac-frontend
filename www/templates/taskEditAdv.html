@@ -50,15 +50,26 @@
 			<custom-accordion-body>
 			  <label class="item item-input item-select">
 				<div class="input-label">
-				  Kompetenz
+				  Kompetenzbereich
 				</div>
-				<select ng-model="competences.newObj.id">
-				  <option>--bitte wählen--</option>
-				  <option ng-repeat="competence in availableCompetences | orderBy: 'name'" ng-value="competence.id">
-				  {{ competence.name }}
+				<select ng-model="competenceArea" ng-change="onCompetenceAreaChange()">
+				  <option ng-value="-1">--bitte wählen--</option>
+				  <option ng-repeat="area in competenceAreaList | orderBy: 'name'" ng-value="area.id">
+				  {{ area.name }}
 				  </option>
 				</select>
 			  </label>
+        <label class="item item-input item-select" ng-if="competenceArea != -1">
+          <div class="input-label">
+            Kompetenz
+          </div>
+          <select ng-model="competences.newObj.id">
+            <option ng-value="-1">--bitte wählen--</option>
+            <option ng-repeat="competence in availableCompetences | orderBy: 'name'" ng-value="competence.id">
+              {{ competence.name }}
+            </option>
+          </select>
+        </label>
 			  <div>
 
 
