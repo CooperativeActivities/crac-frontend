@@ -103,9 +103,9 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
             return;
           }
 
-          $scope.availableCompetences = res.object.competences;
+          $scope.availableCompetences = res.meta.competences;
         }, function(error) {
-          console.warn('Could not load competence areas: ', error.message);
+          console.warn('Could not load competence area: ', error.message);
         });
 
     };

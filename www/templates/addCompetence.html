@@ -1,5 +1,14 @@
 <ion-view cache-view="false" title="Alle Kompetenzen" id="page18">
   <ion-content padding="true" class="has-header">
+    <label class="item item-input item-select">
+      <div class="input-label">
+        Kompetenzbereich
+      </div>
+      <select ng-model="competenceArea" ng-change="onCompetenceAreaChange(competenceArea)"
+              ng-options="area.id as area.name for area in competenceAreaList">
+      </select>
+    </label>
+
     <ion-search-bar class="bar-light bar-subheader">
       <input type="search"
              placeholder="Filter Competence..."
@@ -7,6 +16,7 @@
              ng-focus="searchFocused = true"
              ng-blur="searchFocused = false"
              ng-change="scrollTop()"
+             ng-if="competences.length > 0"
              class="full-width">
       <!--button ng-if="search.length"
               class="button button-icon ion-android-close input-button"

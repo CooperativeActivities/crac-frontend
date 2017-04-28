@@ -3,15 +3,55 @@
  */
 cracApp.controller('addCompetenceCtrl', ['$rootScope', '$scope', 'UserDataService', '$ionicPopup', '$state', '$ionicScrollDelegate',
 function($rootScope,$scope,UserDataService, $ionicPopup, $state, $ionicScrollDelegate) {
-  UserDataService.getAllAvailableCompetences().then(function(res){
-    $scope.competences = res.object;
-  }, function(error){
-    $ionicPopup.alert({
-      title: "Kompetenzen können nicht geladen werden",
-      template: error.message,
-      okType: 'button-positive button-outline'
+  UserDataService.getCompetenceAreas()
+    .then(function(res) {
+      if(res.object.length === 0) {
+        $ionicPopup.alert({
+          title: "Keine Kompetenzbereiche gefunden",
+          template: error.message,
+          okType: 'button-positive button-outline'
+        });
+        return;
+      }
+
+      var compAreas = res.object;
+      compAreas.sort(function(a,b) {
+        if(a.name < b.name) return -1;
+        if(a.name > b.name) return 1;
+        return 0;
+      });
+      $scope.competenceAreaList = compAreas;
+    }, function(error) {
+      $ionicPopup.alert({
+        title: "Kompetenzen können nicht geladen werden",
+        template: error.message,
+        okType: 'button-positive button-outline'
+      });
     });
-  });
+
+  $scope.onCompetenceAreaChange = function(newValue){
+    if(newValue === -1) return;
+    UserDataService.getCompetencesForArea(newValue)
+      .then(function(res) {
+        if(res.meta.competences.length === 0) {
+          $ionicPopup.alert({
+            title: "Keine Kompetenzen in diesem Bereich gefunden",
+            template: '',
+            okType: 'button-positive button-outline'
+          });
+          return;
+        }
+
+        $scope.competences = res.meta.competences;
+      }, function(error) {
+        $ionicPopup.alert({
+          title: "Kompetenzen dieses Berichts können nicht geladen werden",
+          template: error.message,
+          okType: 'button-positive button-outline'
+        });
+      });
+
+  };
 
   /* $scope.allCompetences= [];
   $scope.myCompetences= [];
