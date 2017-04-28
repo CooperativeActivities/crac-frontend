@@ -23,7 +23,7 @@ function($rootScope,$scope,UserDataService, $ionicPopup, $state, $ionicScrollDel
       $scope.competenceAreaList = compAreas;
     }, function(error) {
       $ionicPopup.alert({
-        title: "Kompetenzen können nicht geladen werden",
+        title: "Kompetenzbereiche können nicht geladen werden",
         template: error.message,
         okType: 'button-positive button-outline'
       });
@@ -45,7 +45,7 @@ function($rootScope,$scope,UserDataService, $ionicPopup, $state, $ionicScrollDel
         $scope.competences = res.meta.competences;
       }, function(error) {
         $ionicPopup.alert({
-          title: "Kompetenzen dieses Berichts können nicht geladen werden",
+          title: "Kompetenzen dieses Bereichs können nicht geladen werden",
           template: error.message,
           okType: 'button-positive button-outline'
         });

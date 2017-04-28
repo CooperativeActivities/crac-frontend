@@ -57,7 +57,11 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
         UserDataService.getCompetenceAreas()
           .then(function(res) {
             if(res.object.length === 0) {
-              console.warn("No competence areas found");
+              $ionicPopup.alert({
+                title: "Keine Kompetenzbereiche gefunden",
+                template: error.message,
+                okType: 'button-positive button-outline'
+              });
               return;
             }
 
@@ -69,7 +73,11 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
             });
             $scope.competenceAreaList = compAreas;
           }, function(error) {
-            console.warn('Could not load competence areas: ', error.message);
+            $ionicPopup.alert({
+              title: "Kompetenzbereiche können nicht geladen werden",
+              template: error.message,
+              okType: 'button-positive button-outline'
+            });
           });
 
         task.startTime = new Date(task.startTime);
@@ -98,14 +106,22 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       if(newValue === -1) return;
       UserDataService.getCompetencesForArea(newValue)
         .then(function(res) {
-          if(!res.meta.competences) {
-            console.warn("No competences found within the area");
+          if(res.meta.competences.length === 0) {
+            $ionicPopup.alert({
+              title: "Keine Kompetenzen in diesem Bereich gefunden",
+              template: '',
+              okType: 'button-positive button-outline'
+            });
             return;
           }
 
           $scope.availableCompetences = res.meta.competences;
         }, function(error) {
-          console.warn('Could not load competence area: ', error.message);
+          $ionicPopup.alert({
+            title: "Kompetenzen dieses Bereichs können nicht geladen werden",
+            template: error.message,
+            okType: 'button-positive button-outline'
+          });
         });
 
     };
