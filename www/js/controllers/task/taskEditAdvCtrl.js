@@ -61,7 +61,13 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
               return;
             }
 
-            $scope.competenceAreaList = res.object;
+            var compAreas = res.object;
+            compAreas.sort(function(a,b) {
+              if(a.name < b.name) return -1;
+              if(a.name > b.name) return 1;
+              return 0;
+            });
+            $scope.competenceAreaList = compAreas;
           }, function(error) {
             console.warn('Could not load competence areas: ', error.message);
           });
