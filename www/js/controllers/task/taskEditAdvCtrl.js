@@ -61,7 +61,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
               return;
             }
 
-            $scope.competenceAreas = res.object.areas;
+            $scope.competenceAreaList = res.object;
           }, function(error) {
             console.warn('Could not load competence areas: ', error.message);
           });
@@ -88,12 +88,12 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       });
     };
 
-    $scope.onCompetenceAreaChange = function(){
-      if($scope.competenceArea === -1) return;
-      UserDataService.getCompetencesForArea($scope.competenceArea)
+    $scope.onCompetenceAreaChange = function(newValue){
+      if(newValue === -1) return;
+      UserDataService.getCompetencesForArea(newValue)
         .then(function(res) {
-          if(!res.object.competences) {
-            console.warn("Could not load competence areas: ", res.error.message);
+          if(!res.meta.competences) {
+            console.warn("No competences found within the area");
             return;
           }
 

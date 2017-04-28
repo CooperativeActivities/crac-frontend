@@ -52,11 +52,8 @@
 				<div class="input-label">
 				  Kompetenzbereich
 				</div>
-				<select ng-model="competenceArea" ng-change="onCompetenceAreaChange()">
-				  <option ng-value="-1">--bitte wählen--</option>
-				  <option ng-repeat="area in competenceAreaList | orderBy: 'name'" ng-value="area.id">
-				  {{ area.name }}
-				  </option>
+				<select ng-model="competenceArea" ng-change="onCompetenceAreaChange(competenceArea)"
+                ng-options="area.id as area.name for area in competenceAreaList">
 				</select>
 			  </label>
         <label class="item item-input item-select" ng-if="competenceArea != -1">
@@ -64,7 +61,6 @@
             Kompetenz
           </div>
           <select ng-model="competences.newObj.id">
-            <option ng-value="-1">--bitte wählen--</option>
             <option ng-repeat="competence in availableCompetences | orderBy: 'name'" ng-value="competence.id">
               {{ competence.name }}
             </option>
