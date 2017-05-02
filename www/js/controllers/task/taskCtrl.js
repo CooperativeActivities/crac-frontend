@@ -380,7 +380,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
     //don't add comment if it is empty
     if(!$scope.newComment.content) return false;
     //set the commenter as current user
-    $scope.newComment.name = $scope.user;
+    $scope.newComment.name = $scope.user.name;
 
     TaskDataService.addComment($scope.task.id,$scope.newComment).then(function (res) {
       console.log("comment added");
