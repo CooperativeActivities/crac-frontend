@@ -29,6 +29,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       },
       toAdd: [],
       toRemove: [],
+      toUpdate: [],
       all: []
     };
 
@@ -44,6 +45,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       };
       $scope.competences.toAdd = [];
       $scope.competences.toRemove = [];
+      $scope.competences.toUpdate = [];
     };
 
     $scope.load = function(){
@@ -170,6 +172,14 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
           mandatory: competence.mandatory ? 1 : 0
         }
       });
+      var competencesToUpdate = $scope.competences.toUpdate.map(function(competence){
+        return {
+          id: competence.id,
+          importanceLevel: parseInt(competence.neededProficiencyLevel) || 0,
+          neededProficiencyLevel: parseInt(competence.neededProficiencyLevel) || 0,
+          mandatory: competence.mandatory ? 1 : 0
+        }
+      });
       var materialsToAdd = ($scope.materials.toAdd).map(function(material){
         return {
           name: material.name,
@@ -201,6 +211,9 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       }
       for(var i=0; i<$scope.competences.toRemove.length; i++) {
         promises.push(TaskDataService.removeCompetenceFromTask(task.id, $scope.competences.toRemove[i]));
+      }
+      for(var i=0; i<competencesToUpdate.length; i++) {
+        promises.push(TaskDataService.updateTaskCompetence(task.id, competencesToUpdate[i]));
       }
       for(var i=0; i<$scope.materials.toRemove.length; i++) {
         promises.push(TaskDataService.removeMaterialFromTask(task.id, $scope.materials.toRemove[i]));
@@ -290,16 +303,25 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 	    $scope.competences.all.push(newComp);
     };
 
+    $scope.updateCompetence = function(competence){
+      if(!competence) return;
+      var index = _.findIndex($scope.competences.toUpdate, {id: competence.id});
+      if(index < 0) {
+        $scope.competences.toUpdate.push(competence);
+      } else {
+        $scope.competences.toUpdate[index] = competence;
+      }
+    };
+
     $scope.removeCompetence = function(competence){
       if(!competence) return;
       var index = _.findIndex($scope.competences.all, competence);
 	    var newIndex = _.findIndex($scope.competences.toAdd, competence);
       $scope.competences.all.splice(index, 1)[0];
-      $scope.availableCompetences.push({ name: competence.name, id: competence.id })
       if(newIndex < 0) {
-      $scope.competences.toRemove.push(competence.id);
+        $scope.competences.toRemove.push(competence.id);
       } else {
-      $scope.competences.toAdd.splice(newIndex, 1)[0];
+        $scope.competences.toAdd.splice(newIndex, 1)[0];
       }
     };
 

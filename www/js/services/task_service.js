@@ -85,7 +85,7 @@ cracApp.factory('TaskDataService', ["Helpers", function(Helpers){
   };
   //removes target competence from target task
   srv.removeCompetenceFromTask = function(taskId,competenceId){
-    return ajax("task/" + taskId + "/competence/" + competenceId + "/remove", "get");
+    return ajax("task/" + taskId + "/competence/" + competenceId + "/remove", "delete");
   };
   //Adds array of competence objects
   srv.addCompetencesToTask = function(taskId, competences){
@@ -94,6 +94,10 @@ cracApp.factory('TaskDataService', ["Helpers", function(Helpers){
   //Overrides task's competences with array of competence objects
   srv.setCompetencesTask = function(taskId, competences){
     return ajax("task/" + taskId + "/competence/overwrite", "put", { payload: competences });
+  };
+  //Overrides single task competence
+  srv.updateTaskCompetence = function(taskId, competence){
+    return ajax("task/" + taskId + "/competence/" + competence.id + "/adjust", "put", { payload: competence });
   };
   //Get all Competences which are not added to that specific task
   srv.getAllAvailableCompetences = function(taskId){
