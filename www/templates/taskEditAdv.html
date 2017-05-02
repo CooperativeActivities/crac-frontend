@@ -23,7 +23,7 @@
 			  <div class="internal-block">
 				<label class="item item-input range">
 				  <span class="input-label">Können</span>
-				  <input type="range" min="0" max="100" ng-model="competence.neededProficiencyLevel"  >
+				  <input type="range" min="0" max="100" ng-model="competence.neededProficiencyLevel" ng-change="updateCompetence(competence)">
 				  <p>{{competence.neededProficiencyLevel}}</p>
 				</label>
 				<label class="item item-input item-toggle">

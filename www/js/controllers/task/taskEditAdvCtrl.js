@@ -29,6 +29,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       },
       toAdd: [],
       toRemove: [],
+      toUpdate: [],
       all: []
     };
 
@@ -44,6 +45,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       };
       $scope.competences.toAdd = [];
       $scope.competences.toRemove = [];
+      $scope.competences.toUpdate = [];
     };
 
     $scope.load = function(){
@@ -202,6 +204,10 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       for(var i=0; i<$scope.competences.toRemove.length; i++) {
         promises.push(TaskDataService.removeCompetenceFromTask(task.id, $scope.competences.toRemove[i]));
       }
+      /*@TODO remove comment when service is available
+      for(var i=0; i<$scope.competences.toUpdate.length; i++) {
+        promises.push(TaskDataService.updateCompetence($scope.competences.toUpdate[i].id));
+      }*/
       for(var i=0; i<$scope.materials.toRemove.length; i++) {
         promises.push(TaskDataService.removeMaterialFromTask(task.id, $scope.materials.toRemove[i]));
       }
@@ -288,6 +294,18 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 
       $scope.competences.toAdd.push(newComp);
 	    $scope.competences.all.push(newComp);
+    };
+
+    $scope.updateCompetence = function(competence){
+      if(!competence) return;
+      var index = _.findIndex($scope.competences.toUpdate, {id: competence.id});
+      competence.neededProficiencyLevel = parseInt(competence.neededProficiencyLevel);
+      competence.importanceLevel = competence.neededProficiencyLevel;
+      if(index < 0) {
+        $scope.competences.toUpdate.push(competence);
+      } else {
+        $scope.competences.toUpdate[index] = competence;
+      }
     };
 
     $scope.removeCompetence = function(competence){
