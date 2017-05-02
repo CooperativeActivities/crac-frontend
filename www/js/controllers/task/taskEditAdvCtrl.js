@@ -295,11 +295,10 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       var index = _.findIndex($scope.competences.all, competence);
 	    var newIndex = _.findIndex($scope.competences.toAdd, competence);
       $scope.competences.all.splice(index, 1)[0];
-      $scope.availableCompetences.push({ name: competence.name, id: competence.id })
       if(newIndex < 0) {
-      $scope.competences.toRemove.push(competence.id);
+        $scope.competences.toRemove.push(competence.id);
       } else {
-      $scope.competences.toAdd.splice(newIndex, 1)[0];
+        $scope.competences.toAdd.splice(newIndex, 1)[0];
       }
     };
 

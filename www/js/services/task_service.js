@@ -85,7 +85,7 @@ cracApp.factory('TaskDataService', ["Helpers", function(Helpers){
   };
   //removes target competence from target task
   srv.removeCompetenceFromTask = function(taskId,competenceId){
-    return ajax("task/" + taskId + "/competence/" + competenceId + "/remove", "get");
+    return ajax("task/" + taskId + "/competence/" + competenceId + "/remove", "delete");
   };
   //Adds array of competence objects
   srv.addCompetencesToTask = function(taskId, competences){
