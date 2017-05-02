@@ -4,11 +4,11 @@
 // @TODO: move this to some global config file
 var SUBTASKS_LIMITED_TO_SHALLOW = false;
 
-cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window', '$stateParams','$routeParams','TaskDataService','$state','$ionicPopup', "ErrorDisplayService",
+cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window', '$stateParams','$routeParams','TaskDataService','$state','$ionicPopup', "ErrorDisplayService", "$ionicHistory",
 // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskDataService, $state, $ionicPopup, ErrorDisplayService) {
+function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskDataService, $state, $ionicPopup, ErrorDisplayService, $ionicHistory) {
 
   //Flags to show/hide buttons
   $scope.editableFlag =false;
@@ -37,6 +37,13 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
   $scope.doRefresh = function(){
     TaskDataService.getTaskById($stateParams.id).then(function (res) {
       var task = res.object;
+      if(task.taskType === "SHIFT"){
+        console.error("shift task should not be accessed like that, redirecting to parent", task)
+        $state.go('tabsController.task', { id:task.superTask.id }, { location: "replace", reload: true }).then(function(res){
+          $ionicHistory.removeBackView()
+        });
+        return
+      }
       console.log("task detail view", task);
 
       for(var i = 0; i < task.childTasks.length; i++){

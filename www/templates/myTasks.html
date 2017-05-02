@@ -8,7 +8,7 @@
     <ion-list can-swipe="false">
       <!-- @TODO: sort-->
       <div ng-repeat="task in participatingTasks | orderBy: 'startTime'" class="parent item">
-        <task-preview task="task" action="" ng-click="loadSingleTask(task.id)"></task-preview>
+        <task-preview task="task" action="" ng-click="loadSingleTask(task)"></task-preview>
       </div>
     </ion-list>
     <hr>
@@ -16,7 +16,7 @@
     <ion-list can-swipe="true">
       <!-- @TODO: sort-->
       <div ng-repeat="task in followingTasks | orderBy: 'startTime'" class="parent item">
-        <task-preview task="task" action="'unfollow'" ng-click="loadSingleTask(task.id)"></task-preview>
+        <task-preview task="task" action="'unfollow'" ng-click="loadSingleTask(task)"></task-preview>
       </div>
     </ion-list>
     <hr>
@@ -24,7 +24,7 @@
     <ion-list can-swipe="false">
       <!-- @TODO: sort-->
       <div ng-repeat="task in leadingTasks | orderBy: 'startTime'" class="parent item">
-        <task-preview task="task" action="" show-all-icons="true" ng-click="loadSingleTask(task.id)"></task-preview>
+        <task-preview task="task" action="" show-all-icons="true" ng-click="loadSingleTask(task)"></task-preview>
       </div>
     </ion-list>
   </ion-content>
