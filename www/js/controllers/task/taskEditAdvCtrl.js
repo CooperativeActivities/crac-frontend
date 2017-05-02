@@ -172,6 +172,14 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
           mandatory: competence.mandatory ? 1 : 0
         }
       });
+      var competencesToUpdate = $scope.competences.toUpdate.map(function(competence){
+        return {
+          id: competence.id,
+          importanceLevel: parseInt(competence.neededProficiencyLevel) || 0,
+          neededProficiencyLevel: parseInt(competence.neededProficiencyLevel) || 0,
+          mandatory: competence.mandatory ? 1 : 0
+        }
+      });
       var materialsToAdd = ($scope.materials.toAdd).map(function(material){
         return {
           name: material.name,
@@ -204,10 +212,9 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       for(var i=0; i<$scope.competences.toRemove.length; i++) {
         promises.push(TaskDataService.removeCompetenceFromTask(task.id, $scope.competences.toRemove[i]));
       }
-      /*@TODO remove comment when service is available
-      for(var i=0; i<$scope.competences.toUpdate.length; i++) {
-        promises.push(TaskDataService.updateCompetence($scope.competences.toUpdate[i].id));
-      }*/
+      for(var i=0; i<competencesToUpdate.length; i++) {
+        promises.push(TaskDataService.updateTaskCompetence(task.id, competencesToUpdate[i]));
+      }
       for(var i=0; i<$scope.materials.toRemove.length; i++) {
         promises.push(TaskDataService.removeMaterialFromTask(task.id, $scope.materials.toRemove[i]));
       }
@@ -299,8 +306,6 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
     $scope.updateCompetence = function(competence){
       if(!competence) return;
       var index = _.findIndex($scope.competences.toUpdate, {id: competence.id});
-      competence.neededProficiencyLevel = parseInt(competence.neededProficiencyLevel);
-      competence.importanceLevel = competence.neededProficiencyLevel;
       if(index < 0) {
         $scope.competences.toUpdate.push(competence);
       } else {
