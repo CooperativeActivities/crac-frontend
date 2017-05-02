@@ -1,15 +1,14 @@
-cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDataService','$ionicHistory','$q','$ionicPopup','$state',
+cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDataService','UserDataService','$ionicHistory','$q','$ionicPopup','$state',
   // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
   // You can include any angular dependencies as parameters for this function
   // TIP: Access Route Parameters for your page via $stateParams.parameterName
-  function ($scope, $route, $stateParams,TaskDataService, $ionicHistory, $q, $ionicPopup, $state) {
+  function ($scope, $route, $stateParams,TaskDataService, UserDataService, $ionicHistory, $q, $ionicPopup, $state) {
     $scope.view = $stateParams.section || 'competences';
 	  $scope.task= {};
     $scope.isChildTask = false;
 
-    $scope.competenceToAdd = {
-      //defaults
-    };
+    $scope.competenceAreaList = [];
+    $scope.competenceArea = -1;
 
     $scope.taskId = $stateParams.id;
 	  $scope.materials = {
@@ -26,7 +25,6 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
     };
     $scope.competences = {
       newObj: {
-        importanceLevel: 50,
         neededProficiencyLevel: 50
       },
       toAdd: [],
@@ -42,7 +40,6 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       $scope.shifts.toAdd = [];
       $scope.shifts.toRemove = [];
       $scope.competences.newObj = {
-        importanceLevel: 50,
         neededProficiencyLevel: 50
       };
       $scope.competences.toAdd = [];
@@ -56,18 +53,32 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
         console.log("edit", task);
         $scope.task = task;
         $scope.updateFlags();
-        TaskDataService.getAllAvailableCompetences(task.id)
-        .then(function(res){ return res.object })
-        .then(function(availableCompetences){
-          if(!availableCompetences) {
-            console.warn('Could not load available competences: ', error);
-            return;
-          }
 
-          $scope.availableCompetences = availableCompetences;
-        }, function() {
-          console.warn('Could not load available competences: ', error);
-        });
+        UserDataService.getCompetenceAreas()
+          .then(function(res) {
+            if(res.object.length === 0) {
+              $ionicPopup.alert({
+                title: "Keine Kompetenzbereiche gefunden",
+                template: error.message,
+                okType: 'button-positive button-outline'
+              });
+              return;
+            }
+
+            var compAreas = res.object;
+            compAreas.sort(function(a,b) {
+              if(a.name < b.name) return -1;
+              if(a.name > b.name) return 1;
+              return 0;
+            });
+            $scope.competenceAreaList = compAreas;
+          }, function(error) {
+            $ionicPopup.alert({
+              title: "Kompetenzbereiche können nicht geladen werden",
+              template: error.message,
+              okType: 'button-positive button-outline'
+            });
+          });
 
         task.startTime = new Date(task.startTime);
         task.endTime = new Date(task.endTime);
@@ -89,6 +100,29 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
           okType: 'button-positive button-outline'
         });
       });
+    };
+
+    $scope.onCompetenceAreaChange = function(newValue){
+      if(newValue === -1) return;
+      UserDataService.getCompetencesForArea(newValue)
+        .then(function(res) {
+          if(res.meta.competences.length === 0) {
+            $ionicPopup.alert({
+              title: "Keine Kompetenzen in diesem Bereich gefunden",
+              template: '',
+              okType: 'button-positive button-outline'
+            });
+            return;
+          }
+
+          $scope.availableCompetences = res.meta.competences;
+        }, function(error) {
+          $ionicPopup.alert({
+            title: "Kompetenzen dieses Bereichs können nicht geladen werden",
+            template: error.message,
+            okType: 'button-positive button-outline'
+          });
+        });
 
     };
 
@@ -131,7 +165,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       var competencesToAdd = $scope.competences.toAdd.map(function(competence){
         return {
           competenceId: competence.id,
-          importanceLevel: competence.importanceLevel || 0,
+          importanceLevel: competence.neededProficiencyLevel || 0,
           neededProficiencyLevel: competence.neededProficiencyLevel || 0,
           mandatory: competence.mandatory ? 1 : 0
         }
@@ -247,7 +281,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       var newComp = {
         id: competenceId,
         name: competence.name,
-        importanceLevel: $scope.competences.newObj.importanceLevel,
+        importanceLevel: $scope.competences.newObj.neededProficiencyLevel,
         neededProficiencyLevel: $scope.competences.newObj.neededProficiencyLevel,
         mandatory: $scope.competences.newObj.mandatory
       };

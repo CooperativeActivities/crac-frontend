@@ -22,11 +22,6 @@
 
 			  <div class="internal-block">
 				<label class="item item-input range">
-				  <span class="input-label">Wichtigkeit</span>
-				  <input type="range" min="0" max="100" ng-model="competence.importanceLevel"  >
-				  <p>{{competence.importanceLevel}}</p>
-				</label>
-				<label class="item item-input range">
 				  <span class="input-label">Können</span>
 				  <input type="range" min="0" max="100" ng-model="competence.neededProficiencyLevel"  >
 				  <p>{{competence.neededProficiencyLevel}}</p>
@@ -55,20 +50,22 @@
 			<custom-accordion-body>
 			  <label class="item item-input item-select">
 				<div class="input-label">
-				  Kompetenz
+				  Kompetenzbereich
 				</div>
-				<select ng-model="competences.newObj.id">
-				  <option>--bitte wählen--</option>
-				  <option ng-repeat="competence in availableCompetences | orderBy: 'name'" ng-value="competence.id">
-				  {{ competence.name }}
-				  </option>
+				<select ng-model="competenceArea" ng-change="onCompetenceAreaChange(competenceArea)"
+                ng-options="area.id as area.name for area in competenceAreaList">
 				</select>
 			  </label>
-			  <label class="item item-input range">
-				<span class="input-label">Wichtigkeit</span>
-				<input type="range" min="0" max="100" ng-model="competences.newObj.importanceLevel">
-				<p>{{competences.newObj.importanceLevel}}</p>
-			  </label>
+        <label class="item item-input item-select" ng-if="competenceArea != -1">
+          <div class="input-label">
+            Kompetenz
+          </div>
+          <select ng-model="competences.newObj.id">
+            <option ng-repeat="competence in availableCompetences | orderBy: 'name'" ng-value="competence.id">
+              {{ competence.name }}
+            </option>
+          </select>
+        </label>
 			  <div>
 
 
