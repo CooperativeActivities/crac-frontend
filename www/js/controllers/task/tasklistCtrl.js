@@ -7,6 +7,14 @@ cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, 
   $scope.loadSingleTask = function(taskId){
     $state.go('tabsController.task', { id:taskId }, {reload:true});
   };
+  $scope.loadSingleMatchingTask = function(task){
+    console.log(task)
+    if(task.taskType === "SHIFT"){
+      $state.go('tabsController.task', { id:task.superTask }, {reload:true});
+    } else {
+      $state.go('tabsController.task', { id:task.id }, {reload:true});
+    }
+  };
 
   $scope.doRefresh = function(){
     $q.all(
