@@ -135,9 +135,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         return;
       }
 
-
-      debugger
-
       if($scope.timeChoice.choice == 'slot' ){
         task.startTime = new Date(task.startTime);
         task.endTime = new Date(task.endTime);
