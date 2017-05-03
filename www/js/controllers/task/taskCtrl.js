@@ -491,20 +491,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
         okType: 'button-positive button-outline'
       });
     });
-    var comment = {
-      content: 'Ich bringe ' + material.myQuantity + 'x ' + material.name,
-      name: $scope.user.name
-    }
-    TaskDataService.addComment($scope.task.id, comment).then(function (res) {
-      console.log("add comment");
-    }, function(error){
-      $ionicPopup.alert({
-        title: "Kommentar konnte nicht gespeichert werden",
-        template: error.message,
-        okType: 'button-positive button-outline'
-      });
-    });
-
+   
   };
   $scope.materialSubscribeError = function(material){
     return material.myQuantity < 0 || material.myQuantity > (material.quantity - material.subscribedQuantityOtherUsers)
