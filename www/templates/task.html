@@ -119,11 +119,13 @@
                     {{ material.description }}
                   </div>
                   <br>
-                  <label>
-                    Ich bringe: <input type="number" placeholder="Anzahl..." ng-model="material.subscribedQuantity">
-                  </label>
-                  <button ng-click="subscribe(material)"
-                    class="button button-small button-outline button-balanced ion-checkmark">Speichern</button>
+                  <span ng-if="showShiftsMaterialsEnroll">
+                    <label>
+                      Ich bringe: <input type="number" placeholder="Anzahl..." ng-model="material.subscribedQuantity">
+                    </label>
+                    <button ng-click="subscribe(material)"
+                      class="button button-small button-outline button-balanced ion-checkmark">Speichern</button>
+                  </span>
                 </custom-accordion-body>
               </custom-accordion>
             </ion-item>
@@ -161,7 +163,7 @@
                 <span>
                   Benötigte Helfer: {{shiftHelperCounter}}
                 </span>
-                <span ng-if="showEnrollCancelShifts">
+                <span ng-if="showShiftsMaterialsEnroll">
                   <button ng-click="addToShift(shift)"
                     class="button button-small button-outline button-balanced ion-checkmark" ng-if="!working">Ich arbeite mit!</button>
                   <button ng-click="removeFromShift(shift)"

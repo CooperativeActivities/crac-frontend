@@ -106,7 +106,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
     $scope.showEnroll =false;
     $scope.showCancel =false;
-    $scope.showEnrollCancelShifts =false;
+    $scope.showShiftsMaterialsEnroll =false;
     $scope.showFollow = false;
     $scope.showUnfollow = false;
     $scope.allAreDone = $scope.areAllParticipantsDone();
@@ -122,7 +122,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
           // @TODO allow leaders to also participate/follow?
         } else {
           // @DISCUSS: cannot unfollow started task?
-          $scope.showEnrollCancelShifts = true;
+          $scope.showShiftsMaterialsEnroll = true;
           $scope.showEnroll = relation !== "PARTICIPATING" && !taskHasShifts;
           $scope.showFollow = relation !== "FOLLOWING" && relation !== "PARTICIPATING";
           $scope.showCancel = relation === "PARTICIPATING";
@@ -137,7 +137,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
         if(relation === "LEADING"){
           // @TODO allow leaders to also participate/follow
         } else {
-          $scope.showEnrollCancelShifts = true;
+          $scope.showShiftsMaterialsEnroll = true;
           $scope.showEnroll = relation !== "PARTICIPATING" && !taskHasShifts;
           $scope.showFollow = relation !== "FOLLOWING" && relation !== "PARTICIPATING";
           $scope.showCancel = relation === "PARTICIPATING";
