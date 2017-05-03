@@ -150,7 +150,11 @@
                   <br>
                   <span ng-if="showShiftsMaterialsEnroll">
                     <label>
-                      Ich bringe: <input type="number" placeholder="Anzahl..." ng-model="material.subscribedQuantity">
+                      Ich bringe:
+                      <input type="number" placeholder="Anzahl..." ng-model="material.myQuantity"
+                        min="0"
+                        max="{{ material.quantity - material.subscribedQuantityOtherUsers }}"
+                        ng-class="{'has-error' : materialSubscribeError(material) }">
                     </label>
                     <button ng-click="subscribe(material)"
                       class="button button-small button-outline button-balanced ion-checkmark">Speichern</button>

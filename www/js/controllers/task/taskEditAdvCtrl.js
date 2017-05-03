@@ -330,6 +330,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       if(!$scope.materials.newObj.name) return;
       //save later
 	    var newMaterial = _.clone($scope.materials.newObj);
+      newMaterial.quantity = newMaterial.quantity || 1;
       $scope.materials.all.push(newMaterial);
 	    $scope.materials.toAdd.push(newMaterial);
       $scope.materials.newObj = {};
@@ -352,7 +353,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       if(!$scope.shifts.newObj.minAmountOfVolunteers){
           var message = 'Bitte geben Sie die Anzahl an Helfer an!';
           $ionicPopup.alert({
-              title: "Schicht kontte nicht hinzugefügt werden",
+              title: "Schicht konnte nicht hinzugefügt werden",
               template: message,
               okType: "button-positive button-outline"
           });

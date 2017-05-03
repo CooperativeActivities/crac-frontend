@@ -61,6 +61,14 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       }
       $scope.neededCompetences = task.taskCompetences;
       $scope.task = task;
+      $scope.task.materials = $scope.task.materials.map(function(material){
+        material.subscribedQuantityOtherUsers =
+          material.subscribedUsers
+          .filter(function(subscription){ return subscription.user !== $scope.user.id })
+          .reduce(function(acc, val){ return acc + val.quantity }, 0)
+        material.myQuantity = material.subscribedQuantity - material.subscribedQuantityOtherUsers
+        return material
+      })
       if($scope.task.startTime != $scope.task.endTime ){
         $scope.timeChoice = 'slot';
       } else {
@@ -461,12 +469,20 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
   $scope.subscribe = function(material){
     //save material subscription for any quantity. If zero, call unsubscribe, otherwise continue.
-    if( material.subscribedQuantity === 0 ) {
+    if( material.myQuantity === 0 || !material.myQuantity ) {
       $scope.unsubscribe(material);
       return;
     }
+    if($scope.materialSubscribeError(material)){
+      $ionicPopup.alert({
+        title: "Maximum überschritten",
+        template: error.message,
+        okType: 'button-positive button-outline'
+      });
+      return;
+    }
 
-    TaskDataService.subscribeToMaterial($scope.task.id, material.id, material.subscribedQuantity).then(function(res){
+    TaskDataService.subscribeToMaterial($scope.task.id, material.id, material.myQuantity).then(function(res){
       console.log("Material subscribed");
     }, function(error){
       $ionicPopup.alert({
@@ -476,7 +492,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       });
     });
     var comment = {
-      content: 'Ich bringe ' + material.subscribedQuantity + 'x ' + material.name,
+      content: 'Ich bringe ' + material.myQuantity + 'x ' + material.name,
       name: $scope.user.name
     }
     TaskDataService.addComment($scope.task.id, comment).then(function (res) {
@@ -490,6 +506,9 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
     });
 
   };
+  $scope.materialSubscribeError = function(material){
+    return material.myQuantity < 0 || material.myQuantity > (material.quantity - material.subscribedQuantityOtherUsers)
+  }
 
   $scope.unsubscribe = function(material){
     TaskDataService.unsubscribeFromMaterial($scope.task.id, material.id).then(function(res){
