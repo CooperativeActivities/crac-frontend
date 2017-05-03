@@ -250,6 +250,8 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
     $scope.unpublish = function() {
       TaskDataService.changeTaskState($scope.taskId, 'unpublish').then(function(res) {
+        $scope.task.taskState = 'NOT_PUBLISHED';
+        $scope.updateFlags();
         $ionicPopup.alert({
           title: "Aufgabe zurückgezogen",
           okType: "button-positive button-outline"
@@ -268,6 +270,8 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
     $scope.publish = function(taskId) {
       TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
+        $scope.task.taskState = 'PUBLISHED';
+        $scope.updateFlags();
         $ionicPopup.alert({
           title: "Aufgabe veröffentlicht",
           okType: "button-positive button-outline"
