@@ -6,6 +6,7 @@ cracApp.controller('MapController',
     '$stateParams',
     'TaskDataService',
     '$ionicHistory',
+    '$state',
     function(
       $scope,
       $http,
@@ -13,8 +14,12 @@ cracApp.controller('MapController',
       leafletData,
       $stateParams,
       TaskDataService,
-      $ionicHistory
+      $ionicHistory,
+      $state
       ) {
+
+      $scope.taskId = $stateParams.id;
+      console.log("Map view for taskId: " + $scope.taskId);
 
       var map;
       var impAddr = $stateParams.address;
@@ -200,9 +205,8 @@ cracApp.controller('MapController',
       });
 
       $scope.save_address = function(){
-        //TODO: Save Address
         var backView = $ionicHistory.backView();
-        backView.stateParams = {address: result};
+        backView.stateParams = {id: $scope.taskId, address: result};
         $ionicHistory.goBack();
       }
       

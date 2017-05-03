@@ -344,7 +344,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
     // Open Leaflet Map //
     $scope.openMap = function() {
-      $state.go('tabsController.openMap', {address: $scope.task.address});
+      $state.go('tabsController.openMap', { id: $scope.taskId, address: $scope.task.address});
     }
 
     // Check if Address field has been updated on Map Page

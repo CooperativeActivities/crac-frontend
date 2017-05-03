@@ -240,7 +240,7 @@ angular.module('app.routes', ['ionicUIRouter'])
       .state('tabsController.openMap', {
         // id param is optional
         url: '/newtask/map',
-        params: {address:null},
+        params: {id:null, address:null},
         views: {
           'tab3': {
             templateUrl: 'templates/map.html',
