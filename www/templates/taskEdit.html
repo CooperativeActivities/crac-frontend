@@ -39,12 +39,12 @@
 
           <div class="time-select-box item item-input item-input-table">
             <ion-list>
-              <ion-radio ng-model="timeChoice" name="choice" value="slot" class="no-border-radius" >Zeitraum</ion-radio>
-              <ion-radio ng-model="timeChoice" name="choice" value="point" class="no-border-radius" >Zeitpunkt</ion-radio>
+              <ion-radio ng-model="timeChoice.choice" name="choice" value="slot" class="no-border-radius" >Zeitraum</ion-radio>
+              <ion-radio ng-model="timeChoice.choice" name="choice" value="point" class="no-border-radius" >Zeitpunkt</ion-radio>
 
             </ion-list>
 
-            <div ng-show="timeChoice == 'slot'" class="time-slot">
+            <div ng-show="timeChoice.choice == 'slot'" class="time-slot">
 
               <label class="item item-input c-timebox ">
                 <span class="input-label bold">Beginn:</span>
@@ -56,7 +56,7 @@
               </label>
             </div>
 
-            <div ng-show="timeChoice == 'point'" class="time-point ">
+            <div ng-show="timeChoice.choice == 'point'" class="time-point ">
               <label class="item item-input c-timebox ">
                 <span class="input-label bold"></span>
 
@@ -106,7 +106,7 @@
     </div>
 
 
-	
+
   </ion-content>
   <ion-footer-bar>
     <div class="button-bar">

@@ -24,6 +24,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
   $scope.team = [];
   $scope.neededCompetences = [];
+  $scope.timeChoice = 'slot';
 
   $scope.newComment = {name:'', content: ''};
   $scope.user = $rootScope.globals.currentUser.user;
@@ -47,7 +48,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       console.log("task detail view", task);
 
       for(var i = 0; i < task.childTasks.length; i++){
-          $scope.countChildTask(task.childTasks[i].id);
+        $scope.countChildTask(task.childTasks[i].id);
       }
       if(task.userRelationships) task.userRelationships.sort($scope.sortMemberListByRelationship);
 
@@ -60,6 +61,11 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       }
       $scope.neededCompetences = task.taskCompetences;
       $scope.task = task;
+      if($scope.task.startTime != $scope.task.endTime ){
+        $scope.timeChoice = 'slot';
+      } else {
+        $scope.timeChoice = 'point';
+      }
       $scope.updateFlags();
       $scope.$broadcast('scroll.refreshComplete');
       //});
@@ -93,11 +99,11 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
   $scope.updateFlags = function(){
     var relation = $scope.participationType,
-    task = $scope.task,
-    userHasPermissions = task.permissions,
-    taskIsWorkable = task.taskType === 'WORKABLE',
-    taskHasShifts = task.childTasks.length > 0 && taskIsWorkable,
-    taskIsSubtask = !!task.superTask;
+      task = $scope.task,
+      userHasPermissions = task.permissions,
+      taskIsWorkable = task.taskType === 'WORKABLE',
+      taskHasShifts = task.childTasks.length > 0 && taskIsWorkable,
+      taskIsSubtask = !!task.superTask;
 
     //initialize all flags to false
     $scope.editableFlag =false;
@@ -161,21 +167,21 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
   //Count all ChildTask which are no Shifts
   $scope.countChildTask = function (taskId) {
-      TaskDataService.getTaskById(taskId).then(function (res) {
-          var tempTask = res.object;
-          if(tempTask.taskType === 'SHIFT'){
-              $scope.shiftCounter++;
-              $scope.shiftHelperCounter = tempTask.minAmountOfVolunteers;
-              if(tempTask.participationDetails){
-                  if(tempTask.participationDetails[0].user === $rootScope.globals.currentUser.id){
-                      $scope.working = true;
-                  }
-              }
-          } else {
-              $scope.childCounter++;
+    TaskDataService.getTaskById(taskId).then(function (res) {
+      var tempTask = res.object;
+      if(tempTask.taskType === 'SHIFT'){
+        $scope.shiftCounter++;
+        $scope.shiftHelperCounter = tempTask.minAmountOfVolunteers;
+        if(tempTask.participationDetails){
+          if(tempTask.participationDetails[0].user === $rootScope.globals.currentUser.id){
+            $scope.working = true;
           }
+        }
+      } else {
+        $scope.childCounter++;
+      }
 
-      });
+    });
   };
 
 
@@ -229,7 +235,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
     TaskDataService.changeTaskPartState(shift.id ,'participate').then(function(res) {
       //@TODO update task object
       console.log('Participating in shift ' + shift.id);
-        $scope.working = true;
+      $scope.working = true;
     }, function(error) {
       $ionicPopup.alert({
         title: "An der Schicht kann nicht teilgenommen werden",
@@ -245,7 +251,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
   $scope.removeFromShift = function(shift) {
     TaskDataService.removeOpenTask(shift.id).then(function (res) {
       console.log('Not participating in shift ' + shift.id);
-        $scope.working = false;
+      $scope.working = false;
     }, function(error) {
       $ionicPopup.alert({
         title: "An der Schicht kann nicht zurückgezogen werden",
@@ -347,13 +353,13 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
     console.log('publish');
     if($scope.task.taskType === 'ORGANISATIONAL'){
       if($scope.task.childTasks.length <= 0){
-          var message = "Übersicht hat noch keine Unteraufgabe! Bitte füge eine Unteraufgabe hinzu!";
-          $ionicPopup.alert({
-              title: "Task kann nicht veröffentlicht werden",
-              template: message,
-              okType: "button-positive button-outline"
-          });
-          return;
+        var message = "Übersicht hat noch keine Unteraufgabe! Bitte füge eine Unteraufgabe hinzu!";
+        $ionicPopup.alert({
+          title: "Task kann nicht veröffentlicht werden",
+          template: message,
+          okType: "button-positive button-outline"
+        });
+        return;
       }
     }
 

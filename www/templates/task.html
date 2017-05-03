@@ -24,9 +24,12 @@
           <div class="col-35">
             <div class="row"><span class="ion-calendar"> Zeit: </span></div>
           </div>
-          <div class="col">
+          <div class="col" ng-if="timeChoice == 'slot'">
             <div class="row"> Von: {{ task.startTime | date : "short" }} </div>
             <div class="row"> Bis: {{ task.endTime | date : "short" }} </div>
+          </div>
+          <div class="col" ng-if="timeChoice == 'point'">
+            <div class="row"> {{ task.endTime | date : "short" }} </div>
           </div>
         </div>
         <div class="row" ng-if="checkLocation(task.address)">
