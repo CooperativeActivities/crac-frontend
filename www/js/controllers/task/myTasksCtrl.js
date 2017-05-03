@@ -30,7 +30,6 @@ function ($scope,$window, $route, $stateParams, $routeParams, TaskDataService, $
   };
 
   $scope.loadSingleTask = function(task){
-    console.log(task)
     if(task.taskType === "SHIFT"){
       $state.go('tabsController.task', { id:task.superTask }, {reload:true});
     } else {
