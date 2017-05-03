@@ -21,7 +21,7 @@
 
       <c-accordion title="'Zeit und Ort'" shown="true">
         <div class="row">
-          <div class="col-25">
+          <div class="col-35">
             <div class="row"><span class="ion-calendar"> Zeit: </span></div>
           </div>
           <div class="col">
@@ -29,16 +29,24 @@
             <div class="row"> Bis: {{ task.endTime | date : "short" }} </div>
           </div>
         </div>
+        <div class="row" ng-if="checkLocation(task.address)">
+          <div class="col-35">
+            <div class="row"><span class="ion-location"> Adresse: </span></div>
+          </div>
+          <div class="col">
+            <div class="row"> {{task.address}} </div>
+          </div>
+        </div>
         <div class="row" ng-if="checkLocation(task.location)">
-          <div class="col-25">
-            <div class="row"><span class="ion-location"> Ort: </span></div>
+          <div class="col-35">
+            <div class="row"><span class="ion-home"> Bezeichnung: </span></div>
           </div>
           <div class="col">
             <div class="row"> {{task.location}} </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-25">
+          <div class="col-35">
             <div class="row"><span class="ion-information-circled"> Status: </span></div>
           </div>
           <div class="col">
