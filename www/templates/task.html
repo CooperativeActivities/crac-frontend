@@ -210,7 +210,7 @@
   </ion-content>
   <ion-footer-bar class="bar bar-footer">
     <div class="button-bar" ng-cloak>
-      <button ng-click="publish()" ng-if="showPublish" ng-class="{'button-balanced': task.readyToPublish, 'button-stable': !task.readyToPublish}" class="button button-full button-small no-border-radius ion-eye"> Veröffentlichen </button>
+      <button ng-click="publish()" ng-if="showPublish" ng-class="{'button-balanced': task.readyToPublish, 'button-stable, button-outline': !task.readyToPublish}" class="button button-full button-small no-border-radius ion-eye"> Veröffentlichen </button>
       <button ng-click="enroll()" ng-if="showEnroll" class="button button-full button-small no-border-radius button-balanced ion-checkmark"> Ich arbeite mit! </button>
       <button ng-click="cancel()" ng-if="showCancel"  class="button button-full button-small no-border-radius button-assertive ion-close"> Absagen </button>
       <button ng-click="follow()" ng-if="showFollow"  class="button button-full button-small no-border-radius button-positive ion-eye"> Folgen </button>
