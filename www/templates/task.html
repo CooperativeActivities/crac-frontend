@@ -102,6 +102,31 @@
         <br>
       </c-accordion>
 
+      <c-accordion title="'Schichten (' + shiftCounter + ')'" ng-if="shiftCounter > 0">
+        <ion-list>
+          <div  ng-cloak>
+            <ion-item>
+              <ion-item ng-repeat="shift in task.childTasks">
+                <span>
+                  {{shift.startTime | date: "short"}} -
+                  {{shift.endTime | date: "short"}}
+                </span>
+                <span>
+                  Benötigte Helfer: {{shiftHelperCounter}}
+                </span>
+                <span ng-if="showShiftsMaterialsEnroll">
+                  <button ng-click="addToShift(shift)"
+                    class="button button-small button-outline button-balanced ion-checkmark" ng-if="!working">Ich arbeite mit!</button>
+                  <button ng-click="removeFromShift(shift)"
+                    class="button button-small button-outline button-assertive ion-close" ng-if="working">Absagen</button>
+                </span>
+              </ion-item>
+            </ion-item>
+          </div>
+        </ion-list>
+        <br>
+      </c-accordion>
+
       <c-accordion title="'Notwendiges Material (' + task.materials.length + ')'" ng-show="task.materials.length > 0">
         <ion-list>
           <div  ng-cloak>
@@ -151,30 +176,6 @@
         <br>
       </c-accordion>
 
-      <c-accordion title="'Schichten (' + shiftCounter + ')'" ng-if="shiftCounter > 0">
-        <ion-list>
-          <div  ng-cloak>
-            <ion-item>
-              <ion-item ng-repeat="shift in task.childTasks">
-                <span>
-                  {{shift.startTime | date: "short"}} -
-                  {{shift.endTime | date: "short"}}
-                </span>
-                <span>
-                  Benötigte Helfer: {{shiftHelperCounter}}
-                </span>
-                <span ng-if="showShiftsMaterialsEnroll">
-                  <button ng-click="addToShift(shift)"
-                    class="button button-small button-outline button-balanced ion-checkmark" ng-if="!working">Ich arbeite mit!</button>
-                  <button ng-click="removeFromShift(shift)"
-                    class="button button-small button-outline button-assertive ion-close" ng-if="working">Absagen</button>
-                </span>
-              </ion-item>
-            </ion-item>
-          </div>
-        </ion-list>
-        <br>
-      </c-accordion>
 
       <c-accordion title="'Kommentare (' + task.comments.length + ')'">
         <ion-list can-swipe="true" ng-show="task.comments.length > 0">

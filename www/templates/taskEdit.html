@@ -6,24 +6,24 @@
   <ion-content padding="true" class="manual-ios-statusbar-padding has-footer">
     <div>
       <form name="taskForm" onsubmit="event.preventDefault" novalidate>
-		<div class="form-group" ng-if="isNewTask">
-			<div class="half-container">
-				<ion-radio ng-model="task.taskType" name="type" value="ORGANISATIONAL">Übersicht</ion-radio>
-			</div><div class="half-container">
-				<ion-radio ng-model="task.taskType" name="type" value="WORKABLE">Aufgabe</ion-radio>
-			</div>
-		</div>
-		<div class="item item-divider-top">Basisinformationen</div>
+        <div class="form-group" ng-if="isNewTask">
+          <div class="half-container">
+            <ion-radio ng-model="task.taskType" name="type" value="ORGANISATIONAL">Übersicht</ion-radio>
+            </div><div class="half-container">
+            <ion-radio ng-model="task.taskType" name="type" value="WORKABLE">Aufgabe</ion-radio>
+          </div>
+        </div>
+        <div class="item item-divider-top">Basisinformationen</div>
         <div class="form-block form-group" ng-class="{'has-error has-feedback': taskForm.name.$dirty && taskForm.name.$invalid, 'has-success has-feedback':taskForm.name.$dirty && taskForm.name.$valid}">
           <label class="item item-input item-stacked-label">
             <span class="input-label bold">Titel*:</span>
             <input type="text" ng-model="task.name" name="name" style="background-color:white;" placeholder="Name..."
-                   aria-describedby="inputError2Status" class="form-control" required>
+            aria-describedby="inputError2Status" class="form-control" required>
             <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" ng-if="taskForm.name.$dirty && taskForm.name.$invalid"></span>
             <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-if="taskForm.name.$dirty && taskForm.name.$valid"></span>
-           <span id="inputError2Status" ng-show="taskForm.name.$dirty && taskForm.name.$invalid" class="help-block">
-                   Bitte geben Sie einen Tasktitel ein.
-               </span>
+            <span id="inputError2Status" ng-show="taskForm.name.$dirty && taskForm.name.$invalid" class="help-block">
+              Bitte geben Sie einen Tasktitel ein.
+            </span>
           </label>
           <label class="item item-input item-stacked-label">
             <span class="input-label bold">Beschreibung:</span>
@@ -47,9 +47,9 @@
             <div ng-show="timeChoice == 'slot'" class="time-slot">
 
               <label class="item item-input c-timebox ">
-              <span class="input-label bold">Beginn:</span>
-              <input type="datetime-local" ng-model="task.startTime"  ng-class="{'has-error' : !task.startTime}" >
-            </label>
+                <span class="input-label bold">Beginn:</span>
+                <input type="datetime-local" ng-model="task.startTime"  ng-class="{'has-error' : !task.startTime}" >
+              </label>
               <label class="item item-input c-timebox">
                 <span class="input-label bold">Ende:</span>
                 <input type="datetime-local" ng-model="task.endTime" ng-class="{'has-error' : !task.endTime}" >
@@ -80,30 +80,30 @@
       </form>
     </div>
 
-      <div ng-if="isNewTask && task.taskType == 'WORKABLE'">
+    <div ng-if="isNewTask && task.taskType == 'WORKABLE'">
 
-          <button type="button" ng-click="save_changes()" class="button button-full button-positive ion-plus no-border-radius"> Details hinzufügen</button>
+      <button type="button" ng-click="save_changes()" class="button button-full button-positive ion-plus no-border-radius"> Details hinzufügen</button>
 
-      </div>
+    </div>
 
-      <div ng-if="!isNewTask && task.taskType == 'WORKABLE'">
-          <c-accordion title="' Details '">
-          <ion-list >
-              <ion-item class="item-icon-right" ng-click="advancedEdit('competences')">
-                  Kompetenzen ({{task.taskCompetences.length}})
-                  <i class="icon ion-chevron-right"></i>
-              </ion-item>
-              <ion-item class="item-icon-right" ng-click="advancedEdit('materials')">
-                  Materialen ({{task.materials.length}})
-                  <i class="icon ion-chevron-right"></i>
-              </ion-item>
-              <ion-item class="item-icon-right" ng-click="advancedEdit('shifts')">
-                  Schichten ({{task.childTasks.length}})
-                  <i class="icon ion-chevron-right"></i>
-              </ion-item>
-          </ion-list>
-              </c-accordion>
-      </div>
+    <div ng-if="!isNewTask && task.taskType == 'WORKABLE'">
+      <c-accordion title="' Details '">
+        <ion-list >
+          <ion-item class="item-icon-right" ng-click="advancedEdit('competences')">
+            Kompetenzen ({{task.taskCompetences.length}})
+            <i class="icon ion-chevron-right"></i>
+          </ion-item>
+          <ion-item class="item-icon-right" ng-click="advancedEdit('shifts')">
+            Schichten ({{task.childTasks.length}})
+            <i class="icon ion-chevron-right"></i>
+          </ion-item>
+          <ion-item class="item-icon-right" ng-click="advancedEdit('materials')">
+            Materialen ({{task.materials.length}})
+            <i class="icon ion-chevron-right"></i>
+          </ion-item>
+        </ion-list>
+      </c-accordion>
+    </div>
 
 
 
