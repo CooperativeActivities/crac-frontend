@@ -106,6 +106,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
     $scope.showEnroll =false;
     $scope.showCancel =false;
+    $scope.showShiftsMaterialsEnroll =false;
     $scope.showFollow = false;
     $scope.showUnfollow = false;
     $scope.allAreDone = $scope.areAllParticipantsDone();
@@ -121,6 +122,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
           // @TODO allow leaders to also participate/follow?
         } else {
           // @DISCUSS: cannot unfollow started task?
+          $scope.showShiftsMaterialsEnroll = true;
           $scope.showEnroll = relation !== "PARTICIPATING" && !taskHasShifts;
           $scope.showFollow = relation !== "FOLLOWING" && relation !== "PARTICIPATING";
           $scope.showCancel = relation === "PARTICIPATING";
@@ -135,6 +137,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
         if(relation === "LEADING"){
           // @TODO allow leaders to also participate/follow
         } else {
+          $scope.showShiftsMaterialsEnroll = true;
           $scope.showEnroll = relation !== "PARTICIPATING" && !taskHasShifts;
           $scope.showFollow = relation !== "FOLLOWING" && relation !== "PARTICIPATING";
           $scope.showCancel = relation === "PARTICIPATING";
@@ -389,7 +392,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
     //set the commenter as current user
     $scope.newComment.name = $scope.user.name;
 
-    TaskDataService.addComment($scope.task.id,$scope.newComment).then(function (res) {
+    TaskDataService.addComment($scope.task.id, $scope.newComment).then(function (res) {
       console.log("comment added");
       $scope.newComment = {name:'', content: ''};
       //@TODO we should not need to refresh the whole task to add/remove comments
@@ -466,15 +469,18 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
         okType: 'button-positive button-outline'
       });
     });
-    var comment_message = 'Ich bringe ' + material.subscribedQuantity;
-    TaskDataService.addComment($scope.task.id, comment_message).then(function (res) {
-        console.log("add comment");
+    var comment = {
+      content: 'Ich bringe ' + material.subscribedQuantity + 'x ' + material.name,
+      name: $scope.user.name
+    }
+    TaskDataService.addComment($scope.task.id, comment).then(function (res) {
+      console.log("add comment");
     }, function(error){
-        $ionicPopup.alert({
-            title: "Kommenatr konnte nicht gespeichert werden",
-            template: error.message,
-            okType: 'button-positive button-outline'
-        });
+      $ionicPopup.alert({
+        title: "Kommentar konnte nicht gespeichert werden",
+        template: error.message,
+        okType: 'button-positive button-outline'
+      });
     });
 
   };
