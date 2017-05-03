@@ -130,7 +130,7 @@
       <c-accordion title="'Notwendiges Material (' + task.materials.length + ')'" ng-show="task.materials.length > 0">
         <ion-list>
           <div  ng-cloak>
-            <ion-item ng-repeat="material in task.materials">
+            <ion-item ng-repeat="material in task.materials | orderBy: ['name']">
               <custom-accordion>
                 <custom-accordion-head>
                   <div>
@@ -179,7 +179,7 @@
 
       <c-accordion title="'Kommentare (' + task.comments.length + ')'">
         <ion-list can-swipe="true" ng-show="task.comments.length > 0">
-          <div ng-repeat="comment in task.comments" ng-cloak>
+          <div ng-repeat="comment in task.comments | orderBy: [ 'id' ]" ng-cloak>
             <div ng-class="checkCommentOwner(comment.name) ? 'comment-bubble mine' : 'comment-bubble'">
               <div class="mouth"></div>
 
