@@ -4,7 +4,7 @@
 
 cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, $ionicModal, TaskDataService, $q) {
 
-  $scope.loadSingleTask = function(taskId){
+  $scope.loadSingleTask = function(task){
     if(task.taskType === "SHIFT"){
       $state.go('tabsController.task', { id:task.superTask }, {reload:true});
     } else {
