@@ -249,6 +249,19 @@ angular.module('app.routes', ['ionicUIRouter'])
         }
       })
 
+      //Open Leaflet Map from Task View//
+      .state('tabsController.openMapView', {
+        // id param is optional
+        url: '/task/:id/map',
+        params: {id:null, address:null},
+        views: {
+          'tab3': {
+            templateUrl: 'templates/mapView.html',
+            controller: 'MapViewController'
+          }
+        }
+      })
+
 	  .state('tabsController.taskEditAdv', {
         url: '/task/:id/editAdv/:section',
         views: {
