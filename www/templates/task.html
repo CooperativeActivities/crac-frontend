@@ -116,7 +116,7 @@
                   {{shift.endTime | date: "short"}}
                 </span>
                 <span>
-                  Benötigte Helfer: {{shiftHelperCounter}}
+                  Benötigte Helfer: {{signedUsers}}  / {{shiftHelperCounter}}
                 </span>
                 <span ng-if="showShiftsMaterialsEnroll">
                   <button ng-click="addToShift(shift)"

@@ -177,9 +177,11 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
   $scope.countChildTask = function (taskId) {
     TaskDataService.getTaskById(taskId).then(function (res) {
       var tempTask = res.object;
+      console.log('temp task', tempTask);
       if(tempTask.taskType === 'SHIFT'){
         $scope.shiftCounter++;
         $scope.shiftHelperCounter = tempTask.minAmountOfVolunteers;
+        $scope.signedUsers = tempTask.signedUsers;
         if(tempTask.participationDetails){
           if(tempTask.participationDetails[0].user === $rootScope.globals.currentUser.id){
             $scope.working = true;
