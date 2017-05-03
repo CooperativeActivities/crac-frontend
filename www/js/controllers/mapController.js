@@ -48,10 +48,10 @@ cracApp.controller('MapController',
 
         if (impAddr != null) {
           console.log("Loading Address field: " + impAddr)
-          $scope.locate(impAddr);
+          $scope.locateAdr(impAddr);
         } else {
           console.log("No Address specified, searching for user location instead")
-          $scope.locate();
+          $scope.locateUsr();
         }
 
         leafletData.getMap().then(function(map) {
@@ -86,9 +86,66 @@ cracApp.controller('MapController',
       });
 
       /**
+       * Locate loaded Address
+       */
+      $scope.locateAdr = function(adr){
+        $http({
+            url: "//search.mapzen.com/v1/search",
+            method: "GET",
+            headers: {
+              "Accept": "application/json",
+              "Token": undefined // Disabling the Token header field, as it is not allowed by Access-Control-Allow-Headers in preflight response.
+            },
+            params: {
+              "text": adr,
+              //"boundary.country": "AT", // Search on ly in Austria
+              "size": 1,
+              "api_key": "mapzen-FZZdZ5c"
+            },
+          })
+          .success(function( data, status ) {
+            console.log( "Mapzen request received:", data );
+
+            var rStreet = data.features[0].properties.street || data.features[0].properties.name;
+            var rHouse = data.features[0].properties.housenumber || "";
+            var rPost = data.features[0].properties.postalcode || "";
+            var rCity = data.features[0].properties.locality || data.features[0].properties.county;
+
+            var adrLat = data.features[0].geometry.coordinates[1];
+            var adrLng = data.features[0].geometry.coordinates[0];
+
+            if (rStreet != "") {
+              if (rHouse != "") {
+                rStreet += " ";
+                rHouse += ", ";
+              } else {
+                rStreet += ", ";
+              }
+            }
+            if (rPost != "") {
+              rPost += " ";
+            }
+
+            result = rStreet + rHouse + rPost + rCity;
+
+            $(".leaflet-pelias-input").val(result);
+
+            $scope.map.center  = {
+              lat : adrLat,
+              lng : adrLng,
+              zoom : 15
+            };
+
+          })
+          .error(function( data, status ) {
+            console.log( "Something went wrong!" );
+          });
+      }
+
+      /**
        * Center map on user's current position
        */
-      $scope.locate = function(){
+      $scope.locateUsr = function(){
 
         $scope.map.center  = {
           lat : location.lat,
