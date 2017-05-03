@@ -67,15 +67,15 @@
             </div>
           </div>
 
-          <label class="item item-input item-stacked-label">
-            <span class="input-label bold">Ort:</span>
-            <input type="text" ng-model="task.location" placeholder="Ort"  >
-          </label>
           <div class="item item-input item-stacked-label">
             <span class="input-label bold">Adresse:</span>
             <input type="text" ng-model="task.address" placeholder="Adresse"  >
             <a type="button" ng-click="openMap()" class="button button-icon icon ion-android-locate" style="position: absolute;top: 10px;right: 12px;z-index:100;"></a>
           </div>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label bold">Ortsbezeichnung:</span>
+            <input type="text" ng-model="task.location" placeholder="Ortsbezeichnung"  >
+          </label>
         </div>
       </form>
     </div>
