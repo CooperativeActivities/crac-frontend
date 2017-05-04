@@ -31,6 +31,8 @@ cracApp.run(function ($ionicPlatform, $rootScope, $location,$cookieStore,$http) 
   if($rootScope.globals.currentUser != null){
     $http.defaults.headers.common['Token'] = $rootScope.globals.currentUser.token; // jshint ignore:line
     $http.defaults.headers.common['Authorization'] = $cookieStore.get('basic');
+    // cannot call loggedIn here cause the controllers haven't been loaded yet
+    //$rootScope.$emit("loggedIn")
   }
 
    //register event -> locationChangeStart is thrown wenn URL is changed

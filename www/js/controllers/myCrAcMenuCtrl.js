@@ -7,11 +7,13 @@ cracApp.controller('myCrAcMenuCtrl', ['$scope','$rootScope', '$stateParams','Use
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
   function ($scope,$rootScope, $stateParams, UserDataService, $ionicPopup) {
     //console.log("globals", $rootScope.globals);
-    $rootScope.$watch(['globals.hasOwnProperty'], function() {
+    window.rootScope = $rootScope
+    $rootScope.$on("loggedIn", function(){
+      console.log("loggedIn")
       if ($rootScope.globals.hasOwnProperty("currentUser")) {
         UserDataService.getUserById($rootScope.globals.currentUser.id).then(function (res) {
           UserDataService.getCompRelationships().then(function(res){
-            $rootScope.globals.userInfoCompetences = res.data;
+            $rootScope.globals.userInfoCompetences = res.object;
           }, function(error){
             // this error happens when the user has no competences assigned
             // just catching this error cause i don't want it to clutter the console
@@ -34,4 +36,7 @@ cracApp.controller('myCrAcMenuCtrl', ['$scope','$rootScope', '$stateParams','Use
         });
       }
     })
+    if($rootScope.globals.currentUser && !$rootScope.globals.userInfo){
+      $rootScope.$emit("loggedIn")
+    }
   }])

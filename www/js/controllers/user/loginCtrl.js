@@ -1,7 +1,7 @@
 /**
  * Created by P41332 on 25.10.2016.
  */
-cracApp.controller('loginCtrl', function ($rootScope,$scope, $ionicPopup, $location, AuthenticationService,$ionicSideMenuDelegate) {
+cracApp.controller('loginCtrl', function ($rootScope, $scope, $ionicPopup, $location, AuthenticationService,$ionicSideMenuDelegate) {
 
   // deactivate swipe possibility (for sidebar)
   $ionicSideMenuDelegate.canDragContent(false);
@@ -14,6 +14,7 @@ cracApp.controller('loginCtrl', function ($rootScope,$scope, $ionicPopup, $locat
     AuthenticationService.Login($scope.data.username, $scope.data.password, function (response) {
       if (response.success) {
         AuthenticationService.SetCredentials(response);
+        $rootScope.$emit("loggedIn")
        // AuthenticationService.SetCredentials($scope.data.username, $scope.data.password, response.id);
         //$scope.loggedIn = true;
         //$scope.hasWrongCredentials = false;
