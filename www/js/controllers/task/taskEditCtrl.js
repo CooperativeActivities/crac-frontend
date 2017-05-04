@@ -62,7 +62,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
 
         $scope.task.taskType = 'ORGANISATIONAL';
-        $scope.timeChoice = 'slot';
+        $scope.timeChoice.choice = 'slot';
         if($stateParams.parentId !== ""){
           TaskDataService.getTaskById($stateParams.parentId).then(function(res){
             $scope.parentTask = res.object;
