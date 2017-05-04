@@ -75,7 +75,7 @@ cracApp.controller('MapController',
           } else {
 
           }
-          
+
         });
 
         // Select all Text when clicking/tapping on Input field
@@ -84,6 +84,56 @@ cracApp.controller('MapController',
         });
 
       });
+
+      /**
+       * Put current location into the address field
+       */
+      $scope.setAddressField = function(curLat, curLon)
+      {
+        $http({
+          url: "//search.mapzen.com/v1/reverse",
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+            "Token": undefined // Disabling the Token header field, as it is not allowed by Access-Control-Allow-Headers in preflight response.
+          },
+          params: {
+            "point.lat": curLat,
+            "point.lon": curLon,
+            //"boundary.country": "AT", // Search on ly in Austria
+            "size": 1,
+            "api_key": "mapzen-FZZdZ5c"
+          },
+        })
+          .success(function (data, status) {
+            console.log("Mapzen request received:", data);
+
+            var rStreet = data.features[0].properties.street || data.features[0].properties.name;
+            var rHouse = data.features[0].properties.housenumber || "";
+            var rPost = data.features[0].properties.postalcode || "";
+            var rCity = data.features[0].properties.locality || data.features[0].properties.county;
+
+            if (rStreet != "") {
+              if (rHouse != "") {
+                rStreet += " ";
+                rHouse += ", ";
+              } else {
+                rStreet += ", ";
+              }
+            }
+            if (rPost != "") {
+              rPost += " ";
+            }
+
+            result = rStreet + rHouse + rPost + rCity;
+
+            $(".leaflet-pelias-input").val(result);
+
+          })
+          .error(function (data, status) {
+            console.log("Something went wrong!");
+          });
+      };
 
       /**
        * Locate loaded Address
@@ -168,6 +218,8 @@ cracApp.controller('MapController',
               draggable: true
             };
 
+            $scope.setAddressField(position.coords.latitude, position.coords.longitude);
+
           }, function(err) {
             // Error
             console.log(err);
@@ -200,7 +252,7 @@ cracApp.controller('MapController',
 
       });
 
-      var result = "";            
+      var result = "";
       var twoTimes = 2; // TEMP: Leaflet maps fires 2 times on loading... find solution
 
       $scope.$on('leafletDirectiveMap.moveend', function(event, args) {
@@ -214,50 +266,7 @@ cracApp.controller('MapController',
           curLat = parseFloat(center.lat);
           curLon = parseFloat(center.lng);
 
-          $http({
-            url: "//search.mapzen.com/v1/reverse",
-            method: "GET",
-            headers: {
-              "Accept": "application/json",
-              "Token": undefined // Disabling the Token header field, as it is not allowed by Access-Control-Allow-Headers in preflight response.
-            },
-            params: {
-              "point.lat": curLat,
-              "point.lon": curLon,
-              //"boundary.country": "AT", // Search on ly in Austria
-              "size": 1,
-              "api_key": "mapzen-FZZdZ5c"
-            },
-          })
-          .success(function( data, status ) {
-            console.log( "Mapzen request received:", data );
-
-            var rStreet = data.features[0].properties.street || data.features[0].properties.name;
-            var rHouse = data.features[0].properties.housenumber || "";
-            var rPost = data.features[0].properties.postalcode || "";
-            var rCity = data.features[0].properties.locality || data.features[0].properties.county;
-
-            if (rStreet != "") {
-              if (rHouse != "") {
-                rStreet += " ";
-                rHouse += ", ";
-              } else {
-                rStreet += ", ";
-              }
-            }
-            if (rPost != "") {
-              rPost += " ";
-            }
-
-            result = rStreet + rHouse + rPost + rCity;
-
-            $(".leaflet-pelias-input").val(result);
-
-          })
-          .error(function( data, status ) {
-            console.log( "Something went wrong!" );
-          });
-
+          $scope.setAddressField(curLat, curLon);
         } //END TEMP ELSE
       });
 
@@ -266,5 +275,5 @@ cracApp.controller('MapController',
         backView.stateParams = {id: $scope.taskId, address: result};
         $ionicHistory.goBack();
       }
-      
+
   }]);

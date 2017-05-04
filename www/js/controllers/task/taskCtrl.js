@@ -177,9 +177,11 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
   $scope.countChildTask = function (taskId) {
     TaskDataService.getTaskById(taskId).then(function (res) {
       var tempTask = res.object;
+      console.log('temp task', tempTask);
       if(tempTask.taskType === 'SHIFT'){
         $scope.shiftCounter++;
         $scope.shiftHelperCounter = tempTask.minAmountOfVolunteers;
+        $scope.signedUsers = tempTask.signedUsers;
         if(tempTask.participationDetails){
           if(tempTask.participationDetails[0].user === $rootScope.globals.currentUser.id){
             $scope.working = true;
@@ -491,20 +493,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
         okType: 'button-positive button-outline'
       });
     });
-    var comment = {
-      content: 'Ich bringe ' + material.myQuantity + 'x ' + material.name,
-      name: $scope.user.name
-    }
-    TaskDataService.addComment($scope.task.id, comment).then(function (res) {
-      console.log("add comment");
-    }, function(error){
-      $ionicPopup.alert({
-        title: "Kommentar konnte nicht gespeichert werden",
-        template: error.message,
-        okType: 'button-positive button-outline'
-      });
-    });
-
+   
   };
   $scope.materialSubscribeError = function(material){
     return material.myQuantity < 0 || material.myQuantity > (material.quantity - material.subscribedQuantityOtherUsers)
