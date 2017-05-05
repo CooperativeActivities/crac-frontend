@@ -63,6 +63,6 @@ cracApp.directive('taskPreview', ['TaskDataService', '$ionicPopup', function(Tas
         //}
       };
     },
-    templateUrl: 'templates/directives/taskPreview.html'
+    templateUrl: 'directives/taskPreview/taskPreview.html'
   };
 }]);

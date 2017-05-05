@@ -30,7 +30,7 @@ angular.module('app.routes', ['ionicUIRouter'])
       .state('tabsController', {
        // cache: false,
         url: '/tabcontroller',
-        templateUrl: 'templates/tabsController.html',
+        templateUrl: 'app/tabsController.html',
         abstract: true
       })
 
