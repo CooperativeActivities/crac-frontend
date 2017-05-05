@@ -15,6 +15,9 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.formTitle = "";
     $scope.isChildTask = false;
 
+    // ng-model only works properly with objects
+    $scope.timeChoice = { choice: null }
+
     if($stateParams.id !== undefined) {
       $scope.isNewTask = false;
       $scope.taskId = $stateParams.id;
@@ -31,13 +34,11 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           $scope.task = task;
 
           if($scope.task.startTime != $scope.task.endTime ){
-            console.log('slot');
-      			$scope.timeChoice = 'slot';
+            $scope.timeChoice.choice = 'slot';
             $scope.task.startTime = new Date($scope.task.startTime);
             $scope.task.endTime = new Date($scope.task.endTime);
           } else {
-			      console.log('point');
-			      $scope.timeChoice = 'point';
+            $scope.timeChoice.choice = 'point';
             $scope.task.startTime = new Date($scope.task.startTime);
             $scope.task.endTime = new Date($scope.task.endTime);
           }
@@ -61,7 +62,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
 
         $scope.task.taskType = 'ORGANISATIONAL';
-        $scope.timeChoice = 'slot';
+        $scope.timeChoice.choice = 'slot';
         if($stateParams.parentId !== ""){
           TaskDataService.getTaskById($stateParams.parentId).then(function(res){
             $scope.parentTask = res.object;
@@ -94,16 +95,16 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           //disable all fields
           break;
         case "STARTED":
-		  $scope.showUnpublish = true;
-  		  $scope.showDelete = true;
+          $scope.showUnpublish = true;
+          $scope.showDelete = true;
           break;
         case "PUBLISHED":
           $scope.showUnpublish = true;
-		  $scope.showDelete = true;
+          $scope.showDelete = true;
           break;
         case "NOT_PUBLISHED":
-		  $scope.showPublish = $scope.task.superTask === null;
-  		  $scope.showDelete = true;
+          $scope.showPublish = $scope.task.superTask === null;
+          $scope.showDelete = true;
           break;
       }
     };
@@ -134,8 +135,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         return;
       }
 
-
-      if($scope.timeChoice == 'slot' ){
+      if($scope.timeChoice.choice == 'slot' ){
         task.startTime = new Date(task.startTime);
         task.endTime = new Date(task.endTime);
       } else {
@@ -179,7 +179,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       }
 
       return promise.then(function (res) {
-    		return res[0];
+        return res[0];
       }, function(error) {
         $ionicPopup.alert({
           title: "Aufgabe kann nicht gespeichert werden",
@@ -195,17 +195,17 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       $scope.save().then(function(save_res) {
         if(!save_res) return;
         var taskId = save_res.object.id;
-          $ionicPopup.alert({
-            title: "Aufgabe gespeichert",
-            okType: "button-positive button-outline"
-          });
+        $ionicPopup.alert({
+          title: "Aufgabe gespeichert",
+          okType: "button-positive button-outline"
+        });
 
-          if($scope.isNewTask) {
+        if($scope.isNewTask) {
           if($scope.task.taskType === 'ORGANISATIONAL') {
             // redirect to the edit page of the newly created org task
             // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
             $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
-            $ionicHistory.removeBackView();
+              $ionicHistory.removeBackView();
             });
           } else {
             // redirect to the advanced edit page of the newly created workable task
@@ -220,18 +220,18 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
     $scope.save_and_publish = function(){
 
-        console.log('save and publish');
-        if($scope.task.taskType === 'ORGANISATIONAL'){
-            if($scope.task.childTasks.length <= 0){
-                var message = "Übersicht hat noch keine Unteraufgabe! Bitte füge eine Unteraufgabe hinzu!";
-                $ionicPopup.alert({
-                    title: "Task kann nicht veröffentlicht werden",
-                    template: message,
-                    okType: "button-positive button-outline"
-                });
-                return;
-            }
+      console.log('save and publish');
+      if($scope.task.taskType === 'ORGANISATIONAL'){
+        if($scope.task.childTasks.length <= 0){
+          var message = "Übersicht hat noch keine Unteraufgabe! Bitte füge eine Unteraufgabe hinzu!";
+          $ionicPopup.alert({
+            title: "Task kann nicht veröffentlicht werden",
+            template: message,
+            okType: "button-positive button-outline"
+          });
+          return;
         }
+      }
 
 
       $scope.save().then(function(save_res){
@@ -250,6 +250,8 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
     $scope.unpublish = function() {
       TaskDataService.changeTaskState($scope.taskId, 'unpublish').then(function(res) {
+        $scope.task.taskState = 'NOT_PUBLISHED';
+        $scope.updateFlags();
         $ionicPopup.alert({
           title: "Aufgabe zurückgezogen",
           okType: "button-positive button-outline"
@@ -268,6 +270,8 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
     $scope.publish = function(taskId) {
       TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
+        $scope.task.taskState = 'PUBLISHED';
+        $scope.updateFlags();
         $ionicPopup.alert({
           title: "Aufgabe veröffentlicht",
           okType: "button-positive button-outline"
@@ -338,7 +342,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       });
     };
 
-	  $scope.advancedEdit = function(section){
+    $scope.advancedEdit = function(section){
       $state.go('tabsController.taskEditAdv', { id: $scope.taskId, section: section });
     };
 

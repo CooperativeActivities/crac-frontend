@@ -5,207 +5,207 @@
   </ion-nav-buttons>
   <ion-content padding="true" class="manual-ios-statusbar-padding has-footer">
 
-	<div class="form-block">
-		<h2>{{task.name}}</h2>
-		<select class="select-bar" ng-model="view">
-			<option value="competences">Notwendige Kompetenzen</option>
-			<option value="shifts">Schichten</option>
-			<option value="materials">Benötigte Materialien</option>
-		</select>
-	</div>
+    <div class="form-block">
+      <h2>{{task.name}}</h2>
+      <select class="select-bar" ng-model="view">
+        <option value="competences">Notwendige Kompetenzen</option>
+        <option value="shifts">Schichten</option>
+        <option value="materials">Benötigte Materialien</option>
+      </select>
+    </div>
 
-  <div class="form-block-border" ng-if="view == 'competences'">
-	  <ion-list>
-		<ion-item  ng-cloak class="no-border-radius">
-		  <div ng-repeat="competence in competences.all | orderBy: 'name' " ng-cloak>
-			<c-accordion title="competence.name" class="">
+    <div class="form-block-border" ng-if="view == 'competences'">
+      <ion-list>
+        <ion-item  ng-cloak class="no-border-radius">
+          <div ng-repeat="competence in competences.all | orderBy: 'name' " ng-cloak>
+            <c-accordion title="competence.name" class="">
 
-			  <div class="internal-block">
-				<label class="item item-input range">
-				  <span class="input-label">Können</span>
-				  <input type="range" min="0" max="100" ng-model="competence.neededProficiencyLevel" ng-change="updateCompetence(competence)">
-				  <p>{{competence.neededProficiencyLevel}}</p>
-				</label>
-				<label class="item item-input item-toggle">
-				  <span class="input-label">Zwingend</span>
-				  <label class="toggle toggle-assertive">
-					<input type="checkbox" ng-model="competence.mandatory">
-					<div class="track">
-					  <div class="handle"></div>
-					</div>
-				  </label>
-				</label>
-				<button type="button" ng-click="removeCompetence(competence)"
-						class="button button-full button-assertive ion-ios-trash-outline no-border-radius"> Löschen</button>
-			  </div>
-			</c-accordion>
-		  </div>
-
-		  <custom-accordion>
-			<custom-accordion-head>
-			  <div class="item item-divider ion-plus">
-				Kompetenz hinzufügen
-			  </div>
-			</custom-accordion-head>
-			<custom-accordion-body>
-			  <label class="item item-input item-select">
-				<div class="input-label">
-				  Kompetenzbereich
-				</div>
-				<select ng-model="competenceArea" ng-change="onCompetenceAreaChange(competenceArea)"
-                ng-options="area.id as area.name for area in competenceAreaList">
-				</select>
-			  </label>
-        <label class="item item-input item-select" ng-if="competenceArea != -1">
-          <div class="input-label">
-            Kompetenz
+              <div class="internal-block">
+                <label class="item item-input range">
+                  <span class="input-label">Können</span>
+                  <input type="range" min="0" max="100" ng-model="competence.neededProficiencyLevel" ng-change="updateCompetence(competence)">
+                  <p>{{competence.neededProficiencyLevel}}</p>
+                </label>
+                <label class="item item-input item-toggle">
+                  <span class="input-label">Zwingend</span>
+                  <label class="toggle toggle-assertive">
+                    <input type="checkbox" ng-model="competence.mandatory">
+                    <div class="track">
+                      <div class="handle"></div>
+                    </div>
+                  </label>
+                </label>
+                <button type="button" ng-click="removeCompetence(competence)"
+                  class="button button-full button-assertive ion-ios-trash-outline no-border-radius"> Löschen</button>
+              </div>
+            </c-accordion>
           </div>
-          <select ng-model="competences.newObj.id">
-            <option ng-repeat="competence in availableCompetences | orderBy: 'name'" ng-value="competence.id">
-              {{ competence.name }}
-            </option>
-          </select>
-        </label>
-			  <div>
+
+          <custom-accordion>
+            <custom-accordion-head>
+              <div class="item item-divider ion-plus">
+                Kompetenz hinzufügen
+              </div>
+            </custom-accordion-head>
+            <custom-accordion-body>
+              <label class="item item-input item-select">
+                <div class="input-label">
+                  Kompetenzbereich
+                </div>
+                <select ng-model="competenceArea" ng-change="onCompetenceAreaChange(competenceArea)"
+                  ng-options="area.id as area.name for area in competenceAreaList">
+                </select>
+              </label>
+              <label class="item item-input item-select" ng-if="competenceArea != -1">
+                <div class="input-label">
+                  Kompetenz
+                </div>
+                <select ng-model="competences.newObj.id">
+                  <option ng-repeat="competence in availableCompetences | orderBy: 'name'" ng-value="competence.id">
+                    {{ competence.name }}
+                  </option>
+                </select>
+              </label>
+              <div>
 
 
-			  </div>
-			  <label class="item item-input range">
-				<span class="input-label">Können</span>
-				<input type="range" min="0" max="100" ng-model="competences.newObj.neededProficiencyLevel">
-				<p>{{competences.newObj.neededProficiencyLevel}}</p>
-			  </label>
+              </div>
+              <label class="item item-input range">
+                <span class="input-label">Können</span>
+                <input type="range" min="0" max="100" ng-model="competences.newObj.neededProficiencyLevel">
+                <p>{{competences.newObj.neededProficiencyLevel}}</p>
+              </label>
 
-			  <div class="item item-toggle">
-				Zwingend
-				<label class="toggle toggle-assertive">
-				  <input type="checkbox" ng-model="competences.newObj.mandatory">
-				  <div class="track">
-					<div class="handle"></div>
-				  </div>
-				</label>
-			  </div>
-			  <div>
-				<!--<span>-->
-				<!--<i class="ion-information-circled"></i>-->
-				<!--<span>-->
-				<!--Die Kategorie &bdquo;Wichtigkeit&ldquo; bezieht sich auf die Aufgabe, wie wichtig diese für mich ist-->
-				<!--bzw. für das Gelingen des Projekts.-->
-				<!--</span>-->
-				<!--</span>-->
+              <div class="item item-toggle">
+                Zwingend
+                <label class="toggle toggle-assertive">
+                  <input type="checkbox" ng-model="competences.newObj.mandatory">
+                  <div class="track">
+                    <div class="handle"></div>
+                  </div>
+                </label>
+              </div>
+              <div>
+                <!--<span>-->
+                  <!--<i class="ion-information-circled"></i>-->
+                  <!--<span>-->
+                    <!--Die Kategorie &bdquo;Wichtigkeit&ldquo; bezieht sich auf die Aufgabe, wie wichtig diese für mich ist-->
+                    <!--bzw. für das Gelingen des Projekts.-->
+                    <!--</span>-->
+                  <!--</span>-->
 
-			  </div>
-			  <button type="button" ng-click="addCompetence()" class="button button-block button-positive ion-plus no-border-radius"> Hinzufügen</button>
-			</custom-accordion-body>
-		  </custom-accordion>
+              </div>
+              <button type="button" ng-click="addCompetence()" class="button button-block button-positive ion-plus no-border-radius"> Hinzufügen</button>
+            </custom-accordion-body>
+          </custom-accordion>
 
-		</ion-item>
-	  </ion-list>
-	</div>
+        </ion-item>
+      </ion-list>
+    </div>
 
-	<div class="form-block" ng-if="view == 'materials'">
-	  <ion-list>
-		<div ng-cloak>
-			  <ion-item>
-				  <div class="row row-header" ng-if="materials.all.length > 0">
-					  <span class="material-header-name">Name: </span>
-					  <span class="material-header-amount">Menge: </span>
-					  <span class="material-header-description">Beschreibung: </span>
-				  </div>
-				  <div class="row row-content" ng-repeat="material in materials.all">
-					  <input type="text" disabled class="material-content-name"        ng-model="material.name">
-					  <input type="number" disabled class="material-content-amount"    ng-model="material.quantity">
-					  <input type="text" disabled class="material-content-description" ng-model="material.description">
-					  <i ng-click="removeMaterial(material)" class="icon icon-table-action ion-trash-a"></i>
-				  </div>
-			<div class="new-material">
-
-
-				<custom-accordion>
-					<custom-accordion-head>
-						<div class="item item-divider ion-plus">
-							Material hinzufügen
-						</div>
-					</custom-accordion-head>
-					<custom-accordion-body>
-
-				<div class="list">
-				  <label class="item item-input item-stacked-label">
-					<span class="input-label new-material-label">Name</span>
-					<input ng-model="materials.newObj.name" placeholder="Name" type="text" class="new-material-input">
-				  </label>
-				  <label class="item item-input item-stacked-label">
-					<span class="input-label new-material-label">Menge</span>
-					<input type="number" ng-model="materials.newObj.quantity" placeholder="Menge" class="new-material-input">
-				  </label>
-				  <label class="item item-input item-stacked-label">
-					<span class="input-label new-material-label">Beschreibung</span>
-					<textarea ng-model="materials.newObj.description" placeholder="Beschreibung" class="new-material-input"></textarea>
-				  </label>
-				  <button type="button" ng-click="addMaterial()" class="button button-full button-positive ion-plus no-border-radius"> Hinzufügen</button>
-				</div>
-						</custom-accordion-body>
-					</custom-accordion>
-
-			</div>
-		  </ion-item>
-		</div>
-	  </ion-list>
-	</div>
-
-	<!-- TODO implement actual shift functionality when backend is available -->
-
-	<div class="form-block" ng-if="view == 'shifts'">
-	  <ion-list>
-		<div  ng-cloak>
-		  <ion-item>
-			<div class="row row-content" ng-repeat="shift in shifts.all">
-				<span class="shift-content">
-					{{shift.startTime | date: "short"}} -
-					{{shift.endTime | date: "short"}}
-					({{shift.minAmountOfVolunteers}})
-				</span>
-				<i ng-click="removeShift(shift)" class="icon icon-table-action ion-trash-a"></i>
-			</div>
-			<div class="new-shift">
-
-                <custom-accordion>
-                    <custom-accordion-head>
-                        <div class="item item-divider ion-plus">
-                            Schicht hinzufügen
-                        </div>
-                    </custom-accordion-head>
-                    <custom-accordion-body>
-				<div class="list">
-				  <label class="item item-input item-stacked-label">
-					<span class="input-label new-shift-label">Beginn</span>
-					<input type="datetime-local" ng-model="shifts.newObj.startTime"  ng-class="{'has-error' : !shiftToAdd.starttime}" >
-				  </label>
-				  <label class="item item-input item-stacked-label">
-					<span class="input-label new-shift-label">Ende</span>
-					<input type="datetime-local" ng-model="shifts.newObj.endTime"  ng-class="{'has-error' : !shiftToAdd.endtime}" >
-				  </label>
-				  <label class="item item-input item-stacked-label">
-					<span class="input-label new-shift-label">Menge</span>
-					<input type="number" ng-model="shifts.newObj.minAmountOfVolunteers" placeholder="Menge" class="new-material-input">
-				  </label>
-
-				   <button type="button" ng-click="addShift()" class="button button-full button-positive ion-plus no-border-radius"> Hinzufügen</button>
+    <div class="form-block" ng-if="view == 'materials'">
+      <ion-list>
+        <div ng-cloak>
+          <ion-item>
+            <div class="row row-header" ng-if="materials.all.length > 0">
+              <span class="material-header-name">Name: </span>
+              <span class="material-header-amount">Menge: </span>
+              <span class="material-header-description">Beschreibung: </span>
+            </div>
+            <div class="row row-content" ng-repeat="material in materials.all | orderBy: [ 'name' ]">
+              <input type="text" disabled class="material-content-name"        ng-model="material.name">
+              <input type="number" disabled class="material-content-amount"    ng-model="material.quantity">
+              <input type="text" disabled class="material-content-description" ng-model="material.description">
+              <i ng-click="removeMaterial(material)" class="icon icon-table-action ion-trash-a"></i>
+            </div>
+            <div class="new-material">
 
 
-				</div>
+              <custom-accordion>
+                <custom-accordion-head>
+                  <div class="item item-divider ion-plus">
+                    Material hinzufügen
+                  </div>
+                </custom-accordion-head>
+                <custom-accordion-body>
 
-			    </custom-accordion-body>
-             </custom-accordion>
-			</div>
-		  </ion-item>
-		</div>
-	  </ion-list>
-	</div>
+                  <div class="list">
+                    <label class="item item-input item-stacked-label">
+                      <span class="input-label new-material-label">Name</span>
+                      <input ng-model="materials.newObj.name" placeholder="Name" type="text" class="new-material-input" required ng-class="{'has-error' : !materials.newObj.name}">
+                    </label>
+                    <label class="item item-input item-stacked-label">
+                      <span class="input-label new-material-label">Menge</span>
+                      <input type="number" ng-model="materials.newObj.quantity" placeholder="Menge" class="new-material-input">
+                    </label>
+                    <label class="item item-input item-stacked-label">
+                      <span class="input-label new-material-label">Beschreibung</span>
+                      <textarea ng-model="materials.newObj.description" placeholder="Beschreibung" class="new-material-input"></textarea>
+                    </label>
+                    <button type="button" ng-click="addMaterial()" class="button button-full button-positive ion-plus no-border-radius"> Hinzufügen</button>
+                  </div>
+                </custom-accordion-body>
+              </custom-accordion>
+
+            </div>
+          </ion-item>
+        </div>
+      </ion-list>
+    </div>
+
+    <!-- TODO implement actual shift functionality when backend is available -->
+
+    <div class="form-block" ng-if="view == 'shifts'">
+      <ion-list>
+        <div  ng-cloak>
+          <ion-item>
+            <div class="row row-content" ng-repeat="shift in shifts.all | orderBy: [ 'startTime' ]">
+              <span class="shift-content">
+                {{shift.startTime | date: "short"}} -
+                {{shift.endTime | date: "short"}}
+                ({{shift.minAmountOfVolunteers}})
+              </span>
+              <i ng-click="removeShift(shift)" class="icon icon-table-action ion-trash-a"></i>
+            </div>
+            <div class="new-shift">
+
+              <custom-accordion>
+                <custom-accordion-head>
+                  <div class="item item-divider ion-plus">
+                    Schicht hinzufügen
+                  </div>
+                </custom-accordion-head>
+                <custom-accordion-body>
+                  <div class="list">
+                    <label class="item item-input item-stacked-label">
+                      <span class="input-label new-shift-label">Beginn</span>
+                      <input type="datetime-local" ng-model="shifts.newObj.startTime"  ng-class="{'has-error' : !shifts.newObj.startTime}" >
+                    </label>
+                    <label class="item item-input item-stacked-label">
+                      <span class="input-label new-shift-label">Ende</span>
+                      <input type="datetime-local" ng-model="shifts.newObj.endTime"  ng-class="{'has-error' : !shifts.newObj.endTime}" >
+                    </label>
+                    <label class="item item-input item-stacked-label">
+                      <span class="input-label new-shift-label">Menge</span>
+                      <input type="number" ng-model="shifts.newObj.minAmountOfVolunteers" placeholder="Menge" class="new-material-input" ng-class="{'has-error' : !shifts.newObj.minAmountOfVolunteers}">
+                    </label>
+
+                    <button type="button" ng-click="addShift()" class="button button-full button-positive ion-plus no-border-radius"> Hinzufügen</button>
+
+
+                  </div>
+
+                </custom-accordion-body>
+              </custom-accordion>
+            </div>
+          </ion-item>
+        </div>
+      </ion-list>
+    </div>
   </ion-content>
   <ion-footer-bar>
     <!--<div class="button-bar">-->
       <!--<button ng-click="save_and_publish()"   ng-if="showPublish" class="button button-small button-full no-border-radius button-balanced ion-eye"> Veröffentlichen </button>-->
-    <!--</div>-->
-  <!--</ion-footer-bar>-->
+      <!--</div>-->
+    <!--</ion-footer-bar>-->
 </ion-view>
