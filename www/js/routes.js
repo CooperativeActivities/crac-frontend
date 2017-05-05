@@ -189,15 +189,15 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/task/:id',
         views: {
           'tab1': {
-            templateUrl: 'templates/task.html',
+            templateUrl: 'pages/TaskDetail/TaskDetail.html',
             controller: 'singleTaskCtrl'
           },
           'tab2': {
-            templateUrl: 'templates/task.html',
+            templateUrl: 'pages/TaskDetail/TaskDetail.html',
             controller: 'singleTaskCtrl'
           },
           'tab3': {
-            templateUrl: 'templates/task.html',
+            templateUrl: 'pages/TaskDetail/TaskDetail.html',
             controller: 'singleTaskCtrl'
           }
         }
