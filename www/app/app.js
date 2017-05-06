@@ -9,6 +9,7 @@ var cracApp = angular.module('cracApp', ['ionic', 'ngCookies','ngRoute', 'app.ro
 
   })
 
+window.cracApp = cracApp
 cracApp.run(function ($ionicPlatform, $rootScope, $location,$cookieStore,$http) {
   $ionicPlatform.ready(function () {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard

@@ -1,3 +1,7 @@
+// IMPORTANT:
+// this isn't an actual controller,
+// since the "logoutCtrl" actually is attached to the body
+// (and just makes use of the template)
 cracApp.controller('logoutCtrl', function($scope, $ionicModal,$location,AuthenticationService) {
 
     // Logout Modal

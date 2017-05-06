@@ -30,8 +30,10 @@ angular.module('app.routes', ['ionicUIRouter'])
       .state('tabsController', {
        // cache: false,
         url: '/tabcontroller',
-        templateUrl: 'app/tabsController.html',
-        abstract: true
+        //component: "navTabs",
+        controller: "navTabs as nav",
+        templateUrl: 'components/navTabs/navTabs.html',
+        //abstract: true,
       })
 
       .state('tabsController.home', {
