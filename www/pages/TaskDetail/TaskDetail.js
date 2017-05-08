@@ -347,7 +347,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
     var taskId = $scope.task.id;
     TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
-      show("Task veröffentlicht", 'top', false, 5000);
+      ionicToast.show("Task veröffentlicht", 'top', false, 5000);
       $scope.showPublish = false;
     }, function(error) {
       ionicToast.show("Aufgabe kann nicht veröffentlicht werden: " + error.message, 'top', false, 5000);

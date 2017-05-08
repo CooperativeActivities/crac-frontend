@@ -1,7 +1,7 @@
 /**
  * Created by x-net on 14.11.2016.
  */
-cracApp.controller('addCompetenceInfoCtrl', ['$rootScope','$scope', '$stateParams','UserDataService', '$ionicModal','$state', 'ionicToast'
+cracApp.controller('addCompetenceInfoCtrl', ['$rootScope','$scope', '$stateParams','UserDataService', '$ionicModal','$state', 'ionicToast',
   function($rootScope, $scope, $stateParams, UserDataService, $ionicModal, $state, ionicToast) {
     console.log("Userid: " +$rootScope.globals.currentUser.id);
     console.log("id: " +$stateParams.id);

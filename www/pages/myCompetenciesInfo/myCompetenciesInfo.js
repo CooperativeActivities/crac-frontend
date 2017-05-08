@@ -1,7 +1,7 @@
 /**
  * Created by x-net on 09.11.2016.
  */
-cracApp.controller('myCompetenciesInfoCtrl', ['$rootScope','$scope', '$stateParams','UserDataService', '$ionicModal','$state', 'ionicToast'
+cracApp.controller('myCompetenciesInfoCtrl', ['$rootScope','$scope', '$stateParams','UserDataService', '$ionicModal','$state', 'ionicToast',
   function($rootScope, $scope, $stateParams, UserDataService, $ionicModal, $state, ionicToast) {
     $scope.editFlag =true;
     console.log("Userid: " +$rootScope.globals.currentUser.id);

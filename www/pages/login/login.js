@@ -22,7 +22,7 @@ cracApp.controller('loginCtrl', function ($rootScope,$scope, ionicToast, $locati
 
       } else {
         console.log("in login auth no success")
-        var alertPopup = ionicToastshow("Login fehlgeschlagen: Username oder Passwort falsch", 'top', false, 5000);
+        ionicToast.show("Login fehlgeschlagen: Username oder Passwort falsch", 'top', false, 5000);
         //$scope.loggedIn = false;
         //$scope.hasWrongCredentials = true;
       }
