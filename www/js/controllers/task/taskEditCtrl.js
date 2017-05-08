@@ -179,7 +179,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       $scope.save().then(function(save_res) {
         if(!save_res) return;
         var taskId = save_res.object.id;
-        show("Aufgabe gespeichert", 'top', false, 5000);
+        ionicToast.show("Aufgabe gespeichert", 'top', false, 5000);
 
         if($scope.isNewTask) {
           if($scope.task.taskType === 'ORGANISATIONAL') {
@@ -229,7 +229,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       TaskDataService.changeTaskState($scope.taskId, 'unpublish').then(function(res) {
         $scope.task.taskState = 'NOT_PUBLISHED';
         $scope.updateFlags();
-        show("Aufgabe zurückgezogen", 'top', false, 5000);
+        ionicToast.show("Aufgabe zurückgezogen", 'top', false, 5000);
         $state.go('tabsController.task', { id: $scope.taskId }, { location: 'replace' }).then(function(res) {
           $ionicHistory.removeBackView();
         });
@@ -242,7 +242,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
         $scope.task.taskState = 'PUBLISHED';
         $scope.updateFlags();
-        show("Aufgabe veröffentlicht", 'top', false, 5000);
+        ionicToast.show("Aufgabe veröffentlicht", 'top', false, 5000);
         $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
           $ionicHistory.removeBackView()
         });
@@ -280,7 +280,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       confirmPopup.then(function(res) {
         if(res) {
           TaskDataService.deleteTaskById($scope.task.id).then(function(res) {
-            show("Aufgabe gelöscht", 'top', false, 5000);
+            ionicToast.show("Aufgabe gelöscht", 'top', false, 5000);
             $state.go('tabsController.myTasks', { location: "replace" }).then(function(res){
               $ionicHistory.removeBackView();
             });

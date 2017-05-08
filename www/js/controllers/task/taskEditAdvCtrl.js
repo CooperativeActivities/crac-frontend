@@ -222,7 +222,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       $scope.save().then(function(save_res) {
         if(!save_res) return;
 
-        ionicToast.("Task gespeichert", 'top', false, 5000)
+        ionicToast.show("Task gespeichert", 'top', false, 5000)
         $state.go('tabsController.task', { id:$scope.taskId }, { location: "replace" }).then(function(save_res){
           $ionicHistory.removeBackView();
         });
