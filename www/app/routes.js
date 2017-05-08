@@ -258,11 +258,11 @@ angular.module('app.routes', ['ionicUIRouter'])
         params: {id:null, address:null},
         views: {
           'tab1': {
-            templateUrl: 'templates/mapView.html',
+            templateUrl: 'pages/mapView/mapView.html',
             controller: 'MapViewController'
           },
           'tab2': {
-            templateUrl: 'templates/mapView.html',
+            templateUrl: 'pages/mapView/mapView.html',
             controller: 'MapViewController'
           },
           'tab3': {
