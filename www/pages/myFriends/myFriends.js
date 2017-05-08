@@ -1,5 +1,5 @@
-cracApp.controller('myFriendsCtrl', ['$rootScope','$scope','UserDataService','$ionicPopup',
-  function($rootScope, $scope, UserDataService, $ionicPopup) {
+cracApp.controller('myFriendsCtrl', ['$rootScope','$scope','UserDataService','ionicToast',
+  function($rootScope, $scope, UserDataService, ionicToast) {
     $scope.friends = []
     $scope.allUsers = []
     $scope.select = {
@@ -9,37 +9,22 @@ cracApp.controller('myFriendsCtrl', ['$rootScope','$scope','UserDataService','$i
       UserDataService.getFriends().then(function(res){
         $scope.friends = res.object
       }, function(error){
-        $ionicPopup.alert({
-          title: "Freunde können nicht geladen werden",
-          template: error.message,
-          okType: 'button-positive button-outline'
-        });
+        ionicToast.show("Freunde können nicht geladen werden: " + error.message, 'top', false, 5000);
       })
       UserDataService.getAllUsers().then(function(res){
         $scope.allUsers = res.object
       }, function(error){
-        $ionicPopup.alert({
-          title: "Benutzer können nicht geladen werden",
-          template: error.message,
-          okType: 'button-positive button-outline'
-        });
+        ionicToast.show("Benutzer können nicht geladen werden: " + error.message, 'top', false, 5000);
       })
     };
 
     $scope.sendRequest = function(){
       if($scope.select.userToSendRequestTo){
         UserDataService.friendRequest($scope.select.userToSendRequestTo).then(function(res){
-          $ionicPopup.alert({
-            title: "Freundschaftsanfrage versandt",
-            okType: 'button-positive button-outline'
-          });
+          ionicToast.show("Freundschaftsanfrage versandt", 'top', false, 5000)
           $scope.reload()
         }, function(error){
-          $ionicPopup.alert({
-            title: "Freundschaftsanfrage fehlgeschlagen",
-            template: error.message,
-            okType: 'button-positive button-outline'
-          });
+          ionicToast.show("Freundschaftsanfrage fehlgeschlagen: " + error.message, 'top', false, 5000);
         })
       }
     }

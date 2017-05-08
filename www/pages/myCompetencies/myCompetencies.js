@@ -1,18 +1,14 @@
 /**
  * Created by P41332 on 25.10.2016.
  */
-cracApp.controller('myCompetenciesCtrl', ['$rootScope','$scope','UserDataService','$ionicPopup','$state',
-  function($rootScope,$scope,UserDataService, $ionicPopup, $state) {
+cracApp.controller('myCompetenciesCtrl', ['$rootScope','$scope','UserDataService','ionicToast','$state',
+  function($rootScope,$scope,UserDataService, ionicToast, $state) {
  // console.log("Userid: " +$rootScope.globals.currentUser.id)
   UserDataService.getUserById($rootScope.globals.currentUser.id).then(function(res) {
     $scope.user = res.object;
     console.log($scope.user);
   }, function(error) {
-    $ionicPopup.alert({
-      title: "Benutzerinformation kann nicht geladen werden",
-      template: error.message,
-      okType: 'button-positive button-outline'
-    });
+    ionicToast.show("Benutzerinformation kann nicht geladen werden: " + error.message, 'top', false, 5000);
   });
 
   UserDataService.getCompRelationships().then(function(res){
@@ -42,11 +38,7 @@ cracApp.controller('myCompetenciesCtrl', ['$rootScope','$scope','UserDataService
         //@TODO error shows when user has no competences, should come as success
       });
     }, function(error) {
-      $ionicPopup.alert({
-        title: "Kompetenz kann nicht gelöscht werden",
-        template: error.message,
-        okType: 'button-positive button-outline'
-      });
+      ionicToast.show("Kompetenz kann nicht gelöscht werden: " + error.message, 'top', false, 5000);
     });
   }
 }]);

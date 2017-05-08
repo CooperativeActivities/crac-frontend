@@ -1,8 +1,8 @@
 /**
  * Created by x-net on 14.11.2016.
  */
-cracApp.controller('addCompetenceInfoCtrl', ['$rootScope','$scope', '$stateParams','UserDataService', '$ionicModal','$state',
-  function($rootScope, $scope, $stateParams, UserDataService, $ionicModal, $state) {
+cracApp.controller('addCompetenceInfoCtrl', ['$rootScope','$scope', '$stateParams','UserDataService', '$ionicModal','$state', 'ionicToast'
+  function($rootScope, $scope, $stateParams, UserDataService, $ionicModal, $state, ionicToast) {
     console.log("Userid: " +$rootScope.globals.currentUser.id);
     console.log("id: " +$stateParams.id);
     UserDataService.getCompetenceById($stateParams.id).then(function (res) {
@@ -11,11 +11,7 @@ cracApp.controller('addCompetenceInfoCtrl', ['$rootScope','$scope', '$stateParam
       $scope.competenceInfo.proficiencyValue = 50;
       console.log($scope.competenceInfo);
     }, function (error) {
-      $ionicPopup.alert({
-        title: "Kompetenz kann nicht geladen werden",
-        template: error.message,
-        okType: 'button-positive button-outline'
-      });
+      ionicToast.show("Kompetenz kann nicht geladen werden: " + error.message, 'top', false, 5000);
     });
 
     $scope.add = function(){
@@ -23,11 +19,7 @@ cracApp.controller('addCompetenceInfoCtrl', ['$rootScope','$scope', '$stateParam
         console.log($scope.competenceInfo);
         $state.go('tabsController.myCompetencies');
       }, function(error) {
-        $ionicPopup.alert({
-          title: "Kompetenzen kann nicht hinzufügen werden",
-          template: error.message,
-          okType: 'button-positive button-outline'
-        });
+        ionicToast.show("Kompetenzen kann nicht hinzufügen werden: " + error.message, 'top', false, 5000);
       });
     }
 

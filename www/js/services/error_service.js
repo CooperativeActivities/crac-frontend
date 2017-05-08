@@ -1,4 +1,4 @@
-cracApp.factory('ErrorDisplayService', ["$ionicPopup", function($ionicPopup){
+cracApp.factory('ErrorDisplayService', ["ionicToast", function(ionicToast){
   var code = {
     ACTION_NOT_VALID: "",
     ID_NOT_VALID: "",
@@ -44,15 +44,10 @@ cracApp.factory('ErrorDisplayService', ["$ionicPopup", function($ionicPopup){
       }).join("<br>")
     },
 
-    showError: function(errorMessage, title, okType) {
+    showError: function(errorMessage, title) {
       if( !title ) title = "Fehler";
-      if( !okType ) okType = "button-positive button-outline";
 
-      $ionicPopup.alert({
-        title: title,
-        template: errorMessage,
-        okType: okType
-      })
+      ionicToast.show(title + ": " + errorMessage, 'top', false, 5000)
 
     }
   }

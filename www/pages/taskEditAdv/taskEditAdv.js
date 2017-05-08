@@ -1,8 +1,8 @@
-cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDataService','UserDataService','$ionicHistory','$q','$ionicPopup','$state',
+cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDataService','UserDataService','$ionicHistory','$q','ionicToast','$state',
   // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
   // You can include any angular dependencies as parameters for this function
   // TIP: Access Route Parameters for your page via $stateParams.parameterName
-  function ($scope, $route, $stateParams,TaskDataService, UserDataService, $ionicHistory, $q, $ionicPopup, $state) {
+  function ($scope, $route, $stateParams,TaskDataService, UserDataService, $ionicHistory, $q, ionicToast, $state) {
     $scope.view = $stateParams.section || 'competences';
 	  $scope.task= {};
     $scope.isChildTask = false;
@@ -59,11 +59,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
         UserDataService.getCompetenceAreas()
           .then(function(res) {
             if(res.object.length === 0) {
-              $ionicPopup.alert({
-                title: "Keine Kompetenzbereiche gefunden",
-                template: error.message,
-                okType: 'button-positive button-outline'
-              });
+              ionicToast.show("Keine Kompetenzbereiche gefunden: " + error.message, 'top', false, 5000);
               return;
             }
 
@@ -75,11 +71,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
             });
             $scope.competenceAreaList = compAreas;
           }, function(error) {
-            $ionicPopup.alert({
-              title: "Kompetenzbereiche können nicht geladen werden",
-              template: error.message,
-              okType: 'button-positive button-outline'
-            });
+            ionicToast.show("Kompetenzbereiche können nicht geladen werden: " + error.message, 'top', false, 5000);
           });
 
         task.startTime = new Date(task.startTime);
@@ -96,11 +88,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
           $scope.shifts[i].endTime = new Date($scope.shifts[i].endTime);
         }
       }, function (error) {
-        $ionicPopup.alert({
-          title: "Aufgabe kann nicht geladen werden",
-          template: error.message,
-          okType: 'button-positive button-outline'
-        });
+        ionicToast.show("Aufgabe kann nicht geladen werden: " + error.message, 'top', false, 5000);
       });
     };
 
@@ -109,21 +97,13 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       UserDataService.getCompetencesForArea(newValue)
         .then(function(res) {
           if(res.meta.competences.length === 0) {
-            $ionicPopup.alert({
-              title: "Keine Kompetenzen in diesem Bereich gefunden",
-              template: '',
-              okType: 'button-positive button-outline'
-            });
+            ionicToast.show("Keine Kompetenzen in diesem Bereich gefunden: " + '', 'top', false, 5000);
             return;
           }
 
           $scope.availableCompetences = res.meta.competences;
         }, function(error) {
-          $ionicPopup.alert({
-            title: "Kompetenzen dieses Bereichs können nicht geladen werden",
-            template: error.message,
-            okType: 'button-positive button-outline'
-          });
+          ionicToast.show("Kompetenzen dieses Bereichs können nicht geladen werden: " + error.message, 'top', false, 5000);
         });
 
     };
@@ -154,11 +134,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       var task = $scope.task;
       var taskData = {};
       if(!task.name){
-        $ionicPopup.alert({
-          title: "Task kann nicht gespeichert werden:",
-          template: "Name muss angegeben werden.",
-          okType: "button-positive button-outline"
-        });
+        ionicToast.show("Task kann nicht gespeichert werden:: " + "Name muss angegeben werden.", 'top', false, 5000);
         return
       }
       taskData.name= task.name;
@@ -236,11 +212,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
         $scope.load();
         return res[0];
       }, function(error) {
-        $ionicPopup.alert({
-          title: "Aufgabe kann nicht gespeichert werden",
-          template: error.message,
-          okType: 'button-positive button-outline'
-        });
+        ionicToast.show("Aufgabe kann nicht gespeichert werden: " + error.message, 'top', false, 5000);
         return false;
       });
     };
@@ -250,10 +222,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
       $scope.save().then(function(save_res) {
         if(!save_res) return;
 
-        $ionicPopup.alert({
-          title: "Task gespeichert",
-          okType: "button-positive button-outline"
-        });
+        ionicToast.("Task gespeichert", 'top', false, 5000)
         $state.go('tabsController.task', { id:$scope.taskId }, { location: "replace" }).then(function(save_res){
           $ionicHistory.removeBackView();
         });
@@ -273,11 +242,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
           $ionicHistory.removeBackView();
         });
       }, function(error) {
-        $ionicPopup.alert({
-          title: "Aufgabe kann nicht veröffentlicht werden",
-          template: error.message,
-          okType: 'button-positive button-outline'
-        });
+        ionicToast.show("Aufgabe kann nicht veröffentlicht werden: " + error.message, 'top', false, 5000);
       });
     };
 
@@ -352,11 +317,7 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 
       if(!$scope.shifts.newObj.minAmountOfVolunteers){
           var message = 'Bitte geben Sie die Anzahl an Helfer an!';
-          $ionicPopup.alert({
-              title: "Schicht konnte nicht hinzugefügt werden",
-              template: message,
-              okType: "button-positive button-outline"
-          });
+          ionicToast.show("Schicht konnte nicht hinzugefügt werden: " + message, 'top', false, 5000);
         return;
       }
 
@@ -386,17 +347,9 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 
         TaskDataService.deleteTaskById(shift.id).then(function (res) {
             var message = 'Schicht wurde erfolgreich gelöscht';
-            $ionicPopup.alert({
-                title: "Schicht wurde gelöscht",
-                template: message,
-                okType: "button-positive button-outline"
-            });
+            ionicToast.show("Schicht wurde gelöscht: " + message, 'top', false, 5000);
         }, function (error) {
-            $ionicPopup.alert({
-                title: "Schicht kann nicht gelöscht werden",
-                template: error.message,
-                okType: 'button-positive button-outline'
-            });
+            ionicToast.show("Schicht kann nicht gelöscht werden: " + error.message, 'top', false, 5000);
         });
 
         $scope.load();

@@ -1,7 +1,7 @@
 cracApp.component("sideMenu", {
   templateUrl: "components/sideMenu/sideMenu.html",
-  controller:  ['$scope','$rootScope', '$stateParams','UserDataService','$ionicPopup',
-    function ($scope,$rootScope, $stateParams, UserDataService, $ionicPopup) {
+  controller:  ['$scope','$rootScope', '$stateParams','UserDataService','ionicToast',
+    function ($scope,$rootScope, $stateParams, UserDataService, ionicToast) {
       //console.log("globals", $rootScope.globals);
       $rootScope.$watch(['globals.hasOwnProperty'], function() {
         if ($rootScope.globals.hasOwnProperty("currentUser")) {
@@ -19,11 +19,7 @@ cracApp.component("sideMenu", {
             //console.log("user", $scope.user);
 
           }, function (error) {
-            $ionicPopup.alert({
-              title: "Benutzerinformation konnte nicht geladen werden",
-              template: error.message,
-              okType: 'button-positive button-outline'
-            });
+            ionicToast.show("Benutzerinformation konnte nicht geladen werden: " + error.message, 'top', false, 5000)
             if(error.message === "Sie sind nicht eingeloggt."){
               $state.go('login');
             }
