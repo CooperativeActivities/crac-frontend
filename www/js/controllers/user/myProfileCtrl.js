@@ -1,18 +1,14 @@
 /**
  * Created by P23460 on 13.10.2016.
  */
-cracApp.controller('myProfileCtrl', ['$rootScope','$scope','UserDataService','$ionicPopup',
-function($rootScope,$scope,UserDataService,$ionicPopup) {
+cracApp.controller('myProfileCtrl', ['$rootScope','$scope','UserDataService','ionicToast',
+function($rootScope,$scope,UserDataService,ionicToast) {
   console.log("Userid: " +$rootScope.globals.currentUser.id);
   UserDataService.getUserById($rootScope.globals.currentUser.id).then(function(res) {
     $scope.user = res.object;
     console.log($scope.user)
   }, function(error) {
-    $ionicPopup.alert({
-      title: "Benutzerinformation kann nicht gefolgt werden",
-      template: error.message,
-      okType: 'button-positive button-outline'
-    });
+    ionicToast.show("Benutzerinformation kann nicht gefolgt werden: " + error.message, 'top', false, 5000);
   });
 
   $scope.editFlag =true;
@@ -32,11 +28,7 @@ function($rootScope,$scope,UserDataService,$ionicPopup) {
       console.log(res.data);
       $scope.editFlag =true;
     }, function(error) {
-      $ionicPopup.alert({
-        title: "Account kann nicht gespeichert werden",
-        template: error.message,
-        okType: 'button-positive button-outline'
-      });
+      ionicToast.show("Account kann nicht gespeichert werden: " + error.message, 'top', false, 5000);
     });
   };
 

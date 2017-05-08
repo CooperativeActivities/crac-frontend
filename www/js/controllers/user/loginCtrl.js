@@ -1,7 +1,7 @@
 /**
  * Created by P41332 on 25.10.2016.
  */
-cracApp.controller('loginCtrl', function ($rootScope,$scope, $ionicPopup, $location, AuthenticationService,$ionicSideMenuDelegate) {
+cracApp.controller('loginCtrl', function ($rootScope,$scope, ionicToast, $location, AuthenticationService,$ionicSideMenuDelegate) {
 
   // deactivate swipe possibility (for sidebar)
   $ionicSideMenuDelegate.canDragContent(false);
@@ -22,11 +22,7 @@ cracApp.controller('loginCtrl', function ($rootScope,$scope, $ionicPopup, $locat
 
       } else {
         console.log("in login auth no success")
-        var alertPopup = $ionicPopup.alert({
-          title: 'Login fehlgeschlagen!',
-          template: 'Username oder Passwort falsch',
-          okType: "button-positive button-outline"
-        });
+        var alertPopup = ionicToastshow("Login fehlgeschlagen: Username oder Passwort falsch", 'top', false, 5000);
         //$scope.loggedIn = false;
         //$scope.hasWrongCredentials = true;
       }

@@ -6,7 +6,7 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 
-var cracApp = angular.module('app', ['ionic', 'ngCookies','ngRoute', 'app.controllers', 'app.routes', 'app.directives', 'app.services','leaflet-directive','ngCordova',])
+var cracApp = angular.module('app', ['ionic', 'ngCookies','ngRoute', 'app.controllers', 'app.routes', 'app.directives', 'app.services','leaflet-directive','ngCordova', 'ionic-toast'])
 
   .config(function ($ionicConfigProvider) {
 

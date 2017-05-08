@@ -1,16 +1,12 @@
 /**
  * Created by x-net on 14.11.2016.
  */
-cracApp.controller('addCompetenceCtrl', ['$rootScope', '$scope', 'UserDataService', '$ionicPopup', '$state', '$ionicScrollDelegate',
-function($rootScope,$scope,UserDataService, $ionicPopup, $state, $ionicScrollDelegate) {
+cracApp.controller('addCompetenceCtrl', ['$rootScope', '$scope', 'UserDataService', 'ionicToast', '$state', '$ionicScrollDelegate',
+function($rootScope,$scope,UserDataService, ionicToast, $state, $ionicScrollDelegate) {
   UserDataService.getCompetenceAreas()
     .then(function(res) {
       if(res.object.length === 0) {
-        $ionicPopup.alert({
-          title: "Keine Kompetenzbereiche gefunden",
-          template: error.message,
-          okType: 'button-positive button-outline'
-        });
+        ionicToast.show("Keine Kompetenzbereiche gefunden: " + error.message, 'top', false, 5000);
         return;
       }
 
@@ -22,11 +18,7 @@ function($rootScope,$scope,UserDataService, $ionicPopup, $state, $ionicScrollDel
       });
       $scope.competenceAreaList = compAreas;
     }, function(error) {
-      $ionicPopup.alert({
-        title: "Kompetenzbereiche können nicht geladen werden",
-        template: error.message,
-        okType: 'button-positive button-outline'
-      });
+      ionicToast.show("Kompetenzbereiche können nicht geladen werden: " + error.message, 'top', false, 5000);
     });
 
   $scope.onCompetenceAreaChange = function(newValue){
@@ -34,21 +26,13 @@ function($rootScope,$scope,UserDataService, $ionicPopup, $state, $ionicScrollDel
     UserDataService.getCompetencesForArea(newValue)
       .then(function(res) {
         if(res.meta.competences.length === 0) {
-          $ionicPopup.alert({
-            title: "Keine Kompetenzen in diesem Bereich gefunden",
-            template: '',
-            okType: 'button-positive button-outline'
-          });
+          ionicToast.show("Keine Kompetenzen in diesem Bereich gefunden: " + '', 'top', false, 5000);
           return;
         }
 
         $scope.competences = res.meta.competences;
       }, function(error) {
-        $ionicPopup.alert({
-          title: "Kompetenzen dieses Bereichs können nicht geladen werden",
-          template: error.message,
-          okType: 'button-positive button-outline'
-        });
+        ionicToast.show("Kompetenzen dieses Bereichs können nicht geladen werden: " + error.message, 'top', false, 5000);
       });
 
   };

@@ -1,4 +1,4 @@
-cracApp.directive('taskPreview', ['TaskDataService', '$ionicPopup', function(TaskDataService, $ionicPopup) {
+cracApp.directive('taskPreview', ['TaskDataService', 'ionicToast', function(TaskDataService, ionicToast) {
   return {
     scope: {
       task: "=",
@@ -39,11 +39,7 @@ cracApp.directive('taskPreview', ['TaskDataService', '$ionicPopup', function(Tas
             console.log("Following task");
             //scope.participationType = "FOLLOWING";
           }, function(error) {
-            $ionicPopup.alert({
-              title: "Aufgabe kann nicht gefolgt werden",
-              template: error.message,
-              okType: 'button-positive button-outline'
-            });
+            ionicToast.show("Aufgabe kann nicht gefolgt werden: " + error.message, 'top', false, 5000);
           });
         //}
       };
@@ -54,11 +50,7 @@ cracApp.directive('taskPreview', ['TaskDataService', '$ionicPopup', function(Tas
             console.log("No longer participating");
             //scope.participationType = "NOT_PARTICIPATING";
           }, function (error) {
-            $ionicPopup.alert({
-              title: "Aufgabe kann nicht abgesagt werden",
-              template: error.message,
-              okType: 'button-positive button-outline'
-            });
+            ionicToast.show("Aufgabe kann nicht abgesagt werden: " + error.message, 'top', false, 5000);
           });
         //}
       };

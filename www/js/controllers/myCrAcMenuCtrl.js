@@ -2,10 +2,10 @@
  * Created by P41332 on 25.10.2016.
  */
 
-cracApp.controller('myCrAcMenuCtrl', ['$scope','$rootScope', '$stateParams','UserDataService','$ionicPopup', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+cracApp.controller('myCrAcMenuCtrl', ['$scope','$rootScope', '$stateParams','UserDataService','ionicToast', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-  function ($scope,$rootScope, $stateParams, UserDataService, $ionicPopup) {
+  function ($scope,$rootScope, $stateParams, UserDataService, ionicToast) {
     //console.log("globals", $rootScope.globals);
     $rootScope.$watch(['globals.hasOwnProperty'], function() {
       if ($rootScope.globals.hasOwnProperty("currentUser")) {
@@ -23,11 +23,7 @@ cracApp.controller('myCrAcMenuCtrl', ['$scope','$rootScope', '$stateParams','Use
           //console.log("user", $scope.user);
 
         }, function (error) {
-          $ionicPopup.alert({
-            title: "Benutzerinformation konnte nicht geladen werden",
-            template: error.message,
-            okType: 'button-positive button-outline'
-          });
+          ionicToast.show("Benutzerinformation konnte nicht geladen werden: " + error.message, 'top', false, 5000)
           if(error.message === "Sie sind nicht eingeloggt."){
             $state.go('login');
           }

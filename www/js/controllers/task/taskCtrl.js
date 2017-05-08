@@ -4,11 +4,11 @@
 // @TODO: move this to some global config file
 var SUBTASKS_LIMITED_TO_SHALLOW = false;
 
-cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window', '$stateParams','$routeParams','TaskDataService','$state','$ionicPopup', "ErrorDisplayService", "$ionicHistory",
+cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window', '$stateParams','$routeParams','TaskDataService','$state','$ionicPopup', 'ionicToast', "ErrorDisplayService", "$ionicHistory",
 // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskDataService, $state, $ionicPopup, ErrorDisplayService, $ionicHistory) {
+function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskDataService, $state, $ionicPopup, ionicToast, ErrorDisplayService, $ionicHistory) {
 
   //Flags to show/hide buttons
   $scope.editableFlag =false;
@@ -204,11 +204,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
         $scope.participationType = "NOT_PARTICIPATING";
         $scope.updateFlags();
       }, function (error) {
-        $ionicPopup.alert({
-          title: "Aufgabe kann nicht abgesagt werden",
-          template: error.message,
-          okType: 'button-positive button-outline'
-        });
+        ionicToast.show("Aufgabe kann nicht abgesagt werden: " + error.message, 'top', false, 5000);
       });
     }
   };
@@ -229,11 +225,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       $scope.participationType = "PARTICIPATING";
       $scope.updateFlags();
     }, function(error) {
-      $ionicPopup.alert({
-        title: "An der Aufgabe kann nicht teilgenommen werden",
-        template: error.message,
-        okType: 'button-positive button-outline'
-      });
+      ionicToast.show("An der Aufgabe kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
     });
   };
 
@@ -247,11 +239,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       console.log('Participating in shift ' + shift.id);
       $scope.working = true;
     }, function(error) {
-      $ionicPopup.alert({
-        title: "An der Schicht kann nicht teilgenommen werden",
-        template: error.message,
-        okType: 'button-positive button-outline'
-      });
+      ionicToast.show("An der Schicht kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
     });
 
 
@@ -263,11 +251,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       console.log('Not participating in shift ' + shift.id);
       $scope.working = false;
     }, function(error) {
-      $ionicPopup.alert({
-        title: "An der Schicht kann nicht zurückgezogen werden",
-        template: error.message,
-        okType: 'button-positive button-outline'
-      });
+      ionicToast.show("An der Schicht kann nicht zurückgezogen werden: " + error.message, 'top', false, 5000);
     });
 
   };
@@ -278,11 +262,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       $scope.participationType = "FOLLOWING";
       $scope.updateFlags();
     }, function(error) {
-      $ionicPopup.alert({
-        title: "Aufgabe kann nicht gefolgt werden",
-        template: error.message,
-        okType: 'button-positive button-outline'
-      });
+      ionicToast.show("Aufgabe kann nicht gefolgt werden: " + error.message, 'top', false, 5000);
     });
   };
 
@@ -316,11 +296,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
           if (res) $scope.forceComplete();
         });
       } else {
-        $ionicPopup.alert({
-          title: "Aufgabe kann nicht abgeschlossen werden",
-          template: error.message,
-          okType: 'button-positive button-outline'
-        });
+        ionicToast.show("Aufgabe kann nicht abgeschlossen werden: " + error.message, 'top', false, 5000);
       }
     });
   };
@@ -334,11 +310,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       $scope.userIsDone = true;
       $scope.allAreDone = $scope.areAllParticipantsDone();
     }, function (error) {
-      $ionicPopup.alert({
-        title: "Aufgabe kann nicht als fertig markiert werden",
-        template: error.message,
-        okType: 'button-positive button-outline'
-      });
+      ionicToast.show("Aufgabe kann nicht als fertig markiert werden: " + error.message, 'top', false, 5000);
     });
   };
 
@@ -350,11 +322,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       $scope.userIsDone = false;
       $scope.allAreDone = false;
     }, function (error) {
-      $ionicPopup.alert({
-        title: "Aufgabe kann nicht gelost werden",
-        template: error.message,
-        okType: 'button-positive button-outline'
-      });
+      ionicToast.show("Aufgabe kann nicht gelost werden: " + error.message, 'top', false, 5000);
     });
   };
 
@@ -364,11 +332,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
     if($scope.task.taskType === 'ORGANISATIONAL'){
       if($scope.task.childTasks.length <= 0){
         var message = "Übersicht hat noch keine Unteraufgabe! Bitte füge eine Unteraufgabe hinzu!";
-        $ionicPopup.alert({
-          title: "Task kann nicht veröffentlicht werden",
-          template: message,
-          okType: "button-positive button-outline"
-        });
+        ionicToast.show("Task kann nicht veröffentlicht werden: " + message, 'top', false, 5000);
         return;
       }
     }
@@ -377,27 +341,16 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       // @TODO - display popup with reason(s) why it's not ready
       /*
       var message = "";
-      $ionicPopup.alert({
-        title: "Task kann nicht veröffentlicht werden",
-        template: message,
-        okType: "button-positive button-outline"
-      })*/
+      ionicToast.show("Task kann nicht veröffentlicht werden: " + message, 'top', false, 5000)*/
       return;
     }
 
     var taskId = $scope.task.id;
     TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
-      $ionicPopup.alert({
-        title: "Task veröffentlicht",
-        okType: "button-positive button-outline"
-      });
+      show("Task veröffentlicht", 'top', false, 5000);
       $scope.showPublish = false;
     }, function(error) {
-      $ionicPopup.alert({
-        title: "Aufgabe kann nicht veröffentlicht werden",
-        template: error.message,
-        okType: 'button-positive button-outline'
-      });
+      ionicToast.show("Aufgabe kann nicht veröffentlicht werden: " + error.message, 'top', false, 5000);
     });
   };
 
@@ -414,11 +367,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       //@TODO we should not need to refresh the whole task to add/remove comments
       $scope.doRefresh();
     }, function (error) {
-      $ionicPopup.alert({
-        title: "Kommentar kann nicht hinzufügen werden",
-        template: error.message,
-        okType: 'button-positive button-outline'
-      });
+      ionicToast.show("Kommentar kann nicht hinzufügen werden: " + error.message, 'top', false, 5000);
     });
   };
 
@@ -433,11 +382,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       //@TODO we should not need to refresh the whole task to add/remove comments
       $scope.doRefresh();
     }, function (error) {
-      $ionicPopup.alert({
-        title: "Kommentar kann nicht gelöscht werden",
-        template: error.message,
-        okType: 'button-positive button-outline'
-      });
+      ionicToast.show("Kommentar kann nicht gelöscht werden: " + error.message, 'top', false, 5000);
     });
   };
 
@@ -476,24 +421,16 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       return;
     }
     if($scope.materialSubscribeError(material)){
-      $ionicPopup.alert({
-        title: "Maximum überschritten",
-        template: error.message,
-        okType: 'button-positive button-outline'
-      });
+      ionicToast.show("Maximum überschritten: " + error.message, 'top', false, 5000);
       return;
     }
 
     TaskDataService.subscribeToMaterial($scope.task.id, material.id, material.myQuantity).then(function(res){
       console.log("Material subscribed");
     }, function(error){
-      $ionicPopup.alert({
-        title: "Materialien können nicht gespeichert werden",
-        template: error.message,
-        okType: 'button-positive button-outline'
-      });
+      ionicToast.show("Materialien können nicht gespeichert werden: " + error.message, 'top', false, 5000);
     });
-   
+
   };
   $scope.materialSubscribeError = function(material){
     return material.myQuantity < 0 || material.myQuantity > (material.quantity - material.subscribedQuantityOtherUsers)
@@ -503,11 +440,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
     TaskDataService.unsubscribeFromMaterial($scope.task.id, material.id).then(function(res){
       console.log("Material unsubscribed");
     }, function(error){
-      $ionicPopup.alert({
-        title: "Materialien können nicht gespeichert werden",
-        template: error.message,
-        okType: 'button-positive button-outline'
-      });
+      ionicToast.show("Materialien können nicht gespeichert werden: " + error.message, 'top', false, 5000);
     });
   };
 

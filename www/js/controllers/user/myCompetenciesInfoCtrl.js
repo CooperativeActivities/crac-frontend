@@ -1,19 +1,15 @@
 /**
  * Created by x-net on 09.11.2016.
  */
-cracApp.controller('myCompetenciesInfoCtrl', ['$rootScope','$scope', '$stateParams','UserDataService', '$ionicModal','$state',
-  function($rootScope, $scope, $stateParams, UserDataService, $ionicModal, $state) {
+cracApp.controller('myCompetenciesInfoCtrl', ['$rootScope','$scope', '$stateParams','UserDataService', '$ionicModal','$state', 'ionicToast'
+  function($rootScope, $scope, $stateParams, UserDataService, $ionicModal, $state, ionicToast) {
     $scope.editFlag =true;
     console.log("Userid: " +$rootScope.globals.currentUser.id);
     UserDataService.getUserById($rootScope.globals.currentUser.id).then(function(res) {
       $scope.user = res.object;
       console.log($scope.user);
     }, function(error) {
-      $ionicPopup.alert({
-        title: "Benutzerinformation kann nicht geladen werden",
-        template: error.message,
-        okType: 'button-positive button-outline'
-      });
+      ionicToast.show("Benutzerinformation kann nicht geladen werden: " + error.message, 'top', false, 5000);
     });
 
     UserDataService.getCompRelationships().then(function(res){
@@ -27,11 +23,7 @@ cracApp.controller('myCompetenciesInfoCtrl', ['$rootScope','$scope', '$statePara
       UserDataService.removeCompetence($scope.competenceInfo.competence.id).then(function(res){
         $state.go('tabsController.myCompetencies');
       }, function(error) {
-        $ionicPopup.alert({
-          title: "Kompetenz kann nicht gelöscht werden",
-          template: error.message,
-          okType: 'button-positive button-outline'
-        });
+        ionicToast.show("Kompetenz kann nicht gelöscht werden: " + error.message, 'top', false, 5000);
       });
     };
     $scope.edit = function(){
@@ -42,11 +34,7 @@ cracApp.controller('myCompetenciesInfoCtrl', ['$rootScope','$scope', '$statePara
       UserDataService.updateCompetence($scope.competenceInfo.competence.id,$scope.competenceInfo.likeValue,$scope.competenceInfo.proficiencyValue).then(function(res){
         $state.go('tabsController.myCompetencies');
       }, function(error) {
-        $ionicPopup.alert({
-          title: "Kompetenz kann nicht gespeichert werden",
-          template: error.message,
-          okType: 'button-positive button-outline'
-        });
+        ionicToast.show("Kompetenz kann nicht gespeichert werden: " + error.message, 'top', false, 5000);
       });
     };
 
