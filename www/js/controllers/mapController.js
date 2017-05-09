@@ -34,7 +34,9 @@ cracApp.controller('MapController',
             tileLayer: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
             maxZoom: 18,
             zoomControlPosition: 'bottomleft',
-            scrollWheelZoom:'center'
+            scrollWheelZoom: 'center',
+            doubleClickZoom: 'center',
+            touchZoom: 'center'
           },
           center: {},
           markers : {},
@@ -210,13 +212,13 @@ cracApp.controller('MapController',
             $scope.map.center.lng = position.coords.longitude;
             $scope.map.center.zoom = 15;
 
-            $scope.map.markers.now = {
-              lat:position.coords.latitude,
-              lng:position.coords.longitude,
-              message: "Standort",
-              focus: true,
-              draggable: true
-            };
+            // $scope.map.markers.now = {
+            //   lat:position.coords.latitude,
+            //   lng:position.coords.longitude,
+            //   message: "Standort",
+            //   focus: true,
+            //   draggable: true
+            // };
 
             $scope.setAddressField(position.coords.latitude, position.coords.longitude);
 
@@ -243,12 +245,12 @@ cracApp.controller('MapController',
       var center = map.getCenter();
 
       // Update the marker.
-        $scope.map.markers = {
-          marker: {
-            lat: center.lat,
-            lng: center.lng,
-          }
-        };
+        // $scope.map.markers = {
+        //   marker: {
+        //     lat: center.lat,
+        //     lng: center.lng,
+        //   }
+        // };
 
       });
 

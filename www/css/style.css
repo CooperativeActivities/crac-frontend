@@ -190,7 +190,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   border-top-right-radius: 20px;
 }
 
-.form-block > .item:last-child, 
+.form-block > .item:last-child,
 .list > .item:last-child,
 .item-stable:not(.active),
 .item-stable:not(.active) .item {
@@ -1218,6 +1218,7 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
 
 .map-locationSearch > label {
   border-radius: 0 !important;
+}
 
 .width-80{
   width: 80%;
@@ -1227,4 +1228,14 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
 .mar-bot-15 {
   margin-bottom: 15px;
   display: block;
+}
+
+.crosshair {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -17px;
+  margin-top: -20px;
+  font-size: 40px;
+  color: #000;
 }
