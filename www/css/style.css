@@ -190,7 +190,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   border-top-right-radius: 20px;
 }
 
-.form-block > .item:last-child, 
+.form-block > .item:last-child,
 .list > .item:last-child,
 .item-stable:not(.active),
 .item-stable:not(.active) .item {
@@ -319,6 +319,9 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   border-color: #33A58C;
 }
 
+.range {
+  padding: 2px 16px;
+}
 .range input + p.ng-binding {
   min-width: 20px;
 }
@@ -424,7 +427,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   text-decoration: none;
 }
 
-.button.button-1.active, .button.1.activated {
+.button.button-1.active, .button-1.activated {
   background-color: #1C7DC9;
 }
 
@@ -1218,7 +1221,7 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
 
 .map-locationSearch > label {
   border-radius: 0 !important;
-
+}
 .width-80{
   width: 80%;
   margin: 0 auto;
