@@ -418,12 +418,19 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
   $scope.subscribe = function(material){
     //save material subscription for any quantity. If zero, call unsubscribe, otherwise continue.
-    if( !material.myQuantity ) {
-      ionicToast.show("Menge ungültig. Menge muss zwischen 0 und " + material.quantity + " sein.", 'top', false, 5000);
+    if( material.myQuantity === 0 ) {
+      if(material.subscribedQuantityOtherUsers === material.subscribedQuantity) {
+        return false;
+      }
+      $scope.unsubscribe(material);
       return;
     }
-    if( material.myQuantity === 0 ) {
-      $scope.unsubscribe(material);
+    if(material.subscribedQuantityOtherUsers === material.quantity) {
+      ionicToast.show("Maximum überschritten", 'top', false, 5000);
+      return;
+    }
+    if( material.myQuantity === undefined ) {
+      ionicToast.show("Menge ungültig. Menge muss zwischen 0 und " + (material.quantity - material.subscribedQuantity) + " sein.", 'top', false, 5000);
       return;
     }
     if($scope.materialSubscribeError(material)){

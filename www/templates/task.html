@@ -157,13 +157,14 @@
                   <div class="list" ng-if="showShiftsMaterialsEnroll">
                     <label class="item item-input item-stacked-label">
                       <span class="input-label new-shift-label">Ich bringe:</span>
-                      <button ng-click="subscribe(material)"
-                              class="button button-small button-outline button-balanced ion-checkmark float-right">Speichern</button>
                       <input type="number" placeholder="Anzahl..." ng-model="material.myQuantity"
                              min="0"
                              max="{{ material.quantity - material.subscribedQuantityOtherUsers }}"
-                             ng-class="{'has-error' : materialSubscribeError(material) }">
+                             ng-class="{'has-error' : materialSubscribeError(material) }" />
                     </label>
+                    <button ng-click="subscribe(material)" class="button button-small button-outline button-balanced ion-checkmark float-right">
+                      Speichern
+                    </button>
                   </div>
                 </custom-accordion-body>
               </custom-accordion>
