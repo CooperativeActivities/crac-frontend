@@ -30,15 +30,17 @@ angular.module('app.routes', ['ionicUIRouter'])
       .state('tabsController', {
        // cache: false,
         url: '/tabcontroller',
-        templateUrl: 'templates/tabsController.html',
-        abstract: true
+        //component: "navTabs",
+        controller: "navTabs as nav",
+        templateUrl: 'components/navTabs/navTabs.html',
+        //abstract: true,
       })
 
       .state('tabsController.home', {
         url: '/home',
         views: {
           'tab1': {
-            templateUrl: 'templates/home.html',
+            templateUrl: 'pages/home/home.html',
             controller: 'homeCtrl'
           }
         }
@@ -49,7 +51,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/tasklist',
         views: {
           'tab2': {
-            templateUrl: 'templates/tasklist.html',
+            templateUrl: 'pages/tasklist/tasklist.html',
             controller: 'tasklistCtrl'
           }
         }
@@ -60,7 +62,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/mytasks',
         views: {
           'tab3': {
-            templateUrl: 'templates/myTasks.html',
+            templateUrl: 'pages/myTasks/myTasks.html',
             controller: 'myTasksCtrl'
           }
         }
@@ -70,7 +72,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/messages',
         views: {
           'tab4': {
-            templateUrl: 'templates/messages.html',
+            templateUrl: 'pages/messages/messages.html',
             controller: 'messagingCtrl'
           }
         }
@@ -83,7 +85,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/myprofile',
         views: {
           'tab5': {
-            templateUrl: 'templates/myProfile.html',
+            templateUrl: 'pages/myProfile/myProfile.html',
             controller: 'myProfileCtrl'
           }
         }
@@ -93,7 +95,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/myfriends',
         views: {
           'tab5': {
-            templateUrl: 'templates/myFriends.html',
+            templateUrl: 'pages/myFriends/myFriends.html',
             controller: 'myFriendsCtrl'
           }
         }
@@ -103,7 +105,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/mycompetencies',
         views: {
           'tab5': {
-            templateUrl: 'templates/myCompetencies.html',
+            templateUrl: 'pages/myCompetencies/myCompetencies.html',
             controller: 'myCompetenciesCtrl'
           },
         }
@@ -113,7 +115,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/organisations',
         views: {
           'tab5': {
-            templateUrl: 'templates/organisations.html',
+            templateUrl: 'pages/organisations/organisations.html',
             controller: 'organisationsCtrl'
           }
         }
@@ -123,7 +125,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/settings',
         views: {
           'tab5': {
-            templateUrl: 'templates/settings.html',
+            templateUrl: 'pages/settings/settings.html',
             controller: 'settingsCtrl'
           }
         }
@@ -133,7 +135,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/typography',
         views: {
           'tab10': {
-            templateUrl: 'templates/typography.html',
+            templateUrl: 'pages/typography/typography.html',
             controller: 'typographyCtrl'
           }
         }
@@ -144,25 +146,25 @@ angular.module('app.routes', ['ionicUIRouter'])
       //**********************************************
       .state('login', {
         url: '/login',
-        templateUrl: 'templates/login.html',
+        templateUrl: 'pages/login/login.html',
         controller: 'loginCtrl'
       })
 
       .state('signup', {
         url: '/signup',
-        templateUrl: 'templates/signup.html',
+        templateUrl: 'pages/signup/signup.html',
         controller: 'signupCtrl'
       })
 
       .state('welcome', {
         url: '/welcome',
-        templateUrl: 'templates/welcome.html',
+        templateUrl: 'pages/welcome/welcome.html',
         controller: 'welcomeCtrl'
       })
 
       .state('profileAssistent', {
         url: '/profileassistent',
-        templateUrl: 'templates/profileAssistent.html',
+        templateUrl: 'pages/profileAssistent/profileAssistent.html',
         controller: 'profileAssistentCtrl'
       })
 
@@ -179,7 +181,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/organisation_rk',
         views: {
           'tab5': {
-            templateUrl: 'templates/organisation_rk.html',
+            templateUrl: 'pages/organisation_rk/organisation_rk.html',
             controller: 'rkLinzCtrl'
           },
         }
@@ -189,15 +191,15 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/task/:id',
         views: {
           'tab1': {
-            templateUrl: 'templates/task.html',
+            templateUrl: 'pages/TaskDetail/TaskDetail.html',
             controller: 'singleTaskCtrl'
           },
           'tab2': {
-            templateUrl: 'templates/task.html',
+            templateUrl: 'pages/TaskDetail/TaskDetail.html',
             controller: 'singleTaskCtrl'
           },
           'tab3': {
-            templateUrl: 'templates/task.html',
+            templateUrl: 'pages/TaskDetail/TaskDetail.html',
             controller: 'singleTaskCtrl'
           }
         }
@@ -207,15 +209,15 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/task/:id/edit',
         views: {
           'tab1': {
-            templateUrl: 'templates/taskEdit.html',
+            templateUrl: 'pages/taskEdit/taskEdit.html',
             controller: 'taskEditCtrl'
           },
           'tab2': {
-            templateUrl: 'templates/taskEdit.html',
+            templateUrl: 'pages/taskEdit/taskEdit.html',
             controller: 'taskEditCtrl'
           },
           'tab3': {
-            templateUrl: 'templates/taskEdit.html',
+            templateUrl: 'pages/taskEdit/taskEdit.html',
             controller: 'taskEditCtrl'
           }
         }
@@ -226,11 +228,11 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/newtask/:parentId',
         views: {
           'tab2': {
-            templateUrl: 'templates/taskEdit.html',
+            templateUrl: 'pages/taskEdit/taskEdit.html',
             controller: 'taskEditCtrl'
           },
           'tab3': {
-            templateUrl: 'templates/taskEdit.html',
+            templateUrl: 'pages/taskEdit/taskEdit.html',
             controller: 'taskEditCtrl'
           }
         }
@@ -243,15 +245,15 @@ angular.module('app.routes', ['ionicUIRouter'])
         params: {id:null, address:null},
         views: {
           'tab1': {
-            templateUrl: 'templates/map.html',
+            templateUrl: 'pages/map/map.html',
             controller: 'MapController'
           },
           'tab2': {
-            templateUrl: 'templates/map.html',
+            templateUrl: 'pages/map/map.html',
             controller: 'MapController'
           },
           'tab3': {
-            templateUrl: 'templates/map.html',
+            templateUrl: 'pages/map/map.html',
             controller: 'MapController'
           }
         }
@@ -264,15 +266,15 @@ angular.module('app.routes', ['ionicUIRouter'])
         params: {id:null, address:null},
         views: {
           'tab1': {
-            templateUrl: 'templates/mapView.html',
+            templateUrl: 'pages/mapView/mapView.html',
             controller: 'MapViewController'
           },
           'tab2': {
-            templateUrl: 'templates/mapView.html',
+            templateUrl: 'pages/mapView/mapView.html',
             controller: 'MapViewController'
           },
           'tab3': {
-            templateUrl: 'templates/mapView.html',
+            templateUrl: 'pages/mapView/mapView.html',
             controller: 'MapViewController'
           }
         }
@@ -282,15 +284,15 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/task/:id/editAdv/:section',
         views: {
           'tab1': {
-            templateUrl: 'templates/taskEditAdv.html',
+            templateUrl: 'pages/taskEditAdv/taskEditAdv.html',
             controller: 'taskEditAdvCtrl'
           },
           'tab2': {
-            templateUrl: 'templates/taskEditAdv.html',
+            templateUrl: 'pages/taskEditAdv/taskEditAdv.html',
             controller: 'taskEditAdvCtrl'
           },
           'tab3': {
-            templateUrl: 'templates/taskEditAdv.html',
+            templateUrl: 'pages/taskEditAdv/taskEditAdv.html',
             controller: 'taskEditAdvCtrl'
           }
         }
@@ -301,7 +303,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/mycompetencies/:index',
         views: {
           'tab5': {
-            templateUrl: 'templates/myCompetenciesInfo.html',
+            templateUrl: 'pages/myCompetenciesInfo/myCompetenciesInfo.html',
             controller: 'myCompetenciesInfoCtrl'
           },
         }
@@ -311,7 +313,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/addcompetence/:id',
         views: {
           'tab5': {
-            templateUrl: 'templates/addCompetenceInfo.html',
+            templateUrl: 'pages/addCompetenceInfo/addCompetenceInfo.html',
             controller: 'addCompetenceInfoCtrl'
           },
         }
@@ -321,7 +323,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/newcompetence',
         views: {
           'tab5': {
-            templateUrl: 'templates/newCompetence.html',
+            templateUrl: 'pages/newCompetence/newCompetence.html',
             controller: 'newCompetenceCtrl'
           },
         }
@@ -331,7 +333,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/addcompetence',
         views: {
           'tab5': {
-            templateUrl: 'templates/addCompetence.html',
+            templateUrl: 'pages/addCompetence/addCompetence.html',
             controller: 'addCompetenceCtrl'
           },
         }
@@ -341,7 +343,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/addcompetencetotask/:id',
         views: {
           'tab2': {
-            templateUrl: 'templates/addCompetenceToTask.html',
+            templateUrl: 'pages/addCompetenceToTask/addCompetenceToTask.html',
             controller: 'addCompetenceToTaskCtrl'
           }
         }
@@ -350,7 +352,7 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/addcompetencetotaskinfo/:compId/:taskId',
         views: {
           'tab2': {
-            templateUrl: 'templates/addCompetenceToTaskInfo.html',
+            templateUrl: 'pages/addCompetenceToTaskInfo/addCompetenceToTaskInfo.html',
             controller: 'addCompetenceToTaskInfoCtrl'
           }
         }

@@ -7,6 +7,6 @@ cracApp.directive('cAccordion', ["TaskDataService", function(TaskDataService) {
       title: "=",
       shown: "=?"
     },
-    templateUrl: 'templates/directives/cAccordion.html'
+    templateUrl: 'directives/cAccordion/cAccordion.html'
   };
 }]);

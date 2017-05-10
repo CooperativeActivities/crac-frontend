@@ -7,6 +7,6 @@ cracApp.directive('customAccordion', [function() {
     scope: {
       shown: "=?"
     },
-    templateUrl: 'templates/directives/customAccordion.html'
+    templateUrl: 'directives/customAccordion/customAccordion.html'
   };
 }]);

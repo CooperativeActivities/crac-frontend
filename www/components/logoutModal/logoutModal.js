@@ -1,10 +1,11 @@
-/**
- * Created by p23460 on 12.10.2016.
- */
+// IMPORTANT:
+// this isn't an actual controller,
+// since the "logoutCtrl" actually is attached to the body
+// (and just makes use of the template)
 cracApp.controller('logoutCtrl', function($scope, $ionicModal,$location,AuthenticationService) {
 
     // Logout Modal
-    $ionicModal.fromTemplateUrl('logout-modal.html', {
+    $ionicModal.fromTemplateUrl('components/logoutModal/logoutModal.html', {
         scope: $scope,
         animation: 'slide-in-up'
     }).then(function(modal) {
