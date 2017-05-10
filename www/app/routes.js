@@ -244,6 +244,14 @@ angular.module('app.routes', ['ionicUIRouter'])
         url: '/newtask/map',
         params: {id:null, address:null},
         views: {
+          'tab1': {
+            templateUrl: 'templates/map.html',
+            controller: 'MapController'
+          },
+          'tab2': {
+            templateUrl: 'templates/map.html',
+            controller: 'MapController'
+          },
           'tab3': {
             templateUrl: 'pages/map/map.html',
             controller: 'MapController'
