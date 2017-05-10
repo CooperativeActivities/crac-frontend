@@ -12,6 +12,13 @@
   color: #bbb;
 }
 
+.float-right {
+  float: right;
+}
+.float-left {
+  float: left;
+}
+
 /* -- HEADER -------------------------------------------------------------------------------------------------------- */
 
 #side-menu21 {
@@ -88,10 +95,12 @@
 }
 .col-25 {
   padding: 5px;
+  width: 25%;
 }
 
 .col-35 {
   padding: 5px;
+  width: 35%;
 }
 
 .assertive {
@@ -307,6 +316,11 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
 
 .parent.item .item, .child.item .item {
   border: none;
+}
+
+.item > span {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .toggle input:checked + .track {

@@ -112,11 +112,18 @@
             <ion-item>
               <ion-item ng-repeat="shift in task.childTasks">
                 <span>
-                  {{shift.startTime | date: "short"}} -
-                  {{shift.endTime | date: "short"}}
+                  <i class="icon ion-clock"></i>
+                  {{shift.startTime | date: "dd.MM HH:mm"}} &ndash;
+                  <span ng-if="shift.startTime.getDate() == shift.endTime.getDate()">
+                    {{shift.endTime | date: "HH:MM"}}
+                  </span>
+                  <span ng-if="shift.startTime.getDate() != shift.endTime.getDate()">
+                    {{shift.endTime | date: "dd.MM HH:mm"}}
+                  </span>
                 </span>
                 <span>
-                  Benötigte Helfer: {{signedUsers}}  / {{shiftHelperCounter}}
+                  <i class="icon ion-person padding-left"></i>
+                  {{signedUsers}}  / {{shiftHelperCounter}}
                 </span>
                 <span ng-if="showShiftsMaterialsEnroll">
                   <button ng-click="addToShift(shift)"
@@ -138,8 +145,8 @@
               <custom-accordion>
                 <custom-accordion-head>
                   <div>
-                    <span>{{ material.quantity }}x</span>
                     <span>{{ material.name }}</span>
+                    <span class="padding-left">{{material.subscribedQuantityOtherUsers + material.myQuantity}} / {{ material.quantity }}</span>
                   </div>
                 </custom-accordion-head>
                 <custom-accordion-body>
@@ -147,18 +154,17 @@
                   <div>
                     {{ material.description }}
                   </div>
-                  <br>
-                  <span ng-if="showShiftsMaterialsEnroll">
-                    <label>
-                      Ich bringe:
+                  <div class="list" ng-if="showShiftsMaterialsEnroll">
+                    <label class="item item-input item-stacked-label">
+                      <span class="input-label new-shift-label">Ich bringe:</span>
+                      <button ng-click="subscribe(material)"
+                              class="button button-small button-outline button-balanced ion-checkmark float-right">Speichern</button>
                       <input type="number" placeholder="Anzahl..." ng-model="material.myQuantity"
-                        min="0"
-                        max="{{ material.quantity - material.subscribedQuantityOtherUsers }}"
-                        ng-class="{'has-error' : materialSubscribeError(material) }">
+                             min="0"
+                             max="{{ material.quantity - material.subscribedQuantityOtherUsers }}"
+                             ng-class="{'has-error' : materialSubscribeError(material) }">
                     </label>
-                    <button ng-click="subscribe(material)"
-                      class="button button-small button-outline button-balanced ion-checkmark">Speichern</button>
-                  </span>
+                  </div>
                 </custom-accordion-body>
               </custom-accordion>
             </ion-item>

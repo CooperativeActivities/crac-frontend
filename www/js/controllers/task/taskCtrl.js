@@ -416,7 +416,11 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
   $scope.subscribe = function(material){
     //save material subscription for any quantity. If zero, call unsubscribe, otherwise continue.
-    if( material.myQuantity === 0 || !material.myQuantity ) {
+    if( !material.myQuantity ) {
+      ionicToast.show("Menge ungültig. Menge muss zwischen 0 und " + material.quantity + " sein.", 'top', false, 5000);
+      return;
+    }
+    if( material.myQuantity === 0 ) {
       $scope.unsubscribe(material);
       return;
     }
