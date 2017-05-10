@@ -115,7 +115,7 @@
                   <i class="icon ion-clock"></i>
                   {{shift.startTime | date: "dd.MM HH:mm"}} &ndash;
                   <span ng-if="shift.startTime.getDate() == shift.endTime.getDate()">
-                    {{shift.endTime | date: "HH:MM"}}
+                    {{shift.endTime | date: "HH:mm"}}
                   </span>
                   <span ng-if="shift.startTime.getDate() != shift.endTime.getDate()">
                     {{shift.endTime | date: "dd.MM HH:mm"}}

@@ -238,6 +238,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       //@TODO update task object
       console.log('Participating in shift ' + shift.id);
       $scope.working = true;
+      $scope.signedUsers++;
     }, function(error) {
       ionicToast.show("An der Schicht kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
     });
@@ -250,6 +251,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
     TaskDataService.removeOpenTask(shift.id).then(function (res) {
       console.log('Not participating in shift ' + shift.id);
       $scope.working = false;
+      $scope.signedUsers--;
     }, function(error) {
       ionicToast.show("An der Schicht kann nicht zurückgezogen werden: " + error.message, 'top', false, 5000);
     });
