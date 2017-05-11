@@ -446,6 +446,6 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
   $scope.openMapView = function(){
     // Open Leaflet Map View //
-    $state.go('tabsController.openMapView', { id: $scope.taskId, address: $scope.task.address});
+    $state.go('tabsController.openMapView', { id: $scope.taskId, address: $scope.task.address, lat: $scope.task.lat, lng: $scope.task.lng});
   }
 }]);

@@ -137,6 +137,8 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       if(task.description) taskData.description = task.description;
       if(task.location) taskData.location = task.location;
       if(task.address) taskData.address = task.address;
+      if(task.lat) taskData.lat = task.lat;
+      if(task.lng) taskData.lng = task.lng;
       if(task.minAmountOfVolunteers) taskData.minAmountOfVolunteers = task.minAmountOfVolunteers;
       taskData.taskType = task.taskType;
 
@@ -297,14 +299,16 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
 
     // Open Leaflet Map //
     $scope.openMap = function() {
-      $state.go('tabsController.openMap', { id: $scope.taskId, address: $scope.task.address});
+      $state.go('tabsController.openMap', { id: $scope.taskId, address: $scope.task.address, lat: $scope.task.lat, lng: $scope.task.lng});
     }
 
     // Check if Address field has been updated on Map Page
     $scope.$on("$ionicView.enter", function(event, data){
       if (data.stateParams.address != null) {
         $scope.task.address = data.stateParams.address;
-        console.log("Import Address: " + data.stateParams.address);
+        $scope.task.lat = data.stateParams.lat;
+        $scope.task.lng = data.stateParams.lng;
+        console.log("Import Address: " + data.stateParams.address + " | lat: " + data.stateParams.lat + " / lng: " + data.stateParams.lng);
       }
     });
 
