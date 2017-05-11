@@ -1,0 +1,41 @@
+<ion-header>
+</ion-header>
+<ion-content padding>
+  <div style="margin: 0 auto;">
+    <ion-img src="../../assets/img/logo.png" class="login-logo"></ion-img>
+    <div class="content-title assertive">Anmelden</div>
+    <form id="anmelden-form1" name="authorizationForm">
+      <ion-list id="anmelden-list2">
+        <label class="item item-input" id="anmelden-input1" ng-class="{
+          'has-errors' : authorizationForm.username.$invalid && authorizationForm.username.$dirty,
+          'no-errors' : authorizationForm.username.$valid && !authorizationForm.username.$untouched}">
+          <input type="text" placeholder="Benutzername" ng-model="data.username" name="username" required>
+        </label>
+        <label class="item item-input" id="anmelden-input2">
+          <!--<span class="input-label">Passwort</span>-->
+          <input type="password" placeholder="Passwort" ng-model="data.password" name="password" required>
+        </label>
+      </ion-list>
+      <button class="button button-block button-outline button-positive button-balanced" (click)="login()"  ng-disabled="authorizationForm.$invalid">
+        <i class="ion-log-in"></i> Login
+      </button>
+      <div class="content-title">oder</div>
+      <div class="row">
+        <div class="col">
+          <button class="button button-block button-outline button-positive button-face" disabled ng-click="facebookLogin()">
+            <i class="ion-social-facebook-outline"></i> Anmelden
+          </button>
+        </div>
+        <!--<div class="col">
+          <button class="button button-block button-outline button-positive button-google">
+            <i class="ion-social-google-outline"></i> Anmelden
+          </button>
+        </div>-->
+      </div>
+      <a ui-sref="signup" id="anmelden-button2" class="button button-block button-outline button-positive button-energized" disabled>Neuen Account anlegen</a>
+      <button class="button button-clear" disabled>
+        Password vergessen?
+      </button>
+    </form>
+  </div>
+</ion-content>

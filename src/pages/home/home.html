@@ -7,14 +7,28 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout combined with sidemnu for apps.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs, update any existing page or create new pages.
-  </p>
-  <p>
-    This is a combination of Ionic 2 Tabs and Sidemenu. For more info, see related <a href="https://blog.khophi.co/ionic-2-side-menu-tabs/">Ionic 2 Sidemenu and Tabs</a> article by <a href="https://blog.khophi.co">Khophi's Dev</a>
-  </p>
+  <ion-list>
+    <ion-item-divider>Aktuelles</ion-item-divider>
+    <ion-list>
+      <!--<ion-item id="startseite-list-item29">Jahreshauptversammlung am 12.12.2016</ion-item>
+      <ion-item id="startseite-list-item31">T-Shirt Bestellung</ion-item>-->
+      <ion-item>Treffen Jugendgruppenleiter am 3.März 2017</ion-item>
+    </ion-list>
+    <ion-item-divider>Vorgeschlagene Aufgaben</ion-item-divider>
+    <ion-list
+      show-delete="shouldShowDelete"
+      show-reorder="shouldShowReorder"
+      can-swipe="true">
+      <!-- <div ng-repeat="task in tasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search">-->
+      <ion-item-sliding><!-- *ngFor="let task in tasks | orderBy: 'startTime'">-->
+        <!--<task-preview task="task.task" action="'follow'" ng-click="loadSingleTask(task.task.id)"></task-preview>-->
+      </ion-item-sliding>
+    </ion-list>
+    <ion-item class="item-divider" id="startseite-list-item-divider13">Freunde</ion-item>
+
+
+
+
+
+  </ion-list>
 </ion-content>

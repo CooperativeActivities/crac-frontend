@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { HomePage } from '../home/home';
 import { AboutPage } from '../about/about';
 import { ContactPage } from '../contact/contact';
+import { AuthService } from '../../services/auth_service';
 
 @Component({
   templateUrl: 'tabs.html'
@@ -14,7 +15,9 @@ export class TabsPage {
   tab2Root: any = AboutPage;
   tab3Root: any = ContactPage;
 
-  constructor() {
+  constructor(private authService: AuthService) { }
 
+  ionViewCanEnter(): boolean{
+   return this.authService.isAuthenticated()
   }
 }

@@ -1,5 +1,7 @@
-cracApp.factory('ErrorDisplayService', ["ionicToast", function(ionicToast){
-  var code = {
+import { Injectable } from '@angular/core';
+@Injectable()
+export class ErrorDisplayService {
+  code = {
     ACTION_NOT_VALID: "",
     ID_NOT_VALID: "",
     ID_NOT_FOUND: "ID nicht gefunden",
@@ -35,21 +37,19 @@ cracApp.factory('ErrorDisplayService', ["ionicToast", function(ionicToast){
     CANNOT_BE_COPIED: "",
     EMPTY_DATA: "Nichts vorhanden",
     UNKNOWN_ERROR: "Unbekannter Fehler"
-  }
-  return {
-    code: code,
-    getMessagesFromCodes: function(errors){
-      return errors.map(function(error){
-        return code[error.name] || (code.UNKNOWN_ERROR + ": "+ error.name)
-      }).join("<br>")
-    },
+  };
 
-    showError: function(errorMessage, title) {
-      if( !title ) title = "Fehler";
+  getMessagesFromCodes(errors){
+    return errors.map((error) => {
+      return this.code[error.name] || (this.code.UNKNOWN_ERROR + ": "+ error.name)
+    }).join("<br>")
+  };
 
-      ionicToast.show(title + ": " + errorMessage, 'top', false, 5000)
+  showError(errorMessage, title) {
+    if( !title ) title = "Fehler";
+    /*
+    ionicToast.show(title + ": " + errorMessage, 'top', false, 5000)
+     */
+  };
+}
 
-    }
-  }
-
-}])

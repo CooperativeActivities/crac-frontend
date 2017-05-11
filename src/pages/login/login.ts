@@ -1,6 +1,18 @@
+import { Component } from '@angular/core';
+import { NavController, NavParams } from 'ionic-angular';
+
+@Component({
+  selector: 'page-login',
+  templateUrl: 'login.html'
+})
+export class LoginPage {
+
+  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+
+
+}
 /**
  * Created by P41332 on 25.10.2016.
- */
 cracApp.controller('loginCtrl', function ($rootScope, $scope, ionicToast, $location, AuthenticationService, $ionicSideMenuDelegate) {
 
   // deactivate swipe possibility (for sidebar)
@@ -45,3 +57,4 @@ cracApp.controller('loginCtrl', function ($rootScope, $scope, ionicToast, $locat
   }
 });
 
+ */

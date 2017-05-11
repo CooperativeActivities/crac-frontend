@@ -2,7 +2,6 @@ $SIDEMENU_TOP: #3263ff;
 $SIDEMENU_BOTTOM: #32a6ff;
 $SIDEMENU_TRANSPARENCY: rgba(255,255,255,0.4);
 $ionicons-font-path: "../lib/ionic/fonts" !default;
-@import "../www/lib/ionic/scss";
 .side-menu-item {
 	background: none;
 	color: white;
@@ -13,13 +12,13 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 		&.activated {
 			background: $SIDEMENU_TRANSPARENCY;
 		}
-		
+
 	}
 	&.active-page-highlight {
 		.item-content {
 			background: $SIDEMENU_TRANSPARENCY;
 		}
-		
+
 	}
 }
 .side-menu-gradient {
@@ -38,7 +37,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 		-moz-box-shadow: 0px 0px 142px -37px rgba(0,0,0,0.75);
 		box-shadow: 0px 0px 142px -37px rgba(0,0,0,0.75);
 	}
-	
+
 }
 .hidden {
 	visibility: hidden;

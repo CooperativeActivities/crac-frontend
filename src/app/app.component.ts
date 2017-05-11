@@ -6,6 +6,8 @@ import { TabsPage } from '../pages/tabs/tabs';
 
 import { SettingsPage } from '../pages/settings/settings';
 import { AccountPage } from '../pages/account/account';
+import { LoginPage } from '../pages/login/login';
+import { AuthService } from '../services/auth_service';
 
 @Component({
   templateUrl: 'app.html'
@@ -17,14 +19,15 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform) {
+  constructor(public platform: Platform, private authService: AuthService) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Homepage', component: TabsPage },
       { title: 'Settings', component: SettingsPage },
-      { title: 'Account', component: AccountPage }
+      { title: 'Account', component: AccountPage },
+      { title: 'Login', component: LoginPage },
     ];
 
   }
@@ -40,6 +43,18 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
       Splashscreen.hide();
+      if(!this.authService.isAuthenticated()){
+        this.nav.setRoot(LoginPage)
+      }
+      /*
+      $rootScope.globals = $cookieStore.get('globals') || {};
+      if($rootScope.globals.currentUser != null){
+        $http.defaults.headers.common['Token'] = $rootScope.globals.currentUser.token; // jshint ignore:line
+        $http.defaults.headers.common['Authorization'] = $cookieStore.get('basic');
+        // cannot call loggedIn here cause the controllers haven't been loaded yet
+        //$rootScope.$emit("loggedIn")
+      }
+       */
     });
   }
 }
