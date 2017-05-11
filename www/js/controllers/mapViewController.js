@@ -75,7 +75,7 @@ cracApp.controller('MapViewController',
         //   } else {
 
         //   }
-          
+
         // });
 
         // Select all Text when clicking/tapping on Input field
@@ -208,7 +208,7 @@ cracApp.controller('MapViewController',
 
       // });
 
-      // var result = "";            
+      // var result = "";
       // var twoTimes = 2; // TEMP: Leaflet maps fires 2 times on loading... find solution
 
       // $scope.$on('leafletDirectiveMap.moveend', function(event, args) {
@@ -274,5 +274,5 @@ cracApp.controller('MapViewController',
       //   backView.stateParams = {id: $scope.taskId, address: result};
       //   $ionicHistory.goBack();
       // }
-      
+
   }]);

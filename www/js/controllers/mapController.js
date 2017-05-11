@@ -24,6 +24,10 @@ cracApp.controller('MapController',
       var map;
       var impAddr = $stateParams.address;
 
+      var result = "";
+      var adrLat = 7;
+      var adrLng = 7;
+
       /**
        * Once state loaded, get put map on scope.
        */
@@ -115,6 +119,9 @@ cracApp.controller('MapController',
             var rPost = data.features[0].properties.postalcode || "";
             var rCity = data.features[0].properties.locality || data.features[0].properties.county;
 
+            var Lat = data.features[0].geometry.coordinates[1];
+            var Lng = data.features[0].geometry.coordinates[0];
+
             if (rStreet != "") {
               if (rHouse != "") {
                 rStreet += " ";
@@ -128,6 +135,8 @@ cracApp.controller('MapController',
             }
 
             result = rStreet + rHouse + rPost + rCity;
+            adrLat = Lat;
+            adrLng = Lng;
 
             $(".leaflet-pelias-input").val(result);
 
@@ -163,8 +172,8 @@ cracApp.controller('MapController',
             var rPost = data.features[0].properties.postalcode || "";
             var rCity = data.features[0].properties.locality || data.features[0].properties.county;
 
-            var adrLat = data.features[0].geometry.coordinates[1];
-            var adrLng = data.features[0].geometry.coordinates[0];
+            var Lat = data.features[0].geometry.coordinates[1];
+            var Lng = data.features[0].geometry.coordinates[0];
 
             if (rStreet != "") {
               if (rHouse != "") {
@@ -179,6 +188,8 @@ cracApp.controller('MapController',
             }
 
             result = rStreet + rHouse + rPost + rCity;
+            adrLat = Lat;
+            adrLng = Lng;
 
             $(".leaflet-pelias-input").val(result);
 
@@ -254,7 +265,6 @@ cracApp.controller('MapController',
 
       });
 
-      var result = "";
       var twoTimes = 2; // TEMP: Leaflet maps fires 2 times on loading... find solution
 
       $scope.$on('leafletDirectiveMap.moveend', function(event, args) {
@@ -274,7 +284,7 @@ cracApp.controller('MapController',
 
       $scope.save_address = function(){
         var backView = $ionicHistory.backView();
-        backView.stateParams = {id: $scope.taskId, address: result};
+        backView.stateParams = {id: $scope.taskId, address: result, lat: adrLat, lng: adrLng};
         $ionicHistory.goBack();
       }
 
