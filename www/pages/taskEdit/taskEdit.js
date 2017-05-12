@@ -176,6 +176,23 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       });
     };
 
+    // Add details
+    $scope.add_details = function() {
+      $scope.save().then(function(save_res) {
+        if (!save_res) return;
+        var taskId = save_res.object.id;
+        ionicToast.show("Aufgabe gespeichert", 'top', false, 5000);
+        // redirect to the advanced edit page of the newly created workable task
+        // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
+        $state.go('tabsController.taskEditAdv', {
+          id: taskId,
+          section: 'competences'
+        }, {location: "replace"}).then(function (res) {
+          $ionicHistory.removeBackView();
+        });
+      });
+    }
+
     // Save changes only
     $scope.save_changes = function() {
       $scope.save().then(function(save_res) {
@@ -184,19 +201,14 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         ionicToast.show("Aufgabe gespeichert", 'top', false, 5000);
 
         if($scope.isNewTask) {
-          if($scope.task.taskType === 'ORGANISATIONAL') {
+          // redirect all on save to the detail page. Clicking add detials button will take them to the new page
+          // if($scope.task.taskType === 'ORGANISATIONAL') {
             // redirect to the edit page of the newly created org task
             // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
             $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
               $ionicHistory.removeBackView();
             });
-          } else {
-            // redirect to the advanced edit page of the newly created workable task
-            // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
-            $state.go('tabsController.taskEditAdv', { id:taskId, section: 'competences' }, { location: "replace" }).then(function(res){
-              $ionicHistory.removeBackView();
-            });
-          }
+          //}
         }
       });
     };
