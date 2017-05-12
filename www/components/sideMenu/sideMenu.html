@@ -1,0 +1,40 @@
+<ion-content padding="false" class="side-menu-left side-menu-gradiant">
+  <div class="spacer"></div>
+  <div class="profile-image">
+    <a ui-sref="tabsController.myProfile" menu-close="">
+      <img src="img/B27MBEuwSJ6wsdkIwFL6_avatar.png" width="100" height="auto">
+    </a>
+  </div>
+  <h4 id="myCrAcMenu-heading14">{{user.firstName}} {{user.lastName}}</h4>
+  <div class="spacer"></div>
+  <ion-list id="myCrAcMenu-list1">
+    <ion-item class="item-icon-left positive  side-menu-item"
+              ui-sref="tabsController.myProfile" menu-close="">
+      <i class="icon ion-android-person"></i>Mein Profil
+    </ion-item>
+    <ion-item class="item-icon-left positive side-menu-item"
+              ui-sref="tabsController.myFriends" menu-close="">
+      <i class="icon ion-android-people"></i>Meine Freunde
+    </ion-item>
+    <ion-item class="item-icon-left positive  side-menu-item"
+              ui-sref="tabsController.myCompetencies" menu-close="">
+      <i class="icon ion-ios-list-outline"></i>Meine Kompetenzen
+    </ion-item>
+    <ion-item class="item-icon-left positive  side-menu-item"
+              ui-sref="tabsController.organisations" menu-close="">
+      <i class="icon ion-briefcase"></i>Organisationen
+    </ion-item>
+    <ion-item class="item-icon-left positive  side-menu-item"
+              ui-sref="tabsController.settings" menu-close="">
+      <i class="icon ion-ios-settings"></i>Einstellungen
+    </ion-item>
+    <ion-item class="item-icon-left positive side-menu-item"
+              ui-sref="tabsController.typography" menu-close="">
+      <i class="icon ion-android-color-palette"></i>Typography
+    </ion-item>
+    <ion-item class="item-icon-left positive  side-menu-item"
+              menu-close="" ng-click="modal.show()">
+      <i class="icon ion-log-out"></i>Abmelden
+    </ion-item>
+  </ion-list>
+</ion-content>

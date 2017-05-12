@@ -67,6 +67,7 @@
     function SuperLogout() {
       $http.get(baseURL+'/user/logout').success(function(response){
         ClearCredentials();
+        window.location.reload()
       }).
         error(function(response){
           console.log("Logout failed");
@@ -75,6 +76,7 @@
     }
     function Logout() {
       ClearCredentials();
+      window.location.reload()
     }
 
     function ClearCredentials() {
