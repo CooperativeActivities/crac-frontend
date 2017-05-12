@@ -1,7 +1,23 @@
+import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth_service';
+import { ModalController } from 'ionic-angular';
+
+@Component({
+  templateUrl: 'logoutModal.html'
+})
+export class LogoutModal {
+  constructor(private authService: AuthService, private modalCtrl: ModalController) { }
+  logout(){
+    console.log("logout");
+    this.authService.logout();
+    //$scope.modal.hide();
+  }
+}
 // IMPORTANT:
 // this isn't an actual controller,
 // since the "logoutCtrl" actually is attached to the body
 // (and just makes use of the template)
+/*
 cracApp.controller('logoutCtrl', function($scope, $ionicModal,$location,AuthenticationService) {
 
     // Logout Modal
@@ -16,12 +32,6 @@ cracApp.controller('logoutCtrl', function($scope, $ionicModal,$location,Authenti
     };
 
 
-    $scope.logout = function(){
-        console.log("logout");
-        AuthenticationService.Logout();
-        $scope.modal.hide();
-        $location.path("/login");
-    }
 
     $scope.closeModal = function() {
         $scope.modal.hide();
@@ -30,12 +40,5 @@ cracApp.controller('logoutCtrl', function($scope, $ionicModal,$location,Authenti
     $scope.$on('$destroy', function() {
         $scope.modal.remove();
     });
-    // Execute action on hide modal
-    $scope.$on('modal.hidden', function() {
-        // Execute action
-    });
-    // Execute action on remove modal
-    $scope.$on('modal.removed', function() {
-        // Execute action
-    });
 })
+ */

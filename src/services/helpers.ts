@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { ErrorDisplayService } from './error_service';
 import { AuthService } from './auth_service';
@@ -11,9 +11,7 @@ export class HelperService {
   constructor(private http: Http, private errorDisplayService: ErrorDisplayService, private authService: AuthService) { }
 
   ajax(path, method, { handleSpecificErrors = (response)=>{}, payload = null, transformResponse = (response)=>response } = {}): Promise<any>{
-    let auth = "Basic ZnJvbnRlbmQ6ZnJvbnRlbmRLZXk="
-    let headers = new Headers({ 'Authorization': auth });
-    let options = new RequestOptions({ headers: headers });
+    let options = this.authService.getAuthRequestOptions()
     let promise: any;
     let url = this._baseURL + path;
     // maybe make this a bit more resilient, a put called without payload will give a 401 cause no auth

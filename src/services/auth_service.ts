@@ -13,12 +13,15 @@ export class AuthService {
     return !!this.token
   }
 
+  public getAuthRequestOptions(): RequestOptions {
+    return new RequestOptions({ headers: new Headers({ 'Token': this.token, "Authorization": "Basic Og==" }) });
+  }
+
   login(username, password): Promise<any> {
     let authdata = Base64.encode(username + ':' + password);
     let auth = `Basic ${authdata}`
 
-    let headers = new Headers({ 'Authorization': auth });
-    let options = new RequestOptions({ headers: headers });
+    let options = new RequestOptions({ headers: new Headers({ 'Authorization': auth }) });
     let url = this._baseURL + '/user/login';
     return this.http.get(url, options)
     .toPromise()
@@ -27,16 +30,6 @@ export class AuthService {
         console.log("Login successful", res);
         this.token = res.object.code;
         this.setCredentials(this.token)
-        /*
-
-        //$cookieStore.put('globals', $rootScope.globals);
-        //$cookieStore.put('basic', 'Basic ' + authdata);
-
-        $cookieStore.put('basic', 'Basic Og==');
-
-        //response = {success: true, id: response.user};
-        //return response;
-        */
       }
       return res
     })
@@ -54,6 +47,21 @@ export class AuthService {
       this.token = token
     }
     return token
+  }
+
+  async clearCredentials(){
+    await this.storage.ready()
+    await this.storage.remove("token")
+  }
+  async logout(){
+    await this.clearCredentials()
+    window.location.reload()
+  }
+  async superLogout(){
+    let options = this.getAuthRequestOptions()
+    await this.http.get(this._baseURL + '/user/logout', options)
+    await this.clearCredentials()
+    window.location.reload()
   }
 
 };
@@ -107,10 +115,10 @@ var Base64 = {
 
   keyStr: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
 
-  encode: function (input: string) {
+  encode (input) {
     var output = "";
-    var chr1, chr2, chr3: number;
-    var enc1, enc2, enc3, enc4: number;
+    var chr1, chr2, chr3;
+    var enc1, enc2, enc3, enc4;
     var i = 0;
 
     do {
@@ -141,7 +149,7 @@ var Base64 = {
     return output;
   },
 
-  decode: function (input) {
+  decode (input) {
     var output = "";
     var chr1, chr2, chr3;
     var enc1, enc2, enc3, enc4;

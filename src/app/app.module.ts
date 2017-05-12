@@ -13,6 +13,8 @@ import { SettingsPage } from '../pages/settings/settings';
 import { AccountPage } from '../pages/account/account';
 import { LoginPage } from '../pages/login/login';
 
+import { LogoutModal } from '../components/logoutModal/logoutModal';
+
 import { HelperService } from "../services/helpers";
 import { AuthService } from "../services/auth_service";
 import { ErrorDisplayService } from '../services/error_service';
@@ -28,6 +30,7 @@ import { ErrorDisplayService } from '../services/error_service';
     SettingsPage,
     AccountPage,
     LoginPage,
+    LogoutModal,
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -45,6 +48,7 @@ import { ErrorDisplayService } from '../services/error_service';
     AccountPage,
     SettingsPage,
     LoginPage,
+    LogoutModal,
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},

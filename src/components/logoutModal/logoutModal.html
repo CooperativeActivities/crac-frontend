@@ -1,11 +1,11 @@
-<ion-modal-view>
-  <ion-content>
-    <div class="row">
-      <div class="col">
-        <div class="content-title">Wirklich ausloggen?</div>
-      </div>
-    </div>
-    <div class="row responsive-lg">
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <h1>Wirklich ausloggen?</h1>
+      </ion-col>
+    </ion-row>
+    <ion-row class="row responsive-lg">
       <div class="col">
         <button ng-click="logout()" ui-sref="login" class="button button-block button-outline button-positive button-assertive">
           <i class="ion-log-out"></i> Ja - ausloggen
@@ -17,5 +17,5 @@
         </button>
       </div>
     </div>
-  </ion-content>
-</ion-modal-view>
+  </ion-grid>
+</ion-content>
