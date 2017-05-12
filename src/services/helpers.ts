@@ -10,7 +10,7 @@ export class HelperService {
   _baseURL = "https://core.crac.at/crac-core/";
   constructor(private http: Http, private errorDisplayService: ErrorDisplayService, private authService: AuthService) { }
 
-  ajax(path, method, { handleSpecificErrors = (response)=>{}, payload = null, transformResponse = (response)=>response.data } = {}): Promise<any>{
+  ajax(path, method, { handleSpecificErrors = (response)=>{}, payload = null, transformResponse = (response)=>response } = {}): Promise<any>{
     let auth = "Basic ZnJvbnRlbmQ6ZnJvbnRlbmRLZXk="
     let headers = new Headers({ 'Authorization': auth });
     let options = new RequestOptions({ headers: headers });
@@ -25,7 +25,7 @@ export class HelperService {
 
     return promise.toPromise()
       .then((res) => res.json()).then((response)=>{
-        if(response && response.data && response.data.success){ return transformResponse(response); }
+        if(response &&  response.success){ return transformResponse(response); }
         else {
           throw response
         }
@@ -44,7 +44,7 @@ export class HelperService {
           case 404:
             throw { error: response, message: "Resource nicht gefunden" };
           case 400:
-            if(response.data && response.data.errors){
+            if(response && response.errors){
               throw { error: response, message: "hi" /*this.errorDisplayService.getMessagesFromCodes(response.data.errors)*/ };
             }
             break;

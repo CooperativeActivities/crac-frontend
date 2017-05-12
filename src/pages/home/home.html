@@ -20,7 +20,10 @@
       show-reorder="shouldShowReorder"
       can-swipe="true">
       <!-- <div ng-repeat="task in tasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search">-->
-      <ion-item-sliding><!-- *ngFor="let task in tasks | orderBy: 'startTime'">-->
+      <ion-item-sliding *ngFor="let task of tasks"><!-- | orderBy: 'startTime'">-->
+        <ion-item>
+          {{ task.task.name }}
+        </ion-item>
         <!--<task-preview task="task.task" action="'follow'" ng-click="loadSingleTask(task.task.id)"></task-preview>-->
       </ion-item-sliding>
     </ion-list>

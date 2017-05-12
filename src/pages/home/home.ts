@@ -9,15 +9,12 @@ import { TaskDataService } from '../../services/task_service';
   providers: [ TaskDataService ],
 })
 export class HomePage {
-
-  constructor(public navCtrl: NavController, public taskDataService: TaskDataService) {
-    console.log("hey! we're doing stuff")
-  }
+  public tasks: any[];
+  constructor(public navCtrl: NavController, public taskDataService: TaskDataService) { }
   ngOnInit(): void {
-    console.log("init called")
-    this.taskDataService.getMatchingTasks().then(function(res){
-      this.tasks = res
-      console.log(res)
+    this.taskDataService.getMatchingTasks().then((res) => {
+      this.tasks = res.object
+      console.log(this.tasks)
     }).catch((err)=>{
       console.log(err)
     })

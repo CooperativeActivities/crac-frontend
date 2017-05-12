@@ -2,7 +2,34 @@
 </ion-header>
 <ion-content padding>
   <div style="margin: 0 auto;">
-    <ion-img src="../../assets/img/logo.png" class="login-logo"></ion-img>
+    <ion-list inset>
+      <ion-item>
+        <ion-img src="../../assets/img/logo.png" class="login-logo"></ion-img>
+      </ion-item>
+      <ion-list-header>
+        <h1>
+          Anmelden
+        </h1>
+      </ion-list-header>
+
+      <ion-item>
+        <ion-label floating>Username</ion-label>
+        <ion-input type="text" [(ngModel)]="username"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Password</ion-label>
+        <ion-input type="password" [(ngModel)]="password"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <div padding>
+      <button ion-button block outline color="secondary"
+        (click)="login()"
+        >Login</button>
+    </div>
+
+    <!--
     <div class="content-title assertive">Anmelden</div>
     <form id="anmelden-form1" name="authorizationForm">
       <ion-list id="anmelden-list2">
@@ -12,7 +39,9 @@
           <input type="text" placeholder="Benutzername" ng-model="data.username" name="username" required>
         </label>
         <label class="item item-input" id="anmelden-input2">
+          -->
           <!--<span class="input-label">Passwort</span>-->
+    <!--
           <input type="password" placeholder="Passwort" ng-model="data.password" name="password" required>
         </label>
       </ion-list>
@@ -26,16 +55,19 @@
             <i class="ion-social-facebook-outline"></i> Anmelden
           </button>
         </div>
+          -->
         <!--<div class="col">
           <button class="button button-block button-outline button-positive button-google">
             <i class="ion-social-google-outline"></i> Anmelden
           </button>
         </div>-->
+    <!--
       </div>
       <a ui-sref="signup" id="anmelden-button2" class="button button-block button-outline button-positive button-energized" disabled>Neuen Account anlegen</a>
       <button class="button button-clear" disabled>
         Password vergessen?
       </button>
     </form>
+          -->
   </div>
 </ion-content>

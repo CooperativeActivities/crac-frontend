@@ -27,7 +27,6 @@ export class MyApp {
       { title: 'Homepage', component: TabsPage },
       { title: 'Settings', component: SettingsPage },
       { title: 'Account', component: AccountPage },
-      { title: 'Login', component: LoginPage },
     ];
 
   }
@@ -37,24 +36,26 @@ export class MyApp {
     this.nav.setRoot(page.component);
   }
 
-  initializeApp() {
-    this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      StatusBar.styleDefault();
-      Splashscreen.hide();
-      if(!this.authService.isAuthenticated()){
-        this.nav.setRoot(LoginPage)
-      }
-      /*
-      $rootScope.globals = $cookieStore.get('globals') || {};
-      if($rootScope.globals.currentUser != null){
-        $http.defaults.headers.common['Token'] = $rootScope.globals.currentUser.token; // jshint ignore:line
-        $http.defaults.headers.common['Authorization'] = $cookieStore.get('basic');
-        // cannot call loggedIn here cause the controllers haven't been loaded yet
-        //$rootScope.$emit("loggedIn")
-      }
-       */
-    });
+  async initializeApp() {
+    await this.platform.ready()
+    // Okay, so the platform is ready and our plugins are available.
+    // Here you can do any higher level native things you might need.
+    StatusBar.styleDefault();
+    Splashscreen.hide();
+    await this.authService.getCredentials()
+    if(!this.authService.isAuthenticated()){
+      this.nav.setRoot(LoginPage)
+    } else {
+      this.nav.setRoot(TabsPage)
+    }
+    /*
+    $rootScope.globals = $cookieStore.get('globals') || {};
+    if($rootScope.globals.currentUser != null){
+      $http.defaults.headers.common['Token'] = $rootScope.globals.currentUser.token; // jshint ignore:line
+      $http.defaults.headers.common['Authorization'] = $cookieStore.get('basic');
+      // cannot call loggedIn here cause the controllers haven't been loaded yet
+      //$rootScope.$emit("loggedIn")
+    }
+     */
   }
 }

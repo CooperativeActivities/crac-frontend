@@ -1,14 +1,32 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { AuthService } from "../../services/auth_service";
+
+import { HomePage } from "../home/home"
 
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
 export class LoginPage {
+  public username: string;
+  public password: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams, private auth_service: AuthService) {}
 
+  public async login(){
+    let res, err;
+    try {
+      res = await this.auth_service.login(this.username, this.password)
+    } catch(e){
+      err = e
+    }
+    if(err){
+      console.error(err)
+    } else {
+      this.navCtrl.setRoot(HomePage)
+    }
+  }
 
 }
 /**
