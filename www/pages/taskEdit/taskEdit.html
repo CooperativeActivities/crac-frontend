@@ -34,38 +34,17 @@
             <input type="number" min="0" ng-model="task.minAmountOfVolunteers" placeholder="Anzahl...">
           </label>
         </div>
-        <div class="form-block" >
+        <div class="form-block form-group">
           <div class="item item-divider-top">Zeit und Ort</div>
 
-          <div class="time-select-box item item-input item-input-table">
-            <ion-list>
-              <ion-radio ng-model="timeChoice.choice" name="choice" value="slot" class="no-border-radius" >Zeitraum</ion-radio>
-              <ion-radio ng-model="timeChoice.choice" name="choice" value="point" class="no-border-radius" >Zeitpunkt</ion-radio>
-
-            </ion-list>
-
-            <div ng-show="timeChoice.choice == 'slot'" class="time-slot">
-
-              <label class="item item-input c-timebox ">
-                <span class="input-label bold">Beginn:</span>
-                <input type="datetime-local" ng-model="task.startTime"  ng-class="{'has-error' : !task.startTime}" >
-              </label>
-              <label class="item item-input c-timebox">
-                <span class="input-label bold">Ende:</span>
-                <input type="datetime-local" ng-model="task.endTime" ng-class="{'has-error' : !task.endTime}" >
-              </label>
-            </div>
-
-            <div ng-show="timeChoice.choice == 'point'" class="time-point ">
-              <label class="item item-input c-timebox ">
-                <span class="input-label bold"></span>
-
-              </label>
-              <label class="item item-input c-timebox ">
-                <input type="datetime-local" ng-model="task.endTime" ng-class="{'has-error' : !task.endTime}" >
-              </label>
-            </div>
-          </div>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label bold">Beginn*:</span>
+            <input type="datetime-local" ng-model="task.startTime"  ng-class="{'has-error' : !task.startTime}" >
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label bold">Ende:</span>
+            <input type="datetime-local" ng-model="task.endTime" >
+          </label>
 
           <div class="item item-input item-stacked-label">
             <span class="input-label bold">Adresse:</span>

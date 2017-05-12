@@ -118,16 +118,16 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
 
 
-      if(!angular.isDate($scope.task.endTime)){
-        ionicToast.show("Aufgabe kann nicht gespeichert werden: " + "Bitte ein gültiges Enddatum eingeben!", 'top', false, 5000);
+      if(!angular.isDate($scope.task.startTime)){
+        ionicToast.show("Aufgabe kann nicht gespeichert werden: " + "Bitte ein gültiges Startdatum eingeben!", 'top', false, 5000);
         return;
       }
 
-      if($scope.timeChoice.choice == 'slot' ){
+      if(!$scope.task.endTime || !angular.isDate($scope.task.endTime)) {
         task.startTime = new Date(task.startTime);
-        task.endTime = new Date(task.endTime);
+        task.endTime = new Date(task.startTime);
       } else {
-        task.startTime = new Date(task.endTime);
+        task.startTime = new Date(task.startTime);
         task.endTime = new Date(task.endTime);
       }
 
