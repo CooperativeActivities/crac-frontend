@@ -74,12 +74,15 @@
             </div>
           </div>
         </div>
-        <div class="row" ng-if="task.minAmountOfVolunteers > 0">
+        <div class="row">
           <div class="col-35">
             <div class="row"><span class="ion-location"> Teilnehmer: </span></div>
           </div>
           <div class="col">
-            <div class="row"> {{task.signedUsers}} / {{task.minAmountOfVolunteers}} </div>
+            <div class="row">
+              {{task.signedUsers}}
+              <span ng-if="task.minAmountOfVolunteers">/{{task.minAmountOfVolunteers}}</span>
+            </div>
           </div>
         </div>
 
