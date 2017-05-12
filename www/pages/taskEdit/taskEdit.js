@@ -283,9 +283,17 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         if(res) {
           TaskDataService.deleteTaskById($scope.task.id).then(function(res) {
             ionicToast.show("Aufgabe gelöscht", 'top', false, 5000);
-            $state.go('tabsController.myTasks', { location: "replace" }).then(function(res){
-              $ionicHistory.removeBackView();
-            });
+            if($scope.task.superTask) {
+              $state.go('tabsController.task', {id: $scope.task.superTask.id}, {location: "replace"})
+                .then(function (res) {
+                  $ionicHistory.removeBackView();
+                });
+            } else {
+              $state.go('tabsController.myTasks', {location: "replace"})
+                .then(function (res) {
+                  $ionicHistory.removeBackView();
+                });
+            }
           }, function(error) {
             ionicToast.show("Aufgabe kann nicht gelöscht werden: " + error.message, 'top', false, 5000);
           });
