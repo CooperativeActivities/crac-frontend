@@ -117,31 +117,44 @@
         <br>
       </c-accordion>
 
-      <c-accordion title="'Schichten (' + shiftCounter + ')'" ng-if="shiftCounter > 0">
+      <c-accordion title="'Schichten (' + task.childTasks.length + ')'"
+                   ng-if="task.childTasks.length > 0 && task.taskType == 'WORKABLE'"
+                   ng-click="loadShifts()">
         <ion-list>
           <div  ng-cloak>
             <ion-item>
               <ion-item ng-repeat="shift in task.childTasks">
-                <span>
-                  <i class="icon ion-clock"></i>
-                  {{shift.startTime | date: "dd.MM HH:mm"}} &ndash;
-                  <span ng-if="shift.startTime.getDate() == shift.endTime.getDate()">
-                    {{shift.endTime | date: "HH:mm"}}
-                  </span>
-                  <span ng-if="shift.startTime.getDate() != shift.endTime.getDate()">
-                    {{shift.endTime | date: "dd.MM HH:mm"}}
-                  </span>
-                </span>
-                <span>
-                  <i class="icon ion-person padding-left"></i>
-                  {{signedUsers}}  / {{shiftHelperCounter}}
-                </span>
-                <span ng-if="showShiftsMaterialsEnroll">
-                  <button ng-click="addToShift(shift)"
-                    class="button button-small button-outline button-balanced ion-checkmark" ng-if="!working">Ich arbeite mit!</button>
-                  <button ng-click="removeFromShift(shift)"
-                    class="button button-small button-outline button-assertive ion-close" ng-if="working">Absagen</button>
-                </span>
+                <custom-accordion>
+                  <custom-accordion-head>
+                    <span>
+                      <i class="icon ion-clock"></i>
+                      {{shift.startTime | date: "dd.MM HH:mm"}} &ndash;
+                      <span ng-if="shift.startTime.getDate() == shift.endTime.getDate()">
+                        {{shift.endTime | date: "HH:mm"}}
+                      </span>
+                      <span ng-if="shift.startTime.getDate() != shift.endTime.getDate()">
+                        {{shift.endTime | date: "dd.MM HH:mm"}}
+                      </span>
+                    </span>
+                        <span>
+                      <i class="icon ion-person padding-left"></i>
+                      {{shift.signedUsers}} / {{shift.minAmountOfVolunteers}}
+                    </span>
+                  </custom-accordion-head>
+                  <custom-accordion-body> <!-- ng-if="showShiftsMaterialsEnroll" -->
+                    Zusagen:
+                    <span ng-repeat="user in shift.userRelationships">
+                      {{user.name}}<span ng-if="$index != shift.userRelationships.length - 1">,</span>
+                    </span>
+                    <span ng-if="true">
+                      <button ng-click="addToShift(shift)"
+                              class="button button-small button-outline button-balanced ion-checkmark" ng-if="!shift.assigned">Ich arbeite mit!</button>
+                      <button ng-click="removeFromShift(shift)"
+                              class="button button-small button-outline button-assertive ion-close" ng-if="shift.assigned">Absagen</button>
+                    </span>
+                  </custom-accordion-body>
+                </custom-accordion>
+
               </ion-item>
             </ion-item>
           </div>
@@ -191,7 +204,7 @@
         <br>
       </c-accordion>
 
-      <c-accordion title="'Unteraufgaben (' + childCounter + ')'" ng-show="childCounter > 0">
+      <c-accordion title="'Unteraufgaben (' + task.childTasks.length + ')'" ng-show="task.childTasks.length > 0 && task.taskType == 'ORGANISATIONAL'">
         <ion-list>
           <div ng-repeat="subTask in task.childTasks | orderBy: ['startTime', 'name']" ng-cloak>
             <task-preview task="subTask" ng-click="loadSingleTask(subTask.id)"></task-preview>

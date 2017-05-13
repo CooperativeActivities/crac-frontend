@@ -31,9 +31,9 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
   $scope.userIsDone = false;
   $scope.allAreDone = false;
 
-  $scope.childCounter = 0;
-  $scope.shiftCounter = 0;
-  $scope.shiftHelperCounter = 0;
+  $scope.loaded = {
+    shifts: false
+  };
 
   $scope.doRefresh = function(){
     TaskDataService.getTaskById($stateParams.id).then(function (res) {
@@ -47,9 +47,6 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       }
       console.log("task detail view", task);
 
-      for(var i = 0; i < task.childTasks.length; i++){
-        $scope.countChildTask(task.childTasks[i].id);
-      }
       if(task.userRelationships) task.userRelationships.sort($scope.sortMemberListByRelationship);
 
       if(task.participationDetails){
@@ -173,27 +170,21 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
     $state.go('tabsController.task', { id:taskId });
   };
 
-  //Count all ChildTask which are no Shifts
-  $scope.countChildTask = function (taskId) {
-    TaskDataService.getTaskById(taskId).then(function (res) {
-      var tempTask = res.object;
-      console.log('temp task', tempTask);
-      if(tempTask.taskType === 'SHIFT'){
-        $scope.shiftCounter++;
-        $scope.shiftHelperCounter = tempTask.minAmountOfVolunteers;
-        $scope.signedUsers = tempTask.signedUsers;
-        if(tempTask.participationDetails){
-          if(tempTask.participationDetails[0].user === $rootScope.globals.currentUser.id){
-            $scope.working = true;
-          }
-        }
-      } else {
-        $scope.childCounter++;
-      }
-
-    });
-  };
-
+  // Get info for all shifts
+  $scope.loadShifts = function() {
+    if($scope.loaded.shifts) return;
+    for(var i=0; i<$scope.task.childTasks.length; i++) {
+      console.log("get shift " + $scope.task.childTasks[i].id);
+      TaskDataService.getTaskById($scope.task.childTasks[i].id).then(function (res) {
+        console.log(res);
+        var shift = _.findIndex($scope.task.childTasks, {id: res.object.id});
+        $scope.task.childTasks[shift] = res.object;
+      }, function(error) {
+        ionicToast.show("Schichtinformation konnte nicht geladen werden: " + error.message, 'top', false, 5000);
+      });
+    }
+    $scope.loaded.shifts = true;
+  }
 
   // Deleting all participating types
   $scope.cancel = function() {
@@ -237,7 +228,8 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
     TaskDataService.changeTaskPartState(shift.id ,'participate').then(function(res) {
       //@TODO update task object
       console.log('Participating in shift ' + shift.id);
-      $scope.working = true;
+      $scope.assigned = true;
+      shift.signedUser++;
       $scope.signedUsers++;
     }, function(error) {
       ionicToast.show("An der Schicht kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
@@ -250,7 +242,8 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
   $scope.removeFromShift = function(shift) {
     TaskDataService.removeOpenTask(shift.id).then(function (res) {
       console.log('Not participating in shift ' + shift.id);
-      $scope.working = false;
+      $scope.assigned = false;
+      shift.signedUsers--;
       $scope.signedUsers--;
     }, function(error) {
       ionicToast.show("An der Schicht kann nicht zurückgezogen werden: " + error.message, 'top', false, 5000);
