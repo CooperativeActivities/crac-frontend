@@ -883,6 +883,11 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
   display: block !important;
 }
 
+custom-accordion-body {
+  display: block;
+  padding: 10px 0;
+}
+
 /* -- comments ------------------------------------------------------------------------------------------------------ */
 
 .comment-bubble {

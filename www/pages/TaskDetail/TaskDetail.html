@@ -173,8 +173,7 @@
                     <span class="padding-left">{{material.subscribedQuantityOtherUsers + material.myQuantity}} / {{ material.quantity }}</span>
                   </div>
                 </custom-accordion-head>
-                <custom-accordion-body>
-                  <br>
+                <custom-accordion-body ng-if="showShiftsMaterialsEnroll">
                   <div>
                     {{ material.description }}
                   </div>
