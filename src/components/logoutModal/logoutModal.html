@@ -2,20 +2,16 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <h1>Wirklich ausloggen?</h1>
+        <h1>Wirklich Ausloggen?</h1>
       </ion-col>
     </ion-row>
-    <ion-row class="row responsive-lg">
-      <div class="col">
-        <button ng-click="logout()" ui-sref="login" class="button button-block button-outline button-positive button-assertive">
-          <i class="ion-log-out"></i> Ja - ausloggen
-        </button>
-      </div>
-      <div class="col">
-        <button ng-click="modal.hide()" class="button button-block button-outline button-positive button-balanced">
-          <i class="ion-log-in"></i> Nein - eingeloggt bleiben
-        </button>
-      </div>
-    </div>
+    <ion-row>
+      <ion-col>
+        <button ion-button (click)="logout()" block outline color="danger"> Ausloggen </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button (click)="closeModal()" block outline color="secondary"> Eingeloggt Bleiben </button>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>

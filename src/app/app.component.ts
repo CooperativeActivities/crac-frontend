@@ -2,8 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { ModalController, Nav, Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
-import { TabsPage } from '../pages/tabs/tabs';
-
 import { SettingsPage } from '../pages/settings/settings';
 import { AccountPage } from '../pages/account/account';
 import { LoginPage } from '../pages/login/login';
@@ -18,7 +16,7 @@ import { LogoutModal } from '../components/logoutModal/logoutModal';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage = TabsPage;
+  rootPage = "tabs";
 
   pages: Array<{title: string, component: any}>;
 
@@ -27,7 +25,7 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Homepage', component: TabsPage },
+      { title: 'Homepage', component: "tabs" },
       { title: 'Settings', component: SettingsPage },
       { title: 'Account', component: AccountPage },
     ];
@@ -40,11 +38,24 @@ export class MyApp {
     // Here you can do any higher level native things you might need.
     StatusBar.styleDefault();
     Splashscreen.hide();
+
+    /*
+    Deeplinks.routeWithNavController(this.nav, {
+      '/': "tabs",
+      '/settings': SettingsPage,
+      '/profile': AccountPage,
+    }).subscribe((match) => {
+      console.log('Successfully routed', match);
+    }, (nomatch) => {
+      console.warn('Unmatched Route', nomatch);
+    });
+     */
+
     await this.authService.getCredentials()
     if(!this.authService.isAuthenticated()){
       this.nav.setRoot(LoginPage)
     } else {
-      this.nav.setRoot(TabsPage)
+      this.nav.setRoot("tabs")
     }
   }
 

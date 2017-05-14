@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AuthService } from "../../services/auth_service";
 
-import { HomePage } from "../home/home"
+import { TabsPage } from "../tabs/tabs"
 
 @Component({
   selector: 'page-login',
@@ -24,7 +24,9 @@ export class LoginPage {
     if(err){
       console.error(err)
     } else {
-      this.navCtrl.setRoot(HomePage)
+      // has to be TabsPage cause if i do HomePage here it doesn't show the navigation bar
+      // (if we want to ensure we show the homepage we might wanna use navCtrl.setPages?)
+      this.navCtrl.setRoot(TabsPage)
     }
   }
 

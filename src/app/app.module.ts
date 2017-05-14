@@ -7,8 +7,6 @@ import { IonicStorageModule } from '@ionic/storage';
 import { MyApp } from './app.component';
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
-import { HomePage } from '../pages/home/home';
-import { TabsPage } from '../pages/tabs/tabs';
 import { SettingsPage } from '../pages/settings/settings';
 import { AccountPage } from '../pages/account/account';
 import { LoginPage } from '../pages/login/login';
@@ -25,8 +23,6 @@ import { ErrorDisplayService } from '../services/error_service';
     MyApp,
     AboutPage,
     ContactPage,
-    HomePage,
-    TabsPage,
     SettingsPage,
     AccountPage,
     LoginPage,
@@ -43,8 +39,6 @@ import { ErrorDisplayService } from '../services/error_service';
     MyApp,
     AboutPage,
     ContactPage,
-    HomePage,
-    TabsPage,
     AccountPage,
     SettingsPage,
     LoginPage,

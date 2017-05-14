@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
+import { IonicPage } from 'ionic-angular';
 
 import { NavController } from 'ionic-angular';
 import { TaskDataService } from '../../services/task_service';
 
+@IonicPage({
+  name: "home",
+})
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
@@ -14,7 +18,6 @@ export class HomePage {
   ngOnInit(): void {
     this.taskDataService.getMatchingTasks().then((res) => {
       this.tasks = res.object
-      console.log(this.tasks)
     }).catch((err)=>{
       console.log(err)
     })
