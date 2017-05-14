@@ -1,6 +1,24 @@
-/**
- * Created by P41332 on 25.10.2016.
- */
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+
+@IonicPage({
+  name: "my-tasks",
+})
+@Component({
+  selector: 'page-my-tasks',
+  templateUrl: 'my-tasks.html',
+})
+export class MyTasksPage {
+
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad MyTasksPage');
+  }
+
+}
+  /*
 cracApp.controller('myTasksCtrl', ['$scope','$window','$route', '$stateParams','$routeParams','TaskDataService','ionicToast','$state',
   // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 function ($scope,$window, $route, $stateParams, $routeParams, TaskDataService, ionicToast, $state) {
@@ -33,3 +51,4 @@ function ($scope,$window, $route, $stateParams, $routeParams, TaskDataService, i
     }
   }
 }]);
+   */

@@ -5,10 +5,6 @@ import { HttpModule } from '@angular/http';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { MyApp } from './app.component';
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
-import { SettingsPage } from '../pages/settings/settings';
-import { AccountPage } from '../pages/account/account';
 import { LoginPage } from '../pages/login/login';
 
 import { LogoutModal } from '../components/logoutModal/logoutModal';
@@ -21,10 +17,6 @@ import { ErrorDisplayService } from '../services/error_service';
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
-    ContactPage,
-    SettingsPage,
-    AccountPage,
     LoginPage,
     LogoutModal,
   ],
@@ -37,10 +29,6 @@ import { ErrorDisplayService } from '../services/error_service';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
-    ContactPage,
-    AccountPage,
-    SettingsPage,
     LoginPage,
     LogoutModal,
   ],

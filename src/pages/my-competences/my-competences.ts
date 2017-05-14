@@ -1,6 +1,25 @@
-/**
- * Created by P41332 on 25.10.2016.
- */
+import { Component } from '@angular/core';
+import { IonicPage } from 'ionic-angular';
+
+@IonicPage({
+  name: "my-competences",
+  segment: "my-competences",
+})
+@Component({
+  selector: 'page-my-competences',
+  templateUrl: 'my-competences.html',
+})
+export class MyCompetencesPage {
+
+  constructor() {
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad MyCompetencesPage');
+  }
+
+}
+  /*
 cracApp.controller('myCompetenciesCtrl', ['$rootScope','$scope','UserDataService','ionicToast','$state',
   function($rootScope,$scope,UserDataService, ionicToast, $state) {
  // console.log("Userid: " +$rootScope.globals.currentUser.id)
@@ -42,3 +61,4 @@ cracApp.controller('myCompetenciesCtrl', ['$rootScope','$scope','UserDataService
     });
   }
 }]);
+   */

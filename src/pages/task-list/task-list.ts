@@ -1,6 +1,24 @@
-/**
- * Created by P41332 on 25.10.2016.
- */
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+
+@IonicPage({
+  name: "task-list",
+})
+@Component({
+  selector: 'page-task-list',
+  templateUrl: 'task-list.html',
+})
+export class TaskListPage {
+
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad TaskListPage');
+  }
+
+}
+/*
 
 cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, $ionicModal, TaskDataService, $q) {
 
@@ -37,6 +55,7 @@ cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, 
   $scope.doRefresh();
 
   /*----------------------------------------------------------------------------------------------------------------- */
+/*
   $scope.groups = [];
   for (var i=0; i<10; i++) {
     $scope.groups[i] = {
@@ -47,11 +66,13 @@ cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, 
       $scope.groups[i].items.push(i + '-' + j);
     }
   }
+ */
 
   /*
    * if given group is the selected group, deselect it
    * else, select the given group
    */
+/*
   $scope.toggleGroup = function(group) {
     if ($scope.isGroupShown(group)) {
       $scope.shownGroup = null;
@@ -64,4 +85,4 @@ cracApp.controller('tasklistCtrl', function ($rootScope, $state, $scope, $http, 
   };
 });
 
-
+ */

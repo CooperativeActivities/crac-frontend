@@ -1,5 +1,14 @@
-<ion-view cache-view="false" title="Aufgabenliste" id="page3">
-  <ion-content padding="true" class="has-header">
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Aufgabenliste</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  Aufgabenliste Platzhalter
+  <!--
     <ion-refresher on-refresh="doRefresh()"></ion-refresher>
     <!--
     <ion-search-bar class="bar-light bar-subheader">
@@ -17,6 +26,7 @@
               ng-click="clearSearch()">
       </button>
     </ion-search-bar>-->
+    <!--
     <div class="item item-divider">Vorgeschlagene Aufgaben</div>
     <ion-list ng-controller="swipeCtrl"
               show-delete="shouldShowDelete"
@@ -24,6 +34,7 @@
               can-swipe="true">
       <div ng-repeat="match in matchingTasks | orderBy: 'startTime'" class="parent item">
         <!-- @TODO: additional (matching) info? sort? -->
+        <!--
         <task-preview task="match.task" action="'follow'" ng-click="loadSingleTask(match.task)"></task-preview>
       </div>
       <p ng-if="matchingTasks.length < 1">
@@ -38,12 +49,14 @@
               can-swipe="true">
       <!--<div ng-repeat="task in parentTasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search" class="parent">-->
       <!-- @TODO: sort-->
+      <!--
       <div ng-repeat="task in parentTasks | orderBy: 'startTime'" class="parent">
         <div class="item-stable" ng-class="{active: isGroupShown(task)}">
           <i class="icon" ng-click="toggleGroup(task)" ng-if="task.childTasks.length > 0" ng-class="isGroupShown(task) ? 'ion-minus' : 'ion-plus'"></i>
           <task-preview task="task" action="'follow'" ng-click="loadSingleTask(task)"></task-preview>
         </div>
         <!--<div ng-repeat="childTask in task.childTasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search" class="child">-->
+          <!--
         <div class="item-accordion"
                   ng-repeat="childTask in task.childTasks | orderBy: 'startTime'"
                   ng-show="isGroupShown(task)">
@@ -51,5 +64,5 @@
         </div>
       </div>
     </ion-list>
-  </ion-content>
-</ion-view>
+  -->
+</ion-content>
