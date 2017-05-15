@@ -12,6 +12,13 @@
   color: #bbb;
 }
 
+.float-right {
+  float: right;
+}
+.float-left {
+  float: left;
+}
+
 /* -- HEADER -------------------------------------------------------------------------------------------------------- */
 
 #side-menu21 {
@@ -88,10 +95,12 @@
 }
 .col-25 {
   padding: 5px;
+  width: 25%;
 }
 
 .col-35 {
   padding: 5px;
+  width: 35%;
 }
 
 .assertive {
@@ -309,6 +318,11 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   border: none;
 }
 
+.item > span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .toggle input:checked + .track {
   border-color: #33A58C;
   background-color: #33A58C;
@@ -319,6 +333,9 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   border-color: #33A58C;
 }
 
+.range {
+  padding: 2px 16px;
+}
 .range input + p.ng-binding {
   min-width: 20px;
 }
@@ -424,7 +441,7 @@ input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.clon
   text-decoration: none;
 }
 
-.button.button-1.active, .button.1.activated {
+.button.button-1.active, .button-1.activated {
   background-color: #1C7DC9;
 }
 
@@ -866,6 +883,11 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
   display: block !important;
 }
 
+custom-accordion-body {
+  display: block;
+  padding: 10px 0;
+}
+
 /* -- comments ------------------------------------------------------------------------------------------------------ */
 
 .comment-bubble {
@@ -1229,6 +1251,7 @@ i.icon-step5 { background-color: #279b3a; border-color: #279b3a; color: #279b3a;
   margin-bottom: 15px;
   display: block;
 }
+
 
 .crosshair {
   position: absolute;

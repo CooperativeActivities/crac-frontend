@@ -223,9 +223,6 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
         if(!save_res) return;
 
         ionicToast.show("Task gespeichert", 'top', false, 5000)
-        $state.go('tabsController.task', { id:$scope.taskId }, { location: "replace" }).then(function(save_res){
-          $ionicHistory.removeBackView();
-        });
       });
     };
 
@@ -292,7 +289,22 @@ cracApp.controller('taskEditAdvCtrl', ['$scope','$route', '$stateParams','TaskDa
 
     //material
     $scope.addMaterial = function(){
-      if(!$scope.materials.newObj.name) return;
+      if(!$scope.materials.newObj.name || !$scope.materials.newObj.quantity) {
+        var message = "Bitte geben Sie ";
+        if(!$scope.materials.newObj.name) {
+          message += "den Namen ";
+        }
+        if(!$scope.materials.newObj.quantity){
+          if(!$scope.materials.newObj.name) {
+            message += "und ";
+          }
+          message += "die Menge";
+        }
+        message += " an!";
+        ionicToast.show("Material konnte nicht hinzugefügt werden: " + message, 'top', false, 5000);
+        return;
+      }
+
       //save later
 	    var newMaterial = _.clone($scope.materials.newObj);
       newMaterial.quantity = newMaterial.quantity || 1;

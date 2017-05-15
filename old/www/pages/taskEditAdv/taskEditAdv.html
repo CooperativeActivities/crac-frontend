@@ -50,7 +50,7 @@
             <custom-accordion-body>
               <label class="item item-input item-select">
                 <div class="input-label">
-                  Kompetenzbereich
+                  Kompetenzbereich*
                 </div>
                 <select ng-model="competenceArea" ng-change="onCompetenceAreaChange(competenceArea)"
                   ng-options="area.id as area.name for area in competenceAreaList">
@@ -58,7 +58,7 @@
               </label>
               <label class="item item-input item-select" ng-if="competenceArea != -1">
                 <div class="input-label">
-                  Kompetenz
+                  Kompetenz*
                 </div>
                 <select ng-model="competences.newObj.id">
                   <option ng-repeat="competence in availableCompetences | orderBy: 'name'" ng-value="competence.id">
@@ -71,7 +71,7 @@
 
               </div>
               <label class="item item-input range">
-                <span class="input-label">Können</span>
+                <span class="input-label">Können*</span>
                 <input type="range" min="0" max="100" ng-model="competences.newObj.neededProficiencyLevel">
                 <p>{{competences.newObj.neededProficiencyLevel}}</p>
               </label>
@@ -95,6 +95,7 @@
                   <!--</span>-->
 
               </div>
+              <label>*Pflichtfelder</label>
               <button type="button" ng-click="addCompetence()" class="button button-block button-positive ion-plus no-border-radius"> Hinzufügen</button>
             </custom-accordion-body>
           </custom-accordion>
@@ -131,17 +132,18 @@
 
                   <div class="list">
                     <label class="item item-input item-stacked-label">
-                      <span class="input-label new-material-label">Name</span>
+                      <span class="input-label new-material-label">Name*</span>
                       <input ng-model="materials.newObj.name" placeholder="Name" type="text" class="new-material-input" required ng-class="{'has-error' : !materials.newObj.name}">
                     </label>
                     <label class="item item-input item-stacked-label">
-                      <span class="input-label new-material-label">Menge</span>
-                      <input type="number" ng-model="materials.newObj.quantity" placeholder="Menge" class="new-material-input">
+                      <span class="input-label new-material-label">Menge*</span>
+                      <input type="number" ng-model="materials.newObj.quantity" placeholder="Menge" class="new-material-input" ng-class="{'has-error' : !materials.newObj.quantity}">
                     </label>
                     <label class="item item-input item-stacked-label">
                       <span class="input-label new-material-label">Beschreibung</span>
                       <textarea ng-model="materials.newObj.description" placeholder="Beschreibung" class="new-material-input"></textarea>
                     </label>
+                    <label>*Pflichtfelder</label>
                     <button type="button" ng-click="addMaterial()" class="button button-full button-positive ion-plus no-border-radius"> Hinzufügen</button>
                   </div>
                 </custom-accordion-body>
@@ -152,8 +154,6 @@
         </div>
       </ion-list>
     </div>
-
-    <!-- TODO implement actual shift functionality when backend is available -->
 
     <div class="form-block" ng-if="view == 'shifts'">
       <ion-list>
@@ -178,21 +178,20 @@
                 <custom-accordion-body>
                   <div class="list">
                     <label class="item item-input item-stacked-label">
-                      <span class="input-label new-shift-label">Beginn</span>
+                      <span class="input-label new-shift-label">Beginn*</span>
                       <input type="datetime-local" ng-model="shifts.newObj.startTime"  ng-class="{'has-error' : !shifts.newObj.startTime}" >
                     </label>
                     <label class="item item-input item-stacked-label">
-                      <span class="input-label new-shift-label">Ende</span>
+                      <span class="input-label new-shift-label">Ende*</span>
                       <input type="datetime-local" ng-model="shifts.newObj.endTime"  ng-class="{'has-error' : !shifts.newObj.endTime}" >
                     </label>
                     <label class="item item-input item-stacked-label">
-                      <span class="input-label new-shift-label">Menge</span>
-                      <input type="number" ng-model="shifts.newObj.minAmountOfVolunteers" placeholder="Menge" class="new-material-input" ng-class="{'has-error' : !shifts.newObj.minAmountOfVolunteers}">
+                      <span class="input-label new-shift-label">Anzahl Freiwilliger*</span>
+                      <input type="number" ng-model="shifts.newObj.minAmountOfVolunteers" placeholder="Anzahl" class="new-material-input" ng-class="{'has-error' : !shifts.newObj.minAmountOfVolunteers}">
                     </label>
+                    <label>*Pflichtfelder</label>
 
                     <button type="button" ng-click="addShift()" class="button button-full button-positive ion-plus no-border-radius"> Hinzufügen</button>
-
-
                   </div>
 
                 </custom-accordion-body>

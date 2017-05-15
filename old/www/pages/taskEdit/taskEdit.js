@@ -118,16 +118,16 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
 
 
-      if(!angular.isDate($scope.task.endTime)){
-        ionicToast.show("Aufgabe kann nicht gespeichert werden: " + "Bitte ein gültiges Enddatum eingeben!", 'top', false, 5000);
+      if(!angular.isDate($scope.task.startTime)){
+        ionicToast.show("Aufgabe kann nicht gespeichert werden: " + "Bitte ein gültiges Startdatum eingeben!", 'top', false, 5000);
         return;
       }
 
-      if($scope.timeChoice.choice == 'slot' ){
+      if(!$scope.task.endTime || !angular.isDate($scope.task.endTime)) {
         task.startTime = new Date(task.startTime);
-        task.endTime = new Date(task.endTime);
+        task.endTime = new Date(task.startTime);
       } else {
-        task.startTime = new Date(task.endTime);
+        task.startTime = new Date(task.startTime);
         task.endTime = new Date(task.endTime);
       }
 
@@ -176,6 +176,23 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
       });
     };
 
+    // Add details
+    $scope.add_details = function() {
+      $scope.save().then(function(save_res) {
+        if (!save_res) return;
+        var taskId = save_res.object.id;
+        ionicToast.show("Aufgabe gespeichert", 'top', false, 5000);
+        // redirect to the advanced edit page of the newly created workable task
+        // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
+        $state.go('tabsController.taskEditAdv', {
+          id: taskId,
+          section: 'competences'
+        }, {location: "replace"}).then(function (res) {
+          $ionicHistory.removeBackView();
+        });
+      });
+    }
+
     // Save changes only
     $scope.save_changes = function() {
       $scope.save().then(function(save_res) {
@@ -184,19 +201,14 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         ionicToast.show("Aufgabe gespeichert", 'top', false, 5000);
 
         if($scope.isNewTask) {
-          if($scope.task.taskType === 'ORGANISATIONAL') {
+          // redirect all on save to the detail page. Clicking add detials button will take them to the new page
+          // if($scope.task.taskType === 'ORGANISATIONAL') {
             // redirect to the edit page of the newly created org task
             // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
             $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
               $ionicHistory.removeBackView();
             });
-          } else {
-            // redirect to the advanced edit page of the newly created workable task
-            // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
-            $state.go('tabsController.taskEditAdv', { id:taskId, section: 'competences' }, { location: "replace" }).then(function(res){
-              $ionicHistory.removeBackView();
-            });
-          }
+          //}
         }
       });
     };
@@ -283,9 +295,17 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         if(res) {
           TaskDataService.deleteTaskById($scope.task.id).then(function(res) {
             ionicToast.show("Aufgabe gelöscht", 'top', false, 5000);
-            $state.go('tabsController.myTasks', { location: "replace" }).then(function(res){
-              $ionicHistory.removeBackView();
-            });
+            if($scope.task.superTask) {
+              $state.go('tabsController.task', {id: $scope.task.superTask.id}, {location: "replace"})
+                .then(function (res) {
+                  $ionicHistory.removeBackView();
+                });
+            } else {
+              $state.go('tabsController.myTasks', {location: "replace"})
+                .then(function (res) {
+                  $ionicHistory.removeBackView();
+                });
+            }
           }, function(error) {
             ionicToast.show("Aufgabe kann nicht gelöscht werden: " + error.message, 'top', false, 5000);
           });

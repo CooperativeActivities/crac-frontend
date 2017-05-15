@@ -32,8 +32,8 @@
               ui-sref="tabsController.typography" menu-close="">
       <i class="icon ion-android-color-palette"></i>Typography
     </ion-item>
-    <ion-item class="item-icon-left positive  side-menu-item"
-              menu-close="" ng-click="modal.show()">
+    <ion-item ng-controller="logoutCtrl" class="item-icon-left positive  side-menu-item"
+              menu-close="" ng-click="openModal()">
       <i class="icon ion-log-out"></i>Abmelden
     </ion-item>
   </ion-list>
