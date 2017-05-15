@@ -19,7 +19,7 @@
         </div>
       </div>
 
-      <c-accordion title="'Zeit und Ort'" shown="true">
+      <c-accordion title="'Details'" shown="true">
         <div class="row">
           <div class="col-35">
             <div class="row"><span class="ion-calendar"> Zeit: </span></div>
@@ -141,7 +141,7 @@
                       {{shift.signedUsers}} / {{shift.minAmountOfVolunteers}}
                     </span>
                   </custom-accordion-head>
-                  <custom-accordion-body> <!-- ng-if="showShiftsMaterialsEnroll" -->
+                  <custom-accordion-body ng-if="showShiftsMaterialsEnroll">
                     Zusagen:
                     <span ng-repeat="user in shift.userRelationships">
                       {{user.name}}<span ng-if="$index != shift.userRelationships.length - 1">,</span>
