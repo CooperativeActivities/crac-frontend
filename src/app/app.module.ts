@@ -4,6 +4,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { IonicStorageModule } from '@ionic/storage';
 
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
+
+
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
 
@@ -37,6 +41,8 @@ import { ErrorDisplayService } from '../services/error_service';
     HelperService,
     AuthService,
     ErrorDisplayService,
+    StatusBar,
+    SplashScreen
   ]
 })
 export class AppModule {}
