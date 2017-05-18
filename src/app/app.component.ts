@@ -1,13 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { ModalController, Nav, Platform } from 'ionic-angular';
+import { Nav, Platform } from 'ionic-angular';
 
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
-import { LoginPage } from '../pages/login/login';
 import { AuthService } from '../services/auth_service';
-
-import { LogoutModal } from '../components/logoutModal/logoutModal';
 
 
 @Component({
@@ -18,21 +15,11 @@ export class MyApp {
 
   rootPage = "tabs";
 
-  pages: Array<{title: string, component: any}>;
-
   constructor(public platform: Platform,
-    private authService: AuthService, private modalCtrl: ModalController,
+    private authService: AuthService,
     public statusBar: StatusBar, public splashScreen: SplashScreen,
   ) {
     this.initializeApp();
-
-    // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Homepage', component: "tabs" },
-      { title: 'Meine Kompetenzen', component: "my-competences" },
-      { title: 'Account', component: "my-profile" },
-    ];
-
   }
 
   async initializeApp() {
@@ -44,8 +31,11 @@ export class MyApp {
 
     await this.authService.getCredentials()
     if(!this.authService.isAuthenticated()){
-      this.nav.setRoot(LoginPage)
+      this.nav.setRoot("login")
     } else {
+      this.nav.setRoot("tabs")
+      // maybe do the getActiveChild or whatever? from the ionic2-conference-example?
+        /*
       try {
         let segments = this.nav._linker._segments
         let first = segments.shift()
@@ -60,22 +50,9 @@ export class MyApp {
       } catch(e) {
         this.nav.setRoot("tabs");
       }
-      /*
-      this.nav.setRoot("tabs")
-       */
+         */
     }
   }
 
-  openPage(page) {
-    // @ENTRY
-    // IMPORTANT: https://github.com/driftyco/ionic-conference-app/blob/master/src/app/app.component.ts
-    // (or ../ionic-conference-example)
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
-  }
 
-  logoutModal(){
-    this.modalCtrl.create(LogoutModal).present()
-  }
 }

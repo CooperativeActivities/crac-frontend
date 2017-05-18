@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AuthService } from "../../services/auth_service";
 
 import { TabsPage } from "../tabs/tabs"
 
+@IonicPage({
+  name: "login",
+})
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'

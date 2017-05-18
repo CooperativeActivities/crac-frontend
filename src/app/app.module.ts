@@ -9,7 +9,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 
 import { MyApp } from './app.component';
-import { LoginPage } from '../pages/login/login';
 
 import { LogoutModal } from '../components/logoutModal/logoutModal';
 
@@ -21,7 +20,6 @@ import { ErrorDisplayService } from '../services/error_service';
 @NgModule({
   declarations: [
     MyApp,
-    LoginPage,
     LogoutModal,
   ],
   imports: [
@@ -33,7 +31,6 @@ import { ErrorDisplayService } from '../services/error_service';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    LoginPage,
     LogoutModal,
   ],
   providers: [

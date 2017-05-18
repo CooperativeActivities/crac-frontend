@@ -5,7 +5,7 @@ import { AuthService } from '../../services/auth_service';
 
 
 @IonicPage({
-  name: "tabs",
+  name: "tabs"
 })
 @Component({
   templateUrl: 'tabs.html'
@@ -17,8 +17,10 @@ export class TabsPage {
   tab2Root: any = "task-list";
   tab3Root: any = "my-tasks";
   tab4Root: any = "messages";
+  tab5Root: any = "profile";
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {
+  }
 
   ionViewCanEnter(): boolean{
    return this.authService.isAuthenticated()
