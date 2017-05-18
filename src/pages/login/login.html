@@ -1,54 +1,36 @@
 <ion-header>
 </ion-header>
 <ion-content padding>
-  <div style="margin: 0 auto;">
-    <ion-list inset>
-      <ion-item>
-        <ion-img src="../../assets/img/logo.png" class="login-logo"></ion-img>
-      </ion-item>
-      <ion-list-header>
-        <h1>
-          Anmelden
-        </h1>
-      </ion-list-header>
+  <ion-grid>
+    <ion-row align-items-center justify-content-center>
+      <!-- ion-col intentionally left out -->
+      <ion-card style="max-width: 30em;">
+        <img src="../../assets/img/logo.png">
+        <ion-card-content>
+          <ion-card-title text-center>
+            Anmelden
+          </ion-card-title>
+          <ion-list>
+            <ion-item>
+              <ion-label floating>Username</ion-label>
+              <ion-input type="text" [(ngModel)]="username"></ion-input>
+            </ion-item>
 
-      <ion-item>
-        <ion-label floating>Username</ion-label>
-        <ion-input type="text" [(ngModel)]="username"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label floating>Password</ion-label>
-        <ion-input type="password" [(ngModel)]="password"></ion-input>
-      </ion-item>
-    </ion-list>
-
-    <div padding>
-      <button ion-button block outline color="secondary"
-        (click)="login()"
-        >Login</button>
-    </div>
+            <ion-item>
+              <ion-label floating>Password</ion-label>
+              <ion-input type="password" [(ngModel)]="password"></ion-input>
+            </ion-item>
+            <br>
+            <button ion-button block outline color="secondary"
+              (click)="login()"
+              >Login</button>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </ion-row>
+  </ion-grid>
 
     <!--
-    <div class="content-title assertive">Anmelden</div>
-    <form id="anmelden-form1" name="authorizationForm">
-      <ion-list id="anmelden-list2">
-        <label class="item item-input" id="anmelden-input1" ng-class="{
-          'has-errors' : authorizationForm.username.$invalid && authorizationForm.username.$dirty,
-          'no-errors' : authorizationForm.username.$valid && !authorizationForm.username.$untouched}">
-          <input type="text" placeholder="Benutzername" ng-model="data.username" name="username" required>
-        </label>
-        <label class="item item-input" id="anmelden-input2">
-          -->
-          <!--<span class="input-label">Passwort</span>-->
-    <!--
-          <input type="password" placeholder="Passwort" ng-model="data.password" name="password" required>
-        </label>
-      </ion-list>
-      <button class="button button-block button-outline button-positive button-balanced" (click)="login()"  ng-disabled="authorizationForm.$invalid">
-        <i class="ion-log-in"></i> Login
-      </button>
-      <div class="content-title">oder</div>
       <div class="row">
         <div class="col">
           <button class="button button-block button-outline button-positive button-face" disabled ng-click="facebookLogin()">
@@ -69,5 +51,4 @@
       </button>
     </form>
           -->
-  </div>
 </ion-content>
