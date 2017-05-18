@@ -7,26 +7,43 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  Aufgabenliste Platzhalter
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher-content> </ion-refresher-content>
+  </ion-refresher>
+  <ion-card>
+    <ion-card-header>
+      Vorgeschlagene Aufgaben
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <!-- <div ng-repeat="task in tasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search">-->
+        <ion-item-sliding *ngFor="let task of matchingTasks"><!-- | orderBy: 'score'">-->
+          <ion-item>
+            {{ task.task.name }}
+          </ion-item>
+          <!--<task-preview task="task.task" action="'follow'" ng-click="loadSingleTask(task.task.id)"></task-preview>-->
+        </ion-item-sliding>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      Alle Aufgaben/Projekte
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <!-- <div ng-repeat="task in tasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search">-->
+        <ion-item-sliding *ngFor="let task of parentTasks"><!-- | orderBy: 'startTime'">-->
+          <ion-item>
+            {{ task.name }}
+          </ion-item>
+          <!--<task-preview task="task.task" action="'follow'" ng-click="loadSingleTask(task.task.id)"></task-preview>-->
+        </ion-item-sliding>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
   <!--
-    <ion-refresher on-refresh="doRefresh()"></ion-refresher>
-    <!--
-    <ion-search-bar class="bar-light bar-subheader">
-      <label class="item item-input">
-        <input type="search"
-               placeholder="Filter Task..."
-               ng-model="search"
-               ng-focus="searchFocused = true"
-               ng-blur="searchFocused = false"
-               ng-change="scrollTop()"
-               class="full-width">
-      </label>
-      <button ng-if="search.length"
-              class="button button-icon ion-android-close input-button"
-              ng-click="clearSearch()">
-      </button>
-    </ion-search-bar>-->
-    <!--
     <div class="item item-divider">Vorgeschlagene Aufgaben</div>
     <ion-list ng-controller="swipeCtrl"
               show-delete="shouldShowDelete"

@@ -14,24 +14,21 @@
       <ion-item id="startseite-list-item31">T-Shirt Bestellung</ion-item>-->
       <ion-item>Treffen Jugendgruppenleiter am 3.März 2017</ion-item>
     </ion-list>
-    <ion-item-divider>Vorgeschlagene Aufgaben</ion-item-divider>
-    <ion-list
-      show-delete="shouldShowDelete"
-      show-reorder="shouldShowReorder"
-      can-swipe="true">
-      <!-- <div ng-repeat="task in tasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search">-->
-      <ion-item-sliding *ngFor="let task of tasks"><!-- | orderBy: 'startTime'">-->
-        <ion-item>
-          {{ task.task.name }}
-        </ion-item>
-        <!--<task-preview task="task.task" action="'follow'" ng-click="loadSingleTask(task.task.id)"></task-preview>-->
-      </ion-item-sliding>
-    </ion-list>
-    <ion-item class="item-divider" id="startseite-list-item-divider13">Freunde</ion-item>
-
-
-
-
-
   </ion-list>
+  <ion-card>
+    <ion-card-header>
+      Vorgeschlagene Aufgaben
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <!-- <div ng-repeat="task in tasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search">-->
+        <ion-item-sliding *ngFor="let task of tasks"><!-- | orderBy: 'startTime'">-->
+          <ion-item>
+            {{ task.task.name }}
+          </ion-item>
+          <!--<task-preview task="task.task" action="'follow'" ng-click="loadSingleTask(task.task.id)"></task-preview>-->
+        </ion-item-sliding>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

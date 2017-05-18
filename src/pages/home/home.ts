@@ -16,7 +16,7 @@ export class HomePage {
   public tasks: any[];
   constructor(public navCtrl: NavController, public taskDataService: TaskDataService) { }
   ngOnInit(): void {
-    this.taskDataService.getMatchingTasks().then((res) => {
+    this.taskDataService.getMatchingTasks(3).then((res) => {
       this.tasks = res.object
     }).catch((err)=>{
       console.log(err)
