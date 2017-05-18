@@ -8,7 +8,7 @@ import { AuthService } from '../services/auth_service';
 
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.template.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;

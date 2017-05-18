@@ -1,3 +1,27 @@
+<ion-item-sliding>
+  <ion-item>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          {{ task.name }}
+        </ion-col>
+        <ion-col>
+          <ion-icon name="calendar"></ion-icon>
+          <span *ngIf="isSingleTime()">
+            {{task.startTime | date: 'short'}}
+          </span>
+          <span *ngIf="!isSingleTime() && isSingleDate()">
+            {{task.startTime | date: 'short'}} - {{task.endTime | date: 'shortTime'}}
+          </span>
+          <span *ngIf="!isSingleDate()">
+            {{task.startTime | date: 'shortDate'}} - {{task.endTime | date: 'shortDate'}}
+          </span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
+</ion-item-sliding>
+<!--
 <ion-item ng-class="['item-task', { 'item-subtask': isSubtask }]">
   <div class="row responsive-sm">
     <div class="col" ng-if="!isSubtask"><h2 class="wordwrap">{{task.name}}</h2></div>
@@ -15,6 +39,7 @@
     </div>
     <div class="col status-icons">
       <!-- only show non-published status for task owner -->
+      <!--
       <i ng-if="showAllIcons"
         class="icon ion-compose icon-step1"
         ng-class="{ current : (task.taskState == 'NOT_PUBLISHED') }"></i>
@@ -36,4 +61,6 @@
   <ion-delete-button class="ion-minus-circled" ng-click="items.splice($index, 1)"></ion-delete-button>
   <ion-reorder-button class="ion-navicon" on-reorder="reorderItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
   -->
+  <!--
 </ion-item>
+  -->

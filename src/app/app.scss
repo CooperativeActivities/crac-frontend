@@ -14,3 +14,21 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+.content{
+  background-color: $content-background;
+}
+.card-header{
+  background-color: $card-header-background;
+  border: 1px solid $card-header-border-color;
+  margin-bottom: 1px;
+}
+.card-header-ios{ border-radius: $card-ios-border-radius $card-ios-border-radius 0 0; }
+.card-header-md{ border-radius: $card-md-border-radius $card-md-border-radius 0 0; }
+.card-header-wp{ border-radius: $card-wp-border-radius $card-wp-border-radius 0 0; }
+.card-header + .card-content, .card .item + .card-content {
+    padding-top: 0;
+  }
+.card-content {
+  padding: 6px 8px 6px 8px;
+}

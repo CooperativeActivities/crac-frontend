@@ -6,7 +6,7 @@
     <ion-title>Aufgabenliste</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content>
   <ion-refresher (ionRefresh)="doRefresh($event)">
   <ion-refresher-content> </ion-refresher-content>
   </ion-refresher>
@@ -16,13 +16,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <!-- <div ng-repeat="task in tasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search">-->
-        <ion-item-sliding *ngFor="let task of matchingTasks"><!-- | orderBy: 'score'">-->
-          <ion-item>
-            {{ task.task.name }}
-          </ion-item>
-          <!--<task-preview task="task.task" action="'follow'" ng-click="loadSingleTask(task.task.id)"></task-preview>-->
-        </ion-item-sliding>
+        <task-preview item-block *ngFor="let task of matchingTasks" [task]="task.task"></task-preview>
       </ion-list>
     </ion-card-content>
   </ion-card>
@@ -33,13 +27,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <!-- <div ng-repeat="task in tasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search">-->
-        <ion-item-sliding *ngFor="let task of parentTasks"><!-- | orderBy: 'startTime'">-->
-          <ion-item>
-            {{ task.name }}
-          </ion-item>
-          <!--<task-preview task="task.task" action="'follow'" ng-click="loadSingleTask(task.task.id)"></task-preview>-->
-        </ion-item-sliding>
+        <task-preview item-block *ngFor="let task of parentTasks" [task]="task"></task-preview><!-- | orderBy: 'startTime'">-->
       </ion-list>
     </ion-card-content>
   </ion-card>

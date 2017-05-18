@@ -12,8 +12,23 @@ $font-path: "../assets/fonts";
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
+// variables defined by me
+$content-background: #BBD8EF;
+$card-header-background: #f5f5f5;
+$card-header-border-color: #ddd;
 
 
+
+// overriding ionic default vars:
+$toolbar-background: #1C7DC9;
+$tabs-background: #1C7DC9;
+$tabs-tab-color-active: rgba(255,255,255,1);
+$tabs-tab-color-inactive: rgba(255,255,255,0.7);
+$refresher-border-color: none;
+$tabs-md-tab-color-inactive: $tabs-tab-color-inactive;
+$card-ios-border-radius: 10px;
+$card-md-border-radius: 10px;
+$card-wp-border-radius: 10px;
 
 // Named Color Variables
 // --------------------------------------------------

@@ -1,4 +1,26 @@
-cracApp.directive('taskPreview', ['TaskDataService', 'ionicToast', function(TaskDataService, ionicToast) {
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'task-preview',
+  templateUrl: 'task-preview.html'
+})
+export class TaskPreviewComponent {
+  @Input() task: any
+  @Input() action: any
+  @Input() showAllIcons: Boolean
+  constructor() {}
+  isSingleDate () {
+    let startDate = new Date(this.task.startTime)
+    let endDate = new Date(this.task.endTime)
+    return (startDate.getDate() == endDate.getDate()) &&
+      (startDate.getFullYear() == endDate.getFullYear()) &&
+      (startDate.getMonth() == endDate.getMonth())
+  }
+  isSingleTime () { return this.task.startTime == this.task.endTime; }
+
+}
+
+  /*cracApp.directive('taskPreview', ['TaskDataService', 'ionicToast', function(TaskDataService, ionicToast) {
   return {
     scope: {
       task: "=",
@@ -9,13 +31,6 @@ cracApp.directive('taskPreview', ['TaskDataService', 'ionicToast', function(Task
       scope.isSubtask = scope.task.superTask !== null;
 
 			scope.isSingleTime = scope.task.startTime == scope.task.endTime;
-			var startDate = new Date(scope.task.startTime);
-			var endDate = new Date(scope.task.endTime);
-			scope.isSingleDate =
-				(startDate.getDate() == endDate.getDate()) &&
-				(startDate.getFullYear() == endDate.getFullYear()) &&
-				(startDate.getMonth() == endDate.getMonth());
-
       // @TODO: get this info from the task
       /*
       TaskDataService.getTaskRelatById(scope.task.id).then(function(res){
@@ -28,6 +43,7 @@ cracApp.directive('taskPreview', ['TaskDataService', 'ionicToast', function(Task
       });
       */
 
+/*
       //initialize to false
       scope.showFollow = false;
       scope.showUnfollow = false;
@@ -58,3 +74,4 @@ cracApp.directive('taskPreview', ['TaskDataService', 'ionicToast', function(Task
     templateUrl: 'directives/taskPreview/taskPreview.html'
   };
 }]);
+ */

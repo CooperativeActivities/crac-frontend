@@ -6,28 +6,27 @@
     <ion-title>Home</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
-  <ion-list>
-    <ion-item-divider>Aktuelles</ion-item-divider>
-    <ion-list>
-      <!--<ion-item id="startseite-list-item29">Jahreshauptversammlung am 12.12.2016</ion-item>
-      <ion-item id="startseite-list-item31">T-Shirt Bestellung</ion-item>-->
-      <ion-item>Treffen Jugendgruppenleiter am 3.März 2017</ion-item>
-    </ion-list>
-  </ion-list>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      Aktuelles
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <!--<ion-item id="startseite-list-item29">Jahreshauptversammlung am 12.12.2016</ion-item>
+        <ion-item id="startseite-list-item31">T-Shirt Bestellung</ion-item>-->
+        <ion-item>Treffen Jugendgruppenleiter am 3.März 2017</ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
   <ion-card>
     <ion-card-header>
       Vorgeschlagene Aufgaben
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <!-- <div ng-repeat="task in tasks | filter: { taskState: completed } | filter: { taskState: started } | filter: search">-->
-        <ion-item-sliding *ngFor="let task of tasks"><!-- | orderBy: 'startTime'">-->
-          <ion-item>
-            {{ task.task.name }}
-          </ion-item>
-          <!--<task-preview task="task.task" action="'follow'" ng-click="loadSingleTask(task.task.id)"></task-preview>-->
-        </ion-item-sliding>
+        <task-preview item-block *ngFor="let task of tasks" [task]="task.task"></task-preview>
       </ion-list>
     </ion-card-content>
   </ion-card>
