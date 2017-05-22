@@ -12,18 +12,41 @@
   </ion-nav-buttons>
   -->
 <ion-content padding>
-  Meine Aufgaben Platzhalter
-<!--
-    <ion-refresher on-refresh="doRefresh()"></ion-refresher>
-    <div class="item item-divider">Teilgenommene Aufgaben:</div>
-    <ion-list can-swipe="false">
-      <!-- @TODO: sort-->
-<!--
-      <div ng-repeat="task in participatingTasks | orderBy: 'startTime'" class="parent item">
-        <task-preview task="task" action="" ng-click="loadSingleTask(task)"></task-preview>
-      </div>
-    </ion-list>
-    <hr>
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content> </ion-refresher-content>
+  </ion-refresher>
+  <ion-card>
+    <ion-card-header>
+      Teilgenommene Aufgaben
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <task-preview item-block *ngFor="let task of participatingTasks" [task]="task"></task-preview><!-- | orderBy: 'assessment'">-->
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+       Beobachtete Aufgaben
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <task-preview item-block *ngFor="let task of followingTasks" [task]="task"></task-preview><!-- | orderBy: 'assessment'">-->
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      Von mir angeführte Aufgaben
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <task-preview item-block *ngFor="let task of leadingTasks" [task]="task"></task-preview><!-- | orderBy: 'assessment'">-->
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+ <!--   <hr>
     <div class="item item-divider">Beobachtete Aufgaben:</div>
     <ion-list can-swipe="true">
       <!-- @TODO: sort-->
