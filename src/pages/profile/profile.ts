@@ -19,7 +19,7 @@ export class ProfilePage {
   ) {
     this.pages = [
       { title: 'Meine Kompetenzen', component: "my-competences" },
-      //{ title: 'Account', component: "my-profile" },
+      { title: 'Account', component: "my-profile" },
     ];
   }
 

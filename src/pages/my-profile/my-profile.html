@@ -1,9 +1,12 @@
-<ion-view title="Mein Profil" id="page16">
-  <ion-nav-buttons side="right" class="has-header">
-    <button class="button button-energized2 icon ion-edit" ng-show="editFlag" ng-click="edit()"></button>
-    <button class="button button-energized2 icon ion-checkmark "ng-hide="editFlag"  ng-click="save()"></button>
-  </ion-nav-buttons>
-  <ion-content padding="true" class="has-header">
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Mein Profil</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
     <div class="container">
       <form id="meinProfil-form17" class="list">
         <div class="profile-image">
@@ -87,5 +90,4 @@
         </div>
       </form>
     </div>
-  </ion-content>
-</ion-view>
+</ion-content>

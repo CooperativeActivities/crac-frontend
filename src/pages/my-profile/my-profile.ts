@@ -1,40 +1,58 @@
-/**
- * Created by P23460 on 13.10.2016.
- */
-cracApp.controller('myProfileCtrl', ['$rootScope','$scope','UserDataService','ionicToast',
-function($rootScope,$scope,UserDataService,ionicToast) {
-  console.log("Userid: " +$rootScope.globals.currentUser.id);
-  UserDataService.getUserById($rootScope.globals.currentUser.id).then(function(res) {
-    $scope.user = res.object;
-    console.log($scope.user)
-  }, function(error) {
-    ionicToast.show("Benutzerinformation kann nicht gefolgt werden: " + error.message, 'top', false, 5000);
-  });
+import { Component } from '@angular/core';
+import { IonicPage } from 'ionic-angular';
 
-  $scope.editFlag =true;
+import { NavController } from 'ionic-angular';
+import { UserDataService } from '../../services/user_service';
 
-  $scope.save = function(){
-    var profileData = {};
-    profileData.firstName= $scope.user.firstName;
-    profileData.lastName= $scope.user.lastName;
-    profileData.address= $scope.user.address;
-    profileData.phone= $scope.user.phone;
-    profileData.email= $scope.user.email;
-    profileData.birthDate= $scope.user.birthDate;
+@IonicPage({
+  name: "my-profile",
+})
+@Component({
+  selector: 'page-my-profile',
+  templateUrl: 'my-profile.html',
+  providers: [ UserDataService ],
+})
+export class MyProfilePage {
+  public user: any;
+  private editFlag = true;
+
+  constructor(public navCtrl: NavController, public userDataService: UserDataService) { }
+
+  ngOnInit(): void {
+    this.userDataService.getCurrentUser().then((res) => {
+      this.user = res.object
+    }).catch((err)=>{
+      console.log(err)
+      //ionicToast.show("Benutzerinformation kann nicht gefolgt werden: " + error.message, 'top', false, 5000);
+    })
+  }
+
+  save(){
+    var profileData : any = {};
+    profileData.firstName= this.user.firstName;
+    profileData.lastName= this.user.lastName;
+    profileData.address= this.user.address;
+    profileData.phone= this.user.phone;
+    profileData.email= this.user.email;
+    profileData.birthDate= this.user.birthDate;
 
 
-    UserDataService.updateCurrentUser(profileData).then(function(res) {
+    this.userDataService.updateCurrentUser(profileData).then(function(res) {
       console.log(profileData);
       console.log(res.data);
-      $scope.editFlag =true;
+      this.editFlag =true;
     }, function(error) {
-      ionicToast.show("Account kann nicht gespeichert werden: " + error.message, 'top', false, 5000);
+      console.log(error)
+      //ionicToast.show("Account kann nicht gespeichert werden: " + error.message, 'top', false, 5000);
     });
+  }
+  edit(){
+    this.editFlag =false;
   };
 
-  $scope.edit = function(){
-    $scope.editFlag =false;
-  };
+}
+
+
 
 
 /*  //Camera: Take a pic
@@ -96,4 +114,3 @@ function($rootScope,$scope,UserDataService,ionicToast) {
     // Execute action
   }); */
 
-}]);
