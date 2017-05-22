@@ -16,7 +16,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <task-preview item-block *ngFor="let task of matchingTasks" [task]="task.task"></task-preview>
+        <task-preview item-block *ngFor="let task of matchingTasks" [task]="task.task"></task-preview><!-- | orderBy: 'assessment'">-->
       </ion-list>
     </ion-card-content>
   </ion-card>
