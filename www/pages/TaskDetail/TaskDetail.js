@@ -24,7 +24,6 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
   $scope.team = [];
   $scope.neededCompetences = [];
-  $scope.timeChoice = 'slot';
 
   $scope.newComment = {name:'', content: ''};
   $scope.user = $rootScope.globals.currentUser.user;
@@ -66,11 +65,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
         material.myQuantity = material.subscribedQuantity - material.subscribedQuantityOtherUsers
         return material
       })
-      if($scope.task.startTime != $scope.task.endTime ){
-        $scope.timeChoice = 'slot';
-      } else {
-        $scope.timeChoice = 'point';
-      }
+
       $scope.updateFlags();
       $scope.$broadcast('scroll.refreshComplete');
       //});
