@@ -10,4 +10,3 @@ plugins/
 www/lib/*
 !www/lib/leaflet
 !www/lib/leaflet/*
-www/config.js
