@@ -10,96 +10,45 @@
   <ion-grid>
     <ion-row align-items-center justify-content-center>
       <!-- ion-col intentionally left out -->
-      <ion-card style="max-width: 30em;">
-        <img src="assets/img/avatar-placeholder1.png">
+      <ion-card style="max-width: 60em;">
+        <img src="assets/img/avatar-placeholder1.png" style="width:80%; max-width: 30em; margin: auto;">
         <ion-card-content>
           <ion-card-title text-center>
-            Mein Account
+            Mein Profil
           </ion-card-title>
-          <ion-grid>
-          </ion-grid>
+          <ion-list *ngIf="user">
+            <ion-item>
+              <ion-label fixed>Username</ion-label>
+              <ion-input type="text" [(ngModel)]="user.name"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label fixed>Email</ion-label>
+              <ion-input type="email" [(ngModel)]="user.email"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label fixed>Vorname</ion-label>
+              <ion-input type="text" [(ngModel)]="user.firstName"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label fixed>Nachname</ion-label>
+              <ion-input type="text" [(ngModel)]="user.lastName"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label fixed>Adresse</ion-label>
+              <ion-input type="text" [(ngModel)]="user.address"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label fixed>Telefonnummer</ion-label>
+              <ion-input type="text" [(ngModel)]="user.phone"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label fixed>Geburtstag</ion-label>
+              <ion-input type="text" [(ngModel)]="user.birthDate"></ion-input>
+            </ion-item>
+          </ion-list>
+          save button toolbar!
         </ion-card-content>
       </ion-card>
     </ion-row>
   </ion-grid>
-    <div class="container">
-      <form id="meinProfil-form17" class="list">
-
-        <div class="content-title assertive">Mein Account</div>
-        <div class="row">
-          <div class="col">
-            <label class="item item-input" id="registrierung-input[?]">
-              <input type="text" placeholder="Username" ng-readonly="editFlag" ng-model="user.name">
-            </label>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <label class="item item-input" id="registrierung-input8">
-              <input type="text" placeholder="Email-Adresse" ng-readonly="editFlag" ng-model="user.email">
-            </label>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <label class="item item-input" id="registrierung-input[?]">
-              <input type="text" placeholder="Password" ng-readonly="editFlag" ng-model="user.password">
-            </label>
-          </div>
-        </div>
-      </form>
-
-      <form id="meinProfil-form18" class="list">
-        <div class="content-title assertive">Über mich</div>
-
-        <div class="row">
-          <div class="col">
-            <label class="item item-input" id="registrierung-input[?]">
-              <input type="text" placeholder="Vorname" ng-readonly="editFlag">
-            </label>
-          </div>
-          <div class="col">
-            <label class="item item-input" id="registrierung-input[?]">
-              <input type="text" placeholder="Nachname" ng-readonly="editFlag">
-            </label>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <label class="item item-input" id="registrierung-input[?]">
-              <input type="text" placeholder="PLZ" ng-readonly="editFlag">
-            </label>
-          </div>
-          <div class="col">
-            <label class="item item-input" id="registrierung-input[?]">
-              <input type="text" placeholder="Ort" ng-readonly="editFlag">
-            </label>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <label class="item item-input" id="registrierung-input9">
-              <input type="text" placeholder="Handy" ng-readonly="editFlag" ng-model="user.phone">
-            </label>
-          </div>
-          <div class="col">
-            <label class="item item-input" id="registrierung-input[?]">
-              <input type="text" placeholder="Telefonnummer" ng-readonly="editFlag">
-            </label>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
-            <label class="item item-input" id="registrierung-input24">
-              <input type="text" placeholder="Geburtstag" ng-readonly="editFlag" ng-model="birthDate">
-            </label>
-          </div>
-        </div>
-      </form>
-    </div>
 </ion-content>

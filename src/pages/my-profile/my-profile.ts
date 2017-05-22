@@ -14,7 +14,6 @@ import { UserDataService } from '../../services/user_service';
 })
 export class MyProfilePage {
   public user: any;
-  private editFlag = true;
 
   constructor(public navCtrl: NavController, public userDataService: UserDataService) { }
 
@@ -40,15 +39,11 @@ export class MyProfilePage {
     this.userDataService.updateCurrentUser(profileData).then(function(res) {
       console.log(profileData);
       console.log(res.data);
-      this.editFlag =true;
     }, function(error) {
       console.log(error)
       //ionicToast.show("Account kann nicht gespeichert werden: " + error.message, 'top', false, 5000);
     });
   }
-  edit(){
-    this.editFlag =false;
-  };
 
 }
 

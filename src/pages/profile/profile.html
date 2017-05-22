@@ -7,14 +7,15 @@
 </ion-header>
 
 
-<ion-content padding>
-  <ion-list>
-    <button ion-item *ngFor="let p of pages" (click)="openPage(p)">
-      {{p.title}}
-    </button>
-    <button ion-item (click)="logoutModal()">
-      Logout
-    </button>
-
-  </ion-list>
+<ion-content>
+  <ion-card style="max-width: 60em;">
+    <ion-list>
+      <button ion-item *ngFor="let p of pages" (click)="openPage(p)">
+        {{p.title}}
+      </button>
+      <button ion-item (click)="logoutModal()">
+        Logout
+      </button>
+    </ion-list>
+  </ion-card>
 </ion-content>
