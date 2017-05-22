@@ -1,0 +1,11 @@
+
+.item{
+  padding-left: 8px;
+}
+
+.label {
+  margin: 6px 4px 6px 0;
+}
+.card .list task-preview[item-block]:not(:last-child) .item-inner {
+  border-bottom: 1px solid #ddd;
+}
