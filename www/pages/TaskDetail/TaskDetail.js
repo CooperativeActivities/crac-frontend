@@ -236,7 +236,8 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       //@TODO update task object
       console.log('Participating in shift ' + shift.id);
       shift.assigned = true;
-      shift.signedUser++;
+      shift.signedUsers++;
+      shift.userRelationships.push($scope.user);
 
       var alreadyInShift = _.find($scope.task.childTasks, function(task){
         return shift.id != task.id && task.assigned;
@@ -258,6 +259,10 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       console.log('Not participating in shift ' + shift.id);
       shift.assigned = false;
       shift.signedUsers--;
+      var shiftIdx = _.findIndex(shift.userRelationships, {id: $scope.user.id});
+      if(shiftIdx > -1) {
+        shift.userRelationships.splice(shiftIdx, 1);
+      }
 
       var alreadyInShift = _.find($scope.task.childTasks, function(task){
         return shift.id !== task.id && task.assigned;
