@@ -1,7 +1,7 @@
 
 cracApp.factory('Helpers', ["$http", "ErrorDisplayService", function($http, ErrorDisplayService){
   // URL to REST-Service
-  var _baseURL = "https://core.crac.at/crac-core/";
+  var _baseURL = window.crac_config.SERVER;
 
   function ajax(url, method, args){
     args = args || {}

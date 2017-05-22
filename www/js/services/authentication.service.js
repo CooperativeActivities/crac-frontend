@@ -3,7 +3,7 @@
 
   cracApp.factory('AuthenticationService', AuthenticationService);
 
-  var baseURL = "https://core.crac.at/crac-core";
+  var baseURL = window.crac_config.SERVER;
 
   AuthenticationService.$inject = ['$http', '$cookieStore', '$rootScope'];
   function AuthenticationService($http, $cookieStore, $rootScope) {
