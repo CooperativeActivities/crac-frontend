@@ -27,7 +27,7 @@ export class TaskDataService {
 
   //Returns all tasks of logged in user, divided in the TaskParticipationTypes
   getMyTasks(){
-    return this.helpers.ajax("task/type", "get", { transformResponse: function(response){ return response.data } });
+    return this.helpers.ajax("task/type", "get");
   };
   //Creates a new task
   createNewTask(taskData){
