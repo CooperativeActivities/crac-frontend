@@ -19,6 +19,7 @@ export class TaskDetailPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public taskDataService: TaskDataService) {
     this.taskId = navParams.data.id;
+    this.doRefresh()
   }
 
   edit (){

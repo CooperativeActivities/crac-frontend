@@ -8,70 +8,73 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content *ngIf="task">
+<ion-content>
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content> </ion-refresher-content>
   </ion-refresher>
-  <ion-card>
-    <ion-card-header>
-      Allgemeines
-    </ion-card-header>
-    <ion-card-content>
-      <h2>{{task.name}}</h2>
-      <p>{{task.description}}</p>
-    </ion-card-content>
-  </ion-card>
-  <ion-card>
-    <ion-card-header>
-      Zeit und Ort
-    </ion-card-header>
-    <ion-card-content>
-      <ion-icon name="calendar"></ion-icon>
-      <span class="ion-calendar"> Zeit: </span>
-      <div *ngIf="timeChoice == 'slot'">
-        <div > Von: {{ task.startTime | date : "short" }} </div>
-        <div > Bis: {{ task.endTime | date : "short" }} </div>
-      </div>
-      <div *ngIf="timeChoice == 'point'">
-        <div class="row"> {{ task.endTime | date : "short" }} </div>
-      </div>
-      <ion-icon name="locate"></ion-icon>Adresse
-      <ion-icon name="open" (click)="openMapView()"></ion-icon>Auf Karte anzeigen
-      {{task.address}}
-    </ion-card-content>
-  </ion-card>
-  <ion-card>
-    <ion-card-header>
-     Team
-    </ion-card-header>
-    <ion-card-content>
+  <!-- no *ngIf on the ion-content, ionic doesn't like that -->
+  <ng-template [ngIf]="task">
+    <ion-card>
+      <ion-card-header>
+        Allgemeines
+      </ion-card-header>
+      <ion-card-content>
+        <h2>{{task.name}}</h2>
+        <p>{{task.description}}</p>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>
+        Zeit und Ort
+      </ion-card-header>
+      <ion-card-content>
+        <ion-icon name="calendar"></ion-icon>
+        <span class="ion-calendar"> Zeit: </span>
+        <div *ngIf="timeChoice == 'slot'">
+          <div > Von: {{ task.startTime | date : "short" }} </div>
+          <div > Bis: {{ task.endTime | date : "short" }} </div>
+        </div>
+        <div *ngIf="timeChoice == 'point'">
+          <div class="row"> {{ task.endTime | date : "short" }} </div>
+        </div>
+        <ion-icon name="locate"></ion-icon>Adresse
+        <ion-icon name="open" (click)="openMapView()"></ion-icon>Auf Karte anzeigen
+        {{task.address}}
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>
+        Team
+      </ion-card-header>
+      <ion-card-content>
 
-    </ion-card-content>
-  </ion-card>
-  <ion-card>
-    <ion-card-header>
-     Schichten
-    </ion-card-header>
-    <ion-card-content>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>
+        Schichten
+      </ion-card-header>
+      <ion-card-content>
 
-    </ion-card-content>
-  </ion-card>
-  <ion-card>
-    <ion-card-header>
-     Material
-    </ion-card-header>
-    <ion-card-content>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>
+        Material
+      </ion-card-header>
+      <ion-card-content>
 
-    </ion-card-content>
-  </ion-card>
-  <ion-card>
-    <ion-card-header>
-      Kommentare
-    </ion-card-header>
-    <ion-card-content>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>
+        Kommentare
+      </ion-card-header>
+      <ion-card-content>
 
-    </ion-card-content>
-  </ion-card>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
 </ion-content>
   <!--
 <ion-view cache-view="false" title="Aufgabe" hide-nav-bar="false">
