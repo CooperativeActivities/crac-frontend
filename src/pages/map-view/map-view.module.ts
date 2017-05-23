@@ -1,18 +1,21 @@
+/**
+ * Created by P23460 on 22.05.2017.
+ */
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { TaskDetailPage } from './task-detail';
+import { MapViewPage } from './map-view';
 import { ComponentsModule } from "../../components/components.module"
 
 @NgModule({
   declarations: [
-    TaskDetailPage,
+    MapViewPage,
   ],
   imports: [
-    IonicPageModule.forChild(TaskDetailPage),
+    IonicPageModule.forChild(MapViewPage),
     ComponentsModule,
   ],
   exports: [
-    TaskDetailPage
+    MapViewPage
   ]
 })
-export class TaskDetailPageModule {}
+export class MapViewPageModule {}

@@ -22,7 +22,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <task-preview item-block *ngFor="let task of participatingTasks" [task]="task"></task-preview><!-- | orderBy: 'assessment'">-->
+        <task-preview item-block *ngFor="let task of participatingTasks" [task]="task" (click)="loadSingleTask(task)"></task-preview><!-- | orderBy: 'assessment'">-->
       </ion-list>
     </ion-card-content>
   </ion-card>
@@ -32,7 +32,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <task-preview item-block *ngFor="let task of followingTasks" [task]="task"></task-preview><!-- | orderBy: 'assessment'">-->
+        <task-preview item-block *ngFor="let task of followingTasks" [task]="task" (click)="loadSingleTask(task)"></task-preview><!-- | orderBy: 'assessment'">-->
       </ion-list>
     </ion-card-content>
   </ion-card>
@@ -42,7 +42,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <task-preview item-block *ngFor="let task of leadingTasks" [task]="task"></task-preview><!-- | orderBy: 'assessment'">-->
+        <task-preview item-block *ngFor="let task of leadingTasks" [task]="task" (click)="loadSingleTask(task)"></task-preview><!-- | orderBy: 'assessment'">-->
       </ion-list>
     </ion-card-content>
   </ion-card>

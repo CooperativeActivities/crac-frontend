@@ -46,6 +46,14 @@ export class MyTasksPage {
     console.log('ionViewDidLoad MyTasksPage');
   }
 
+  loadSingleTask(task){
+    if(task.taskType === "SHIFT"){
+      this.navCtrl.push('task-detail', { id: task.superTask })
+    } else {
+      this.navCtrl.push('task-detail', { id: task.id })
+    };
+  }
+
 }
   /*
 cracApp.controller('myTasksCtrl', ['$scope','$window','$route', '$stateParams','$routeParams','TaskDataService','ionicToast','$state',
