@@ -1,6 +1,28 @@
-/**
- * Created by P41332 on 25.10.2016.
- */
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+
+@IonicPage({
+  name: "task-detail",
+})
+@Component({
+  selector: 'page-task-detail',
+  templateUrl: 'task-detail.html',
+})
+export class TaskDetailPage {
+
+  public taskId : any;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.taskId = navParams.get("id")
+    console.log(this.taskId)
+  }
+
+  edit (){
+    this.navCtrl.push('task-edit', {id: this.taskId});
+  }
+
+}
+/*
 // @TODO: move this to some global config file
 var SUBTASKS_LIMITED_TO_SHALLOW = false;
 
@@ -337,6 +359,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       /*
       var message = "";
       ionicToast.show("Task kann nicht veröffentlicht werden: " + message, 'top', false, 5000)*/
+/*
       return;
     }
 
@@ -455,3 +478,4 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
     $state.go('tabsController.openMapView', { id: $scope.taskId, address: $scope.task.address, lat: $scope.task.lat, lng: $scope.task.lng});
   }
 }]);
+*/

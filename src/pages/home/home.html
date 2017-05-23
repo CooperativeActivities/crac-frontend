@@ -26,7 +26,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <task-preview item-block *ngFor="let task of tasks" [task]="task.task"></task-preview>
+        <task-preview item-block *ngFor="let task of tasks" [task]="task.task" (click)="loadSingleTask(task.task.id)"></task-preview>
       </ion-list>
     </ion-card-content>
   </ion-card>

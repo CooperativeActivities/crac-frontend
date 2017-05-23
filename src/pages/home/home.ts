@@ -23,6 +23,8 @@ export class HomePage {
       console.log(err)
     })
   }
-
+  loadSingleTask (taskId) {
+    this.navCtrl.push("task-detail", { id: taskId })
+  }
 
 }

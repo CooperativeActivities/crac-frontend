@@ -1,3 +1,16 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Home</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="edit()">
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+</ion-content>
+  <!--
 <ion-view cache-view="false" title="Aufgabe" hide-nav-bar="false">
   <ion-nav-buttons side="right" class="has-header">
     <button ng-click="edit()" ng-show="editableFlag" class="button icon ion-edit"></button>
@@ -56,6 +69,7 @@
           <div class="col">
             <div class="row status-icons">
               <!-- only show non-published status for task owner -->
+  <!--
               <i ng-if="participationType == 'LEADING'"
                 class="icon ion-compose icon-step1"
                 ng-class="{ current : (task.taskState == 'NOT_PUBLISHED') }"></i>
@@ -142,6 +156,7 @@
                     </span>
                   </custom-accordion-head>
                   <custom-accordion-body> <!-- ng-if="showShiftsMaterialsEnroll" -->
+  <!--
                     Zusagen:
                     <span ng-repeat="user in shift.userRelationships">
                       {{user.name}}<span ng-if="$index != shift.userRelationships.length - 1">,</span>
@@ -229,6 +244,7 @@
               <div class="content"> {{ comment.content }}</div>
               <!--<ion-option-button class="button-assertive" ng-click="removeComment(comment.id)">Löschen</ion-option-button>-->
 
+  <!--
             </div>
             <div class="clear"></div>
           </div>
@@ -255,3 +271,4 @@
     </div>
   </ion-footer-bar>
 </ion-view>
+-->

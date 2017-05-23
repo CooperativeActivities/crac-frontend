@@ -10,11 +10,11 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class TaskEditPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  public taskId : any;
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad TaskEditPage');
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.taskId = navParams.get("id")
+    console.log(this.taskId)
   }
 
 }
