@@ -1,5 +1,5 @@
 <ion-item-sliding>
-  <ion-item>
+  <ion-item (click)="loadSingleTask(task)">
     <ion-grid>
       <ion-row>
         <ion-col>
@@ -20,6 +20,14 @@
       </ion-row>
     </ion-grid>
   </ion-item>
+  <ion-item-options side="right">
+    <button ion-button color="primary" (click)="follow(task.id)" *ngIf="action == 'follow'">Folgen</button>
+    <button ion-button color="danger" (click)="unfollow(task.id)" *ngIf="action == 'unfollow'">Nicht mehr Folgen</button>
+    <!--
+    <ion-delete-button class="ion-minus-circled" ng-click="items.splice($index, 1)"></ion-delete-button>
+    <ion-reorder-button class="ion-navicon" on-reorder="reorderItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
+    -->
+  </ion-item-options>
 </ion-item-sliding>
 <!--
 <ion-item ng-class="['item-task', { 'item-subtask': isSubtask }]">

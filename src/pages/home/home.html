@@ -13,8 +13,6 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <!--<ion-item id="startseite-list-item29">Jahreshauptversammlung am 12.12.2016</ion-item>
-        <ion-item id="startseite-list-item31">T-Shirt Bestellung</ion-item>-->
         <ion-item>Treffen Jugendgruppenleiter am 3.März 2017</ion-item>
       </ion-list>
     </ion-card-content>
@@ -26,7 +24,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <task-preview item-block *ngFor="let task of tasks" [task]="task.task" (click)="loadSingleTask(task.task.id)"></task-preview>
+        <task-preview item-block *ngFor="let task of tasks" [task]="task.task" [action]="'follow'"></task-preview><!-- | orderBy: 'assessment'">-->
       </ion-list>
     </ion-card-content>
   </ion-card>

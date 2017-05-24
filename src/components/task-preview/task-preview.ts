@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { NavController } from 'ionic-angular';
 
 @Component({
   selector: 'task-preview',
@@ -8,7 +9,7 @@ export class TaskPreviewComponent {
   @Input() task: any
   @Input() action: any
   @Input() showAllIcons: Boolean
-  constructor() {}
+  constructor(public navCtrl: NavController) { }
   isSingleDate () {
     let startDate = new Date(this.task.startTime)
     let endDate = new Date(this.task.endTime)
@@ -16,7 +17,22 @@ export class TaskPreviewComponent {
       (startDate.getFullYear() == endDate.getFullYear()) &&
       (startDate.getMonth() == endDate.getMonth())
   }
+
   isSingleTime () { return this.task.startTime == this.task.endTime; }
+
+  follow(id) {
+  }
+
+  unfollow(id){
+  }
+
+  loadSingleTask (task) {
+    if(task.taskType === "SHIFT"){
+      this.navCtrl.push('task-detail', { id: task.superTask })
+    } else {
+      this.navCtrl.push('task-detail', { id: task.id })
+    }
+  }
 
 }
 

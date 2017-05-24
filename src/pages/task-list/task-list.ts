@@ -37,12 +37,4 @@ export class TaskListPage {
       refresher.complete()
     }
   }
-  loadSingleTask (task) {
-    if(task.taskType === "SHIFT"){
-      this.navCtrl.push('task-detail', { id: task.superTask })
-    } else {
-      this.navCtrl.push('task-detail', { id: task.id })
-    }
-  }
-
 }
