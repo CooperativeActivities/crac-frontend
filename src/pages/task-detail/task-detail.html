@@ -14,20 +14,20 @@
   </ion-refresher>
   <!-- no *ngIf on the ion-content, ionic doesn't like that -->
   <ng-template [ngIf]="task">
-    <ion-card>
-      <ion-card-header>
+    <collapsible-card [shown]="true">
+      <span card-header>
         Allgemeines
-      </ion-card-header>
-      <ion-card-content>
+      </span>
+      <div card-content>
         <h2>{{task.name}}</h2>
         <p>{{task.description}}</p>
-      </ion-card-content>
-    </ion-card>
-    <ion-card>
-      <ion-card-header>
+      </div>
+    </collapsible-card>
+    <collapsible-card>
+      <div card-header>
         Zeit und Ort
-      </ion-card-header>
-      <ion-card-content>
+      </div>
+      <div card-content>
         <ion-icon name="calendar"></ion-icon>
         <span class="ion-calendar"> Zeit: </span>
         <div *ngIf="timeChoice == 'slot'">
@@ -40,40 +40,40 @@
         <ion-icon name="locate"></ion-icon>Adresse
         <ion-icon name="open" (click)="openMapView()"></ion-icon>Auf Karte anzeigen
         {{task.address}}
-      </ion-card-content>
-    </ion-card>
-    <ion-card>
-      <ion-card-header>
+      </div>
+    </collapsible-card>
+    <collapsible-card>
+      <div card-header>
         Team
-      </ion-card-header>
-      <ion-card-content>
+      </div>
+      <div card-content>
 
-      </ion-card-content>
-    </ion-card>
-    <ion-card>
-      <ion-card-header>
+      </div>
+    </collapsible-card>
+    <collapsible-card>
+      <div card-header>
         Schichten
-      </ion-card-header>
-      <ion-card-content>
+      </div>
+      <div card-content>
 
-      </ion-card-content>
-    </ion-card>
-    <ion-card>
-      <ion-card-header>
+      </div>
+    </collapsible-card>
+    <collapsible-card>
+      <div card-header>
         Material
-      </ion-card-header>
-      <ion-card-content>
+      </div>
+      <div card-content>
 
-      </ion-card-content>
-    </ion-card>
-    <ion-card>
-      <ion-card-header>
+      </div>
+    </collapsible-card>
+    <collapsible-card>
+      <div card-header>
         Kommentare
-      </ion-card-header>
-      <ion-card-content>
+      </div>
+      <div card-content>
 
-      </ion-card-content>
-    </ion-card>
+      </div>
+    </collapsible-card>
   </ng-template>
 </ion-content>
   <!--
