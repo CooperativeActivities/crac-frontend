@@ -22,6 +22,7 @@ export class MapViewPage implements OnInit {
   lat:number;
   lng:number;
   taskId : number;
+  map: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public helpers: HelperService, public http: Http) {
     console.log(navParams);
@@ -35,7 +36,8 @@ export class MapViewPage implements OnInit {
     this.doRefresh()
   }
   drawMap(): void {
-    let map = Leaflet.map('map');
+    this.map = Leaflet.map('map');
+
     // map = {
     //   defaults: {
     //     tileLayer: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
@@ -58,15 +60,15 @@ export class MapViewPage implements OnInit {
       maxZoom: 18,
       zoomControlPosition: 'topleft',
       scrollWheelZoom:'center'
-    }).addTo(map);
+    }).addTo(this.map);
 
-    map.setView(new Leaflet.LatLng(this.lat, this.lng), 15);
+    this.map.setView(new Leaflet.LatLng(this.lat, this.lng), 15);
     // map.center  = {
     //   lat : this.lat,
     //   lng : this.lng,
     //   zoom : 15
     // };
-    Leaflet.marker([this.lat, this.lng]).addTo(map)
+    Leaflet.marker([this.lat, this.lng]).addTo(this.map)
       .bindPopup(this.impAddr).openPopup();
 
 
@@ -78,7 +80,7 @@ export class MapViewPage implements OnInit {
     //   //$scope.locateUsr();
     // }
 
-    if (this.lat != null && this.lng != null &&
+    if (this.lat != 0 && this.lng != 0 &&
       // many tasks have lat: 0, lng: 0 which can't be right
       // -md, 2017-05-24
       !(this.lat === 0 && this.lng === 0)) {
@@ -86,7 +88,7 @@ export class MapViewPage implements OnInit {
       this.locateCoord();
     } else {
       console.log("No Coordinates specified, searching for stored address string instead")
-      //$scope.locateUsr();
+
       if (this.impAddr != null) {
         console.log("Loading Address field: " + this.impAddr)
         this.locateAddr(this.impAddr);
@@ -130,11 +132,13 @@ export class MapViewPage implements OnInit {
     }
   }
   locateCoord = function(){
+    this.map.setView(new Leaflet.LatLng(this.lat, this.lng), 15);
     // this.map.center  = {
     //   lat : this.lat,
     //   lng : this.lng,
     //   zoom : 15
     // };
+    this.drawMarker();
   }
 
   async locateAddr (adr) {
@@ -162,42 +166,46 @@ export class MapViewPage implements OnInit {
 
     console.log( "Mapzen request received:", data);
 
-    /*
-    let rStreet = data.features[0].properties.street || data.features[0].properties.name;
-    let rHouse = data.features[0].properties.housenumber || "";
-    let rPost = data.features[0].properties.postalcode || "";
+    //let rStreet = data.features[0].properties.street || data.features[0].properties.name;
+    //let rHouse = data.features[0].properties.housenumber || "";
+    //let rPost = data.features[0].properties.postalcode || "";
     //let rCity = data.features[0].properties.locality || data.features[0].properties.county;
 
     let adrLat = data.features[0].geometry.coordinates[1];
     let adrLng = data.features[0].geometry.coordinates[0];
 
-    if (rStreet != "") {
-      if (rHouse != "") {
-        rStreet += " ";
-        rHouse += ", ";
-      } else {
-        rStreet += ", ";
-      }
-    }
-    if (rPost != "") {
-      rPost += " ";
-    }
+    this.lat = adrLat;
+    this.lng = adrLng;
 
-    this.map.center  = {
-      lat : adrLat,
-      lng : adrLng,
-      zoom : 15
-    };
+    this.map.setView(new Leaflet.LatLng(this.lat, this.lng), 15);
 
-    this.map.markers.now = {
-      lat: adrLat,
-      lng: adrLng,
-      message: adr,
-      focus: true,
-      draggable: false
-    };
-     */
+    // if (rStreet != "") {
+    //   if (rHouse != "") {
+    //     rStreet += " ";
+    //     rHouse += ", ";
+    //   } else {
+    //     rStreet += ", ";
+    //   }
+    // }
+    // if (rPost != "") {
+    //   rPost += " ";
+    // }
 
+    // this.map.center  = {
+    //   lat : adrLat,
+    //   lng : adrLng,
+    //   zoom : 15
+    // };
+
+    // this.map.markers.now = {
+    //   lat: adrLat,
+    //   lng: adrLng,
+    //   message: adr,
+    //   focus: true,
+    //   draggable: false
+    // };
+
+    this.drawMarker();
   }
   locateUsr = function(){
     // //web location
@@ -219,5 +227,9 @@ export class MapViewPage implements OnInit {
     // }
 
     // map.on('locationerror', onLocationError);
+  }
+  drawMarker = function(){
+    Leaflet.marker([this.lat, this.lng]).addTo(this.map)
+      .bindPopup(this.impAddr).openPopup();
   }
 }
