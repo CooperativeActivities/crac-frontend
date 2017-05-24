@@ -15,7 +15,7 @@ export class HelperService {
     let promise: any;
     let url = this._baseURL + path;
     // maybe make this a bit more resilient, a put called without payload will give a 401 cause no auth
-    if(payload){
+    if(method === "put" || method === "patch" || method === "post"){
       promise = this.http[method](url, payload, options)
     } else {
       promise = this.http[method](url, options)

@@ -7,13 +7,13 @@
         </ion-col>
         <ion-col>
           <ion-icon name="calendar"></ion-icon>
-          <span *ngIf="isSingleTime()">
+          <span *ngIf="isSingleTime">
             {{task.startTime | date: 'short'}}
           </span>
-          <span *ngIf="!isSingleTime() && isSingleDate()">
+          <span *ngIf="!isSingleTime && isSingleDate">
             {{task.startTime | date: 'short'}} - {{task.endTime | date: 'shortTime'}}
           </span>
-          <span *ngIf="!isSingleDate()">
+          <span *ngIf="!isSingleDate">
             {{task.startTime | date: 'shortDate'}} - {{task.endTime | date: 'shortDate'}}
           </span>
         </ion-col>
@@ -21,8 +21,8 @@
     </ion-grid>
   </ion-item>
   <ion-item-options side="right">
-    <button ion-button color="primary" (click)="follow(task.id)" *ngIf="action == 'follow'">Folgen</button>
-    <button ion-button color="danger" (click)="unfollow(task.id)" *ngIf="action == 'unfollow'">Nicht mehr Folgen</button>
+    <button ion-button color="primary" (click)="follow(task.id)" *ngIf="showFollow">Folgen</button>
+    <button ion-button color="danger" (click)="unfollow(task.id)" *ngIf="showUnfollow">Nicht mehr Folgen</button>
     <!--
     <ion-delete-button class="ion-minus-circled" ng-click="items.splice($index, 1)"></ion-delete-button>
     <ion-reorder-button class="ion-navicon" on-reorder="reorderItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
@@ -30,21 +30,6 @@
   </ion-item-options>
 </ion-item-sliding>
 <!--
-<ion-item ng-class="['item-task', { 'item-subtask': isSubtask }]">
-  <div class="row responsive-sm">
-    <div class="col" ng-if="!isSubtask"><h2 class="wordwrap">{{task.name}}</h2></div>
-    <div class="col" ng-if="isSubtask"><h3 class="wordwrap">{{task.name}}</h3></div>
-    <div class="col icon ion-calendar">
-      <span ng-if="isSingleTime">
-        {{task.startTime | date: 'short'}}
-      </span>
-      <span ng-if="!isSingleTime && isSingleDate">
-        {{task.startTime | date: 'short'}} - {{task.endTime | date: 'shortTime'}}
-      </span>
-      <span ng-if="!isSingleDate">
-        {{task.startTime | date: 'shortDate'}} - {{task.endTime | date: 'shortDate'}}
-      </span>
-    </div>
     <div class="col status-icons">
       <!-- only show non-published status for task owner -->
       <!--
@@ -58,17 +43,4 @@
       <span class="icon-connector"></span>
       <i class="icon ion-checkmark icon-step5" ng-class="{ current: task.taskState == 'COMPLETED' }"></i>
     </div>
-  </div>
-  <div class="row" ng-if="!isSubtask">
-    <div class="col"><p>{{task.description}}</p></div>
-  </div>
-
-  <ion-option-button class="button-positive" ng-click="follow(task.id)" ng-if="action == 'follow'">Folgen</ion-option-button>
-  <ion-option-button class="button-assertive" ng-click="unfollow(task.id)" ng-if="action == 'unfollow'">Nicht mehr Folgen</ion-option-button>
-  <!--
-  <ion-delete-button class="ion-minus-circled" ng-click="items.splice($index, 1)"></ion-delete-button>
-  <ion-reorder-button class="ion-navicon" on-reorder="reorderItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
-  -->
-  <!--
-</ion-item>
   -->

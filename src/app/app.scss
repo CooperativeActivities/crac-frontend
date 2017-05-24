@@ -20,15 +20,27 @@
 }
 .card-header{
   background-color: $card-header-background;
-  border: 1px solid $card-header-border-color;
+  border: 2px solid $card-header-border-color;
   margin-bottom: 1px;
 }
 .card-header-ios{ border-radius: $card-ios-border-radius $card-ios-border-radius 0 0; }
 .card-header-md{ border-radius: $card-md-border-radius $card-md-border-radius 0 0; }
 .card-header-wp{ border-radius: $card-wp-border-radius $card-wp-border-radius 0 0; }
 .card-header + .card-content, .card .item + .card-content {
-    padding-top: 0;
-  }
+  padding-top: 0;
+}
 .card-content {
   padding: 6px 8px 6px 8px;
+}
+.item{
+  padding-left: 8px;
+}
+
+ion-card[task-list]{
+  ion-card-content{
+    padding: 0;
+  }
+  .list{
+    background-color: $card-header-background;
+  }
 }

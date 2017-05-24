@@ -7,8 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class CollapsibleCardComponent implements OnInit {
   @Input() shown: Boolean
   visible: Boolean
-  constructor() {
-  }
+  constructor() { }
   ngOnInit(){
     this.visible = !!this.shown
   }

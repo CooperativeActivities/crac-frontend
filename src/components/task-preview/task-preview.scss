@@ -1,10 +1,20 @@
 
-.item{
-  padding-left: 8px;
-}
+task-preview {
+  .item-wrapper{
+    margin-left: 8px;
+    margin-top: 4px;
+    background: none;
+    .item{
+      padding-left: 0;
+    }
+  }
 
-.label {
-  margin: 6px 4px 6px 0;
+  .label {
+    margin: 6px 4px 6px 0;
+  }
+  .grid{
+    padding: 0;
+  }
 }
 .card .list task-preview[item-block]:not(:last-child) .item-inner {
   border-bottom: 1px solid #ddd;
