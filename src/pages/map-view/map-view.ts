@@ -1,12 +1,10 @@
-/**
- * Created by P23460 on 22.05.2017.
- */
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { HelperService } from '../../services/helpers';
 
-import { Http, Headers } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
+import 'rxjs/add/operator/toPromise';
 import * as Leaflet from 'leaflet';
 
 @IonicPage({
@@ -80,7 +78,10 @@ export class MapViewPage implements OnInit {
     //   //$scope.locateUsr();
     // }
 
-    if (this.lat != null && this.lng != null) {
+    if (this.lat != null && this.lng != null &&
+      // many tasks have lat: 0, lng: 0 which can't be right
+      // -md, 2017-05-24
+      !(this.lat === 0 && this.lng === 0)) {
       console.log("Loading Address coordinates: lat: " + this.lat + ", lng: " + this.lng)
       this.locateCoord();
     } else {
@@ -88,7 +89,7 @@ export class MapViewPage implements OnInit {
       //$scope.locateUsr();
       if (this.impAddr != null) {
         console.log("Loading Address field: " + this.impAddr)
-        //this.locateAddr(this.impAddr);
+        this.locateAddr(this.impAddr);
       } else {
         console.log("No Address specified, searching for user location instead")
         //$scope.locateUsr();
@@ -136,65 +137,67 @@ export class MapViewPage implements OnInit {
     // };
   }
 
-  locateAddr = function(adr){
-    // let headers = new Headers({'Accept': 'application/json'});
-    // let options = new RequestOptions({ headers: headers});
-    // //this.headers.append('Token', undefined);
-    // return this.http.get("//search.mapzen.com/v1/search", body, options)
-    //   .subscribe((res) => { this.data = res.json();} );
+  async locateAddr (adr) {
+    let params = {
+      "text": adr,
+      //"boundary.country": "AT", // Search only in Austria
+      "size": 1,
+      "api_key": "mapzen-FZZdZ5c",
+    }
+    let options = new RequestOptions({
+      headers: new Headers({
+        'Accept': 'application/json',
+      }),
+      params,
+    })
+    let data
+    try {
+      data = await this.http.get("http://search.mapzen.com/v1/search", options)
+        .toPromise()
+        .then(res => res.json())
+    } catch(e) {
+      console.log( "Something went wrong!" );
+      return
+    }
 
-      //  Old version:
-    //     "Accept": "application/json",
-    //     "Token": undefined // Disabling the Token header field, as it is not allowed by Access-Control-Allow-Headers in preflight response.
-    //   },
-    //   params: {
-    //     "text": adr,
-    //     //"boundary.country": "AT", // Search on ly in Austria
-    //     "size": 1,
-    //     "api_key": "mapzen-FZZdZ5c"
-    //   },
-    //}
-    //   .success(function( data, status ) {
-    //     console.log( "Mapzen request received:", data );
+    console.log( "Mapzen request received:", data);
 
-    //     let rStreet = data.features[0].properties.street || data.features[0].properties.name;
-    //     let rHouse = data.features[0].properties.housenumber || "";
-    //     let rPost = data.features[0].properties.postalcode || "";
-    //     let rCity = data.features[0].properties.locality || data.features[0].properties.county;
+    /*
+    let rStreet = data.features[0].properties.street || data.features[0].properties.name;
+    let rHouse = data.features[0].properties.housenumber || "";
+    let rPost = data.features[0].properties.postalcode || "";
+    //let rCity = data.features[0].properties.locality || data.features[0].properties.county;
 
-    //     let adrLat = data.features[0].geometry.coordinates[1];
-    //     let adrLng = data.features[0].geometry.coordinates[0];
+    let adrLat = data.features[0].geometry.coordinates[1];
+    let adrLng = data.features[0].geometry.coordinates[0];
 
-    //     if (rStreet != "") {
-    //       if (rHouse != "") {
-    //         rStreet += " ";
-    //         rHouse += ", ";
-    //       } else {
-    //         rStreet += ", ";
-    //       }
-    //     }
-    //     if (rPost != "") {
-    //       rPost += " ";
-    //     }
+    if (rStreet != "") {
+      if (rHouse != "") {
+        rStreet += " ";
+        rHouse += ", ";
+      } else {
+        rStreet += ", ";
+      }
+    }
+    if (rPost != "") {
+      rPost += " ";
+    }
 
-    //     this.map.center  = {
-    //       lat : adrLat,
-    //       lng : adrLng,
-    //       zoom : 15
-    //     };
+    this.map.center  = {
+      lat : adrLat,
+      lng : adrLng,
+      zoom : 15
+    };
 
-    //     this.map.markers.now = {
-    //       lat: adrLat,
-    //       lng: adrLng,
-    //       message: adr,
-    //       focus: true,
-    //       draggable: false
-    //     };
+    this.map.markers.now = {
+      lat: adrLat,
+      lng: adrLng,
+      message: adr,
+      focus: true,
+      draggable: false
+    };
+     */
 
-    //   })
-    //   .error(function( data, status ) {
-    //     console.log( "Something went wrong!" );
-    //   });
   }
   locateUsr = function(){
     // //web location
