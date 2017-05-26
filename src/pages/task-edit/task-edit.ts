@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 
 import { TaskDataService } from '../../services/task_service';
 
@@ -14,22 +14,31 @@ import { TaskDataService } from '../../services/task_service';
 export class TaskEditPage {
 
   public taskId : any;
+  public parentTask : any;
   task : any;
   isNewTask: boolean = true;
+  isChildTask: boolean = false;
   pageTitle: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public taskDataService: TaskDataService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public taskDataService: TaskDataService, public toast: ToastController) {
     this.taskId = navParams.get("id");
+    this.parentTask = navParams.get("parentId");
     console.log(this.taskId);
     if(this.taskId !== undefined) {
       this.pageTitle = 'Aufgabe Bearbeiten';
       this.isNewTask = false;
       //dorefresh
     } else {
-      this.pageTitle = 'Aufgabe Erstellen';
       this.isNewTask = true;
       this.task = {
-        taskType: 'ORGANISATIONAL'
+        taskType: 'ORGANISATIONAL',
+      }
+      if (!this.parentTask) {
+        this.isChildTask = true;
+        this.pageTitle = "Unteraufgabe Erstellen";
+      } else {
+        this.isChildTask = false;
+        this.pageTitle = "Aufgabe Erstellen";
       }
     }
   }
@@ -44,6 +53,88 @@ export class TaskEditPage {
        lng: this.task.lng
      });
     */
+  }
+
+  save() {
+    var self = this;
+    var task = self.task;
+    var taskData : any = {};
+
+    if(!task.name){
+      self.toast.create({
+        message: "Aufgabe kann nicht gespeichert werden: " + "Name muss angegeben werden",
+        duration: 5000,
+        position: 'top'
+      });
+      return;
+    }
+    taskData.name = task.name;
+
+    // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
+
+    /* @TODO replace date check
+    if(!angular.isDate(self.task.startTime)){
+      toast.show("Aufgabe kann nicht gespeichert werden: " + "Bitte ein gültiges Startdatum eingeben!", 'top', false, 5000);
+      return;
+    }
+    */
+
+    /* @TODO replace date check*/
+    if(self.task.endTime/* || !angular.isDate(self.task.endTime)*/) {
+      task.startTime = new Date(task.startTime);
+      task.endTime = new Date(task.startTime);
+    } else {
+      task.startTime = new Date(task.startTime);
+      task.endTime = new Date(task.endTime);
+    }
+
+
+    if(task.startTime) taskData.startTime = task.startTime.getTime();
+    if(task.endTime) taskData.endTime = task.endTime.getTime();
+    if(task.description) taskData.description = task.description;
+    if(task.location) taskData.location = task.location;
+    if(task.address) taskData.address = task.address;
+    if(task.lat) taskData.lat = task.lat;
+    if(task.lng) taskData.lng = task.lng;
+    if(task.minAmountOfVolunteers) taskData.minAmountOfVolunteers = task.minAmountOfVolunteers;
+    taskData.taskType = task.taskType;
+
+    var promise;
+    if(!self.isNewTask){
+      // @TODO: this shouldn't be necessary
+      taskData.taskState = task.taskState;
+
+      promise = Promise.all([
+        self.taskDataService.updateTaskById(taskData, task.id)
+      ]).then(function(res){
+        return res;
+      });
+    } else {
+      if (!self.parentTask) {
+        promise = Promise.all([
+          self.taskDataService.createNewTask(taskData)
+        ]).then(function (res) {
+          return res;
+        });
+      } else {
+        promise = Promise.all([
+          self.taskDataService.createNewSubTask(taskData, self.parentTask.id)
+        ]).then(function (res) {
+          return res;
+        });
+      }
+    }
+
+    return promise.then(function (res) {
+      return res[0];
+    }, function(error) {
+      self.toast.create({
+        message: "Aufgabe kann nicht gespeichert werden: " + error.message,
+        duration: 5000,
+        position: 'top'
+      });
+      return false;
+    });
   }
 
   async doRefresh (refresher=null) {
@@ -81,14 +172,8 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     // ng-model only works properly with objects
     $scope.timeChoice = { choice: null }
 
-    if($stateParams.id !== undefined) {
-      $scope.isNewTask = false;
-      $scope.taskId = $stateParams.id;
-    }
-
     $scope.load = function(){
       if(!$scope.isNewTask){
-        $scope.formTitle = "Aufgabe Bearbeiten";
         // @TODO: check if task.userIsLeading, if not, go back
         TaskDataService.getTaskById($scope.taskId).then(function (res) {
           var task = res.object;
@@ -110,18 +195,7 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
         }, function (error) {
           ionicToast.show("Aufgabe kann nicht geladen werden: " + error.message, 'top', false, 5000);
         });
-      } else {
-        if($stateParams.parentId !== ''){
-          $scope.isChildTask = true;
-          $scope.formTitle = "Unteraufgabe Erstellen";
-        } else {
-          $scope.isChildTask = false;
-          $scope.formTitle = "Aufgabe Erstellen";
-        }
 
-
-        $scope.task.taskType = 'ORGANISATIONAL';
-        $scope.timeChoice.choice = 'slot';
         if($stateParams.parentId !== ""){
           TaskDataService.getTaskById($stateParams.parentId).then(function(res){
             $scope.parentTask = res.object;
@@ -166,77 +240,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
           $scope.showDelete = true;
           break;
       }
-    };
-
-    // Save task
-    $scope.save = function(){
-      var task = $scope.task;
-      var taskData = {};
-      if(!task.name){
-        ionicToast.show("Aufgabe kann nicht gespeichert werden: " + "Name muss angegeben werden", 'top', false, 5000);
-        return;
-      }
-      taskData.name= task.name;
-
-      // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
-
-
-      if(!angular.isDate($scope.task.startTime)){
-        ionicToast.show("Aufgabe kann nicht gespeichert werden: " + "Bitte ein gültiges Startdatum eingeben!", 'top', false, 5000);
-        return;
-      }
-
-      if(!$scope.task.endTime || !angular.isDate($scope.task.endTime)) {
-        task.startTime = new Date(task.startTime);
-        task.endTime = new Date(task.startTime);
-      } else {
-        task.startTime = new Date(task.startTime);
-        task.endTime = new Date(task.endTime);
-      }
-
-
-      if(task.startTime) taskData.startTime = task.startTime.getTime();
-      if(task.endTime) taskData.endTime = task.endTime.getTime();
-      if(task.description) taskData.description = task.description;
-      if(task.location) taskData.location = task.location;
-      if(task.address) taskData.address = task.address;
-      if(task.lat) taskData.lat = task.lat;
-      if(task.lng) taskData.lng = task.lng;
-      if(task.minAmountOfVolunteers) taskData.minAmountOfVolunteers = task.minAmountOfVolunteers;
-      taskData.taskType = task.taskType;
-
-      var promise;
-      if(!$scope.isNewTask){
-        // @TODO: this shouldn't be necessary
-        taskData.taskState = task.taskState;
-
-        promise = $q.all([
-          TaskDataService.updateTaskById(taskData, task.id)
-        ]).then(function(res){
-          return res;
-        })
-      } else {
-        if (!$scope.parentTask) {
-          promise = $q.all([
-            TaskDataService.createNewTask(taskData)
-          ]).then(function (res) {
-            return res;
-          });
-        } else {
-          promise = $q.all([
-            TaskDataService.createNewSubTask(taskData, $scope.parentTask.id)
-          ]).then(function (res) {
-            return res;
-          });
-        }
-      }
-
-      return promise.then(function (res) {
-        return res[0];
-      }, function(error) {
-        ionicToast.show("Aufgabe kann nicht gespeichert werden: " + error.message, 'top', false, 5000);
-        return false;
-      });
     };
 
     // Add details
