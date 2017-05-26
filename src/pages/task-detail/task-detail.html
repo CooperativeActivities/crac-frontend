@@ -21,7 +21,7 @@
                 {{task.name}}
             </ion-card-header>
             <img src="../../assets/img/mOW8cSR4T4CA3L1GVQHG_rkessen.jpg" class="task-detail__header__img"/>
-            <ion-card-content class="task-detail__header__desc" >
+            <ion-card-content class="task-detail__header__desc">
                 <strong>Beschreibung:</strong>
                 <p>
                     {{task.description}}
@@ -37,11 +37,11 @@
                 <ion-icon name="calendar"></ion-icon>
                 <span class="task-detail__content__headline"> Zeit: </span>
                 <div *ngIf="timeChoice == 'slot'">
-                    <div> Von: {{ task.startTime |   date: 'dd.MM.yyyy H:mm'  }}</div>
-                    <div> Bis: {{ task.endTime |     date: 'dd.MM.yyyy H:mm' }}</div>
+                    <div> Von: {{ task.startTime | date: 'dd.MM.yyyy H:mm' }}</div>
+                    <div> Bis: {{ task.endTime | date: 'dd.MM.yyyy H:mm' }}</div>
                 </div>
                 <div *ngIf="timeChoice == 'point'">
-                    <div class="row"> {{ task.endTime |  date: 'dd.MM.yyyy -- H:mm'  }}</div>
+                    <div class="row"> {{ task.endTime | date: 'dd.MM.yyyy -- H:mm' }}</div>
                 </div>
                 <ion-icon name="locate"></ion-icon>
                 <span class="task-detail__content__headline"> Adresse: </span>
@@ -52,11 +52,11 @@
         </collapsible-card>
         <collapsible-card>
             <div card-header>
-                Team
+                Team ({{task?.userRelationships.length}})
             </div>
             <div card-content>
 
-                <ion-item *ngFor="let user of task.userRelationships" >
+                <ion-item *ngFor="let user of task.userRelationships">
                     <ion-avatar item-left>
                         <img src="../../assets/img/avatar-placeholder1.png">
                     </ion-avatar>
@@ -64,20 +64,28 @@
                     <p>Typ: {{user?.participationType}}</p>
                 </ion-item>
 
-
             </div>
         </collapsible-card>
-        <collapsible-card >
+        <collapsible-card>
             <div card-header>
-                Schichten
+                Schichten ({{task?.childTasks.length}})
             </div>
             <div card-content>
-
+                <ion-item *ngFor="let shift of task.childTasks">
+                    <h2>
+                        <ion-icon name="time" item-left></ion-icon>
+                        {{shift.startTime | date: 'dd.MM.yyyy H:mm'}} - {{shift.endTime | date: 'H:mm'}}
+                    </h2>
+                    <p>
+                        <ion-icon name="contact" item-left></ion-icon>
+                        {{shift.signedUsers}} / {{shift.minAmountOfVolunteers}}
+                    </p>
+                </ion-item>
             </div>
         </collapsible-card>
         <collapsible-card *ngIf="task.materials.length > 0">
             <div card-header>
-                Material
+                Material ({{task?.materials.length}})
             </div>
             <div card-content>
 
@@ -92,11 +100,11 @@
         </collapsible-card>
         <collapsible-card>
             <div card-header>
-                Kommentare
+                Kommentare ({{task?.comments.length}})
             </div>
             <div card-content>
                 <ion-list>
-                    <ion-item  *ngFor="let comment of task.comments">
+                    <ion-item *ngFor="let comment of task.comments">
                         <ion-avatar item-left>
                             <img src="../../assets/img/avatar-placeholder2.png">
                         </ion-avatar>
