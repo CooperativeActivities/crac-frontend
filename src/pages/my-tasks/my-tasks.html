@@ -1,16 +1,14 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="makeNewTask()">
+        <ion-icon name="add-circle"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>Meine Aufgaben</ion-title>
   </ion-navbar>
 </ion-header>
-<!--
-  <ion-nav-buttons side="right" class="has-header">
-    <button class="button button-energized2 icon ion-android-add-circle scale" ng-click="makeNewTask()"></button>
-  </ion-nav-buttons>
-  -->
+
 <ion-content>
 
   <ion-refresher (ionRefresh)="doRefresh($event)">
