@@ -35,7 +35,7 @@
             </div>
             <div card-content>
                 <ion-icon name="calendar"></ion-icon>
-                <span class="ion-calendar"> Zeit: </span>
+                <span class="task-detail__content__headline"> Zeit: </span>
                 <div *ngIf="timeChoice == 'slot'">
                     <div> Von: {{ task.startTime | date : "short" }}</div>
                     <div> Bis: {{ task.endTime | date : "short" }}</div>
@@ -44,10 +44,11 @@
                     <div class="row"> {{ task.endTime | date : "short" }}</div>
                 </div>
                 <ion-icon name="locate"></ion-icon>
-                Adresse
+                <span class="task-detail__content__headline"> Adresse: </span>
+                <div>{{task.address}}</div>
                 <ion-icon name="open" (click)="openMapView()"></ion-icon>
                 Auf Karte anzeigen
-                {{task.address}}
+
             </div>
         </collapsible-card>
         <collapsible-card>
