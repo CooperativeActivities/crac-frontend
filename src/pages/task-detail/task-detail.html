@@ -67,7 +67,7 @@
 
             </div>
         </collapsible-card>
-        <collapsible-card>
+        <collapsible-card >
             <div card-header>
                 Schichten
             </div>
@@ -75,11 +75,18 @@
 
             </div>
         </collapsible-card>
-        <collapsible-card>
+        <collapsible-card *ngIf="task.materials.length > 0">
             <div card-header>
                 Material
             </div>
             <div card-content>
+
+                <ion-list>
+                    <button ion-item *ngFor="let material of task.materials">
+                        <ion-icon name="cube" item-left></ion-icon>
+                        {{material.name}}: {{material.subscribedQuantity}} / {{material.quantity}}
+                    </button>
+                </ion-list>
 
             </div>
         </collapsible-card>
