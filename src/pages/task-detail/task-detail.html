@@ -84,7 +84,7 @@
                 <ion-list>
                     <button ion-item *ngFor="let material of task.materials">
                         <ion-icon name="cube" item-left></ion-icon>
-                        {{material.name}}: {{material.subscribedQuantity}} / {{material.quantity}}
+                        {{material?.name}}: {{material?.subscribedQuantity}} / {{material?.quantity}}
                     </button>
                 </ion-list>
 
@@ -95,7 +95,23 @@
                 Kommentare
             </div>
             <div card-content>
+                <ion-list>
+                    <ion-item  *ngFor="let comment of task.comments">
+                        <ion-avatar item-left>
+                            <img src="../../assets/img/avatar-placeholder2.png">
+                        </ion-avatar>
+                        <h2>{{comment?.name}}</h2>
 
+                        <p>{{comment?.content}}</p>
+                    </ion-item>
+
+
+                    <ion-item>
+                        <ion-label fixed>Kommentar hinzufügen</ion-label>
+                        <ion-input type="text" value=""></ion-input>
+                    </ion-item>
+
+                </ion-list>
             </div>
         </collapsible-card>
     </ng-template>
