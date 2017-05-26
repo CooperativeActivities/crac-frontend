@@ -37,18 +37,17 @@
                 <ion-icon name="calendar"></ion-icon>
                 <span class="task-detail__content__headline"> Zeit: </span>
                 <div *ngIf="timeChoice == 'slot'">
-                    <div> Von: {{ task.startTime | date : "short" }}</div>
-                    <div> Bis: {{ task.endTime | date : "short" }}</div>
+                    <div> Von: {{ task.startTime |   date: 'dd.MM.yyyy H:mm'  }}</div>
+                    <div> Bis: {{ task.endTime |     date: 'dd.MM.yyyy H:mm' }}</div>
                 </div>
                 <div *ngIf="timeChoice == 'point'">
-                    <div class="row"> {{ task.endTime | date : "short" }}</div>
+                    <div class="row"> {{ task.endTime |  date: 'dd.MM.yyyy -- H:mm'  }}</div>
                 </div>
                 <ion-icon name="locate"></ion-icon>
                 <span class="task-detail__content__headline"> Adresse: </span>
                 <div>{{task.address}}</div>
-                <ion-icon name="open" (click)="openMapView()"></ion-icon>
+                <ion-icon name="open" (click)="openMapView()" tappable="tappable"></ion-icon>
                 Auf Karte anzeigen
-
             </div>
         </collapsible-card>
         <collapsible-card>
@@ -56,6 +55,15 @@
                 Team
             </div>
             <div card-content>
+
+                <ion-item *ngFor="let user of task.userRelationships" >
+                    <ion-avatar item-left>
+                        <img src="../../assets/img/avatar-placeholder1.png">
+                    </ion-avatar>
+                    <h2>{{user?.name}}</h2>
+                    <p>Typ: {{user?.participationType}}</p>
+                </ion-item>
+
 
             </div>
         </collapsible-card>
