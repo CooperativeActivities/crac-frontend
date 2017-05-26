@@ -13,44 +13,65 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
   <form name="taskForm" onsubmit="event.preventDefault" novalidate>
-    <div radio-group [(ngModel)]="task.taskType" name="type" *ngIf="isNewTask" class="form-group">
-      <div class="half-container">
-        <ion-label>Übersicht</ion-label>
-        <ion-radio value="ORGANISATIONAL"></ion-radio>
-      </div>
-      <div class="half-container">
-        <ion-label>Aufgabe</ion-label>
-        <ion-radio value="WORKABLE"></ion-radio>
-      </div>
-    </div>
+    <ion-card>
+      <ion-card-content>
+        <ion-grid radio-group [(ngModel)]="task.taskType" name="type" *ngIf="isNewTask" class="form-group">
+          <ion-row>
+            <ion-col no-padding>
+              <ion-item>
+                <ion-label>Übersicht</ion-label>
+                <ion-radio value="ORGANISATIONAL"></ion-radio>
+              </ion-item>
+            </ion-col>
+            <ion-col no-padding>
+              <ion-item>
+                <ion-label>Aufgabe</ion-label>
+                <ion-radio value="WORKABLE"></ion-radio>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        Basisinformationen
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label floating>Titel*:</ion-label>
+            <ion-input type="text" [(ngModel)]="task.name" name="name" style="background-color:white;"
+                       aria-describedby="inputError2Status" class="form-control" required></ion-input>
+            <!-- @TODO reimplement validation
+            <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"
+                  *ngIf="taskForm.name.$dirty && taskForm.name.$invalid"></span>
+            <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"
+                  *ngIf="taskForm.name.$dirty && taskForm.name.$valid"></span>
+            <span id="inputError2Status" class="help-block"><!-- *ngIf="taskForm.name.$dirty && taskForm.name.$invalid">
+              Bitte geben Sie einen Tasktitel ein.
+            </span>
+            -->
+          </ion-item>
+          <ion-item class="item item-input item-stacked-label">
+            <ion-label floating>Beschreibung:</ion-label>
+            <ion-textarea [(ngModel)]="task.description" name="description" ></ion-textarea>
+          </ion-item>
+          <ion-item class="item item-input item-stacked-label" *ngIf="task.taskType == 'WORKABLE'">
+            <ion-label floating>Zahl der Freiwilligen:</ion-label>
+            <ion-input type="number" min="0"
+                       [(ngModel)]="task.minAmountOfVolunteers" name="minAmountOfVolunteers"></ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
   </form>
 </ion-content>
 
 <!--
-        <div class="item item-divider-top">Basisinformationen</div>
-        <div class="form-block form-group" ng-class="{'has-error has-feedback': taskForm.name.$dirty && taskForm.name.$invalid, 'has-success has-feedback':taskForm.name.$dirty && taskForm.name.$valid}">
-          <label class="item item-input item-stacked-label">
-            <span class="input-label bold">Titel*:</span>
-            <input type="text" ng-model="task.name" name="name" style="background-color:white;" placeholder="Name..."
-            aria-describedby="inputError2Status" class="form-control" required>
-            <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" ng-if="taskForm.name.$dirty && taskForm.name.$invalid"></span>
-            <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" ng-if="taskForm.name.$dirty && taskForm.name.$valid"></span>
-            <span id="inputError2Status" ng-show="taskForm.name.$dirty && taskForm.name.$invalid" class="help-block">
-              Bitte geben Sie einen Tasktitel ein.
-            </span>
-          </label>
-          <label class="item item-input item-stacked-label">
-            <span class="input-label bold">Beschreibung:</span>
-            <textarea ng-model="task.description" placeholder="Beschreibung..." ></textarea>
-          </label>
-          <label class="item item-input item-stacked-label" ng-if="task.taskType == 'WORKABLE'">
-            <span class="input-label bold">Zahl der Freiwilligen:</span>
-            <input type="number" min="0" ng-model="task.minAmountOfVolunteers" placeholder="Anzahl...">
-          </label>
-        </div>
-        <div class="form-block form-group">
           <div class="item item-divider-top">Zeit und Ort</div>
 
           <label class="item item-input item-stacked-label">
