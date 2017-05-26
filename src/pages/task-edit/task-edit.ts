@@ -34,6 +34,18 @@ export class TaskEditPage {
     }
   }
 
+  openMap() {
+    /* @TODO release this once map view is ready
+    this.navCtrl.push('map-view',
+      {
+       id: this.taskId,
+       address: this.task.address,
+       lat: this.task.lat,
+       lng: this.task.lng
+     });
+    */
+  }
+
   async doRefresh (refresher=null) {
     var self = this;
     await Promise.all([
@@ -367,11 +379,6 @@ cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataS
     $scope.advancedEdit = function(section){
       $state.go('tabsController.taskEditAdv', { id: $scope.taskId, section: section });
     };
-
-    // Open Leaflet Map //
-    $scope.openMap = function() {
-      $state.go('tabsController.openMap', { id: $scope.taskId, address: $scope.task.address, lat: $scope.task.lat, lng: $scope.task.lng});
-    }
 
     // Check if Address field has been updated on Map Page
     $scope.$on("$ionicView.enter", function(event, data){

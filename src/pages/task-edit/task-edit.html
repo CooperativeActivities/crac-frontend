@@ -43,7 +43,7 @@
       <ion-card-content>
         <ion-list>
           <ion-item>
-            <ion-label floating>Titel*:</ion-label>
+            <ion-label stacked>Titel*</ion-label>
             <ion-input type="text" [(ngModel)]="task.name" name="name" style="background-color:white;"
                        aria-describedby="inputError2Status" class="form-control" required></ion-input>
             <!-- @TODO reimplement validation
@@ -57,13 +57,46 @@
             -->
           </ion-item>
           <ion-item class="item item-input item-stacked-label">
-            <ion-label floating>Beschreibung:</ion-label>
+            <ion-label stacked>Beschreibung</ion-label>
             <ion-textarea [(ngModel)]="task.description" name="description" ></ion-textarea>
           </ion-item>
           <ion-item class="item item-input item-stacked-label" *ngIf="task.taskType == 'WORKABLE'">
-            <ion-label floating>Zahl der Freiwilligen:</ion-label>
+            <ion-label stacked>Zahl der Freiwilligen</ion-label>
             <ion-input type="number" min="0"
                        [(ngModel)]="task.minAmountOfVolunteers" name="minAmountOfVolunteers"></ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        Zeit und Ort
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label stacked>Beginn*</ion-label>
+            <ion-input type="datetime-local" [(ngModel)]="task.startTime" name="startTime"
+                       [ngClass]="{'has-error' : !task.startTime}"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label stacked>Ende</ion-label>
+            <ion-input type="datetime-local" [(ngModel)]="task.endTime" name="endTime"></ion-input>
+          </ion-item>
+          <ion-item>
+            <!-- @TODO uncomment when map view is ready
+            <button ion-button icon-only (click)="openMap()" item-right>
+              <ion-icon name="locate"></ion-icon>
+            </button>
+            -->
+            <ion-label stacked>Adresse
+            </ion-label>
+            <ion-input type="text" [(ngModel)]="task.address" name="address"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label stacked>Ortsbezeichnung</ion-label>
+            <ion-input type="text" [(ngModel)]="task.location" name="location"></ion-input>
           </ion-item>
         </ion-list>
       </ion-card-content>
@@ -72,34 +105,8 @@
 </ion-content>
 
 <!--
-          <div class="item item-divider-top">Zeit und Ort</div>
-
-          <label class="item item-input item-stacked-label">
-            <span class="input-label bold">Beginn*:</span>
-            <input type="datetime-local" ng-model="task.startTime"  ng-class="{'has-error' : !task.startTime}" >
-          </label>
-          <label class="item item-input item-stacked-label">
-            <span class="input-label bold">Ende:</span>
-            <input type="datetime-local" ng-model="task.endTime" >
-          </label>
-
-          <div class="item item-input item-stacked-label">
-            <span class="input-label bold">Adresse:</span>
-            <input type="text" ng-model="task.address" placeholder="Adresse"  >
-            <a type="button" ng-click="openMap()" class="button button-icon icon ion-android-locate" style="position: absolute;top: 10px;right: 12px;z-index:100;"></a>
-          </div>
-          <label class="item item-input item-stacked-label">
-            <span class="input-label bold">Ortsbezeichnung:</span>
-            <input type="text" ng-model="task.location" placeholder="Ortsbezeichnung"  >
-          </label>
-        </div>
-      </form>
-    </div>
-
     <div ng-if="isNewTask && task.taskType == 'WORKABLE'">
-
       <button type="button" ng-click="add_details()" class="button button-full button-positive ion-plus no-border-radius"> Details hinzufügen</button>
-
     </div>
 
     <div ng-if="!isNewTask && task.taskType == 'WORKABLE'">
