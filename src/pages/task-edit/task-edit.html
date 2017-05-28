@@ -113,38 +113,35 @@
           Kompetenzen <span float-right>{{task.taskCompetences.length || 0}}</span>
         </span>
         <div card-content>
-          <ion-list>
-            <ion-item  ng-cloak class="no-border-radius">
-              <div *ngFor="let competence of competences.all" ng-cloak>
+          <ion-list ng-cloak class="no-border-radius" *ngFor="let competence of competences.all" ng-cloak>
+            <ion-item>
                 <!-- @TODO create custom accordion component
                 <c-accordion title="competence.name" class="">
                 -->
-                  <div class="internal-block">
-                    <label class="item item-input range">
-                      <span class="input-label">Können</span>
-                      <input type="range" min="0" max="100" [ngModelOptions]="{standalone: true}"
-                             [(ngModel)]="competence.neededProficiencyLevel" (change)="updateCompetence(competence)">
-                      <p>{{competence.neededProficiencyLevel}}</p>
-                    </label>
-                    <label class="item item-input item-toggle">
-                      <span class="input-label">Zwingend</span>
-                      <label class="toggle toggle-assertive">
-                        <input type="checkbox" [(ngModel)]="competence.mandatory" [ngModelOptions]="{standalone: true}">
-                        <div class="track">
-                          <div class="handle"></div>
-                        </div>
-                      </label>
-                    </label>
-                    <button type="button" (click)="removeCompetence(competence)"
-                            class="button button-full button-assertive ion-ios-trash-outline no-border-radius">
-                      Löschen
-                    </button>
-                  </div>
+              <ion-label stacked>Können<span float-right>{{competence.neededProficiencyLevel}}</span></ion-label>
+              <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
+                         [(ngModel)]="competence.neededProficiencyLevel" (change)="updateCompetence(competence)">
+              </ion-range>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Zwingend</ion-label>
+              <ion-checkbox [(ngModel)]="competence.mandatory" [ngModelOptions]="{standalone: true}">
+              </ion-checkbox>
+            </ion-item>
+
+            <ion-item>
+              <button ion-button (click)="removeCompetence(competence)" block>
+                <ion-icon name="trash-outline"></ion-icon>
+                Löschen
+              </button>
+            </ion-item>
                 <!--
                 </c-accordion>
                 -->
-              </div>
+          </ion-list>
 
+          <ion-list>
               <!--<custom-accordion>
                 <custom-accordion-head>
                   <div class="item item-divider ion-plus">
@@ -152,47 +149,33 @@
                   </div>
                 </custom-accordion-head>
                 <custom-accordion-body>-->
-                  <label class="item item-input item-select">
-                    <div class="input-label">
-                      Kompetenzbereich*
-                    </div>
-                    <select [(ngModel)]="competenceArea" name="competenceArea" (change)="onCompetenceAreaChange(competenceArea)">
-                      <option *ngFor="let area of competenceAreaList" [ngValue]="area.id">
-                        area.name
-                      </option>
-                    </select>
-                  </label>
-                  <label class="item item-input item-select" *ngIf="competenceArea != -1">
-                    <div class="input-label">
-                      Kompetenz*
-                    </div>
-                    <select [(ngModel)]="competences.newObj.id" name="competence">
-                      <option *ngFor="let competence of availableCompetences" [ngValue]="competence.id">
-                        {{ competence.name }}
-                      </option>
-                    </select>
-                  </label>
-                  <div>
-
-
-                  </div>
-                  <label class="item item-input range">
-                    <span class="input-label">Können*</span>
-                    <input type="range" min="0" max="100" name="neededProficiencyLevel"
-                           [(ngModel)]="competences.newObj.neededProficiencyLevel">
-                    <p>{{competences.newObj.neededProficiencyLevel}}</p>
-                  </label>
-
-                  <div class="item item-toggle">
-                    Zwingend
-                    <label class="toggle toggle-assertive">
-                      <input type="checkbox" name="mandatory" [(ngModel)]="competences.newObj.mandatory">
-                      <div class="track">
-                        <div class="handle"></div>
-                      </div>
-                    </label>
-                  </div>
-                  <div>
+            <ion-item>
+              <ion-label stacked>Kompetenzbereich*</ion-label>
+              <ion-select> [(ngModel)]="competenceArea" name="competenceArea" (change)="onCompetenceAreaChange(competenceArea)">
+                <option *ngFor="let area of competenceAreaList" [ngValue]="area.id">
+                  area.name
+                </option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label *ngIf="competenceArea != -1" stacked>Kompetenz*</ion-label>
+              <ion-select [(ngModel)]="competences.newObj.id" name="competence">
+                <option *ngFor="let competence of availableCompetences" [ngValue]="competence.id">
+                  {{ competence.name }}
+                </option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>Können* <span float-right>{{competences.newObj.neededProficiencyLevel}}</span></ion-label>
+              <ion-range min="0" max="100" name="neededProficiencyLevel"
+                     [(ngModel)]="competences.newObj.neededProficiencyLevel">
+              </ion-range>
+            </ion-item>
+            <ion-item>
+              <ion-label>Zwingend</ion-label>
+              <ion-checkbox name="mandatory" [(ngModel)]="competences.newObj.mandatory">
+              </ion-checkbox>
+            </ion-item>
                     <!--<span>-->
                     <!--<i class="ion-information-circled"></i>-->
                     <!--<span>-->
@@ -201,14 +184,18 @@
                     <!--</span>-->
                     <!--</span>-->
 
-                  </div>
-                  <label>*Pflichtfelder</label>
-                  <button type="button" (click)="addCompetence()" class="button button-block button-positive ion-plus no-border-radius"> Hinzufügen</button>
+            <ion-item>
+            <label>*Pflichtfelder</label>
+            <button ion-button  (click)="addCompetence()" block>
+              <ion-icon name="add"></ion-icon>
+              Hinzufügen
+            </button>
+            </ion-item>
+
               <!--
                 </custom-accordion-body>
               </custom-accordion>
               -->
-            </ion-item>
           </ion-list>
         </div>
       </collapsible-card>
