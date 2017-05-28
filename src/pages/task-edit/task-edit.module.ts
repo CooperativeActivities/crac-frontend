@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { TaskEditPage } from './task-edit';
+import { ComponentsModule } from "../../components/components.module"
 
 @NgModule({
   declarations: [
@@ -8,6 +9,7 @@ import { TaskEditPage } from './task-edit';
   ],
   imports: [
     IonicPageModule.forChild(TaskEditPage),
+    ComponentsModule,
   ],
   exports: [
     TaskEditPage

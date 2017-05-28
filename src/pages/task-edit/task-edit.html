@@ -9,7 +9,7 @@
   <ion-navbar>
     <ion-title>{{pageTitle}}</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="save()">
+      <button ion-button icon-only (click)="save_changes()">
         <ion-icon name="checkmark"></ion-icon>
       </button>
     </ion-buttons>
@@ -106,36 +106,134 @@
         </ion-list>
       </ion-card-content>
     </ion-card>
+
+    <ng-template [ngIf]="task.taskType == 'WORKABLE'">
+      <collapsible-card>
+        <span card-header>
+          Kompetenzen <span float-right>{{task.taskCompetences.length || 0}}</span>
+        </span>
+        <div card-content>
+          <ion-list>
+            <ion-item  ng-cloak class="no-border-radius">
+              <div *ngFor="let competence of competences.all" ng-cloak>
+                <!-- @TODO create custom accordion component
+                <c-accordion title="competence.name" class="">
+                -->
+                  <div class="internal-block">
+                    <label class="item item-input range">
+                      <span class="input-label">Können</span>
+                      <input type="range" min="0" max="100" [ngModelOptions]="{standalone: true}"
+                             [(ngModel)]="competence.neededProficiencyLevel" (change)="updateCompetence(competence)">
+                      <p>{{competence.neededProficiencyLevel}}</p>
+                    </label>
+                    <label class="item item-input item-toggle">
+                      <span class="input-label">Zwingend</span>
+                      <label class="toggle toggle-assertive">
+                        <input type="checkbox" [(ngModel)]="competence.mandatory" [ngModelOptions]="{standalone: true}">
+                        <div class="track">
+                          <div class="handle"></div>
+                        </div>
+                      </label>
+                    </label>
+                    <button type="button" (click)="removeCompetence(competence)"
+                            class="button button-full button-assertive ion-ios-trash-outline no-border-radius">
+                      Löschen
+                    </button>
+                  </div>
+                <!--
+                </c-accordion>
+                -->
+              </div>
+
+              <!--<custom-accordion>
+                <custom-accordion-head>
+                  <div class="item item-divider ion-plus">
+                    Kompetenz hinzufügen
+                  </div>
+                </custom-accordion-head>
+                <custom-accordion-body>-->
+                  <label class="item item-input item-select">
+                    <div class="input-label">
+                      Kompetenzbereich*
+                    </div>
+                    <select [(ngModel)]="competenceArea" name="competenceArea" (change)="onCompetenceAreaChange(competenceArea)">
+                      <option *ngFor="let area of competenceAreaList" [ngValue]="area.id">
+                        area.name
+                      </option>
+                    </select>
+                  </label>
+                  <label class="item item-input item-select" *ngIf="competenceArea != -1">
+                    <div class="input-label">
+                      Kompetenz*
+                    </div>
+                    <select [(ngModel)]="competences.newObj.id" name="competence">
+                      <option *ngFor="let competence of availableCompetences" [ngValue]="competence.id">
+                        {{ competence.name }}
+                      </option>
+                    </select>
+                  </label>
+                  <div>
+
+
+                  </div>
+                  <label class="item item-input range">
+                    <span class="input-label">Können*</span>
+                    <input type="range" min="0" max="100" name="neededProficiencyLevel"
+                           [(ngModel)]="competences.newObj.neededProficiencyLevel">
+                    <p>{{competences.newObj.neededProficiencyLevel}}</p>
+                  </label>
+
+                  <div class="item item-toggle">
+                    Zwingend
+                    <label class="toggle toggle-assertive">
+                      <input type="checkbox" name="mandatory" [(ngModel)]="competences.newObj.mandatory">
+                      <div class="track">
+                        <div class="handle"></div>
+                      </div>
+                    </label>
+                  </div>
+                  <div>
+                    <!--<span>-->
+                    <!--<i class="ion-information-circled"></i>-->
+                    <!--<span>-->
+                    <!--Die Kategorie &bdquo;Wichtigkeit&ldquo; bezieht sich auf die Aufgabe, wie wichtig diese für mich ist-->
+                    <!--bzw. für das Gelingen des Projekts.-->
+                    <!--</span>-->
+                    <!--</span>-->
+
+                  </div>
+                  <label>*Pflichtfelder</label>
+                  <button type="button" (click)="addCompetence()" class="button button-block button-positive ion-plus no-border-radius"> Hinzufügen</button>
+              <!--
+                </custom-accordion-body>
+              </custom-accordion>
+              -->
+            </ion-item>
+          </ion-list>
+        </div>
+      </collapsible-card>
+      <collapsible-card>
+        <span card-header>
+          Schichten <span float-right>{{task.childTasks.length}}</span>
+        </span>
+        <div card-content>
+
+        </div>
+      </collapsible-card>
+      <collapsible-card>
+        <span card-header>
+          Materialien <span float-right>{{task.materials.length}}</span>
+        </span>
+        <div card-content>
+
+        </div>
+      </collapsible-card>
+    </ng-template>
   </form>
 </ion-content>
 
 <!--
-    <div ng-if="isNewTask && task.taskType == 'WORKABLE'">
-      <button type="button" ng-click="add_details()" class="button button-full button-positive ion-plus no-border-radius"> Details hinzufügen</button>
-    </div>
 
-    <div ng-if="!isNewTask && task.taskType == 'WORKABLE'">
-      <c-accordion title="' Details '">
-        <ion-list >
-          <ion-item class="item-icon-right" ng-click="advancedEdit('competences')">
-            Kompetenzen ({{task.taskCompetences.length}})
-            <i class="icon ion-chevron-right"></i>
-          </ion-item>
-          <ion-item class="item-icon-right" ng-click="advancedEdit('shifts')">
-            Schichten ({{task.childTasks.length}})
-            <i class="icon ion-chevron-right"></i>
-          </ion-item>
-          <ion-item class="item-icon-right" ng-click="advancedEdit('materials')">
-            Materialen ({{task.materials.length}})
-            <i class="icon ion-chevron-right"></i>
-          </ion-item>
-        </ion-list>
-      </c-accordion>
-    </div>
-
-
-
-  </ion-content>
   <ion-footer-bar>
     <div class="button-bar">
       <button ng-click="delete()" ng-if="showDelete"  class="button button-small button-full no-border-radius button-assertive ion-trash-a"> Löschen </button>
