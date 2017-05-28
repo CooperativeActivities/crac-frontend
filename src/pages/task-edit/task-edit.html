@@ -113,42 +113,41 @@
           Kompetenzen <span float-right>{{task.taskCompetences.length || 0}}</span>
         </span>
         <div card-content>
-          <ion-list ng-cloak class="no-border-radius" *ngFor="let competence of competences.all" ng-cloak>
-            <ion-item>
-                <!-- @TODO create custom accordion component
-                <c-accordion title="competence.name" class="">
-                -->
-              <ion-label stacked>Können<span float-right>{{competence.neededProficiencyLevel}}</span></ion-label>
-              <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
-                         [(ngModel)]="competence.neededProficiencyLevel" (change)="updateCompetence(competence)">
-              </ion-range>
-            </ion-item>
+          <ion-list *ngIf="competences.all.length > 0">
+            <ion-item *ngFor="let competence of competences.all">
+              <span (click)="competence.editing = !competence.editing">{{competence.name}}</span>
+              <ion-list *ngIf="competence.editing">
+                <ion-item>
+                  <ion-label stacked>Können<span float-right>{{competence.neededProficiencyLevel}}</span></ion-label>
+                  <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
+                             [(ngModel)]="competence.neededProficiencyLevel" (change)="updateCompetence(competence)">
+                  </ion-range>
+                </ion-item>
 
-            <ion-item>
-              <ion-label>Zwingend</ion-label>
-              <ion-checkbox [(ngModel)]="competence.mandatory" [ngModelOptions]="{standalone: true}">
-              </ion-checkbox>
-            </ion-item>
+                <ion-item>
+                  <ion-label>Zwingend</ion-label>
+                  <ion-toggle [(ngModel)]="competence.mandatory" [ngModelOptions]="{standalone: true}">
+                  </ion-toggle>
+                </ion-item>
 
-            <ion-item>
-              <button ion-button (click)="removeCompetence(competence)" block>
-                <ion-icon name="trash-outline"></ion-icon>
-                Löschen
-              </button>
+                <ion-item>
+                  <button ion-button (click)="removeCompetence(competence)" block>
+                    <ion-icon name="trash-outline"></ion-icon>
+                    Löschen
+                  </button>
+                </ion-item>
+              </ion-list>
             </ion-item>
-                <!--
-                </c-accordion>
-                -->
           </ion-list>
 
-          <ion-list>
-              <!--<custom-accordion>
-                <custom-accordion-head>
-                  <div class="item item-divider ion-plus">
-                    Kompetenz hinzufügen
-                  </div>
-                </custom-accordion-head>
-                <custom-accordion-body>-->
+          <ion-item *ngIf="!addNewCompetence">
+            <button ion-button block (click)="addNewCompetence = !addNewCompetence">
+              <ion-icon name="add"></ion-icon>
+              Kompetenz hinzufügen
+            </button>
+          </ion-item>
+
+          <ion-list *ngIf="addNewCompetence">
             <ion-item>
               <ion-label stacked>Kompetenzbereich*</ion-label>
               <ion-select> [(ngModel)]="competenceArea" name="competenceArea" (change)="onCompetenceAreaChange(competenceArea)">
@@ -173,8 +172,8 @@
             </ion-item>
             <ion-item>
               <ion-label>Zwingend</ion-label>
-              <ion-checkbox name="mandatory" [(ngModel)]="competences.newObj.mandatory">
-              </ion-checkbox>
+              <ion-toggle name="mandatory" [(ngModel)]="competences.newObj.mandatory">
+              </ion-toggle>
             </ion-item>
                     <!--<span>-->
                     <!--<i class="ion-information-circled"></i>-->
@@ -191,11 +190,6 @@
               Hinzufügen
             </button>
             </ion-item>
-
-              <!--
-                </custom-accordion-body>
-              </custom-accordion>
-              -->
           </ion-list>
         </div>
       </collapsible-card>
@@ -229,7 +223,7 @@
             <ion-item>
               <ion-label stacked>Anzahl Freiwilliger*</ion-label>
               <ion-input type="number" name="shiftVolunteers" [(ngModel)]="shifts.newObj.minAmountOfVolunteers"
-                         class="new-material-input" ng-class="{'has-error' : !shifts.newObj.minAmountOfVolunteers}">
+                         class="new-material-input" [ngClass]="{'has-error' : !shifts.newObj.minAmountOfVolunteers}">
               </ion-input>
             </ion-item>
             <ion-item>
@@ -248,7 +242,55 @@
           Materialien <span float-right>{{task.materials.length}}</span>
         </span>
         <div card-content>
+          <ion-list ng-cloak>
+            <ion-item>
+              <ion-grid>
+                <ion-row class="row row-header" *ngIf="materials.all.length > 0">
+                  <span class="material-header-name">Name: </span>
+                  <span class="material-header-amount">Menge: </span>
+                  <span class="material-header-description">Beschreibung: </span>
+                </ion-row>
+                <ion-row class="row row-content" *ngFor="let material of materials.all">
+                  <ion-input type="text" disabled class="material-content-name"
+                             [(ngModel)]="material.name" [ngModelOptions]="{standalone: true}">
+                  </ion-input>
+                  <ion-input type="number" disabled class="material-content-amount"
+                             [(ngModel)]="material.quantity" [ngModelOptions]="{standalone: true}">
+                  </ion-input>
+                  <ion-input type="text" disabled class="material-content-description"
+                             [(ngModel)]="material.description" [ngModelOptions]="{standalone: true}">
+                  </ion-input>
+                  <ion-icon (click)="removeMaterial(material)" name="trash" float-right></ion-icon>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+          </ion-list>
 
+          <ion-list class="new-material">
+            <ion-item>
+              <ion-label stacked>Name*</ion-label>
+              <ion-input type="text" [(ngModel)]="materials.newObj.name" name="materialName"
+                         required [ngClass]="{'has-error' : !materials.newObj.name}">
+              </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>Menge*</ion-label>
+              <ion-input type="number" [(ngModel)]="materials.newObj.quantity" name="materialQuantity"
+                         [ngClass]="{'has-error' : !materials.newObj.quantity}">
+              </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>Beschreibung</ion-label>
+              <ion-textarea [(ngModel)]="materials.newObj.description" name="materialDescription"></ion-textarea>
+            </ion-item>
+            <ion-item>
+              <label>*Pflichtfelder</label>
+              <button ion-button (click)="addMaterial()" block>
+                <ion-icon name="add"></ion-icon>
+                Hinzufügen
+              </button>
+            </ion-item>
+          </ion-list>
         </div>
       </collapsible-card>
     </ng-template>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 
 import { TaskDataService } from '../../services/task_service';
+import {UserDataService} from "../../services/user_service";
 
 @IonicPage({
   name: "task-edit",
@@ -9,7 +10,7 @@ import { TaskDataService } from '../../services/task_service';
 @Component({
   selector: 'page-task-edit',
   templateUrl: 'task-edit.html',
-  providers: [ TaskDataService ],
+  providers: [ TaskDataService, UserDataService ],
 })
 export class TaskEditPage {
 
@@ -42,7 +43,8 @@ export class TaskEditPage {
     all: []
   };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public taskDataService: TaskDataService, public toast: ToastController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastController,
+              public taskDataService: TaskDataService, public userDataService: UserDataService) {
     this.taskId = navParams.get("id");
     this.parentTask = navParams.get("parentId");
     console.log(this.taskId);
@@ -67,6 +69,21 @@ export class TaskEditPage {
       }
     }
   }
+
+  resetObjects() {
+    this.materials.newObj = {};
+    this.materials.toAdd = [];
+    this.materials.toRemove = [];
+    this.shifts.newObj = {};
+    this.shifts.toAdd = [];
+    this.shifts.toRemove = [];
+    this.competences.newObj = {
+      neededProficiencyLevel: 50
+    };
+    this.competences.toAdd = [];
+    this.competences.toRemove = [];
+    this.competences.toUpdate = [];
+  };
 
   openMap() {
     /* @TODO release this once map view is ready
@@ -196,6 +213,36 @@ export class TaskEditPage {
     });
   }
 
+  getCompetenceAreas() {
+    var self = this;
+    self.userDataService.getCompetenceAreas()
+    .then(function (res) {
+      if (res.object.length === 0) {
+        self.toast.create({
+          message: "Keine Kompetenzbereiche gefunden: " + res.message,
+          position: 'top',
+          duration: 3000
+        }).present();
+        return;
+      }
+
+      var compAreas = res.object;
+      compAreas.sort(function (a, b) {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      });
+      self.competenceAreaList = compAreas;
+    }, function (error) {
+      self.toast.create({
+        message: "Kompetenzbereiche können nicht geladen werden: " + error.message,
+        position: 'top',
+        duration: 3000
+      }).present();
+    });
+  }
+
+
   async doRefresh (refresher=null) {
     var self = this;
     await Promise.all([
@@ -216,21 +263,6 @@ export class TaskEditPage {
 
 /*
 
- $scope.resetObjects = function() {
- $scope.materials.newObj = {};
- $scope.materials.toAdd = [];
- $scope.materials.toRemove = [];
- $scope.shifts.newObj = {};
- $scope.shifts.toAdd = [];
- $scope.shifts.toRemove = [];
- $scope.competences.newObj = {
- neededProficiencyLevel: 50
- };
- $scope.competences.toAdd = [];
- $scope.competences.toRemove = [];
- $scope.competences.toUpdate = [];
- };
-
  $scope.load = function(){
  // @TODO: check if task.userIsLeading, if not, go back
  TaskDataService.getTaskById($scope.taskId).then(function (res) {
@@ -239,23 +271,6 @@ export class TaskEditPage {
  $scope.task = task;
  $scope.updateFlags();
 
- UserDataService.getCompetenceAreas()
- .then(function(res) {
- if(res.object.length === 0) {
- ionicToast.show("Keine Kompetenzbereiche gefunden: " + error.message, 'top', false, 5000);
- return;
- }
-
- var compAreas = res.object;
- compAreas.sort(function(a,b) {
- if(a.name < b.name) return -1;
- if(a.name > b.name) return 1;
- return 0;
- });
- $scope.competenceAreaList = compAreas;
- }, function(error) {
- ionicToast.show("Kompetenzbereiche können nicht geladen werden: " + error.message, 'top', false, 5000);
- });
 
  task.startTime = new Date(task.startTime);
  task.endTime = new Date(task.endTime);
