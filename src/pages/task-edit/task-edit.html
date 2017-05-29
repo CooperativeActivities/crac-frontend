@@ -132,8 +132,7 @@
 
                 <ion-item>
                   <button ion-button (click)="removeCompetence(competence)" block>
-                    <ion-icon name="trash-outline"></ion-icon>
-                    Löschen
+                    <ion-icon name="trash-outline"></ion-icon> Löschen
                   </button>
                 </ion-item>
               </ion-list>
@@ -142,8 +141,7 @@
 
           <ion-item *ngIf="!addNewCompetence">
             <button ion-button block (click)="addNewCompetence = !addNewCompetence">
-              <ion-icon name="add"></ion-icon>
-              Kompetenz hinzufügen
+              <ion-icon name="add"></ion-icon> Kompetenz hinzufügen
             </button>
           </ion-item>
 
@@ -186,8 +184,7 @@
             <ion-item>
             <label>*Pflichtfelder</label>
             <button ion-button  (click)="addCompetence()" block>
-              <ion-icon name="add"></ion-icon>
-              Hinzufügen
+              <ion-icon name="add"></ion-icon> Hinzufügen
             </button>
             </ion-item>
           </ion-list>
@@ -207,7 +204,13 @@
             </ion-item>
           </ion-list>
 
-          <ion-list>
+          <ion-item *ngIf="!addNewShift">
+            <button ion-button block (click)="addNewShift = !addNewShift">
+              <ion-icon name="add"></ion-icon> Schicht hinzufügen
+            </button>
+          </ion-item>
+
+          <ion-list *ngIf="addNewShift">
             <ion-item>
               <ion-label stacked>Beginn*</ion-label>
               <ion-input type="datetime-local" name="shiftStartTime" [(ngModel)]="shifts.newObj.startTime"
@@ -230,8 +233,7 @@
               <label>*Pflichtfelder</label>
 
               <button ion-button (click)="addShift()" block>
-                <ion-icon name="add"></ion-icon>
-                Hinzufügen
+                <ion-icon name="add"></ion-icon> Hinzufügen
               </button>
             </ion-item>
           </ion-list>
@@ -242,10 +244,10 @@
           Materialien <span float-right>{{task.materials.length}}</span>
         </span>
         <div card-content>
-          <ion-list ng-cloak>
+          <ion-list *ngIf="materials.all.length > 0">
             <ion-item>
               <ion-grid>
-                <ion-row class="row row-header" *ngIf="materials.all.length > 0">
+                <ion-row class="row row-header">
                   <span class="material-header-name">Name: </span>
                   <span class="material-header-amount">Menge: </span>
                   <span class="material-header-description">Beschreibung: </span>
@@ -266,7 +268,13 @@
             </ion-item>
           </ion-list>
 
-          <ion-list class="new-material">
+          <ion-item *ngIf="!addNewMaterial">
+            <button ion-button block (click)="addNewMaterial = !addNewMaterial">
+              <ion-icon name="add"></ion-icon> Material hinzufügen
+            </button>
+          </ion-item>
+
+          <ion-list *ngIf="addNewMaterial">
             <ion-item>
               <ion-label stacked>Name*</ion-label>
               <ion-input type="text" [(ngModel)]="materials.newObj.name" name="materialName"
@@ -286,8 +294,7 @@
             <ion-item>
               <label>*Pflichtfelder</label>
               <button ion-button (click)="addMaterial()" block>
-                <ion-icon name="add"></ion-icon>
-                Hinzufügen
+                <ion-icon name="add"></ion-icon> Hinzufügen
               </button>
             </ion-item>
           </ion-list>
