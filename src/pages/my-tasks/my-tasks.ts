@@ -23,6 +23,10 @@ export class MyTasksPage {
     this.doRefresh()
   }
 
+  makeNewTask() {
+    this.navCtrl.push('task-edit');
+  }
+
   async doRefresh (refresher=null) {
     await Promise.all([
       this.taskDataService.getMyTasks().then((res) => {
