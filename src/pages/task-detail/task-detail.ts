@@ -83,7 +83,6 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
   $scope.team = [];
   $scope.neededCompetences = [];
-  $scope.timeChoice = 'slot';
 
   $scope.newComment = {name:'', content: ''};
   $scope.user = $rootScope.globals.currentUser.user;
@@ -125,11 +124,7 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
         material.myQuantity = material.subscribedQuantity - material.subscribedQuantityOtherUsers
         return material
       })
-      if($scope.task.startTime != $scope.task.endTime ){
-        $scope.timeChoice = 'slot';
-      } else {
-        $scope.timeChoice = 'point';
-      }
+
       $scope.updateFlags();
       $scope.$broadcast('scroll.refreshComplete');
       //});
@@ -252,6 +247,11 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
       TaskDataService.removeOpenTask($scope.task.id).then(function (res) {
         console.log("unfollowed/cancelled");
         $scope.participationType = "NOT_PARTICIPATING";
+        $scope.task.signedUsers--;
+        var userIdx = _.findIndex($scope.task.userRelationships, {id: $scope.user.id});
+        if(userIdx > -1) {
+          $scope.task.userRelationships.splice(userIdx, 1);
+        }
         $scope.updateFlags();
       }, function (error) {
         ionicToast.show("Aufgabe kann nicht abgesagt werden: " + error.message, 'top', false, 5000);
@@ -273,6 +273,8 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
 
     TaskDataService.changeTaskPartState($stateParams.id ,'participate').then(function(res) {
       $scope.participationType = "PARTICIPATING";
+      $scope.task.signedUsers++;
+      $scope.task.userRelationships.push($scope.user);
       $scope.updateFlags();
     }, function(error) {
       ionicToast.show("An der Aufgabe kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
@@ -287,9 +289,17 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
     TaskDataService.changeTaskPartState(shift.id ,'participate').then(function(res) {
       //@TODO update task object
       console.log('Participating in shift ' + shift.id);
-      $scope.assigned = true;
-      shift.signedUser++;
-      $scope.signedUsers++;
+      shift.assigned = true;
+      shift.signedUsers++;
+      shift.userRelationships.push($scope.user);
+
+      var alreadyInShift = _.find($scope.task.childTasks, function(task){
+        return shift.id != task.id && task.assigned;
+      });
+      if(!alreadyInShift && $scope.participationType != 'PARTICIPATING') {
+        $scope.task.signedUsers++;
+        $scope.task.userRelationships.push($scope.user);
+      }
     }, function(error) {
       ionicToast.show("An der Schicht kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
     });
@@ -301,9 +311,24 @@ function ($scope,$rootScope, $route, $window, $stateParams,$routeParams,TaskData
   $scope.removeFromShift = function(shift) {
     TaskDataService.removeOpenTask(shift.id).then(function (res) {
       console.log('Not participating in shift ' + shift.id);
-      $scope.assigned = false;
+      shift.assigned = false;
       shift.signedUsers--;
-      $scope.signedUsers--;
+      var shiftIdx = _.findIndex(shift.userRelationships, {id: $scope.user.id});
+      if(shiftIdx > -1) {
+        shift.userRelationships.splice(shiftIdx, 1);
+      }
+
+      var alreadyInShift = _.find($scope.task.childTasks, function(task){
+        return shift.id !== task.id && task.assigned;
+      });
+      if(!alreadyInShift && $scope.participationType != 'PARTICIPATING') {
+        $scope.task.signedUsers--;
+        var userIdx = _.findIndex($scope.task.userRelationships, {id: $scope.user.id});
+        if(userIdx > -1) {
+          $scope.task.userRelationships.splice(userIdx, 1);
+        }
+      }
+      $scope.task.signedUsers--;
     }, function(error) {
       ionicToast.show("An der Schicht kann nicht zurückgezogen werden: " + error.message, 'top', false, 5000);
     });
