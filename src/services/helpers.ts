@@ -7,7 +7,7 @@ import { AuthService } from './auth_service';
 @Injectable()
 export class HelperService {
   // URL to REST-Service
-  private _baseURL = window.crac_config.SERVER;
+  private _baseURL = (<any>window).crac_config.SERVER;
   constructor(private http: Http, private errorDisplayService: ErrorDisplayService, private authService: AuthService) { }
 
   ajax(path, method, { handleSpecificErrors = (response)=>{}, payload = null, transformResponse = (response)=>response } = {}): Promise<any>{

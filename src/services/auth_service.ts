@@ -6,7 +6,7 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class AuthService {
   // URL to REST-Service
-  private _baseURL = window.crac_config.SERVER;
+  private _baseURL = (<any>window).crac_config.SERVER;
   public token: string;
   constructor(private http: Http, public storage: Storage) { }
   isAuthenticated(): boolean {
