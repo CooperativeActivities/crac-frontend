@@ -19,7 +19,9 @@ export class TaskDetailPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public taskDataService: TaskDataService) {
     this.taskId = navParams.data.id;
-    this.doRefresh()
+    this.doRefresh();
+
+
   }
 
   edit (){
@@ -30,8 +32,9 @@ export class TaskDetailPage {
 
     await Promise.all([
       this.taskDataService.getTaskById(this.taskId).then((res) => {
-        this.task = res.object
+        this.task = res.object;
         console.log(this.task);
+
 
         if(this.task.startTime != this.task.endTime ){
           this.timeChoice = 'slot';
