@@ -211,7 +211,7 @@ export class TaskEditPage {
     return promises;
   }
 
-  save_details(taskId) {
+  save_details(task) {
     let self = this;
     let promises = [];
 
@@ -231,17 +231,31 @@ export class TaskEditPage {
         mandatory: competence.mandatory ? 1 : 0
       }
     });
+    var shiftsToAdd = (self.shifts.toAdd).map(function(shift) {
+      return {
+        taskType: 'SHIFT',
+        name: task.name,
+        minAmountOfVolunteers: shift.minAmountOfVolunteers,
+        startTime: shift.startTime.getTime(),
+        endTime: shift.endTime.getTime()
+      }
+    });
 
     if(competencesToAdd.length > 0 ) {
-      promises.push(self.taskDataService.addCompetencesToTask(taskId, competencesToAdd));
+      promises.push(self.taskDataService.addCompetencesToTask(task.id, competencesToAdd));
     }
     for(let i=0; i<competencesToUpdate.length; i++) {
-      promises.push(self.taskDataService.updateTaskCompetence(taskId, competencesToUpdate[i]));
+      promises.push(self.taskDataService.updateTaskCompetence(task.id, competencesToUpdate[i]));
     }
     for(let i=0; i<self.competences.toRemove.length; i++) {
-      promises.push(self.taskDataService.removeCompetenceFromTask(taskId, self.competences.toRemove[i]));
+      promises.push(self.taskDataService.removeCompetenceFromTask(task.id, self.competences.toRemove[i]));
     }
-
+    for(var i=0; i<self.shifts.toAdd.length; i++) {
+      promises.push(self.taskDataService.createNewSubTask(shiftsToAdd[i], task.id));
+    }
+    for(var i=0; i<self.shifts.toRemove.length; i++) {
+      promises.push(self.taskDataService.deleteTaskById(self.shifts.toRemove[i].id));
+    }
     return promises;
   }
 
@@ -251,16 +265,16 @@ export class TaskEditPage {
     if(self.isNewTask) {
       self.create().then(function(res:any) {
         if(!res) return;
-        let taskId = res.object.id;
+        let task = res.object;
         self.toast.create({
           message: "Aufgabe gespeichert",
           duration: 3000,
           position: 'top'
         }).present();
 
-        self.save(self.save_details(taskId)).then(function (res:any) {
+        self.save(self.save_details(task)).then(function (res:any) {
           if(!res) return;
-          self.navCtrl.push('task-details', {id: taskId});
+          self.navCtrl.push('task-details', {id: task.id});
           self.toast.create({
             message: "Aufgabe gespeichert",
             duration: 3000,
@@ -269,7 +283,7 @@ export class TaskEditPage {
         });
       });
     } else {
-      let promises = self.update().concat(self.save_details(self.task.id));
+      let promises = self.update().concat(self.save_details(self.task));
       self.save(promises).then(function(res:any) {
         if(!res) return;
         self.toast.create({
@@ -390,6 +404,37 @@ export class TaskEditPage {
     }
   };
 
+  addShift() {
+    let self = this;
+    if(self.shifts.newObj.minAmountOfVolunteers){
+      var message = 'Bitte geben Sie die Anzahl an Helfer an!';
+      self.toast.create({
+        message: "Schicht konnte nicht hinzugefügt werden: " + message,
+        position: 'top',
+        duration: 3000
+      }).present();
+      return;
+    }
+
+    if(self.shifts.newObj.startTime || self.shifts.newObj.endTime) return;
+    var newShift = _.clone(self.shifts.newObj);
+    self.shifts.all.push(newShift);
+    self.shifts.toAdd.push(newShift);
+  };
+
+  removeShift(shift) {
+    let self = this;
+    if (!shift) return;
+    let index = _.findIndex(self.shifts.all, shift);
+    var newIndex = _.findIndex(self.shifts.toAdd, shift);
+    self.shifts.all.splice(index, 1)[0];
+    if (newIndex < 0) {
+      self.shifts.toRemove.push(shift.id);
+    } else {
+      self.shifts.toAdd.splice(newIndex, 1)[0];
+    }
+  }
+
   async doRefresh (refresher=null) {
     let self = this;
     await Promise.all([
@@ -450,15 +495,6 @@ export class TaskEditPage {
  }
  };
 
- // Save task
- $scope.save = function(){
- var task = $scope.task;
- var taskData = {};
- if(!task.name){
- ionicToast.show("Task kann nicht gespeichert werden:: " + "Name muss angegeben werden.", 'top', false, 5000);
- return
- }
- taskData.name= task.name;
 
  var materialsToAdd = ($scope.materials.toAdd).map(function(material){
  return {
@@ -467,58 +503,15 @@ export class TaskEditPage {
  quantity: material.quantity || 0
  }
  });
- var shiftsToAdd = ($scope.shifts.toAdd).map(function(shift) {
- return {
- taskType: 'SHIFT',
- name: task.name,
- minAmountOfVolunteers: shift.minAmountOfVolunteers,
- startTime: shift.startTime.getTime(),
- endTime: shift.endTime.getTime()
- }
- });
 
  // @TODO: implement time shift add - new endpoint for batch adding
 
  if(materialsToAdd.length > 0 ) {
  promises.push(TaskDataService.addMaterialsToTask(task.id, materialsToAdd));
  }
- for(var i=0; i<$scope.shifts.toAdd.length; i++) {
- promises.push(TaskDataService.createNewSubTask(shiftsToAdd[i], task.id));
- }
  for(var i=0; i<$scope.materials.toRemove.length; i++) {
  promises.push(TaskDataService.removeMaterialFromTask(task.id, $scope.materials.toRemove[i]));
  }
- for(var i=0; i<$scope.shifts.toRemove.length; i++) {
- promises.push(TaskDataService.deleteTaskById($scope.shifts.toRemove[i].id));
- }
-
- if( promises.length === 0 ) {
- return false;
- }
-
- promise = $q.all(promises).then(function(res){
- return res;
- });
-
- return promise.then(function (res) {
- //@TODO need to handle all elements, not just first
- $scope.resetObjects();
- $scope.load();
- return res[0];
- }, function(error) {
- ionicToast.show("Aufgabe kann nicht gespeichert werden: " + error.message, 'top', false, 5000);
- return false;
- });
- };
-
- // Save changes only
- $scope.save_changes = function() {
- $scope.save().then(function(save_res) {
- if(!save_res) return;
-
- ionicToast.show("Task gespeichert", 'top', false, 5000)
- });
- };
 
  $scope.save_and_publish = function(){
  $scope.save().then(function(save_res){
@@ -573,39 +566,6 @@ export class TaskEditPage {
  $scope.materials.toAdd.splice(newIndex, 1)[0];
  }
  };
-
- //shifts
- $scope.addShift = function() {
-
- if(!$scope.shifts.newObj.minAmountOfVolunteers){
- var message = 'Bitte geben Sie die Anzahl an Helfer an!';
- ionicToast.show("Schicht konnte nicht hinzugefügt werden: " + message, 'top', false, 5000);
- return;
- }
-
- if(!$scope.shifts.newObj.startTime || !$scope.shifts.newObj.endTime) return;
- var newShift = _.clone($scope.shifts.newObj);
- $scope.shifts.all.push(newShift);
- $scope.shifts.toAdd.push(newShift);
- };
-
- $scope.saveShift = function() {
- console.log('---Start Shift stuff ----');
- console.log($scope.shifts);
- };
-
-
-
- $scope.removeShift = function(shift){
- if(!shift) return;
- // var index = _.findIndex($scope.shifts.all, shift);
- // var newIndex = _.findIndex($scope.shifts.toAdd, shift);
- // $scope.shifts.all.splice(index, 1)[0];
- // if( newIndex < 0 ) {
- //   $scope.shifts.toRemove.push(shift.id);
- // } else {
- //   $scope.shifts.toAdd.splice(newIndex, 1)[0];
- // }
 
  TaskDataService.deleteTaskById(shift.id).then(function (res) {
  var message = 'Schicht wurde erfolgreich gelöscht';
