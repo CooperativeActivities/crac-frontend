@@ -240,6 +240,13 @@ export class TaskEditPage {
         endTime: shift.endTime.getTime()
       }
     });
+    let materialsToAdd = (self.materials.toAdd).map(function(material){
+      return {
+        name: material.name,
+        description: material.description || "",
+        quantity: material.quantity || 0
+      }
+    });
 
     if(competencesToAdd.length > 0 ) {
       promises.push(self.taskDataService.addCompetencesToTask(task.id, competencesToAdd));
@@ -256,6 +263,13 @@ export class TaskEditPage {
     for(let i=0; i<self.shifts.toRemove.length; i++) {
       promises.push(self.taskDataService.deleteTaskById(self.shifts.toRemove[i].id));
     }
+    if(materialsToAdd.length > 0 ) {
+      promises.push(self.taskDataService.addMaterialsToTask(task.id, materialsToAdd));
+    }
+    for(let i=0; i<self.materials.toRemove.length; i++) {
+      promises.push(self.taskDataService.removeMaterialFromTask(task.id, self.materials.toRemove[i]));
+    }
+
     return promises;
   }
 
@@ -435,6 +449,51 @@ export class TaskEditPage {
     }
   }
 
+  addMaterial(){
+    let self = this;
+
+    if(!self.materials.newObj.name || !self.materials.newObj.quantity) {
+      let message = "Bitte geben Sie ";
+      if(!self.materials.newObj.name) {
+        message += "den Namen ";
+      }
+      if(!self.materials.newObj.quantity){
+        if(!self.materials.newObj.name) {
+          message += "und ";
+        }
+        message += "die Menge";
+      }
+      message += " an!";
+      self.toast.create({
+        message: "Material konnte nicht hinzugefügt werden: " + message,
+        position: 'top',
+        duration: 3000
+      }).present();
+      return;
+    }
+
+    //save later
+    let newMaterial = _.clone(self.materials.newObj);
+    newMaterial.quantity = newMaterial.quantity || 1;
+    self.materials.all.push(newMaterial);
+    self.materials.toAdd.push(newMaterial);
+    self.materials.newObj = {};
+  };
+
+  removeMaterial(material){
+    let self = this;
+    if(!material) return;
+    let index = _.findIndex(self.materials.all, material);
+    let newIndex = _.findIndex(self.materials.toAdd, material);
+    self.materials.all.splice(index, 1)[0];
+    if(newIndex < 0) {
+      self.materials.toRemove.push(material.id);
+    } else {
+      self.materials.toAdd.splice(newIndex, 1)[0];
+    }
+  };
+
+
   async doRefresh (refresher=null) {
     let self = this;
     await Promise.all([
@@ -495,24 +554,6 @@ export class TaskEditPage {
  }
  };
 
-
- var materialsToAdd = ($scope.materials.toAdd).map(function(material){
- return {
- name: material.name,
- description: material.description || "",
- quantity: material.quantity || 0
- }
- });
-
- // @TODO: implement time shift add - new endpoint for batch adding
-
- if(materialsToAdd.length > 0 ) {
- promises.push(TaskDataService.addMaterialsToTask(task.id, materialsToAdd));
- }
- for(var i=0; i<$scope.materials.toRemove.length; i++) {
- promises.push(TaskDataService.removeMaterialFromTask(task.id, $scope.materials.toRemove[i]));
- }
-
  $scope.save_and_publish = function(){
  $scope.save().then(function(save_res){
  if(!save_res) return;
@@ -528,43 +569,6 @@ export class TaskEditPage {
  }, function(error) {
  ionicToast.show("Aufgabe kann nicht veröffentlicht werden: " + error.message, 'top', false, 5000);
  });
- };
-
- //material
- $scope.addMaterial = function(){
- if(!$scope.materials.newObj.name || !$scope.materials.newObj.quantity) {
- var message = "Bitte geben Sie ";
- if(!$scope.materials.newObj.name) {
- message += "den Namen ";
- }
- if(!$scope.materials.newObj.quantity){
- if(!$scope.materials.newObj.name) {
- message += "und ";
- }
- message += "die Menge";
- }
- message += " an!";
- ionicToast.show("Material konnte nicht hinzugefügt werden: " + message, 'top', false, 5000);
- return;
- }
-
- //save later
- var newMaterial = _.clone($scope.materials.newObj);
- newMaterial.quantity = newMaterial.quantity || 1;
- $scope.materials.all.push(newMaterial);
- $scope.materials.toAdd.push(newMaterial);
- $scope.materials.newObj = {};
- };
- $scope.removeMaterial = function(material){
- if(!material) return;
- var index = _.findIndex($scope.materials.all, material);
- var newIndex = _.findIndex($scope.materials.toAdd, material);
- $scope.materials.all.splice(index, 1)[0];
- if(newIndex < 0) {
- $scope.materials.toRemove.push(material.id);
- } else {
- $scope.materials.toAdd.splice(newIndex, 1)[0];
- }
  };
 
  TaskDataService.deleteTaskById(shift.id).then(function (res) {
