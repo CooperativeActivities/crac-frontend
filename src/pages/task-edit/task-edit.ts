@@ -407,7 +407,7 @@ export class TaskEditPage {
   addShift() {
     let self = this;
     if(self.shifts.newObj.minAmountOfVolunteers){
-      var message = 'Bitte geben Sie die Anzahl an Helfer an!';
+      let message = 'Bitte geben Sie die Anzahl an Helfer an!';
       self.toast.create({
         message: "Schicht konnte nicht hinzugefügt werden: " + message,
         position: 'top',
@@ -417,7 +417,7 @@ export class TaskEditPage {
     }
 
     if(self.shifts.newObj.startTime || self.shifts.newObj.endTime) return;
-    var newShift = _.clone(self.shifts.newObj);
+    let newShift = _.clone(self.shifts.newObj);
     self.shifts.all.push(newShift);
     self.shifts.toAdd.push(newShift);
   };
@@ -426,7 +426,7 @@ export class TaskEditPage {
     let self = this;
     if (!shift) return;
     let index = _.findIndex(self.shifts.all, shift);
-    var newIndex = _.findIndex(self.shifts.toAdd, shift);
+    let newIndex = _.findIndex(self.shifts.toAdd, shift);
     self.shifts.all.splice(index, 1)[0];
     if (newIndex < 0) {
       self.shifts.toRemove.push(shift.id);
