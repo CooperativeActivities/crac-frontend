@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import * as _ from 'lodash';
 
 import { TaskDataService } from '../../services/task_service';
-import {UserDataService} from "../../services/user_service";
+import { UserDataService } from "../../services/user_service";
+import {getProcessEnvVar} from "@ionic/app-scripts";
 
 @IonicPage({
   name: "task-edit",
@@ -19,8 +21,13 @@ export class TaskEditPage {
   task : any;
   isNewTask: boolean = true;
   isChildTask: boolean = false;
+  addNewCompetence: boolean = false;
+  addNewShift: boolean = false;
+  addNewMaterial: boolean = false;
   pageTitle: string;
+  competenceArea: any;
   competenceAreaList: Array<any> = [];
+  availableCompetences: Array<any> = [];
   materials: any = {
     newObj: {},
     toAdd: [],
@@ -97,76 +104,83 @@ export class TaskEditPage {
     */
   }
 
-  save() {
-    var self = this;
-    var task = self.task;
-    var taskData : any = {};
+  getProcessedTaskData() {
+    let self = this;
+    let taskData : any = {};
 
-    if(!task.name){
+    taskData.name = self.task.name;
+
+    // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
+
+    /* @TODO replace date check
+     if(!angular.isDate(self.task.startTime)){
+     toast.show("Aufgabe kann nicht gespeichert werden: " + "Bitte ein gültiges Startdatum eingeben!", 'top', false, 5000);
+     return;
+     }
+     */
+
+    /* @TODO replace date check*/
+    if(self.task.endTime/* || !angular.isDate(self.task.endTime)*/) {
+      self.task.startTime = new Date(self.task.startTime);
+      self.task.endTime = new Date(self.task.startTime);
+    } else {
+      self.task.startTime = new Date(self.task.startTime);
+      self.task.endTime = new Date(self.task.endTime);
+    }
+
+    if(self.task.startTime) taskData.startTime = self.task.startTime.getTime();
+    if(self.task.endTime) taskData.endTime = self.task.endTime.getTime();
+    if(self.task.description) taskData.description = self.task.description;
+    if(self.task.location) taskData.location = self.task.location;
+    if(self.task.address) taskData.address = self.task.address;
+    if(self.task.lat) taskData.lat = self.task.lat;
+    if(self.task.lng) taskData.lng = self.task.lng;
+    if(self.task.minAmountOfVolunteers) taskData.minAmountOfVolunteers = self.task.minAmountOfVolunteers;
+    taskData.taskType = self.task.taskType;
+    taskData.taskState = self.task.taskState;
+
+    return taskData;
+  }
+
+  create() {
+    let self = this;
+
+    let promises = [];
+    if(!self.task.name){
       self.toast.create({
         message: "Aufgabe kann nicht gespeichert werden: " + "Name muss angegeben werden",
         duration: 3000,
         position: 'top'
       }).present();
-      return new Promise((resolve) => {resolve(false)});
+      promises.push(new Promise((resolve) => {resolve(false)}));
+      return promises;
     }
-    taskData.name = task.name;
 
-    // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
-
-    /* @TODO replace date check
-    if(!angular.isDate(self.task.startTime)){
-      toast.show("Aufgabe kann nicht gespeichert werden: " + "Bitte ein gültiges Startdatum eingeben!", 'top', false, 5000);
-      return;
-    }
-    */
-
-    /* @TODO replace date check*/
-    if(self.task.endTime/* || !angular.isDate(self.task.endTime)*/) {
-      task.startTime = new Date(task.startTime);
-      task.endTime = new Date(task.startTime);
+    let taskData = self.getProcessedTaskData();
+    if (!self.parentTask) {
+      promises.push(self.taskDataService.createNewTask(taskData));
     } else {
-      task.startTime = new Date(task.startTime);
-      task.endTime = new Date(task.endTime);
+      promises.push(self.taskDataService.createNewSubTask(taskData, self.parentTask.id));
     }
 
+    let promise = Promise.all(promises).then(function (res) { return res; });
 
-    if(task.startTime) taskData.startTime = task.startTime.getTime();
-    if(task.endTime) taskData.endTime = task.endTime.getTime();
-    if(task.description) taskData.description = task.description;
-    if(task.location) taskData.location = task.location;
-    if(task.address) taskData.address = task.address;
-    if(task.lat) taskData.lat = task.lat;
-    if(task.lng) taskData.lng = task.lng;
-    if(task.minAmountOfVolunteers) taskData.minAmountOfVolunteers = task.minAmountOfVolunteers;
-    taskData.taskType = task.taskType;
+    return promise.then(function (res) {
+      return res[0];
+    }, function(error) {
+      self.toast.create({
+        message: "Aufgabe kann nicht erstellt werden: " + error.message,
+        duration: 3000,
+        position: 'top'
+      }).present();
+      return false;
+    });
 
-    var promise;
-    if(!self.isNewTask){
-      // @TODO: this shouldn't be necessary
-      taskData.taskState = task.taskState;
+  }
 
-      promise = Promise.all([
-        self.taskDataService.updateTaskById(taskData, task.id)
-      ]).then(function(res){
-        return res;
-      });
-    } else {
-      if (!self.parentTask) {
-        promise = Promise.all([
-          self.taskDataService.createNewTask(taskData)
-        ]).then(function (res) {
-          return res;
-        });
-      } else {
-        promise = Promise.all([
-          self.taskDataService.createNewSubTask(taskData, self.parentTask.id)
-        ]).then(function (res) {
-          return res;
-        });
-      }
-    }
-
+  save(promises) {
+    let self = this;
+    let promise = Promise.all(promises).then(function (res) { return res; });
     return promise.then(function (res) {
       return res[0];
     }, function(error) {
@@ -179,42 +193,103 @@ export class TaskEditPage {
     });
   }
 
-  save_changes() {
-    var self = this;
-    self.save().then(function(save_res) {
-      if(!save_res) return;
-      var taskId = save_res.object.id;
+  update() {
+    let self = this;
+    if(!self.task.name){
       self.toast.create({
-        message: "Aufgabe gespeichert",
+        message: "Aufgabe kann nicht gespeichert werden: " + "Name muss angegeben werden",
         duration: 3000,
         position: 'top'
       }).present();
+      promises.push(new Promise((resolve) => {resolve(false)}));
+      return promises;
+    }
 
-      if(self.isNewTask) {
-        self.navCtrl.push('task-details', {id: taskId});
+    let taskData = self.getProcessedTaskData();
+    let promises = [self.taskDataService.updateTaskById(taskData, self.task.id)];
+    return promises;
+  }
+
+  save_details(taskId) {
+    let self = this;
+    let promises = [];
+
+    let competencesToAdd = self.competences.toAdd.map(function(competence){
+      return {
+        competenceId: competence.id,
+        importanceLevel: competence.neededProficiencyLevel || 0,
+        neededProficiencyLevel: competence.neededProficiencyLevel || 0,
+        mandatory: competence.mandatory ? 1 : 0
       }
     });
+    let competencesToUpdate = self.competences.toUpdate.map(function(competence){
+      return {
+        id: competence.id,
+        importanceLevel: parseInt(competence.neededProficiencyLevel) || 0,
+        neededProficiencyLevel: parseInt(competence.neededProficiencyLevel) || 0,
+        mandatory: competence.mandatory ? 1 : 0
+      }
+    });
+
+    if(competencesToAdd.length > 0 ) {
+      promises.push(self.taskDataService.addCompetencesToTask(taskId, competencesToAdd));
+    }
+    for(let i=0; i<competencesToUpdate.length; i++) {
+      promises.push(self.taskDataService.updateTaskCompetence(taskId, competencesToUpdate[i]));
+    }
+    for(let i=0; i<self.competences.toRemove.length; i++) {
+      promises.push(self.taskDataService.removeCompetenceFromTask(taskId, self.competences.toRemove[i]));
+    }
+
+    return promises;
+  }
+
+  save_changes() {
+    let self = this;
+
+    if(self.isNewTask) {
+      self.create().then(function(res:any) {
+        if(!res) return;
+        let taskId = res.object.id;
+        self.toast.create({
+          message: "Aufgabe gespeichert",
+          duration: 3000,
+          position: 'top'
+        }).present();
+
+        self.save(self.save_details(taskId)).then(function (res:any) {
+          if(!res) return;
+          self.navCtrl.push('task-detail', {id: taskId});
+          self.toast.create({
+            message: "Aufgabe gespeichert",
+            duration: 3000,
+            position: 'top'
+          }).present();
+        });
+      });
+    } else {
+      let promises = self.update().concat(self.save_details(self.task.id));
+      self.save(promises).then(function(res:any) {
+        if(!res) return;
+        self.toast.create({
+          message: "Aufgabe gespeichert",
+          duration: 3000,
+          position: 'top'
+        }).present();
+      });
+    }
   };
 
-  add_details() {
-    var self = this;
-    self.save().then(function(save_res) {
-      if (!save_res) return;
-      var taskId = save_res.object.id;
-      self.toast.create({
-        message: "Aufgabe gespeichert",
-        duration: 3000,
-        position: 'top'
-      }).present();
-      self.navCtrl.push('task-edit-details', {
-        id: taskId,
-        section: 'competences'
-      });
-    });
+  openNewCompetenceForm(){
+    let self = this;
+    if(self.competenceAreaList.length === 0) {
+      self.getCompetenceAreas();
+    }
+    self.addNewCompetence = !self.addNewCompetence;
   }
 
   getCompetenceAreas() {
-    var self = this;
+    let self = this;
     self.userDataService.getCompetenceAreas()
     .then(function (res) {
       if (res.object.length === 0) {
@@ -226,7 +301,7 @@ export class TaskEditPage {
         return;
       }
 
-      var compAreas = res.object;
+      let compAreas = res.object;
       compAreas.sort(function (a, b) {
         if (a.name < b.name) return -1;
         if (a.name > b.name) return 1;
@@ -242,15 +317,106 @@ export class TaskEditPage {
     });
   }
 
+  getCompetencesForArea(newValue){
+    let self = this;
+
+    if(newValue === -1) return;
+    self.userDataService.getCompetencesForArea(newValue)
+    .then(function(res) {
+      if(res.object.mappedCompetences.length === 0) {
+        self.toast.create({
+          message: "Keine Kompetenzen in diesem Bereich gefunden",
+          position: 'top',
+          duration: 3000
+        }).present();
+        return;
+      } else {
+        self.availableCompetences = res.meta.competences;
+      }
+    }, function(error) {
+      self.toast.create({
+        message: "Kompetenzen dieses Bereichs können nicht geladen werden: " + error.message,
+        position: 'top',
+        duration: 3000
+      }).present();
+    });
+  }
+
+  addCompetence(){
+    let self = this;
+    let competenceId = self.competences.newObj.id;
+    if(!competenceId) return;
+    //save later
+    let index = _.findIndex(self.availableCompetences, { id: parseInt(competenceId) });
+    if(index === -1){
+      console.error("this shouldn't happen");
+      return;
+    }
+    let competence = self.availableCompetences.splice(index, 1)[0];
+    let newComp = {
+      id: competenceId,
+      name: competence.name,
+      importanceLevel: self.competences.newObj.neededProficiencyLevel,
+      neededProficiencyLevel: self.competences.newObj.neededProficiencyLevel,
+      mandatory: self.competences.newObj.mandatory
+    };
+
+    self.competences.toAdd.push(newComp);
+    self.competences.all.push(newComp);
+  };
+
+  updateCompetence(competence){
+    let self = this;
+    if(!competence) return;
+    let index = _.findIndex(self.competences.toUpdate, {id: competence.id});
+    if(index < 0) {
+      self.competences.toUpdate.push(competence);
+    } else {
+      self.competences.toUpdate[index] = competence;
+    }
+  };
+
+  removeCompetence(competence){
+    let self = this;
+    if(!competence) return;
+    let index = _.findIndex(self.competences.all, competence);
+    let newIndex = _.findIndex(self.competences.toAdd, competence);
+    self.competences.all.splice(index, 1)[0];
+    if(newIndex < 0) {
+      self.competences.toRemove.push(competence.id);
+    } else {
+      self.competences.toAdd.splice(newIndex, 1)[0];
+    }
+  };
 
   async doRefresh (refresher=null) {
-    var self = this;
+    let self = this;
     await Promise.all([
       self.taskDataService.getTaskById(this.taskId).then((res) => {
         self.task = res.object;
         console.log(self.task);
+
+        //self.updateFlags();
+
+        self.task.startTime = new Date(self.task.startTime);
+        self.task.endTime = new Date(self.task.endTime);
+
+        self.competences.all = _.clone(self.task.taskCompetences);
+        self.materials.all = _.clone(self.task.materials);
+        self.shifts.newObj.startTime = self.task.startTime;
+        self.shifts.newObj.endTime = self.task.endTime;
+        self.shifts.all = _.clone(self.task.childTasks);
+
+        for(let i=0; i<self.shifts.all.length; i++) {
+          self.shifts.all[i].startTime = new Date(self.shifts.all[i].startTime);
+          self.shifts.all[i].endTime = new Date(self.shifts.all[i].endTime);
+        }
       }, (error) => {
-        console.warn("Task could not be retrieved", error)
+          self.toast.create({
+            message:"Aufgabe kann nicht geladen werden: " + error.message,
+            position: 'top',
+            duration: 3000
+          }).present();
       })
     ]);
     //Stop the ion-refresher from spinning
@@ -262,50 +428,6 @@ export class TaskEditPage {
 }
 
 /*
-
- $scope.load = function(){
- // @TODO: check if task.userIsLeading, if not, go back
- TaskDataService.getTaskById($scope.taskId).then(function (res) {
- var task = res.object;
- console.log("edit", task);
- $scope.task = task;
- $scope.updateFlags();
-
-
- task.startTime = new Date(task.startTime);
- task.endTime = new Date(task.endTime);
-
- $scope.competences.all = _.clone(task.taskCompetences);
- $scope.materials.all = _.clone(task.materials);
- $scope.shifts.newObj.startTime = task.startTime;
- $scope.shifts.newObj.endTime = task.endTime;
- $scope.shifts.all = _.clone(task.childTasks);
-
- for(var i=0; i<$scope.shifts.length; i++) {
- $scope.shifts[i].startTime = new Date($scope.shifts[i].startTime);
- $scope.shifts[i].endTime = new Date($scope.shifts[i].endTime);
- }
- }, function (error) {
- ionicToast.show("Aufgabe kann nicht geladen werden: " + error.message, 'top', false, 5000);
- });
- };
-
- $scope.onCompetenceAreaChange = function(newValue){
- if(newValue === -1) return;
- UserDataService.getCompetencesForArea(newValue)
- .then(function(res) {
- if(res.meta.competences.length === 0) {
- ionicToast.show("Keine Kompetenzen in diesem Bereich gefunden: " + '', 'top', false, 5000);
- return;
- }
-
- $scope.availableCompetences = res.meta.competences;
- }, function(error) {
- ionicToast.show("Kompetenzen dieses Bereichs können nicht geladen werden: " + error.message, 'top', false, 5000);
- });
-
- };
-
  $scope.updateFlags = function(){
  var task = $scope.task;
 
@@ -337,23 +459,6 @@ export class TaskEditPage {
  }
  taskData.name= task.name;
 
- var promise;
- var competencesToAdd = $scope.competences.toAdd.map(function(competence){
- return {
- competenceId: competence.id,
- importanceLevel: competence.neededProficiencyLevel || 0,
- neededProficiencyLevel: competence.neededProficiencyLevel || 0,
- mandatory: competence.mandatory ? 1 : 0
- }
- });
- var competencesToUpdate = $scope.competences.toUpdate.map(function(competence){
- return {
- id: competence.id,
- importanceLevel: parseInt(competence.neededProficiencyLevel) || 0,
- neededProficiencyLevel: parseInt(competence.neededProficiencyLevel) || 0,
- mandatory: competence.mandatory ? 1 : 0
- }
- });
  var materialsToAdd = ($scope.materials.toAdd).map(function(material){
  return {
  name: material.name,
@@ -372,22 +477,12 @@ export class TaskEditPage {
  });
 
  // @TODO: implement time shift add - new endpoint for batch adding
- var promises = [];
 
- if(competencesToAdd.length > 0 ) {
- promises.push(TaskDataService.addCompetencesToTask(task.id, competencesToAdd));
- }
  if(materialsToAdd.length > 0 ) {
  promises.push(TaskDataService.addMaterialsToTask(task.id, materialsToAdd));
  }
  for(var i=0; i<$scope.shifts.toAdd.length; i++) {
  promises.push(TaskDataService.createNewSubTask(shiftsToAdd[i], task.id));
- }
- for(var i=0; i<$scope.competences.toRemove.length; i++) {
- promises.push(TaskDataService.removeCompetenceFromTask(task.id, $scope.competences.toRemove[i]));
- }
- for(var i=0; i<competencesToUpdate.length; i++) {
- promises.push(TaskDataService.updateTaskCompetence(task.id, competencesToUpdate[i]));
  }
  for(var i=0; i<$scope.materials.toRemove.length; i++) {
  promises.push(TaskDataService.removeMaterialFromTask(task.id, $scope.materials.toRemove[i]));
@@ -439,50 +534,6 @@ export class TaskEditPage {
  }, function(error) {
  ionicToast.show("Aufgabe kann nicht veröffentlicht werden: " + error.message, 'top', false, 5000);
  });
- };
-
- $scope.addCompetence = function(){
- var competenceId = $scope.competences.newObj.id;
- if(!competenceId) return;
- //save later
- var index = _.findIndex($scope.availableCompetences, { id: parseInt(competenceId) });
- if(index === -1){
- console.error("this shouldn't happen")
- return;
- }
- var competence = $scope.availableCompetences.splice(index, 1)[0];
- var newComp = {
- id: competenceId,
- name: competence.name,
- importanceLevel: $scope.competences.newObj.neededProficiencyLevel,
- neededProficiencyLevel: $scope.competences.newObj.neededProficiencyLevel,
- mandatory: $scope.competences.newObj.mandatory
- };
-
- $scope.competences.toAdd.push(newComp);
- $scope.competences.all.push(newComp);
- };
-
- $scope.updateCompetence = function(competence){
- if(!competence) return;
- var index = _.findIndex($scope.competences.toUpdate, {id: competence.id});
- if(index < 0) {
- $scope.competences.toUpdate.push(competence);
- } else {
- $scope.competences.toUpdate[index] = competence;
- }
- };
-
- $scope.removeCompetence = function(competence){
- if(!competence) return;
- var index = _.findIndex($scope.competences.all, competence);
- var newIndex = _.findIndex($scope.competences.toAdd, competence);
- $scope.competences.all.splice(index, 1)[0];
- if(newIndex < 0) {
- $scope.competences.toRemove.push(competence.id);
- } else {
- $scope.competences.toAdd.splice(newIndex, 1)[0];
- }
  };
 
  //material

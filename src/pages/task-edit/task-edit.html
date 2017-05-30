@@ -131,7 +131,7 @@
                 </ion-item>
 
                 <ion-item>
-                  <button ion-button (click)="removeCompetence(competence)" block>
+                  <button ion-button (click)="removeCompetence(competence)" block color="danger">
                     <ion-icon name="trash-outline"></ion-icon> Löschen
                   </button>
                 </ion-item>
@@ -140,7 +140,7 @@
           </ion-list>
 
           <ion-item *ngIf="!addNewCompetence">
-            <button ion-button block (click)="addNewCompetence = !addNewCompetence">
+            <button ion-button block (click)="openNewCompetenceForm()">
               <ion-icon name="add"></ion-icon> Kompetenz hinzufügen
             </button>
           </ion-item>
@@ -148,18 +148,18 @@
           <ion-list *ngIf="addNewCompetence">
             <ion-item>
               <ion-label stacked>Kompetenzbereich*</ion-label>
-              <ion-select> [(ngModel)]="competenceArea" name="competenceArea" (change)="onCompetenceAreaChange(competenceArea)">
-                <option *ngFor="let area of competenceAreaList" [ngValue]="area.id">
-                  area.name
-                </option>
+              <ion-select [(ngModel)]="competenceArea" name="competenceArea" (ionChange)="getCompetencesForArea(competenceArea)">
+                <ion-option *ngFor="let area of competenceAreaList" value="{{area.id}}">
+                  {{area.name}}
+                </ion-option>
               </ion-select>
             </ion-item>
             <ion-item>
               <ion-label *ngIf="competenceArea != -1" stacked>Kompetenz*</ion-label>
               <ion-select [(ngModel)]="competences.newObj.id" name="competence">
-                <option *ngFor="let competence of availableCompetences" [ngValue]="competence.id">
+                <ion-option *ngFor="let competence of availableCompetences" value="{{competence.id}}">
                   {{ competence.name }}
-                </option>
+                </ion-option>
               </ion-select>
             </ion-item>
             <ion-item>
