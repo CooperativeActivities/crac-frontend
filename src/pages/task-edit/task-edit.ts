@@ -231,7 +231,7 @@ export class TaskEditPage {
         mandatory: competence.mandatory ? 1 : 0
       }
     });
-    var shiftsToAdd = (self.shifts.toAdd).map(function(shift) {
+    let shiftsToAdd = (self.shifts.toAdd).map(function(shift) {
       return {
         taskType: 'SHIFT',
         name: task.name,
@@ -250,10 +250,10 @@ export class TaskEditPage {
     for(let i=0; i<self.competences.toRemove.length; i++) {
       promises.push(self.taskDataService.removeCompetenceFromTask(task.id, self.competences.toRemove[i]));
     }
-    for(var i=0; i<self.shifts.toAdd.length; i++) {
+    for(let i=0; i<self.shifts.toAdd.length; i++) {
       promises.push(self.taskDataService.createNewSubTask(shiftsToAdd[i], task.id));
     }
-    for(var i=0; i<self.shifts.toRemove.length; i++) {
+    for(let i=0; i<self.shifts.toRemove.length; i++) {
       promises.push(self.taskDataService.deleteTaskById(self.shifts.toRemove[i].id));
     }
     return promises;
