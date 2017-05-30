@@ -145,7 +145,7 @@ export class TaskEditPage {
   create() {
     let self = this;
 
-    let promises = [];
+    let promises: Array<any> = [];
     if(!self.task.name){
       self.toast.create({
         message: "Aufgabe kann nicht gespeichert werden: " + "Name muss angegeben werden",
@@ -173,7 +173,7 @@ export class TaskEditPage {
         duration: 3000,
         position: 'top'
       }).present();
-      return false;
+      return new Promise((resolve) => {resolve(false)});
     });
 
   }
@@ -189,12 +189,13 @@ export class TaskEditPage {
         duration: 3000,
         position: 'top'
       }).present();
-      return false;
+      return new Promise((resolve) => {resolve(false)});
     });
   }
 
   update() {
     let self = this;
+    let promises = [];
     if(!self.task.name){
       self.toast.create({
         message: "Aufgabe kann nicht gespeichert werden: " + "Name muss angegeben werden",
@@ -206,7 +207,7 @@ export class TaskEditPage {
     }
 
     let taskData = self.getProcessedTaskData();
-    let promises = [self.taskDataService.updateTaskById(taskData, self.task.id)];
+    promises = [self.taskDataService.updateTaskById(taskData, self.task.id)];
     return promises;
   }
 
@@ -259,7 +260,7 @@ export class TaskEditPage {
 
         self.save(self.save_details(taskId)).then(function (res:any) {
           if(!res) return;
-          self.navCtrl.push('task-detail', {id: taskId});
+          self.navCtrl.push('task-details', {id: taskId});
           self.toast.create({
             message: "Aufgabe gespeichert",
             duration: 3000,
