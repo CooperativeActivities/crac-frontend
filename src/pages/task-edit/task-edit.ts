@@ -4,7 +4,6 @@ import * as _ from 'lodash';
 
 import { TaskDataService } from '../../services/task_service';
 import { UserDataService } from "../../services/user_service";
-import {getProcessEnvVar} from "@ionic/app-scripts";
 
 @IonicPage({
   name: "task-edit",
@@ -163,23 +162,14 @@ export class TaskEditPage {
       promises.push(self.taskDataService.createNewSubTask(taskData, self.parentTask.id));
     }
 
-    let promise = Promise.all(promises).then(function (res) { return res; });
-
-    return promise.then(function (res) {
-      return res[0];
-    }, function(error) {
-      self.toast.create({
-        message: "Aufgabe kann nicht erstellt werden: " + error.message,
-        duration: 3000,
-        position: 'top'
-      }).present();
-      return new Promise((resolve) => {resolve(false)});
-    });
-
+    return promises;
   }
 
   save(promises) {
     let self = this;
+    if(promises.length === 0) {
+      return new Promise((resolve) => {resolve(false)});
+    }
     let promise = Promise.all(promises).then(function (res) { return res; });
     return promise.then(function (res) {
       return res[0];
@@ -277,7 +267,7 @@ export class TaskEditPage {
     let self = this;
 
     if(self.isNewTask) {
-      self.create().then(function(res:any) {
+      self.save(self.create()).then(function(res:any) {
         if(!res) return;
         let task = res.object;
         self.toast.create({
@@ -287,8 +277,8 @@ export class TaskEditPage {
         }).present();
 
         self.save(self.save_details(task)).then(function (res:any) {
+          self.navCtrl.push('task-detail', {id: task.id});
           if(!res) return;
-          self.navCtrl.push('task-details', {id: task.id});
           self.toast.create({
             message: "Aufgabe gespeichert",
             duration: 3000,
