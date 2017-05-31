@@ -16,7 +16,8 @@ import { UserDataService } from "../../services/user_service";
 export class TaskEditPage {
 
   public taskId : any;
-  public parentTask : any;
+  public parentId : any;
+  parentTask: any;
   task : any;
   isNewTask: boolean = true;
   isChildTask: boolean = false;
@@ -52,7 +53,7 @@ export class TaskEditPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastController,
               public taskDataService: TaskDataService, public userDataService: UserDataService) {
     this.taskId = navParams.get("id");
-    this.parentTask = navParams.get("parentId");
+    this.parentId = navParams.get("parentId");
     console.log(this.taskId);
     if(this.taskId !== undefined) {
       this.pageTitle = 'Aufgabe Bearbeiten';
@@ -66,14 +67,54 @@ export class TaskEditPage {
         childTasks: [],
         materials: []
       }
-      if (!this.parentTask) {
+
+      if (this.parentId) {
         this.isChildTask = true;
         this.pageTitle = "Unteraufgabe Erstellen";
+        this.getParent();
       } else {
         this.isChildTask = false;
         this.pageTitle = "Aufgabe Erstellen";
+
+        let now = new Date();
+        now.setHours(now.getHours() + Math.round(now.getMinutes()/60));
+        now.setMinutes(0);
+        now.setSeconds(0);
+        now.setMilliseconds(0);
+        let str = this.getDateString(now);
+        this.task.startTime = str;
       }
     }
+  }
+
+  getDateString(d){
+    let tzo = -d.getTimezoneOffset(),
+      dif = tzo >= 0 ? '+' : '-',
+      pad = function(num) {
+        let norm = Math.abs(Math.floor(num));
+        return (norm < 10 ? '0' : '') + norm;
+      };
+    return d.getFullYear() +
+      '-' + pad(d.getMonth() + 1) +
+      '-' + pad(d.getDate()) +
+      'T' + pad(d.getHours()) +
+      ':' + pad(d.getMinutes()) +
+      ':' + pad(d.getSeconds()) +
+      dif + pad(tzo / 60) +
+      ':' + pad(tzo % 60);
+  }
+
+  getParent(){
+    let self = this;
+
+    self.taskDataService.getTaskById(self.parentId).then(function(res){
+      self.parentTask = res.object;
+      self.task.startTime = new Date( self.parentTask.startTime);
+      self.task.endTime = new Date (self.parentTask.endTime);
+    },function(error){
+      console.warn('Parent task could not be retrieved: ', error);
+    });
+
   }
 
   resetObjects() {
@@ -409,7 +450,7 @@ export class TaskEditPage {
     let self = this;
 
     let start = self.task.startTime;
-    let end = self.task.endTime;
+    let end = self.task.endTime || self.task.startTime;
     self.shifts.newObj.startTime = start;
     self.shifts.newObj.endTime = end;
     self.addNewShift = !self.addNewShift;
@@ -501,6 +542,11 @@ export class TaskEditPage {
         //self.updateFlags();
 
         self.task.startTime = new Date(self.task.startTime);
+        if(self.task.startTime != self.task.endTime ){
+          self.task.endTime = new Date(self.task.endTime);
+        }
+
+        self.task.startTime = new Date(self.task.startTime);
         self.task.endTime = new Date(self.task.endTime);
 
         self.competences.all = _.clone(self.task.taskCompetences);
@@ -579,64 +625,6 @@ export class TaskEditPage {
  */
 
 /*
-cracApp.controller('taskEditCtrl', ['$scope','$route', '$stateParams','TaskDataService', '$ionicHistory', '$q', 'ionicToast', '$ionicPopup', '$state',
-  // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-  // You can include any angular dependencies as parameters for this function
-  // TIP: Access Route Parameters for your page via $stateParams.parameterName
-  function ($scope, $route, $stateParams,TaskDataService, $ionicHistory, $q, ionicToast, $ionicPopup, $state) {
-    $scope.task= {};
-    $scope.showPublish = false;
-    $scope.showUnpublish = false;
-    $scope.showDelete = false;
-    $scope.isNewTask = true;
-    $scope.formTitle = "";
-    $scope.isChildTask = false;
-
-    // ng-model only works properly with objects
-    $scope.timeChoice = { choice: null }
-
-    $scope.load = function(){
-      if(!$scope.isNewTask){
-        // @TODO: check if task.userIsLeading, if not, go back
-        TaskDataService.getTaskById($scope.taskId).then(function (res) {
-          var task = res.object;
-          console.log("edit", task);
-          if(!task) return;
-          $scope.task = task;
-
-          if($scope.task.startTime != $scope.task.endTime ){
-            $scope.timeChoice.choice = 'slot';
-            $scope.task.startTime = new Date($scope.task.startTime);
-            $scope.task.endTime = new Date($scope.task.endTime);
-          } else {
-            $scope.timeChoice.choice = 'point';
-            $scope.task.startTime = new Date($scope.task.startTime);
-            $scope.task.endTime = new Date($scope.task.endTime);
-          }
-
-          $scope.updateFlags();
-        }, function (error) {
-          ionicToast.show("Aufgabe kann nicht geladen werden: " + error.message, 'top', false, 5000);
-        });
-
-        if($stateParams.parentId !== ""){
-          TaskDataService.getTaskById($stateParams.parentId).then(function(res){
-            $scope.parentTask = res.object;
-            $scope.task.startTime = new Date( $scope.parentTask.startTime);
-            $scope.task.endTime = new Date ($scope.parentTask.endTime);
-          },function(error){
-            console.warn('Parent task could not be retrieved: ', error);
-          });
-        } else {
-          var now = new Date();
-          now.setHours(now.getHours() + Math.round(now.getMinutes()/60));
-          now.setMinutes(0);
-          now.setSeconds(0);
-          now.setMilliseconds(0);
-          $scope.task.startTime = now;
-        }
-      }
-    };
 
     $scope.updateFlags = function(){
       var task = $scope.task;

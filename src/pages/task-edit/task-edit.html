@@ -82,12 +82,12 @@
         <ion-list>
           <ion-item>
             <ion-label stacked>Beginn*</ion-label>
-            <ion-input type="datetime-local" [(ngModel)]="task.startTime" name="startTime"
-                       [ngClass]="{'has-error' : !task.startTime}"></ion-input>
+            <ion-datetime displayFormat="DD-MM-YYYY HH:mm" [(ngModel)]="task.startTime" name="startTime"
+                       [ngClass]="{'has-error' : !task.startTime}"></ion-datetime>
           </ion-item>
           <ion-item>
             <ion-label stacked>Ende</ion-label>
-            <ion-input type="datetime-local" [(ngModel)]="task.endTime" name="endTime"></ion-input>
+            <ion-datetime displayFormat="DD-MM-YYYY HH:mm" [(ngModel)]="task.endTime" name="endTime"></ion-datetime>
           </ion-item>
           <ion-item>
             <!-- @TODO uncomment when map view is ready
@@ -197,8 +197,8 @@
         <div card-content>
           <ion-list>
             <ion-item *ngFor="let shift of shifts.all">
-              {{shift.startTime | date: "short"}} -
-              {{shift.endTime | date: "short"}}
+              {{shift.startTime | date: "dd.MM.yyyy HH:mm"}} -
+              {{shift.endTime | date: "dd.MM.yyyy HH:mm"}}
               ({{shift.minAmountOfVolunteers}})
               <ion-icon name="trash" (click)="removeShift(shift)" float-right></ion-icon>
             </ion-item>
@@ -213,15 +213,15 @@
           <ion-list *ngIf="addNewShift">
             <ion-item>
               <ion-label stacked>Beginn*</ion-label>
-              <ion-input type="datetime-local" name="shiftStartTime" [(ngModel)]="shifts.newObj.startTime"
+              <ion-datetime name="shiftStartTime" displayFormat="DD-MM-YYYY HH:mm" [(ngModel)]="shifts.newObj.startTime"
                          [ngClass]="{'has-error' : !shifts.newObj.startTime}" >
-              </ion-input>
+              </ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label stacked>Ende*</ion-label>
-              <ion-input type="datetime-local" name="shiftEndTime" [(ngModel)]="shifts.newObj.endTime"
+              <ion-datetime name="shiftEndTime" displayFormat="DD-MM-YYYY HH:mm" [(ngModel)]="shifts.newObj.endTime"
                          [ngClass]="{'has-error' : !shifts.newObj.endTime}">
-              </ion-input>
+              </ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label stacked>Anzahl Freiwilliger*</ion-label>
