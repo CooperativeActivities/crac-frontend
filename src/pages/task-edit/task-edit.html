@@ -20,9 +20,9 @@
 
 <ion-content>
   <form name="taskForm" onsubmit="event.preventDefault" novalidate>
-    <ion-card>
+    <ion-card *ngIf="isNewTask">
       <ion-card-content>
-        <ion-grid radio-group [(ngModel)]="task.taskType" name="type" *ngIf="isNewTask" class="form-group">
+        <ion-grid radio-group [(ngModel)]="task.taskType" name="type" class="form-group">
           <ion-row>
             <ion-col no-padding>
               <ion-item>

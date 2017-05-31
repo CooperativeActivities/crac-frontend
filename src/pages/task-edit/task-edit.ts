@@ -18,7 +18,7 @@ export class TaskEditPage {
   public taskId : any;
   public parentId : any;
   parentTask: any;
-  task : any;
+  task : any = {};
   isNewTask: boolean = true;
   isChildTask: boolean = false;
   addNewCompetence: boolean = false;
@@ -58,7 +58,7 @@ export class TaskEditPage {
     if(this.taskId !== undefined) {
       this.pageTitle = 'Aufgabe Bearbeiten';
       this.isNewTask = false;
-      //dorefresh
+      this.doRefresh();
     } else {
       this.isNewTask = true;
       this.task = {
@@ -109,8 +109,8 @@ export class TaskEditPage {
 
     self.taskDataService.getTaskById(self.parentId).then(function(res){
       self.parentTask = res.object;
-      self.task.startTime = new Date( self.parentTask.startTime);
-      self.task.endTime = new Date (self.parentTask.endTime);
+      self.task.startTime = self.getDateString(new Date( self.parentTask.startTime));
+      self.task.endTime = self.getDateString(new Date (self.parentTask.endTime));
     },function(error){
       console.warn('Parent task could not be retrieved: ', error);
     });
@@ -541,13 +541,10 @@ export class TaskEditPage {
 
         //self.updateFlags();
 
-        self.task.startTime = new Date(self.task.startTime);
+        self.task.startTime = self.getDateString(new Date(self.task.startTime));
         if(self.task.startTime != self.task.endTime ){
-          self.task.endTime = new Date(self.task.endTime);
+          self.task.endTime = self.getDateString(new Date(self.task.endTime));
         }
-
-        self.task.startTime = new Date(self.task.startTime);
-        self.task.endTime = new Date(self.task.endTime);
 
         self.competences.all = _.clone(self.task.taskCompetences);
         self.materials.all = _.clone(self.task.materials);
