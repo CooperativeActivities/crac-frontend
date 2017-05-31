@@ -195,7 +195,7 @@
           Schichten <span float-right>{{task.childTasks.length}}</span>
         </span>
         <div card-content>
-          <ion-list ng-cloak>
+          <ion-list>
             <ion-item *ngFor="let shift of shifts.all">
               {{shift.startTime | date: "short"}} -
               {{shift.endTime | date: "short"}}
@@ -205,7 +205,7 @@
           </ion-list>
 
           <ion-item *ngIf="!addNewShift">
-            <button ion-button block (click)="addNewShift = !addNewShift">
+            <button ion-button block (click)="openNewShiftForm()">
               <ion-icon name="add"></ion-icon> Schicht hinzufügen
             </button>
           </ion-item>

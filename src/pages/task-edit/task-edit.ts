@@ -222,6 +222,9 @@ export class TaskEditPage {
       }
     });
     let shiftsToAdd = (self.shifts.toAdd).map(function(shift) {
+      shift.startTime = new Date(shift.startTime);
+      shift.endTime = new Date(shift.endTime);
+
       return {
         taskType: 'SHIFT',
         name: task.name,
@@ -271,19 +274,13 @@ export class TaskEditPage {
         if(!res) return;
         let task = res.object;
         self.toast.create({
-          message: "Aufgabe gespeichert",
+          message: "Aufgabe erstellt",
           duration: 3000,
           position: 'top'
         }).present();
 
         self.save(self.save_details(task)).then(function (res:any) {
           self.navCtrl.push('task-detail', {id: task.id});
-          if(!res) return;
-          self.toast.create({
-            message: "Aufgabe gespeichert",
-            duration: 3000,
-            position: 'top'
-          }).present();
         });
       });
     } else {
@@ -408,9 +405,19 @@ export class TaskEditPage {
     }
   };
 
+  openNewShiftForm(){
+    let self = this;
+
+    let start = self.task.startTime;
+    let end = self.task.endTime;
+    self.shifts.newObj.startTime = start;
+    self.shifts.newObj.endTime = end;
+    self.addNewShift = !self.addNewShift;
+  }
+
   addShift() {
     let self = this;
-    if(self.shifts.newObj.minAmountOfVolunteers){
+    if(!self.shifts.newObj.minAmountOfVolunteers){
       let message = 'Bitte geben Sie die Anzahl an Helfer an!';
       self.toast.create({
         message: "Schicht konnte nicht hinzugefügt werden: " + message,
@@ -420,7 +427,7 @@ export class TaskEditPage {
       return;
     }
 
-    if(self.shifts.newObj.startTime || self.shifts.newObj.endTime) return;
+    if(!self.shifts.newObj.startTime || !self.shifts.newObj.endTime) return;
     let newShift = _.clone(self.shifts.newObj);
     self.shifts.all.push(newShift);
     self.shifts.toAdd.push(newShift);
