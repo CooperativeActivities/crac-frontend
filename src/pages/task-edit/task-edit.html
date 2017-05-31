@@ -120,7 +120,7 @@
                 <ion-item>
                   <ion-label stacked>Können<span float-right>{{competence.neededProficiencyLevel}}</span></ion-label>
                   <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
-                             [(ngModel)]="competence.neededProficiencyLevel" (change)="updateCompetence(competence)">
+                             [(ngModel)]="competence.neededProficiencyLevel" (ionChange)="updateCompetence(competence)">
                   </ion-range>
                 </ion-item>
 

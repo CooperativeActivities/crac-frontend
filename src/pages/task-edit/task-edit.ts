@@ -295,7 +295,7 @@ export class TaskEditPage {
       promises.push(self.taskDataService.createNewSubTask(shiftsToAdd[i], task.id));
     }
     for(let i=0; i<self.shifts.toRemove.length; i++) {
-      promises.push(self.taskDataService.deleteTaskById(self.shifts.toRemove[i].id));
+      promises.push(self.taskDataService.deleteTaskById(self.shifts.toRemove[i]));
     }
     if(materialsToAdd.length > 0 ) {
       promises.push(self.taskDataService.addMaterialsToTask(task.id, materialsToAdd));
