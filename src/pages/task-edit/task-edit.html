@@ -110,7 +110,7 @@
     <ng-template [ngIf]="task.taskType == 'WORKABLE'">
       <collapsible-card>
         <span card-header>
-          Kompetenzen <span float-right>{{task.taskCompetences.length || 0}}</span>
+          Kompetenzen <span float-right>{{competences.all.length}}</span>
         </span>
         <div card-content>
           <ion-list *ngIf="competences.all.length > 0">
@@ -192,7 +192,7 @@
       </collapsible-card>
       <collapsible-card>
         <span card-header>
-          Schichten <span float-right>{{task.childTasks.length}}</span>
+          Schichten <span float-right>{{shifts.all.length}}</span>
         </span>
         <div card-content>
           <ion-list>
@@ -226,7 +226,7 @@
             <ion-item>
               <ion-label stacked>Anzahl Freiwilliger*</ion-label>
               <ion-input type="number" name="shiftVolunteers" [(ngModel)]="shifts.newObj.minAmountOfVolunteers"
-                         class="new-material-input" [ngClass]="{'has-error' : !shifts.newObj.minAmountOfVolunteers}">
+                         [ngClass]="{'has-error' : !shifts.newObj.minAmountOfVolunteers}">
               </ion-input>
             </ion-item>
             <ion-item>
@@ -241,28 +241,24 @@
       </collapsible-card>
       <collapsible-card>
         <span card-header>
-          Materialien <span float-right>{{task.materials.length}}</span>
+          Materialien <span float-right>{{materials.all.length}}</span>
         </span>
         <div card-content>
           <ion-list *ngIf="materials.all.length > 0">
             <ion-item>
-              <ion-grid>
+              <ion-grid no-padding>
                 <ion-row class="row row-header">
-                  <span class="material-header-name">Name: </span>
-                  <span class="material-header-amount">Menge: </span>
-                  <span class="material-header-description">Beschreibung: </span>
+                  <ion-col col-4 class="material-header-name">Name</ion-col>
+                  <ion-col col-2 class="material-header-amount">Menge</ion-col>
+                  <ion-col col-5 class="material-header-description">Beschreibung</ion-col>
                 </ion-row>
-                <ion-row class="row row-content" *ngFor="let material of materials.all">
-                  <ion-input type="text" disabled class="material-content-name"
-                             [(ngModel)]="material.name" [ngModelOptions]="{standalone: true}">
-                  </ion-input>
-                  <ion-input type="number" disabled class="material-content-amount"
-                             [(ngModel)]="material.quantity" [ngModelOptions]="{standalone: true}">
-                  </ion-input>
-                  <ion-input type="text" disabled class="material-content-description"
-                             [(ngModel)]="material.description" [ngModelOptions]="{standalone: true}">
-                  </ion-input>
-                  <ion-icon (click)="removeMaterial(material)" name="trash" float-right></ion-icon>
+                <ion-row class="row row-content" *ngFor="let material of materials.all" padding-top>
+                  <ion-col col-4 class="material-content-name">{{material.name}}</ion-col>
+                  <ion-col col-2>{{material.quantity}}</ion-col>
+                  <ion-col col-5>{{material.description}}</ion-col>
+                  <ion-col col-1>
+                    <ion-icon (click)="removeMaterial(material)" name="trash" float-right></ion-icon>
+                  </ion-col>
                 </ion-row>
               </ion-grid>
             </ion-item>
