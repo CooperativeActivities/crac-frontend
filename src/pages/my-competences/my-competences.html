@@ -12,45 +12,49 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-list>
-      <ion-item *ngFor="let comp of competences">
-        <span (click)="comp.editing = !comp.editing">
-          {{comp.competence.name}}
-        </span>
-        <ion-list *ngIf="comp.editing">
-          <ion-item>
-            {{comp.competence.description}}
-          </ion-item>
-          <ion-item>
-            <ion-label stacked>Gefällt mir<span float-right>{{comp.likeValue}}</span></ion-label>
-            <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
-                       [(ngModel)]="comp.likeValue">
-            </ion-range>
-          </ion-item>
-          <ion-item>
-            <ion-label stacked>Kann ich<span float-right>{{comp.proficiencyValue}}</span></ion-label>
-            <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
-                       [(ngModel)]="comp.proficiencyValue">
-            </ion-range>
-          </ion-item>
+  <ion-card>
+    <ion-card-content>
+      <ion-list>
+          <ion-item *ngFor="let comp of competences">
+            <span (click)="comp.editing = !comp.editing">
+              {{comp.competence.name}}
+            </span>
+            <ion-list *ngIf="comp.editing">
+              <ion-item>
+                {{comp.competence.description}}
+              </ion-item>
+              <ion-item>
+                <ion-label stacked>Gefällt mir<span float-right>{{comp.likeValue}}</span></ion-label>
+                <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
+                           [(ngModel)]="comp.likeValue">
+                </ion-range>
+              </ion-item>
+              <ion-item>
+                <ion-label stacked>Kann ich<span float-right>{{comp.proficiencyValue}}</span></ion-label>
+                <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
+                           [(ngModel)]="comp.proficiencyValue">
+                </ion-range>
+              </ion-item>
 
-          <ion-item>
-            <ion-grid no-padding>
-              <ion-row>
-                <ion-col>
-                  <button ion-button (click)="remove(comp.competence.id)" block color="danger">
-                    <ion-icon name="trash"></ion-icon> Löschen
-                  </button>
-                </ion-col>
-                <ion-col>
-                  <button ion-button (click)="update(comp)" block>
-                    <ion-icon name="checkmark"></ion-icon> Speichern
-                  </button>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
+              <ion-item>
+                <ion-grid no-padding>
+                  <ion-row>
+                    <ion-col>
+                      <button ion-button (click)="remove(comp.competence.id)" block color="danger">
+                        <ion-icon name="trash"></ion-icon> Löschen
+                      </button>
+                    </ion-col>
+                    <ion-col>
+                      <button ion-button (click)="update(comp)" block>
+                        <ion-icon name="checkmark"></ion-icon> Speichern
+                      </button>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+            </ion-list>
           </ion-item>
-        </ion-list>
-      </ion-item>
-  </ion-list>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

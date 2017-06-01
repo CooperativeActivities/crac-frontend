@@ -9,41 +9,49 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-list *ngIf="competenceAreaList.length > 0">
-    <ion-item>
-      <ion-label stacked>Kompetenzbereich</ion-label>
-      <ion-input *ngIf="competenceArea" type="text" disabled [(ngModel)]="competenceArea.name"></ion-input>
-    </ion-item>
-    <ion-searchbar *ngIf="!competenceArea" (ionInput)="filterAreas($event)"></ion-searchbar>
-    <ion-list *ngIf="!competenceArea">
-      <ion-item *ngFor="let area of competenceAreaList" (click)="getCompetencesForArea(area)">
-        {{area.name}}
-      </ion-item>
-    </ion-list>
-  </ion-list>
+  <ion-card *ngIf="competenceAreaList.length > 0">
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label stacked>Kompetenzbereich</ion-label>
+          <ion-input *ngIf="competenceArea" type="text" disabled [(ngModel)]="competenceArea.name"></ion-input>
+        </ion-item>
+        <ion-searchbar *ngIf="!competenceArea" (ionInput)="filterAreas($event)"></ion-searchbar>
+        <ion-list *ngIf="!competenceArea">
+          <ion-item *ngFor="let area of competenceAreaList" (click)="getCompetencesForArea(area)">
+            {{area.name}}
+          </ion-item>
+        </ion-list>
+      </ion-list>
 
-  <ion-list *ngIf="competenceArea && newComp.id == -1">
-    <ion-item *ngFor="let item of competences" (click)="setCompetenceSelect(item)">{{item.name}}</ion-item>
-  </ion-list>
+      <ion-list *ngIf="competenceArea && newComp.id == -1">
+        <ion-item *ngFor="let item of competences" (click)="setCompetenceSelect(item)">{{item.name}}</ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 
-  <ion-list *ngIf="newComp.id != -1">
-    <ion-item>
-      {{newComp.name}}
-    </ion-item>
-    <ion-item>
-      {{newComp.description}}
-    </ion-item>
-    <ion-item>
-      <ion-label stacked>Gefällt mir<span float-right>{{newComp.likeValue}}</span></ion-label>
-      <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
-                 [(ngModel)]="newComp.likeValue">
-      </ion-range>
-    </ion-item>
-    <ion-item>
-      <ion-label stacked>Kann ich<span float-right>{{newComp.proficiencyValue}}</span></ion-label>
-      <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
-                 [(ngModel)]="newComp.proficiencyValue">
-      </ion-range>
-    </ion-item>
-  </ion-list>
+  <ion-card *ngIf="newComp.id != -1">
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          {{newComp.name}}
+        </ion-item>
+        <ion-item>
+          {{newComp.description}}
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Gefällt mir<span float-right>{{newComp.likeValue}}</span></ion-label>
+          <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
+                     [(ngModel)]="newComp.likeValue">
+          </ion-range>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Kann ich<span float-right>{{newComp.proficiencyValue}}</span></ion-label>
+          <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
+                     [(ngModel)]="newComp.proficiencyValue">
+          </ion-range>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
