@@ -8,6 +8,7 @@ export class AuthService {
   // URL to REST-Service
   private _baseURL = (<any>window).crac_config.SERVER;
   public token: string;
+  public user: any;
   constructor(private http: Http, public storage: Storage) { }
   isAuthenticated(): boolean {
     return !!this.token
@@ -17,22 +18,22 @@ export class AuthService {
     return new RequestOptions({ headers: new Headers({ 'Token': this.token, "Authorization": "Basic Og==" }) });
   }
 
-  login(username, password): Promise<any> {
+  async login(username, password): Promise<any> {
     let authdata = Base64.encode(username + ':' + password);
     let auth = `Basic ${authdata}`
 
     let options = new RequestOptions({ headers: new Headers({ 'Authorization': auth }) });
     let url = this._baseURL + '/user/login';
-    return this.http.get(url, options)
-    .toPromise()
-    .then(res => res.json()).then((res) => {
-      if (res.success) {
-        console.log("Login successful", res);
-        this.token = res.object.code;
-        this.setCredentials(this.token)
-      }
-      return res
-    })
+    let res = await this.http.get(url, options)
+    .toPromise().then(res => res.json())
+    if (!res.success) {
+      throw res
+    }
+    console.log("Login successful", res);
+    this.token = res.object.code;
+    this.setCredentials(this.token)
+    await this.loadUser()
+    return res
   }
 
   async setCredentials(token: string){
@@ -45,8 +46,20 @@ export class AuthService {
     let token = await this.storage.get("token")
     if(token){
       this.token = token
+      await this.loadUser()
+      return token
     }
-    return token
+  }
+  async loadUser(){
+    if(!this.token){
+      throw new Error("not authenticated")
+    }
+    let options = this.getAuthRequestOptions()
+    let url = this._baseURL + '/user';
+    let user = await this.http.get(url, options).toPromise()
+      .then(res => res.json())
+    this.user = user.object
+    return this.user
   }
 
   async clearCredentials(){

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { TaskDataService } from '../../services/task_service';
+import _ from "lodash"
 
 @IonicPage({
   name: "my-tasks",
@@ -30,10 +31,9 @@ export class MyTasksPage {
   async doRefresh (refresher=null) {
     await Promise.all([
       this.taskDataService.getMyTasks().then((res) => {
-        console.log(res);
-        this.participatingTasks = res.meta.participating;
-        this.followingTasks = res.meta.following;
-        this.leadingTasks = res.meta.leading;
+        this.participatingTasks = _.orderBy(res.meta.participating, [ "startTime" ], [ "asc" ])
+        this.followingTasks = _.orderBy(res.meta.following, [ "startTime" ], [ "asc" ])
+        this.leadingTasks = _.orderBy(res.meta.leading, [ "startTime" ], [ "asc" ])
       }, (error) => {
         console.warn("Matching tasks could not be retrieved", error)
       })

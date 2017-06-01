@@ -2,7 +2,8 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import * as _ from 'lodash';
 
-import {TaskDataService} from '../../services/task_service';
+import { TaskDataService } from '../../services/task_service';
+import { AuthService } from '../../services/auth_service';
 
 @IonicPage({
   name: "task-detail",
@@ -17,11 +18,11 @@ export class TaskDetailPage {
   task: any;
   timeChoice = 'slot';
   taskId: number;
+  newComment = "";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public taskDataService: TaskDataService, public toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public taskDataService: TaskDataService, public toastCtrl: ToastController, private authCtrl: AuthService) {
     this.taskId = navParams.data.id;
     this.doRefresh();
-
 
   }
 
@@ -30,23 +31,21 @@ export class TaskDetailPage {
   }
 
   async doRefresh(refresher = null) {
-
-    await Promise.all([
-      this.taskDataService.getTaskById(this.taskId).then((res) => {
-        this.task = res.object;
-        console.log(this.task);
-
-
-        if (this.task.startTime != this.task.endTime) {
-          this.timeChoice = 'slot';
-        } else {
-          this.timeChoice = 'point';
-        }
-
-      }, (error) => {
-        console.warn("Task could not be retrieved", error)
+    let task = await this.taskDataService.getTaskById(this.taskId)
+      .catch(e => {
+        console.warn("Task could not be retrieved", e)
       })
-    ]);
+    if(task){
+      this.task = task.object;
+      this.task.childTasks = _.orderBy(this.task.childTasks, [ "startTime" ])
+      if(this.task.userRelationships) this.task.userRelationships = _.orderBy(this.task.userRelationships, [ (rel => (rel.friend || rel.participationType === "LEADING") ? 0 : 1), "name" ]);
+      this.task.materials = _.orderBy(this.task.materials, [ "name" ])
+      // @TODO order by creationDate
+      //this.task.comments = _.orderBy(this.task.comments, [ "name" ])
+
+      if (this.task.startTime != this.task.endTime)  this.timeChoice = 'slot';
+      else this.timeChoice = 'point';
+    }
     //Stop the ion-refresher from spinning
     if (refresher) {
       refresher.complete()
@@ -65,7 +64,6 @@ export class TaskDetailPage {
   }
   loadShifts() {
     for(let i=0; i < this.task.childTasks.length; i++) {
-
       let that = this;
       this.taskDataService.getTaskById(this.task.childTasks[i].id).then(function (res) {
         console.log('child shift', res);
@@ -84,6 +82,28 @@ export class TaskDetailPage {
       showCloseButton: closeButton
     });
     toast.present();
+  }
+
+  //Add a new comment to the task
+  async addNewComment() {
+    //don't add comment if it is empty
+    if(!this.newComment) return false;
+    let newComment = {
+      content: this.newComment,
+      name: this.authCtrl.user.name,
+    }
+
+    let comment = await this.taskDataService.addComment(this.taskId, newComment)
+      .catch(error => {
+        this.presentToast("Kommentar kann nicht hinzufügen werden: " + error.message, 'top', false, 5000);
+      })
+    if(comment){
+      console.log("comment added", comment);
+      this.newComment = ""
+      this.task.comments.push(comment.object)
+      //@TODO we should not need to refresh the whole task to add/remove comments
+      //this.doRefresh();
+    }
   }
 
 }
@@ -179,15 +199,6 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
       return true;
     };
 
-    $scope.sortMemberListByRelationship = function(a,b) {
-      if(b.participationType === "LEADING") {
-        return 1;
-      }
-      if(b.friend) {
-        return 1;
-      }
-      return 0;
-    };
 
     $scope.updateFlags = function(){
       var relation = $scope.participationType,
@@ -437,22 +448,6 @@ cracApp.controller('singleTaskCtrl', ['$scope','$rootScope','$route', '$window',
       });
     };
 
-    //Add a new comment to the task
-    $scope.addNewComment = function() {
-      //don't add comment if it is empty
-      if(!$scope.newComment.content) return false;
-      //set the commenter as current user
-      $scope.newComment.name = $scope.user.name;
-
-      TaskDataService.addComment($scope.task.id, $scope.newComment).then(function (res) {
-        console.log("comment added");
-        $scope.newComment = {name:'', content: ''};
-        //@TODO we should not need to refresh the whole task to add/remove comments
-        $scope.doRefresh();
-      }, function (error) {
-        ionicToast.show("Kommentar kann nicht hinzufügen werden: " + error.message, 'top', false, 5000);
-      });
-    };
 
     //Delete a comment from the task
     $scope.removeComment = function(comment) {
