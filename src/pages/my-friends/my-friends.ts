@@ -35,7 +35,7 @@ export class MyFriendsPage {
         position: 'top',
         duration: 3000
       }).present();
-      //add friend to list
+      self.userToSendRequestTo = null;
     }, function (error) {
       self.toast.create({
         message: "Freundschaftsanfrage fehlgeschlagen: " + error.message,

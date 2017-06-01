@@ -29,11 +29,11 @@
         <ion-item>
           <ion-label stacked>User</ion-label>
           <ion-select [(ngModel)]="userToSendRequestTo" name="userToSendRequestTo">
-            <ion-option *ngFor="let user of allUsers" value="user.id"> {{ user.name }} </ion-option>
+            <ion-option *ngFor="let user of allUsers" value="{{user.id}}"> {{ user.name }} </ion-option>
           </ion-select>
         </ion-item>
         <ion-item>
-          <button ion-button block>
+          <button ion-button (click)="sendRequest()" block>
             <ion-icon name="add"></ion-icon>
             Versenden
           </button>
