@@ -88,8 +88,6 @@ export class CompetenceAddPage {
   getCompetencesForArea(newValue){
     let self = this;
 
-    self.competenceArea = newValue;
-
     if(newValue.id === -1) return;
     self.userDataService.getCompetencesForArea(newValue.id)
       .then(function(res) {
@@ -101,6 +99,7 @@ export class CompetenceAddPage {
           }).present();
           return;
         } else {
+          self.competenceArea = newValue;
           self.competences = res.meta.competences;
         }
       }, function(error) {
@@ -119,6 +118,24 @@ export class CompetenceAddPage {
     self.newComp.name = comp.name;
     self.newComp.description = comp.description;
   }
+
+  resetCompetenceArea() {
+    let self = this;
+
+    self.competenceArea = null;
+    self.resetCompetence();
+  }
+
+  resetCompetence() {
+    let self = this;
+
+    self.newComp = {
+      id: -1,
+      likeValue: 50,
+      proficiencyValue: 50
+    };
+  }
+
 
   add(){
     let self = this;
