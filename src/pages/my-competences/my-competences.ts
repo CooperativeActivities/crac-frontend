@@ -70,16 +70,8 @@ export class MyCompetencesPage {
       }).present();
     });
   }
-}
-  /*
-  $scope.competenceInfo = function(indx){
-    $state.go('tabsController.myCompetenciesInfo', { index:indx });
-  };
-  $scope.createNewCompetence = function(){
-    $state.go('tabsController.newCompetence');
-  };
 
-  $scope.addCompetence = function(){
-    $state.go('tabsController.addCompetence');
-  };
-   */
+  addCompetence() {
+    this.navCtrl.push('competence-add');
+  }
+}
