@@ -53,6 +53,23 @@ export class MyCompetencesPage {
     });
   }
 
+  update(c){
+    let self = this;
+
+    self.userDataService.updateCompetence(c.competence.id, c.likeValue, c.proficiencyValue).then(function(res){
+      self.toast.create({
+        message: "Kompetenz gespeichert",
+        position: 'top',
+        duration: 3000
+      }).present();
+    }, function(error) {
+      self.toast.create({
+        message: "Kompetenz kann nicht gespeichert werden: " + error.message,
+        position: 'top',
+        duration: 3000
+      }).present();
+    });
+  }
 }
   /*
   $scope.competenceInfo = function(indx){

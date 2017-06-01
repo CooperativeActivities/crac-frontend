@@ -24,20 +24,31 @@
           <ion-item>
             <ion-label stacked>Gefällt mir<span float-right>{{comp.likeValue}}</span></ion-label>
             <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
-                       [(ngModel)]="comp.likeValue" (ionChange)="updateCompetence(comp.competence)">
+                       [(ngModel)]="comp.likeValue">
             </ion-range>
           </ion-item>
           <ion-item>
             <ion-label stacked>Kann ich<span float-right>{{comp.proficiencyValue}}</span></ion-label>
             <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
-                       [(ngModel)]="comp.proficiencyValue" (ionChange)="updateCompetence(comp.competence)">
+                       [(ngModel)]="comp.proficiencyValue">
             </ion-range>
           </ion-item>
 
           <ion-item>
-            <button ion-button (click)="remove(comp.competence.id)" block color="danger">
-              <ion-icon name="trash-outline"></ion-icon> Löschen
-            </button>
+            <ion-grid no-padding>
+              <ion-row>
+                <ion-col>
+                  <button ion-button (click)="remove(comp.competence.id)" block color="danger">
+                    <ion-icon name="trash"></ion-icon> Löschen
+                  </button>
+                </ion-col>
+                <ion-col>
+                  <button ion-button (click)="update(comp)" block>
+                    <ion-icon name="checkmark"></ion-icon> Speichern
+                  </button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           </ion-item>
         </ion-list>
       </ion-item>
