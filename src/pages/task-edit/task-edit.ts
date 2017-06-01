@@ -373,7 +373,7 @@ export class TaskEditPage {
                 message: "Aufgabe kann nicht gelöscht werden: " + error.message,
                 position: 'top',
                 duration: 3000
-              });
+              }).present();
             });
           }
         }
@@ -381,6 +381,47 @@ export class TaskEditPage {
     }).present();
   };
 
+  publish() {
+    let self = this;
+
+    if(self.task.taskType === 'ORGANISATIONAL'){
+      if(self.task.childTasks.length <= 0){
+        let message = "Übersicht hat noch keine Unteraufgabe! Bitte füge eine Unteraufgabe hinzu!";
+        self.toast.create({
+          message: "Task kann nicht veröffentlicht werden: " + message,
+          position: 'top',
+          duration: 3000
+        }).present();
+        return;
+      }
+    }
+
+    let promises = self.update().concat(self.save_details(self.task));
+    self.save(promises).then(function(res:any) {
+      if(!res) return;
+      self.taskDataService.changeTaskState(self.task.id, 'publish').then(function(res) {
+        self.task.taskState = 'PUBLISHED';
+        //self.updateFlags();
+        self.toast.create({
+          message: "Aufgabe veröffentlicht",
+          position: 'top',
+          duration: 3000
+        }).present();
+      }, function(error) {
+        self.toast.create({
+          message: "Aufgabe kann nicht veröffentlicht werden: " + error.message,
+          position: 'top',
+          duration: 3000
+        }).present();
+      });
+    }, function(error) {
+      self.toast.create({
+        message: "Aufgabe kann nicht veröffentlicht werden: " + error.message,
+        position: 'top',
+        duration: 3000
+      }).present();
+    });
+  };
 
   openNewCompetenceForm(){
     let self = this;
@@ -639,22 +680,6 @@ export class TaskEditPage {
  }
  };
 
- $scope.save_and_publish = function(){
- $scope.save().then(function(save_res){
- if(!save_res) return;
- $scope.publish($scope.taskId);
- });
- };
-
- $scope.publish = function(taskId) {
- TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
- $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
- $ionicHistory.removeBackView();
- });
- }, function(error) {
- ionicToast.show("Aufgabe kann nicht veröffentlicht werden: " + error.message, 'top', false, 5000);
- });
- };
 
 
  */
@@ -689,25 +714,24 @@ export class TaskEditPage {
     };
 
 
+ $scope.save_and_publish = function(){
+ $scope.save().then(function(save_res){
+ if(!save_res) return;
+ $scope.publish($scope.taskId);
+ });
+ };
 
-    $scope.save_and_publish = function(){
+ $scope.publish = function(taskId) {
+ TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
+ $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
+ $ionicHistory.removeBackView();
+ });
+ }, function(error) {
+ ionicToast.show("Aufgabe kann nicht veröffentlicht werden: " + error.message, 'top', false, 5000);
+ });
+ };
 
-      console.log('save and publish');
-      if($scope.task.taskType === 'ORGANISATIONAL'){
-        if($scope.task.childTasks.length <= 0){
-          var message = "Übersicht hat noch keine Unteraufgabe! Bitte füge eine Unteraufgabe hinzu!";
-          ionicToast.show("Task kann nicht veröffentlicht werden: " + message, 'top', false, 5000);
-          return;
-        }
-      }
 
-
-      $scope.save().then(function(save_res){
-        if(!save_res) return;
-        var taskId = save_res.object.id;
-        $scope.publish(taskId);
-      })
-    };
 
     $scope.save_and_unpublish = function(){
       $scope.save().then(function(save_res){
@@ -726,30 +750,6 @@ export class TaskEditPage {
         });
       }, function(error) {
         ionicToast.show("Aufgabe kann nicht zurückgezogen werden: " + error.message, 'top', false, 5000);
-      });
-    };
-
-    $scope.publish = function(taskId) {
-      TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
-        $scope.task.taskState = 'PUBLISHED';
-        $scope.updateFlags();
-        ionicToast.show("Aufgabe veröffentlicht", 'top', false, 5000);
-        $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
-          $ionicHistory.removeBackView()
-        });
-      }, function(error) {
-        if($scope.isNewTask) {
-          ionicToast.show("Aufgabe wurde erstellt, kann aber nicht veröffentlicht werden.\n" + message, 'top', false, 5000)
-          setTimeout(function(e) {
-            // redirect to the edit page of the newly created task
-            // (this could be handled even better, since backbutton now goes to the detail page of the parent, not of this task)
-            $state.go('tabsController.taskEdit', { id:taskId }, { location: "replace" }).then(function(res){
-              $ionicHistory.removeBackView()
-            });
-          }, 5000)
-        } else {
-          ionicToast.show("Aufgabe kann nicht veröffentlicht werden: " + error.message, 'top', false, 5000);
-        }
       });
     };
 
