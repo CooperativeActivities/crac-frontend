@@ -93,7 +93,7 @@ export class TaskEditPage {
   getDateString(d){
     let tzo = -d.getTimezoneOffset(),
       dif = tzo >= 0 ? '+' : '-',
-      pad = function(num) {
+      pad = (num) => {
         let norm = Math.abs(Math.floor(num));
         return (norm < 10 ? '0' : '') + norm;
       };
@@ -108,13 +108,11 @@ export class TaskEditPage {
   }
 
   getParent(){
-    let self = this;
-
-    self.taskDataService.getTaskById(self.parentId).then(function(res){
-      self.parentTask = res.object;
-      self.task.startTime = self.getDateString(new Date( self.parentTask.startTime));
-      self.task.endTime = self.getDateString(new Date (self.parentTask.endTime));
-    },function(error){
+    this.taskDataService.getTaskById(this.parentId).then(res => {
+      this.parentTask = res.object;
+      this.task.startTime = this.getDateString(new Date( this.parentTask.startTime));
+      this.task.endTime = this.getDateString(new Date (this.parentTask.endTime));
+    },(error) => {
       console.warn('Parent task could not be retrieved: ', error);
     });
 
@@ -136,30 +134,28 @@ export class TaskEditPage {
   };
 
   updateFlags(){
-    let self = this;
-
-    let task = self.task;
+    let task = this.task;
 
     //initialize all flags to false
-    self.showPublish =false;
-    self.showUnpublish = false;
-    self.showDelete = false;
+    this.showPublish =false;
+    this.showUnpublish = false;
+    this.showDelete = false;
 
     switch(task.taskState){
       case "COMPLETED":
         //disable all fields
         break;
       case "STARTED":
-        self.showUnpublish = true;
-        self.showDelete = true;
+        this.showUnpublish = true;
+        this.showDelete = true;
         break;
       case "PUBLISHED":
-        self.showUnpublish = true;
-        self.showDelete = true;
+        this.showUnpublish = true;
+        this.showDelete = true;
         break;
       case "NOT_PUBLISHED":
-        self.showPublish = self.task.superTask === null;
-        self.showDelete = true;
+        this.showPublish = this.task.superTask === null;
+        this.showDelete = true;
         break;
     }
   };
@@ -177,49 +173,46 @@ export class TaskEditPage {
   }
 
   getProcessedTaskData() {
-    let self = this;
     let taskData : any = {};
 
-    taskData.name = self.task.name;
+    taskData.name = this.task.name;
 
     // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
 
     /* @TODO replace date check
-     if(!angular.isDate(self.task.startTime)){
+     if(!angular.isDate(this.task.startTime)){
      toast.show("Aufgabe kann nicht gespeichert werden: " + "Bitte ein gültiges Startdatum eingeben!", 'top', false, 5000);
      return;
      }
      */
 
     /* @TODO replace date check*/
-    if(!self.task.endTime/* || !angular.isDate(self.task.endTime)*/) {
-      self.task.startTime = new Date(self.task.startTime);
-      self.task.endTime = new Date(self.task.startTime);
+    if(!this.task.endTime/* || !angular.isDate(this.task.endTime)*/) {
+      this.task.startTime = new Date(this.task.startTime);
+      this.task.endTime = new Date(this.task.startTime);
     } else {
-      self.task.startTime = new Date(self.task.startTime);
-      self.task.endTime = new Date(self.task.endTime);
+      this.task.startTime = new Date(this.task.startTime);
+      this.task.endTime = new Date(this.task.endTime);
     }
 
-    if(self.task.startTime) taskData.startTime = self.task.startTime.getTime();
-    if(self.task.endTime) taskData.endTime = self.task.endTime.getTime();
-    if(self.task.description) taskData.description = self.task.description;
-    if(self.task.location) taskData.location = self.task.location;
-    if(self.task.address) taskData.address = self.task.address;
-    if(self.task.lat) taskData.lat = self.task.lat;
-    if(self.task.lng) taskData.lng = self.task.lng;
-    if(self.task.minAmountOfVolunteers) taskData.minAmountOfVolunteers = self.task.minAmountOfVolunteers;
-    taskData.taskType = self.task.taskType;
-    taskData.taskState = self.task.taskState;
+    if(this.task.startTime) taskData.startTime = this.task.startTime.getTime();
+    if(this.task.endTime) taskData.endTime = this.task.endTime.getTime();
+    if(this.task.description) taskData.description = this.task.description;
+    if(this.task.location) taskData.location = this.task.location;
+    if(this.task.address) taskData.address = this.task.address;
+    if(this.task.lat) taskData.lat = this.task.lat;
+    if(this.task.lng) taskData.lng = this.task.lng;
+    if(this.task.minAmountOfVolunteers) taskData.minAmountOfVolunteers = this.task.minAmountOfVolunteers;
+    taskData.taskType = this.task.taskType;
+    taskData.taskState = this.task.taskState;
 
     return taskData;
   }
 
   create() {
-    let self = this;
-
     let promises: Array<any> = [];
-    if(!self.task.name){
-      self.toast.create({
+    if(!this.task.name){
+      this.toast.create({
         message: "Aufgabe kann nicht gespeichert werden: " + "Name muss angegeben werden",
         duration: 3000,
         position: 'top'
@@ -228,26 +221,25 @@ export class TaskEditPage {
       return promises;
     }
 
-    let taskData = self.getProcessedTaskData();
-    if (!self.parentTask) {
-      promises.push(self.taskDataService.createNewTask(taskData));
+    let taskData = this.getProcessedTaskData();
+    if (!this.parentTask) {
+      promises.push(this.taskDataService.createNewTask(taskData));
     } else {
-      promises.push(self.taskDataService.createNewSubTask(taskData, self.parentTask.id));
+      promises.push(this.taskDataService.createNewSubTask(taskData, this.parentTask.id));
     }
 
     return promises;
   }
 
   save(promises) {
-    let self = this;
     if(promises.length === 0) {
       return new Promise((resolve) => {resolve(false)});
     }
-    let promise = Promise.all(promises).then(function (res) { return res; });
-    return promise.then(function (res) {
+    let promise = Promise.all(promises).then((res) => { return res; });
+    return promise.then((res) => {
       return res[0];
-    }, function(error) {
-      self.toast.create({
+    }, (error) => {
+      this.toast.create({
         message: "Aufgabe kann nicht gespeichert werden: " + error.message,
         duration: 3000,
         position: 'top'
@@ -257,10 +249,9 @@ export class TaskEditPage {
   }
 
   update() {
-    let self = this;
     let promises = [];
-    if(!self.task.name){
-      self.toast.create({
+    if(!this.task.name){
+      this.toast.create({
         message: "Aufgabe kann nicht gespeichert werden: " + "Name muss angegeben werden",
         duration: 3000,
         position: 'top'
@@ -269,16 +260,15 @@ export class TaskEditPage {
       return promises;
     }
 
-    let taskData = self.getProcessedTaskData();
-    promises = [self.taskDataService.updateTaskById(taskData, self.task.id)];
+    let taskData = this.getProcessedTaskData();
+    promises = [this.taskDataService.updateTaskById(taskData, this.task.id)];
     return promises;
   }
 
   save_details(task) {
-    let self = this;
     let promises = [];
 
-    let competencesToAdd = self.competences.toAdd.map(function(competence){
+    let competencesToAdd = this.competences.toAdd.map((competence) => {
       return {
         competenceId: competence.id,
         importanceLevel: competence.neededProficiencyLevel || 0,
@@ -286,7 +276,7 @@ export class TaskEditPage {
         mandatory: competence.mandatory ? 1 : 0
       }
     });
-    let competencesToUpdate = self.competences.toUpdate.map(function(competence){
+    let competencesToUpdate = this.competences.toUpdate.map((competence) => {
       return {
         id: competence.id,
         importanceLevel: parseInt(competence.neededProficiencyLevel) || 0,
@@ -294,7 +284,7 @@ export class TaskEditPage {
         mandatory: competence.mandatory ? 1 : 0
       }
     });
-    let shiftsToAdd = (self.shifts.toAdd).map(function(shift) {
+    let shiftsToAdd = (this.shifts.toAdd).map((shift) => {
       shift.startTime = new Date(shift.startTime);
       shift.endTime = new Date(shift.endTime);
 
@@ -306,7 +296,7 @@ export class TaskEditPage {
         endTime: shift.endTime.getTime()
       }
     });
-    let materialsToAdd = (self.materials.toAdd).map(function(material){
+    let materialsToAdd = (this.materials.toAdd).map((material) => {
       return {
         name: material.name,
         description: material.description || "",
@@ -315,52 +305,50 @@ export class TaskEditPage {
     });
 
     if(competencesToAdd.length > 0 ) {
-      promises.push(self.taskDataService.addCompetencesToTask(task.id, competencesToAdd));
+      promises.push(this.taskDataService.addCompetencesToTask(task.id, competencesToAdd));
     }
     for(let i=0; i<competencesToUpdate.length; i++) {
-      promises.push(self.taskDataService.updateTaskCompetence(task.id, competencesToUpdate[i]));
+      promises.push(this.taskDataService.updateTaskCompetence(task.id, competencesToUpdate[i]));
     }
-    for(let i=0; i<self.competences.toRemove.length; i++) {
-      promises.push(self.taskDataService.removeCompetenceFromTask(task.id, self.competences.toRemove[i]));
+    for(let i=0; i<this.competences.toRemove.length; i++) {
+      promises.push(this.taskDataService.removeCompetenceFromTask(task.id, this.competences.toRemove[i]));
     }
-    for(let i=0; i<self.shifts.toAdd.length; i++) {
-      promises.push(self.taskDataService.createNewSubTask(shiftsToAdd[i], task.id));
+    for(let i=0; i<this.shifts.toAdd.length; i++) {
+      promises.push(this.taskDataService.createNewSubTask(shiftsToAdd[i], task.id));
     }
-    for(let i=0; i<self.shifts.toRemove.length; i++) {
-      promises.push(self.taskDataService.deleteTaskById(self.shifts.toRemove[i]));
+    for(let i=0; i<this.shifts.toRemove.length; i++) {
+      promises.push(this.taskDataService.deleteTaskById(this.shifts.toRemove[i]));
     }
     if(materialsToAdd.length > 0 ) {
-      promises.push(self.taskDataService.addMaterialsToTask(task.id, materialsToAdd));
+      promises.push(this.taskDataService.addMaterialsToTask(task.id, materialsToAdd));
     }
-    for(let i=0; i<self.materials.toRemove.length; i++) {
-      promises.push(self.taskDataService.removeMaterialFromTask(task.id, self.materials.toRemove[i]));
+    for(let i=0; i<this.materials.toRemove.length; i++) {
+      promises.push(this.taskDataService.removeMaterialFromTask(task.id, this.materials.toRemove[i]));
     }
 
     return promises;
   }
 
   save_changes() {
-    let self = this;
-
-    if(self.isNewTask) {
-      self.save(self.create()).then(function(res:any) {
+    if(this.isNewTask) {
+      this.save(this.create()).then((res:any) => {
         if(!res) return;
         let task = res.object;
-        self.toast.create({
+        this.toast.create({
           message: "Aufgabe erstellt",
           duration: 3000,
           position: 'top'
         }).present();
 
-        self.save(self.save_details(task)).then(function (res:any) {
-          self.navCtrl.push('task-detail', {id: task.id});
+        this.save(this.save_details(task)).then((res:any) => {
+          this.navCtrl.push('task-detail', {id: task.id});
         });
       });
     } else {
-      let promises = self.update().concat(self.save_details(self.task));
-      self.save(promises).then(function(res:any) {
+      let promises = this.update().concat(this.save_details(this.task));
+      this.save(promises).then((res:any) => {
         if(!res) return;
-        self.toast.create({
+        this.toast.create({
           message: "Aufgabe gespeichert",
           duration: 3000,
           position: 'top'
@@ -370,15 +358,13 @@ export class TaskEditPage {
   };
 
   delete(){
-    let self = this;
-
     let template = 'Wollen sie diese Aufgabe wirklich löschen? Es wird die Aufgabe mit ALLEN darunterliegenden Aufgabes permanent gelöscht.';
-    if( self.task.taskState === 'PUBLISHED' )
+    if( this.task.taskState === 'PUBLISHED' )
       template += "<p><strong>Aufgabe ist schon veröffentlicht. Aufgabe trotzdem löschen?</strong></p>";
-    if( self.task.taskState === 'STARTED' )
+    if( this.task.taskState === 'STARTED' )
       template += "<p><strong>Aufgabe ist schon gestartet. Aufgabe trotzdem löschen?</strong></p>";
 
-    self.alert.create({
+    this.alert.create({
       title: 'Löschen',
       message: template,
       buttons: [
@@ -389,19 +375,19 @@ export class TaskEditPage {
         {
           text: 'Löschen',
           handler: () => {
-            self.taskDataService.deleteTaskById(self.task.id).then(function (res) {
-              self.toast.create({
+            this.taskDataService.deleteTaskById(this.task.id).then((res) => {
+              this.toast.create({
                 message: "Aufgabe gelöscht",
                 position: 'top',
                 duration: 3000
               }).present();
-              if (self.task.superTask) {
-                self.navCtrl.push('task-detail', {id: self.task.superTask.id});
+              if (this.task.superTask) {
+                this.navCtrl.push('task-detail', {id: this.task.superTask.id});
               } else {
-                self.navCtrl.push('my-tasks');
+                this.navCtrl.push('my-tasks');
               }
-            }, function (error) {
-              self.toast.create({
+            }, (error) => {
+              this.toast.create({
                 message: "Aufgabe kann nicht gelöscht werden: " + error.message,
                 position: 'top',
                 duration: 3000
@@ -414,12 +400,10 @@ export class TaskEditPage {
   };
 
   publish() {
-    let self = this;
-
-    if(self.task.taskType === 'ORGANISATIONAL'){
-      if(self.task.childTasks.length <= 0){
+    if(this.task.taskType === 'ORGANISATIONAL'){
+      if(this.task.childTasks.length <= 0){
         let message = "Übersicht hat noch keine Unteraufgabe! Bitte füge eine Unteraufgabe hinzu!";
-        self.toast.create({
+        this.toast.create({
           message: "Task kann nicht veröffentlicht werden: " + message,
           position: 'top',
           duration: 3000
@@ -428,26 +412,26 @@ export class TaskEditPage {
       }
     }
 
-    let promises = self.update().concat(self.save_details(self.task));
-    self.save(promises).then(function(res:any) {
+    let promises = this.update().concat(this.save_details(this.task));
+    this.save(promises).then((res:any) => {
       if(!res) return;
-      self.taskDataService.changeTaskState(self.task.id, 'publish').then(function(res) {
-        self.task.taskState = 'PUBLISHED';
-        self.updateFlags();
-        self.toast.create({
+      this.taskDataService.changeTaskState(this.task.id, 'publish').then((res) => {
+        this.task.taskState = 'PUBLISHED';
+        this.updateFlags();
+        this.toast.create({
           message: "Aufgabe veröffentlicht",
           position: 'top',
           duration: 3000
         }).present();
-      }, function(error) {
-        self.toast.create({
+      }, (error) => {
+        this.toast.create({
           message: "Aufgabe kann nicht veröffentlicht werden: " + error.message,
           position: 'top',
           duration: 3000
         }).present();
       });
-    }, function(error) {
-      self.toast.create({
+    }, (error) => {
+      this.toast.create({
         message: "Aufgabe kann nicht veröffentlicht werden: " + error.message,
         position: 'top',
         duration: 3000
@@ -456,29 +440,27 @@ export class TaskEditPage {
   };
 
   unpublish() {
-    let self = this;
-
-    let promises = self.update().concat(self.save_details(self.task));
-    self.save(promises).then(function(res:any) {
+    let promises = this.update().concat(this.save_details(this.task));
+    this.save(promises).then((res:any) => {
       if(!res) return;
-      self.taskDataService.changeTaskState(self.task.id, 'unpublish').then(function(res) {
-        self.task.taskState = 'NOT_PUBLISHED';
-        self.updateFlags();
-        self.toast.create({
+      this.taskDataService.changeTaskState(this.task.id, 'unpublish').then((res) => {
+        this.task.taskState = 'NOT_PUBLISHED';
+        this.updateFlags();
+        this.toast.create({
           message: "Aufgabe zurückgezogen",
           position: 'top',
           duration: 3000
         }).present();
-        self.navCtrl.push('task-detail', {id: self.task.id});
-      }, function(error) {
-        self.toast.create({
+        this.navCtrl.push('task-detail', {id: this.task.id});
+      }, (error) => {
+        this.toast.create({
           message: "Aufgabe kann nicht zurückgezogen werden: " + error.message,
           position: 'top',
           duration: 3000
         }).present();
       });
-    }, function(error) {
-      self.toast.create({
+    }, (error) => {
+      this.toast.create({
         message: "Aufgabe kann nicht zurückgezogen werden: " + error.message,
         position: 'top',
         duration: 3000
@@ -487,19 +469,17 @@ export class TaskEditPage {
   };
 
   openNewCompetenceForm(){
-    let self = this;
-    if(self.competenceAreaList.length === 0) {
-      self.getCompetenceAreas();
+    if(this.competenceAreaList.length === 0) {
+      this.getCompetenceAreas();
     }
-    self.addNewCompetence = !self.addNewCompetence;
+    this.addNewCompetence = !this.addNewCompetence;
   }
 
   getCompetenceAreas() {
-    let self = this;
-    self.userDataService.getCompetenceAreas()
-      .then(function (res) {
+    this.userDataService.getCompetenceAreas()
+      .then((res) => {
         if (res.object.length === 0) {
-          self.toast.create({
+          this.toast.create({
             message: "Keine Kompetenzbereiche gefunden: " + res.message,
             position: 'top',
             duration: 3000
@@ -508,9 +488,9 @@ export class TaskEditPage {
         }
 
         let compAreas = _.orderBy(res.object, [ "name" ])
-        self.competenceAreaList = compAreas;
-      }, function (error) {
-        self.toast.create({
+        this.competenceAreaList = compAreas;
+      }, (error) => {
+        this.toast.create({
           message: "Kompetenzbereiche können nicht geladen werden: " + error.message,
           position: 'top',
           duration: 3000
@@ -519,23 +499,21 @@ export class TaskEditPage {
   }
 
   getCompetencesForArea(newValue){
-    let self = this;
-
     if(newValue === -1) return;
-    self.userDataService.getCompetencesForArea(newValue)
-      .then(function(res) {
+    this.userDataService.getCompetencesForArea(newValue)
+      .then((res) => {
         if(res.object.mappedCompetences.length === 0) {
-          self.toast.create({
+          this.toast.create({
             message: "Keine Kompetenzen in diesem Bereich gefunden",
             position: 'top',
             duration: 3000
           }).present();
           return;
         } else {
-          self.availableCompetences = _.orderBy(res.meta.competences, [ "name" ])
+          this.availableCompetences = _.orderBy(res.meta.competences, [ "name" ])
         }
-      }, function(error) {
-        self.toast.create({
+      }, (error) => {
+        this.toast.create({
           message: "Kompetenzen dieses Bereichs können nicht geladen werden: " + error.message,
           position: 'top',
           duration: 3000
@@ -544,67 +522,61 @@ export class TaskEditPage {
   }
 
   addCompetence(){
-    let self = this;
-    let competenceId = self.competences.newObj.id;
+    let competenceId = this.competences.newObj.id;
     if(!competenceId) return;
     //save later
-    let index = _.findIndex(self.availableCompetences, { id: parseInt(competenceId) });
+    let index = _.findIndex(this.availableCompetences, { id: parseInt(competenceId) });
     if(index === -1){
       console.error("this shouldn't happen");
       return;
     }
-    let competence = self.availableCompetences.splice(index, 1)[0];
+    let competence = this.availableCompetences.splice(index, 1)[0];
     let newComp = {
       id: competenceId,
       name: competence.name,
-      importanceLevel: self.competences.newObj.neededProficiencyLevel,
-      neededProficiencyLevel: self.competences.newObj.neededProficiencyLevel,
-      mandatory: self.competences.newObj.mandatory
+      importanceLevel: this.competences.newObj.neededProficiencyLevel,
+      neededProficiencyLevel: this.competences.newObj.neededProficiencyLevel,
+      mandatory: this.competences.newObj.mandatory
     };
 
-    self.competences.toAdd.push(newComp);
-    self.competences.all.push(newComp);
+    this.competences.toAdd.push(newComp);
+    this.competences.all.push(newComp);
   };
 
   updateCompetence(competence){
-    let self = this;
     if(!competence) return;
-    let index = _.findIndex(self.competences.toUpdate, {id: competence.id});
+    let index = _.findIndex(this.competences.toUpdate, {id: competence.id});
     if(index < 0) {
-      self.competences.toUpdate.push(competence);
+      this.competences.toUpdate.push(competence);
     } else {
-      self.competences.toUpdate[index] = competence;
+      this.competences.toUpdate[index] = competence;
     }
   };
 
   removeCompetence(competence){
-    let self = this;
     if(!competence) return;
-    let index = _.findIndex(self.competences.all, competence);
-    let newIndex = _.findIndex(self.competences.toAdd, competence);
-    self.competences.all.splice(index, 1)[0];
+    let index = _.findIndex(this.competences.all, competence);
+    let newIndex = _.findIndex(this.competences.toAdd, competence);
+    this.competences.all.splice(index, 1)[0];
     if(newIndex < 0) {
-      self.competences.toRemove.push(competence.id);
+      this.competences.toRemove.push(competence.id);
     } else {
-      self.competences.toAdd.splice(newIndex, 1)[0];
+      this.competences.toAdd.splice(newIndex, 1)[0];
     }
   };
 
   openNewShiftForm(){
-    let self = this;
-
-    let start = self.task.startTime;
-    let end = self.task.endTime || self.task.startTime;
-    self.shifts.newObj.startTime = start;
-    self.shifts.newObj.endTime = end;
-    self.addNewShift = !self.addNewShift;
+    let start = this.task.startTime;
+    let end = this.task.endTime || this.task.startTime;
+    this.shifts.newObj.startTime = start;
+    this.shifts.newObj.endTime = end;
+    this.addNewShift = !this.addNewShift;
   }
 
   addShift() {
-    let self = this;
-    if(!self.shifts.newObj.minAmountOfVolunteers){
+    if(!this.shifts.newObj.minAmountOfVolunteers){
       let message = 'Bitte geben Sie die Anzahl an Helfer an!';
-      self.toast.create({
+      this.toast.create({
         message: "Schicht konnte nicht hinzugefügt werden: " + message,
         position: 'top',
         duration: 3000
@@ -612,41 +584,38 @@ export class TaskEditPage {
       return;
     }
 
-    if(!self.shifts.newObj.startTime || !self.shifts.newObj.endTime) return;
-    let newShift = _.clone(self.shifts.newObj);
-    self.shifts.all.push(newShift);
-    self.shifts.toAdd.push(newShift);
+    if(!this.shifts.newObj.startTime || !this.shifts.newObj.endTime) return;
+    let newShift = _.clone(this.shifts.newObj);
+    this.shifts.all.push(newShift);
+    this.shifts.toAdd.push(newShift);
   };
 
   removeShift(shift) {
-    let self = this;
     if (!shift) return;
-    let index = _.findIndex(self.shifts.all, shift);
-    let newIndex = _.findIndex(self.shifts.toAdd, shift);
-    self.shifts.all.splice(index, 1)[0];
+    let index = _.findIndex(this.shifts.all, shift);
+    let newIndex = _.findIndex(this.shifts.toAdd, shift);
+    this.shifts.all.splice(index, 1)[0];
     if (newIndex < 0) {
-      self.shifts.toRemove.push(shift.id);
+      this.shifts.toRemove.push(shift.id);
     } else {
-      self.shifts.toAdd.splice(newIndex, 1)[0];
+      this.shifts.toAdd.splice(newIndex, 1)[0];
     }
   }
 
   addMaterial(){
-    let self = this;
-
-    if(!self.materials.newObj.name || !self.materials.newObj.quantity) {
+    if(!this.materials.newObj.name || !this.materials.newObj.quantity) {
       let message = "Bitte geben Sie ";
-      if(!self.materials.newObj.name) {
+      if(!this.materials.newObj.name) {
         message += "den Namen ";
       }
-      if(!self.materials.newObj.quantity){
-        if(!self.materials.newObj.name) {
+      if(!this.materials.newObj.quantity){
+        if(!this.materials.newObj.name) {
           message += "und ";
         }
         message += "die Menge";
       }
       message += " an!";
-      self.toast.create({
+      this.toast.create({
         message: "Material konnte nicht hinzugefügt werden: " + message,
         position: 'top',
         duration: 3000
@@ -655,53 +624,51 @@ export class TaskEditPage {
     }
 
     //save later
-    let newMaterial = _.clone(self.materials.newObj);
+    let newMaterial = _.clone(this.materials.newObj);
     newMaterial.quantity = newMaterial.quantity || 1;
-    self.materials.all.push(newMaterial);
-    self.materials.toAdd.push(newMaterial);
-    self.materials.newObj = {};
+    this.materials.all.push(newMaterial);
+    this.materials.toAdd.push(newMaterial);
+    this.materials.newObj = {};
   };
 
   removeMaterial(material){
-    let self = this;
     if(!material) return;
-    let index = _.findIndex(self.materials.all, material);
-    let newIndex = _.findIndex(self.materials.toAdd, material);
-    self.materials.all.splice(index, 1)[0];
+    let index = _.findIndex(this.materials.all, material);
+    let newIndex = _.findIndex(this.materials.toAdd, material);
+    this.materials.all.splice(index, 1)[0];
     if(newIndex < 0) {
-      self.materials.toRemove.push(material.id);
+      this.materials.toRemove.push(material.id);
     } else {
-      self.materials.toAdd.splice(newIndex, 1)[0];
+      this.materials.toAdd.splice(newIndex, 1)[0];
     }
   };
 
 
   async doRefresh (refresher=null) {
-    let self = this;
     await Promise.all([
-      self.taskDataService.getTaskById(this.taskId).then((res) => {
-        self.task = res.object;
-        console.log(self.task);
+      this.taskDataService.getTaskById(this.taskId).then((res) => {
+        this.task = res.object;
+        console.log(this.task);
 
-        self.updateFlags();
+        this.updateFlags();
 
-        self.task.startTime = self.getDateString(new Date(self.task.startTime));
-        if(self.task.startTime != self.task.endTime ){
-          self.task.endTime = self.getDateString(new Date(self.task.endTime));
+        this.task.startTime = this.getDateString(new Date(this.task.startTime));
+        if(this.task.startTime != this.task.endTime ){
+          this.task.endTime = this.getDateString(new Date(this.task.endTime));
         }
 
-        self.competences.all = _.orderBy(_.clone(self.task.taskCompetences), [ "name" ])
-        self.materials.all = _.orderBy(_.clone(self.task.materials), [ "name" ])
-        self.shifts.newObj.startTime = self.task.startTime;
-        self.shifts.newObj.endTime = self.task.endTime;
-        self.shifts.all = _.orderBy(_.clone(self.task.childTasks), [ "startTime" ])
+        this.competences.all = _.orderBy(_.clone(this.task.taskCompetences), [ "name" ])
+        this.materials.all = _.orderBy(_.clone(this.task.materials), [ "name" ])
+        this.shifts.newObj.startTime = this.task.startTime;
+        this.shifts.newObj.endTime = this.task.endTime;
+        this.shifts.all = _.orderBy(_.clone(this.task.childTasks), [ "startTime" ])
 
-        for(let i=0; i<self.shifts.all.length; i++) {
-          self.shifts.all[i].startTime = new Date(self.shifts.all[i].startTime);
-          self.shifts.all[i].endTime = new Date(self.shifts.all[i].endTime);
+        for(let i=0; i<this.shifts.all.length; i++) {
+          this.shifts.all[i].startTime = new Date(this.shifts.all[i].startTime);
+          this.shifts.all[i].endTime = new Date(this.shifts.all[i].endTime);
         }
       }, (error) => {
-        self.toast.create({
+        this.toast.create({
           message:"Aufgabe kann nicht geladen werden: " + error.message,
           position: 'top',
           duration: 3000
