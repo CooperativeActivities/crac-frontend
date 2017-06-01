@@ -423,6 +423,37 @@ export class TaskEditPage {
     });
   };
 
+  unpublish() {
+    let self = this;
+
+    let promises = self.update().concat(self.save_details(self.task));
+    self.save(promises).then(function(res:any) {
+      if(!res) return;
+      self.taskDataService.changeTaskState(self.task.id, 'unpublish').then(function(res) {
+        self.task.taskState = 'NOT_PUBLISHED';
+        //self.updateFlags();
+        self.toast.create({
+          message: "Aufgabe zurückgezogen",
+          position: 'top',
+          duration: 3000
+        }).present();
+        self.navCtrl.push('task-detail', {id: self.task.id});
+      }, function(error) {
+        self.toast.create({
+          message: "Aufgabe kann nicht zurückgezogen werden: " + error.message,
+          position: 'top',
+          duration: 3000
+        }).present();
+      });
+    }, function(error) {
+      self.toast.create({
+        message: "Aufgabe kann nicht zurückgezogen werden: " + error.message,
+        position: 'top',
+        duration: 3000
+      }).present();
+    });
+  };
+
   openNewCompetenceForm(){
     let self = this;
     if(self.competenceAreaList.length === 0) {
@@ -712,47 +743,6 @@ export class TaskEditPage {
           break;
       }
     };
-
-
- $scope.save_and_publish = function(){
- $scope.save().then(function(save_res){
- if(!save_res) return;
- $scope.publish($scope.taskId);
- });
- };
-
- $scope.publish = function(taskId) {
- TaskDataService.changeTaskState(taskId, 'publish').then(function(res) {
- $state.go('tabsController.task', { id:taskId }, { location: "replace" }).then(function(res){
- $ionicHistory.removeBackView();
- });
- }, function(error) {
- ionicToast.show("Aufgabe kann nicht veröffentlicht werden: " + error.message, 'top', false, 5000);
- });
- };
-
-
-
-    $scope.save_and_unpublish = function(){
-      $scope.save().then(function(save_res){
-        if(!save_res) return;
-        $scope.unpublish();
-      })
-    };
-
-    $scope.unpublish = function() {
-      TaskDataService.changeTaskState($scope.taskId, 'unpublish').then(function(res) {
-        $scope.task.taskState = 'NOT_PUBLISHED';
-        $scope.updateFlags();
-        ionicToast.show("Aufgabe zurückgezogen", 'top', false, 5000);
-        $state.go('tabsController.task', { id: $scope.taskId }, { location: 'replace' }).then(function(res) {
-          $ionicHistory.removeBackView();
-        });
-      }, function(error) {
-        ionicToast.show("Aufgabe kann nicht zurückgezogen werden: " + error.message, 'top', false, 5000);
-      });
-    };
-
 
     // Check if Address field has been updated on Map Page
     $scope.$on("$ionicView.enter", function(event, data){
