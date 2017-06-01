@@ -20,9 +20,9 @@
 
 <ion-content>
   <form name="taskForm" onsubmit="event.preventDefault" novalidate>
-    <ion-card>
+    <ion-card *ngIf="isNewTask">
       <ion-card-content>
-        <ion-grid radio-group [(ngModel)]="task.taskType" name="type" *ngIf="isNewTask" class="form-group">
+        <ion-grid radio-group [(ngModel)]="task.taskType" name="type" class="form-group">
           <ion-row>
             <ion-col no-padding>
               <ion-item>
@@ -82,12 +82,12 @@
         <ion-list>
           <ion-item>
             <ion-label stacked>Beginn*</ion-label>
-            <ion-input type="datetime-local" [(ngModel)]="task.startTime" name="startTime"
-                       [ngClass]="{'has-error' : !task.startTime}"></ion-input>
+            <ion-datetime displayFormat="DD-MM-YYYY HH:mm" [(ngModel)]="task.startTime" name="startTime"
+                       [ngClass]="{'has-error' : !task.startTime}"></ion-datetime>
           </ion-item>
           <ion-item>
             <ion-label stacked>Ende</ion-label>
-            <ion-input type="datetime-local" [(ngModel)]="task.endTime" name="endTime"></ion-input>
+            <ion-datetime displayFormat="DD-MM-YYYY HH:mm" [(ngModel)]="task.endTime" name="endTime"></ion-datetime>
           </ion-item>
           <ion-item>
             <!-- @TODO uncomment when map view is ready
@@ -110,7 +110,7 @@
     <ng-template [ngIf]="task.taskType == 'WORKABLE'">
       <collapsible-card>
         <span card-header>
-          Kompetenzen <span float-right>{{task.taskCompetences.length || 0}}</span>
+          Kompetenzen <span float-right>{{competences.all.length}}</span>
         </span>
         <div card-content>
           <ion-list *ngIf="competences.all.length > 0">
@@ -120,7 +120,7 @@
                 <ion-item>
                   <ion-label stacked>Können<span float-right>{{competence.neededProficiencyLevel}}</span></ion-label>
                   <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
-                             [(ngModel)]="competence.neededProficiencyLevel" (change)="updateCompetence(competence)">
+                             [(ngModel)]="competence.neededProficiencyLevel" (ionChange)="updateCompetence(competence)">
                   </ion-range>
                 </ion-item>
 
@@ -131,7 +131,7 @@
                 </ion-item>
 
                 <ion-item>
-                  <button ion-button (click)="removeCompetence(competence)" block>
+                  <button ion-button (click)="removeCompetence(competence)" block color="danger">
                     <ion-icon name="trash-outline"></ion-icon> Löschen
                   </button>
                 </ion-item>
@@ -140,7 +140,7 @@
           </ion-list>
 
           <ion-item *ngIf="!addNewCompetence">
-            <button ion-button block (click)="addNewCompetence = !addNewCompetence">
+            <button ion-button block (click)="openNewCompetenceForm()">
               <ion-icon name="add"></ion-icon> Kompetenz hinzufügen
             </button>
           </ion-item>
@@ -148,18 +148,18 @@
           <ion-list *ngIf="addNewCompetence">
             <ion-item>
               <ion-label stacked>Kompetenzbereich*</ion-label>
-              <ion-select> [(ngModel)]="competenceArea" name="competenceArea" (change)="onCompetenceAreaChange(competenceArea)">
-                <option *ngFor="let area of competenceAreaList" [ngValue]="area.id">
-                  area.name
-                </option>
+              <ion-select [(ngModel)]="competenceArea" name="competenceArea" (ionChange)="getCompetencesForArea(competenceArea)">
+                <ion-option *ngFor="let area of competenceAreaList" value="{{area.id}}">
+                  {{area.name}}
+                </ion-option>
               </ion-select>
             </ion-item>
             <ion-item>
               <ion-label *ngIf="competenceArea != -1" stacked>Kompetenz*</ion-label>
               <ion-select [(ngModel)]="competences.newObj.id" name="competence">
-                <option *ngFor="let competence of availableCompetences" [ngValue]="competence.id">
+                <ion-option *ngFor="let competence of availableCompetences" value="{{competence.id}}">
                   {{ competence.name }}
-                </option>
+                </ion-option>
               </ion-select>
             </ion-item>
             <ion-item>
@@ -192,20 +192,20 @@
       </collapsible-card>
       <collapsible-card>
         <span card-header>
-          Schichten <span float-right>{{task.childTasks.length}}</span>
+          Schichten <span float-right>{{shifts.all.length}}</span>
         </span>
         <div card-content>
-          <ion-list ng-cloak>
+          <ion-list>
             <ion-item *ngFor="let shift of shifts.all">
-              {{shift.startTime | date: "short"}} -
-              {{shift.endTime | date: "short"}}
+              {{shift.startTime | date: "dd.MM.yyyy HH:mm"}} -
+              {{shift.endTime | date: "dd.MM.yyyy HH:mm"}}
               ({{shift.minAmountOfVolunteers}})
               <ion-icon name="trash" (click)="removeShift(shift)" float-right></ion-icon>
             </ion-item>
           </ion-list>
 
           <ion-item *ngIf="!addNewShift">
-            <button ion-button block (click)="addNewShift = !addNewShift">
+            <button ion-button block (click)="openNewShiftForm()">
               <ion-icon name="add"></ion-icon> Schicht hinzufügen
             </button>
           </ion-item>
@@ -213,20 +213,20 @@
           <ion-list *ngIf="addNewShift">
             <ion-item>
               <ion-label stacked>Beginn*</ion-label>
-              <ion-input type="datetime-local" name="shiftStartTime" [(ngModel)]="shifts.newObj.startTime"
+              <ion-datetime name="shiftStartTime" displayFormat="DD-MM-YYYY HH:mm" [(ngModel)]="shifts.newObj.startTime"
                          [ngClass]="{'has-error' : !shifts.newObj.startTime}" >
-              </ion-input>
+              </ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label stacked>Ende*</ion-label>
-              <ion-input type="datetime-local" name="shiftEndTime" [(ngModel)]="shifts.newObj.endTime"
+              <ion-datetime name="shiftEndTime" displayFormat="DD-MM-YYYY HH:mm" [(ngModel)]="shifts.newObj.endTime"
                          [ngClass]="{'has-error' : !shifts.newObj.endTime}">
-              </ion-input>
+              </ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label stacked>Anzahl Freiwilliger*</ion-label>
               <ion-input type="number" name="shiftVolunteers" [(ngModel)]="shifts.newObj.minAmountOfVolunteers"
-                         class="new-material-input" [ngClass]="{'has-error' : !shifts.newObj.minAmountOfVolunteers}">
+                         [ngClass]="{'has-error' : !shifts.newObj.minAmountOfVolunteers}">
               </ion-input>
             </ion-item>
             <ion-item>
@@ -241,28 +241,24 @@
       </collapsible-card>
       <collapsible-card>
         <span card-header>
-          Materialien <span float-right>{{task.materials.length}}</span>
+          Materialien <span float-right>{{materials.all.length}}</span>
         </span>
         <div card-content>
           <ion-list *ngIf="materials.all.length > 0">
             <ion-item>
-              <ion-grid>
+              <ion-grid no-padding>
                 <ion-row class="row row-header">
-                  <span class="material-header-name">Name: </span>
-                  <span class="material-header-amount">Menge: </span>
-                  <span class="material-header-description">Beschreibung: </span>
+                  <ion-col col-4 class="material-header-name">Name</ion-col>
+                  <ion-col col-2 class="material-header-amount">Menge</ion-col>
+                  <ion-col col-5 class="material-header-description">Beschreibung</ion-col>
                 </ion-row>
-                <ion-row class="row row-content" *ngFor="let material of materials.all">
-                  <ion-input type="text" disabled class="material-content-name"
-                             [(ngModel)]="material.name" [ngModelOptions]="{standalone: true}">
-                  </ion-input>
-                  <ion-input type="number" disabled class="material-content-amount"
-                             [(ngModel)]="material.quantity" [ngModelOptions]="{standalone: true}">
-                  </ion-input>
-                  <ion-input type="text" disabled class="material-content-description"
-                             [(ngModel)]="material.description" [ngModelOptions]="{standalone: true}">
-                  </ion-input>
-                  <ion-icon (click)="removeMaterial(material)" name="trash" float-right></ion-icon>
+                <ion-row class="row row-content" *ngFor="let material of materials.all" padding-top>
+                  <ion-col col-4 class="material-content-name">{{material.name}}</ion-col>
+                  <ion-col col-2>{{material.quantity}}</ion-col>
+                  <ion-col col-5>{{material.description}}</ion-col>
+                  <ion-col col-1>
+                    <ion-icon (click)="removeMaterial(material)" name="trash" float-right></ion-icon>
+                  </ion-col>
                 </ion-row>
               </ion-grid>
             </ion-item>
@@ -304,14 +300,20 @@
   </form>
 </ion-content>
 
-<!--
-
-  <ion-footer-bar>
-    <div class="button-bar">
-      <button ng-click="delete()" ng-if="showDelete"  class="button button-small button-full no-border-radius button-assertive ion-trash-a"> Löschen </button>
-      <button ng-click="save_and_unpublish()"   ng-if="showUnpublish" class="button button-small button-full no-border-radius button-positive ion-eye-disabled"> Zurückziehen </button>
-      <button ng-click="save_and_publish()"   ng-if="showPublish" class="button button-small button-full no-border-radius button-balanced ion-eye"> Veröffentlichen </button>
-    </div>
-  </ion-footer-bar>
-</ion-view>
--->
+<ion-footer>
+  <ion-toolbar>
+    <ion-grid no-padding>
+      <ion-row>
+        <ion-col *ngIf="showDelete">
+          <button ion-button (click)="delete()" color="danger" block> Löschen </button>
+        </ion-col>
+        <ion-col *ngIf="showUnpublish">
+          <button ion-button (click)="unpublish()" color="default" block> Zurückziehen </button>
+        </ion-col>
+        <ion-col *ngIf="showPublish">
+          <button ion-button (click)="publish()" color="secondary" block> Veröffentlichen </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>
