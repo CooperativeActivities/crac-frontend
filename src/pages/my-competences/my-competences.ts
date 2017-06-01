@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import {IonicPage, NavController} from 'ionic-angular';
+import {UserDataService} from "../../services/user_service";
 
 @IonicPage({
   name: "my-competences",
@@ -8,10 +9,26 @@ import { IonicPage } from 'ionic-angular';
 @Component({
   selector: 'page-my-competences',
   templateUrl: 'my-competences.html',
+  providers: [ UserDataService ],
 })
 export class MyCompetencesPage {
 
-  constructor() {
+  competences : Array<any> = [];
+
+  constructor(public navCtrl: NavController, public userDataService: UserDataService) {
+    this.onRefresh();
+  }
+
+  onRefresh() {
+    let self = this;
+
+    self.userDataService.getCompRelationships().then(function(res){
+      self.competences = res.object;
+      console.log(self.competences);
+    }, function(error) {
+      //@TODO error shows when user has no competences, should come as success
+    });
+
   }
 
   ionViewDidLoad() {
@@ -20,23 +37,6 @@ export class MyCompetencesPage {
 
 }
   /*
-cracApp.controller('myCompetenciesCtrl', ['$rootScope','$scope','UserDataService','ionicToast','$state',
-  function($rootScope,$scope,UserDataService, ionicToast, $state) {
- // console.log("Userid: " +$rootScope.globals.currentUser.id)
-  UserDataService.getUserById($rootScope.globals.currentUser.id).then(function(res) {
-    $scope.user = res.object;
-    console.log($scope.user);
-  }, function(error) {
-    ionicToast.show("Benutzerinformation kann nicht geladen werden: " + error.message, 'top', false, 5000);
-  });
-
-  UserDataService.getCompRelationships().then(function(res){
-    $scope.competences = res.object;
-    console.log($scope.competences);
-  }, function(error) {
-    //@TODO error shows when user has no competences, should come as success
-  });
-
   $scope.competenceInfo = function(indx){
     $state.go('tabsController.myCompetenciesInfo', { index:indx });
   };
