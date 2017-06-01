@@ -497,30 +497,25 @@ export class TaskEditPage {
   getCompetenceAreas() {
     let self = this;
     self.userDataService.getCompetenceAreas()
-    .then(function (res) {
-      if (res.object.length === 0) {
+      .then(function (res) {
+        if (res.object.length === 0) {
+          self.toast.create({
+            message: "Keine Kompetenzbereiche gefunden: " + res.message,
+            position: 'top',
+            duration: 3000
+          }).present();
+          return;
+        }
+
+        let compAreas = _.orderBy(res.object, [ "name" ])
+        self.competenceAreaList = compAreas;
+      }, function (error) {
         self.toast.create({
-          message: "Keine Kompetenzbereiche gefunden: " + res.message,
+          message: "Kompetenzbereiche können nicht geladen werden: " + error.message,
           position: 'top',
           duration: 3000
         }).present();
-        return;
-      }
-
-      let compAreas = res.object;
-      compAreas.sort(function (a, b) {
-        if (a.name < b.name) return -1;
-        if (a.name > b.name) return 1;
-        return 0;
       });
-      self.competenceAreaList = compAreas;
-    }, function (error) {
-      self.toast.create({
-        message: "Kompetenzbereiche können nicht geladen werden: " + error.message,
-        position: 'top',
-        duration: 3000
-      }).present();
-    });
   }
 
   getCompetencesForArea(newValue){
@@ -528,24 +523,24 @@ export class TaskEditPage {
 
     if(newValue === -1) return;
     self.userDataService.getCompetencesForArea(newValue)
-    .then(function(res) {
-      if(res.object.mappedCompetences.length === 0) {
+      .then(function(res) {
+        if(res.object.mappedCompetences.length === 0) {
+          self.toast.create({
+            message: "Keine Kompetenzen in diesem Bereich gefunden",
+            position: 'top',
+            duration: 3000
+          }).present();
+          return;
+        } else {
+          self.availableCompetences = _.orderBy(res.meta.competences, [ "name" ])
+        }
+      }, function(error) {
         self.toast.create({
-          message: "Keine Kompetenzen in diesem Bereich gefunden",
+          message: "Kompetenzen dieses Bereichs können nicht geladen werden: " + error.message,
           position: 'top',
           duration: 3000
         }).present();
-        return;
-      } else {
-        self.availableCompetences = res.meta.competences;
-      }
-    }, function(error) {
-      self.toast.create({
-        message: "Kompetenzen dieses Bereichs können nicht geladen werden: " + error.message,
-        position: 'top',
-        duration: 3000
-      }).present();
-    });
+      });
   }
 
   addCompetence(){
@@ -695,22 +690,22 @@ export class TaskEditPage {
           self.task.endTime = self.getDateString(new Date(self.task.endTime));
         }
 
-        self.competences.all = _.clone(self.task.taskCompetences);
-        self.materials.all = _.clone(self.task.materials);
+        self.competences.all = _.orderBy(_.clone(self.task.taskCompetences), [ "name" ])
+        self.materials.all = _.orderBy(_.clone(self.task.materials), [ "name" ])
         self.shifts.newObj.startTime = self.task.startTime;
         self.shifts.newObj.endTime = self.task.endTime;
-        self.shifts.all = _.clone(self.task.childTasks);
+        self.shifts.all = _.orderBy(_.clone(self.task.childTasks), [ "startTime" ])
 
         for(let i=0; i<self.shifts.all.length; i++) {
           self.shifts.all[i].startTime = new Date(self.shifts.all[i].startTime);
           self.shifts.all[i].endTime = new Date(self.shifts.all[i].endTime);
         }
       }, (error) => {
-          self.toast.create({
-            message:"Aufgabe kann nicht geladen werden: " + error.message,
-            position: 'top',
-            duration: 3000
-          }).present();
+        self.toast.create({
+          message:"Aufgabe kann nicht geladen werden: " + error.message,
+          position: 'top',
+          duration: 3000
+        }).present();
       })
     ]);
     //Stop the ion-refresher from spinning
@@ -722,7 +717,7 @@ export class TaskEditPage {
 }
 
 /*
-    // Check if Address field has been updated on Map Page
+// Check if Address field has been updated on Map Page
     $scope.$on("$ionicView.enter", function(event, data){
       if (data.stateParams.address != null) {
         $scope.task.address = data.stateParams.address;
@@ -734,4 +729,4 @@ export class TaskEditPage {
 
     $scope.load();
   }]);
-*/
+ */
