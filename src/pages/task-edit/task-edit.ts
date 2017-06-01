@@ -49,6 +49,9 @@ export class TaskEditPage {
     toUpdate: [],
     all: []
   };
+  showDelete: boolean = false;
+  showPublish: boolean = false;
+  showUnpublish: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastController, public alert: AlertController,
               public taskDataService: TaskDataService, public userDataService: UserDataService) {
@@ -130,6 +133,35 @@ export class TaskEditPage {
     this.competences.toAdd = [];
     this.competences.toRemove = [];
     this.competences.toUpdate = [];
+  };
+
+  updateFlags(){
+    let self = this;
+
+    let task = self.task;
+
+    //initialize all flags to false
+    self.showPublish =false;
+    self.showUnpublish = false;
+    self.showDelete = false;
+
+    switch(task.taskState){
+      case "COMPLETED":
+        //disable all fields
+        break;
+      case "STARTED":
+        self.showUnpublish = true;
+        self.showDelete = true;
+        break;
+      case "PUBLISHED":
+        self.showUnpublish = true;
+        self.showDelete = true;
+        break;
+      case "NOT_PUBLISHED":
+        self.showPublish = self.task.superTask === null;
+        self.showDelete = true;
+        break;
+    }
   };
 
   openMap() {
@@ -401,7 +433,7 @@ export class TaskEditPage {
       if(!res) return;
       self.taskDataService.changeTaskState(self.task.id, 'publish').then(function(res) {
         self.task.taskState = 'PUBLISHED';
-        //self.updateFlags();
+        self.updateFlags();
         self.toast.create({
           message: "Aufgabe veröffentlicht",
           position: 'top',
@@ -431,7 +463,7 @@ export class TaskEditPage {
       if(!res) return;
       self.taskDataService.changeTaskState(self.task.id, 'unpublish').then(function(res) {
         self.task.taskState = 'NOT_PUBLISHED';
-        //self.updateFlags();
+        self.updateFlags();
         self.toast.create({
           message: "Aufgabe zurückgezogen",
           position: 'top',
@@ -656,7 +688,7 @@ export class TaskEditPage {
         self.task = res.object;
         console.log(self.task);
 
-        //self.updateFlags();
+        self.updateFlags();
 
         self.task.startTime = self.getDateString(new Date(self.task.startTime));
         if(self.task.startTime != self.task.endTime ){
@@ -690,60 +722,6 @@ export class TaskEditPage {
 }
 
 /*
- $scope.updateFlags = function(){
- var task = $scope.task;
-
- //initialize all flags to false
- $scope.showPublish =false;
-
- switch(task.taskState){
- case "COMPLETED":
- //disable all fields
- break;
- case "STARTED":
- //disable all fields
- break;
- case "PUBLISHED":
- break;
- case "NOT_PUBLISHED":
- $scope.showPublish = $scope.task.superTask === null;
- break;
- }
- };
-
-
-
- */
-
-/*
-
-    $scope.updateFlags = function(){
-      var task = $scope.task;
-
-      //initialize all flags to false
-      $scope.showPublish =false;
-      $scope.showUnpublish = false;
-      $scope.showDelete = false;
-
-      switch(task.taskState){
-        case "COMPLETED":
-          //disable all fields
-          break;
-        case "STARTED":
-          $scope.showUnpublish = true;
-          $scope.showDelete = true;
-          break;
-        case "PUBLISHED":
-          $scope.showUnpublish = true;
-          $scope.showDelete = true;
-          break;
-        case "NOT_PUBLISHED":
-          $scope.showPublish = $scope.task.superTask === null;
-          $scope.showDelete = true;
-          break;
-      }
-    };
-
     // Check if Address field has been updated on Map Page
     $scope.$on("$ionicView.enter", function(event, data){
       if (data.stateParams.address != null) {
@@ -756,6 +734,4 @@ export class TaskEditPage {
 
     $scope.load();
   }]);
-
-
- */
+*/

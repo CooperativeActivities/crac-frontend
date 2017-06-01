@@ -304,13 +304,13 @@
   <ion-toolbar>
     <ion-grid no-padding>
       <ion-row>
-        <ion-col *ngIf="true">
+        <ion-col *ngIf="showDelete">
           <button ion-button (click)="delete()" color="danger" block> Löschen </button>
         </ion-col>
-        <ion-col *ngIf="true">
+        <ion-col *ngIf="showUnpublish">
           <button ion-button (click)="unpublish()" color="default" block> Zurückziehen </button>
         </ion-col>
-        <ion-col *ngIf="true">
+        <ion-col *ngIf="showPublish">
           <button ion-button (click)="publish()" color="secondary" block> Veröffentlichen </button>
         </ion-col>
       </ion-row>
