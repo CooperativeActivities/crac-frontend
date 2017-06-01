@@ -46,9 +46,14 @@
               <ion-input type="text" [(ngModel)]="user.birthDate"></ion-input>
             </ion-item>
           </ion-list>
-          save button toolbar!
         </ion-card-content>
       </ion-card>
     </ion-row>
   </ion-grid>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <button ion-button (click)="save()" block> Speichern </button>
+  </ion-toolbar>
+</ion-footer>

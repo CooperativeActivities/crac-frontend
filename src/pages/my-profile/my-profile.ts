@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import {IonicPage, ToastController} from 'ionic-angular';
 
 import { NavController } from 'ionic-angular';
 import { UserDataService } from '../../services/user_service';
@@ -15,33 +15,50 @@ import { UserDataService } from '../../services/user_service';
 export class MyProfilePage {
   public user: any;
 
-  constructor(public navCtrl: NavController, public userDataService: UserDataService) { }
+  constructor(public navCtrl: NavController, public userDataService: UserDataService, public toast: ToastController) { }
 
   ngOnInit(): void {
-    this.userDataService.getCurrentUser().then((res) => {
-      this.user = res.object
-    }).catch((err)=>{
-      console.log(err)
-      //ionicToast.show("Benutzerinformation kann nicht gefolgt werden: " + error.message, 'top', false, 5000);
+    let self = this;
+
+    self.userDataService.getCurrentUser().then((res) => {
+      self.user = res.object;
+    }).catch((error)=>{
+      console.log(error);
+      self.toast.create({
+        message: "Benutzerinformation kann nicht gefolgt werden: " + error.message,
+        position: 'top',
+        duration: 3000
+      }).present();
     })
   }
 
   save(){
-    var profileData : any = {};
-    profileData.firstName= this.user.firstName;
-    profileData.lastName= this.user.lastName;
-    profileData.address= this.user.address;
-    profileData.phone= this.user.phone;
-    profileData.email= this.user.email;
-    profileData.birthDate= this.user.birthDate;
+    let self = this;
+
+    let profileData : any = {};
+    profileData.firstName= self.user.firstName;
+    profileData.lastName= self.user.lastName;
+    profileData.address= self.user.address;
+    profileData.phone= self.user.phone;
+    profileData.email= self.user.email;
+    profileData.birthDate= self.user.birthDate;
 
 
-    this.userDataService.updateCurrentUser(profileData).then(function(res) {
+    self.userDataService.updateCurrentUser(profileData).then(function(res) {
       console.log(profileData);
       console.log(res.data);
+      self.toast.create({
+        message: "Account gespeichert",
+        position: 'top',
+        duration: 3000
+      }).present();
     }, function(error) {
-      console.log(error)
-      //ionicToast.show("Account kann nicht gespeichert werden: " + error.message, 'top', false, 5000);
+      console.log(error);
+      self.toast.create({
+        message: "Account kann nicht gespeichert werden: " + error.message,
+        position: 'top',
+        duration: 3000
+      }).present();
     });
   }
 
