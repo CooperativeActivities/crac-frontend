@@ -16,9 +16,9 @@
     <ion-card-content>
       <ion-list>
           <ion-item *ngFor="let comp of competences">
-            <span (click)="comp.editing = !comp.editing">
+            <button ion-item (click)="comp.editing = !comp.editing">
               {{comp.competence.name}}
-            </span>
+            </button>
             <ion-list *ngIf="comp.editing">
               <ion-item>
                 {{comp.competence.description}}

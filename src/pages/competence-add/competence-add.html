@@ -18,14 +18,16 @@
         </ion-item>
         <ion-searchbar *ngIf="!competenceArea" (ionInput)="filterAreas($event)"></ion-searchbar>
         <ion-list *ngIf="!competenceArea">
-          <ion-item *ngFor="let area of competenceAreaList" (click)="getCompetencesForArea(area)">
+          <button ion-item *ngFor="let area of competenceAreaList" (click)="getCompetencesForArea(area)">
             {{area.name}}
-          </ion-item>
+          </button>
         </ion-list>
       </ion-list>
 
       <ion-list *ngIf="competenceArea && newComp.id == -1">
-        <ion-item *ngFor="let item of competences" (click)="setCompetenceSelect(item)">{{item.name}}</ion-item>
+        <button ion-item *ngFor="let item of competences" (click)="setCompetenceSelect(item)">
+          {{item.name}}
+        </button>
       </ion-list>
     </ion-card-content>
   </ion-card>
