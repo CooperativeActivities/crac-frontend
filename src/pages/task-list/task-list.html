@@ -16,7 +16,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <task-preview item-block *ngFor="let task of matchingTasks" [task]="task.task" [action]="'follow'"></task-preview><!-- | orderBy: 'assessment'">-->
+        <task-preview item-block *ngFor="let task of matchingTasks" [task]="task.task" [action]="'follow'"></task-preview>
       </ion-list>
     </ion-card-content>
   </ion-card>
@@ -27,7 +27,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <task-preview item-block *ngFor="let task of parentTasks" [task]="task"></task-preview><!-- | orderBy: 'startTime'">-->
+        <task-preview-recursive item-block *ngFor="let task of parentTasks" [task]="task"></task-preview-recursive>
       </ion-list>
     </ion-card-content>
   </ion-card>

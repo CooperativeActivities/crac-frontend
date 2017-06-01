@@ -1,21 +1,38 @@
 
 task-preview {
   .item-wrapper{
-    margin-left: 8px;
+    /*margin-left: 8px;*/
     margin-top: 4px;
     background: none;
-    .item{
+    /*&>.item{
       padding-left: 0;
+      padding-left: 4px;
+    }*/
+  }
+  .item{
+    padding-left: 4px;
+    min-height: initial;
+  }
+  .item.title {
+    border-bottom: 1px solid #ddd;
+    .label{
+      div{
+        font-weight: bold;
+      }
+      margin: 0;
     }
   }
 
   .label {
     margin: 6px 4px 6px 0;
   }
-  .grid{
-    padding: 0;
-  }
+
 }
-.card .list task-preview[item-block]:not(:last-child) .item-inner {
-  border-bottom: 1px solid #ddd;
+.card .list task-preview[item-block]{
+  &:not(:last-child) .item-wrapper{
+    border-bottom: 1px solid #ddd;
+  }
+  &:not(:first-child) .item-wrapper{
+    border-top: 1px solid #ddd;
+  }
 }

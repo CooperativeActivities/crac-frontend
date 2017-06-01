@@ -11,6 +11,7 @@ export class TaskPreviewComponent implements OnInit {
   @Input() task: any
   @Input() action: any
   @Input() showAllIcons: Boolean
+  @Input() headerClick: Function
   showFollow : Boolean = false
   showUnfollow : Boolean = false
   isSingleDate : Boolean
@@ -62,6 +63,13 @@ export class TaskPreviewComponent implements OnInit {
       console.log("Unfollowing task error", error);
       //ionicToast.show("Aufgabe kann nicht gefolgt werden: " + error.message, 'top', false, 5000);
     })
+  }
+
+  privateHeaderClick(event){
+    if(this.headerClick){
+      let stopPropagation = this.headerClick()
+      if(stopPropagation) event.stopPropagation()
+    }
   }
 
   loadSingleTask (task) {
