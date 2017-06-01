@@ -123,7 +123,7 @@ export class CompetenceAddPage {
   add(){
     let self = this;
 
-    self.userDataService.updateCompetence(self.newComp.id, self.newComp.likeValue, self.newComp.proficiencyValue).then(function(res){
+    self.userDataService.addLikeProfValue(self.newComp.id, self.newComp.likeValue, self.newComp.proficiencyValue).then(function(res){
       self.toast.create({
         message: "Kompetenz hinzufügt",
         position: 'top',
