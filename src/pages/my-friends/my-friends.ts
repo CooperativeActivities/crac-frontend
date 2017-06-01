@@ -7,7 +7,7 @@ import {UserDataService} from "../../services/user_service";
 })
 @Component({
   selector: 'page-my-friends',
-  templateUrl: 'messages.html',
+  templateUrl: 'my-friends.html',
   providers: [UserDataService]
 })
 export class MyFriendsPage {
