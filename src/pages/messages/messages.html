@@ -13,11 +13,11 @@
               Freundschaftsanfrage von {{ notification.user.name }}
             </div>
             <br>
-            <button ion-button (click)="accept(notification)">
+            <button ion-button (click)="accept(notification)" color="secondary">
               <ion-icon name="checkmark"></ion-icon>
               Zustimmen
             </button>
-            <button ion-button (click)="decline(notification)">
+            <button ion-button (click)="decline(notification)" color="danger">
               <ion-icon name="close"></ion-icon>
               Ablehnen
             </button>
