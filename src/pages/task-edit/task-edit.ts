@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
 import * as _ from 'lodash';
 
 import { TaskDataService } from '../../services/task_service';
@@ -50,7 +50,7 @@ export class TaskEditPage {
     all: []
   };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastController,
+  constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastController, public alert: AlertController,
               public taskDataService: TaskDataService, public userDataService: UserDataService) {
     this.taskId = navParams.get("id");
     this.parentId = navParams.get("parentId");
@@ -337,6 +337,51 @@ export class TaskEditPage {
     }
   };
 
+  delete(){
+    let self = this;
+
+    let template = 'Wollen sie diese Aufgabe wirklich löschen? Es wird die Aufgabe mit ALLEN darunterliegenden Aufgabes permanent gelöscht.';
+    if( self.task.taskState === 'PUBLISHED' )
+      template += "<p><strong>Aufgabe ist schon veröffentlicht. Aufgabe trotzdem löschen?</strong></p>";
+    if( self.task.taskState === 'STARTED' )
+      template += "<p><strong>Aufgabe ist schon gestartet. Aufgabe trotzdem löschen?</strong></p>";
+
+    self.alert.create({
+      title: 'Löschen',
+      message: template,
+      buttons: [
+        {
+          text: 'Abbrechen',
+          role: 'cancel'
+        },
+        {
+          text: 'Löschen',
+          handler: () => {
+            self.taskDataService.deleteTaskById(self.task.id).then(function (res) {
+              self.toast.create({
+                message: "Aufgabe gelöscht",
+                position: 'top',
+                duration: 3000
+              }).present();
+              if (self.task.superTask) {
+                self.navCtrl.push('task-detail', {id: self.task.superTask.id});
+              } else {
+                self.navCtrl.push('my-tasks');
+              }
+            }, function (error) {
+              self.toast.create({
+                message: "Aufgabe kann nicht gelöscht werden: " + error.message,
+                position: 'top',
+                duration: 3000
+              });
+            });
+          }
+        }
+      ]
+    }).present();
+  };
+
+
   openNewCompetenceForm(){
     let self = this;
     if(self.competenceAreaList.length === 0) {
@@ -611,13 +656,6 @@ export class TaskEditPage {
  });
  };
 
- TaskDataService.deleteTaskById(shift.id).then(function (res) {
- var message = 'Schicht wurde erfolgreich gelöscht';
- ionicToast.show("Schicht wurde gelöscht: " + message, 'top', false, 5000);
- }, function (error) {
- ionicToast.show("Schicht kann nicht gelöscht werden: " + error.message, 'top', false, 5000);
- });
-
 
  */
 
@@ -715,42 +753,6 @@ export class TaskEditPage {
       });
     };
 
-    $scope.delete = function(){
-      var template = 'Wollen sie diese Aufgabe wirklich löschen? Es wird die Aufgabe mit ALLEN darunterliegenden Aufgabes permanent gelöscht.';
-      if( $scope.task.taskState === 'PUBLISHED' )
-        template += "<p><strong>Aufgabe ist schon veröffentlicht. Aufgabe trotzdem löschen?</strong></p>";
-      if( $scope.task.taskState === 'STARTED' )
-        template += "<p><strong>Aufgabe ist schon gestartet. Aufgabe trotzdem löschen?</strong></p>";
-
-      var confirmPopup = $ionicPopup.confirm({
-        title: 'Löschen',
-        template: template,
-        okText: "Löschen",
-        okType: "button-assertive",
-        cancelText: "Abbrechen"
-      });
-
-      confirmPopup.then(function(res) {
-        if(res) {
-          TaskDataService.deleteTaskById($scope.task.id).then(function(res) {
-            ionicToast.show("Aufgabe gelöscht", 'top', false, 5000);
-            if($scope.task.superTask) {
-              $state.go('tabsController.task', {id: $scope.task.superTask.id}, {location: "replace"})
-                .then(function (res) {
-                  $ionicHistory.removeBackView();
-                });
-            } else {
-              $state.go('tabsController.myTasks', {location: "replace"})
-                .then(function (res) {
-                  $ionicHistory.removeBackView();
-                });
-            }
-          }, function(error) {
-            ionicToast.show("Aufgabe kann nicht gelöscht werden: " + error.message, 'top', false, 5000);
-          });
-        }
-      });
-    };
 
     // Check if Address field has been updated on Map Page
     $scope.$on("$ionicView.enter", function(event, data){
