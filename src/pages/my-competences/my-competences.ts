@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController, ToastController} from 'ionic-angular';
+import {AlertController, IonicPage, NavController, ToastController} from 'ionic-angular';
 import * as _ from 'lodash';
 
 import {UserDataService} from "../../services/user_service";
@@ -18,7 +18,7 @@ export class MyCompetencesPage {
   competences : Array<any> = [];
 
   constructor(public navCtrl: NavController, public userDataService: UserDataService,
-              public toast: ToastController) {
+              public toast: ToastController, public alert: AlertController) {
     this.onRefresh();
   }
 
@@ -36,21 +36,36 @@ export class MyCompetencesPage {
   remove(id){
     let self = this;
 
-    self.userDataService.removeCompetence(id).then(function(res){
-      let index = _.findIndex(self.competences, {id: id});
-      self.competences.splice(index, 1)[0];
-      self.toast.create({
-        message: "Kompetenz gelöscht",
-        position: 'top',
-        duration: 3000
-      }).present();
-    }, function(error) {
-      self.toast.create({
-        message: "Kompetenz kann nicht gelöscht werden: " + error.message,
-        position: 'top',
-        duration: 3000
-      }).present();
-    });
+    self.alert.create({
+      title: 'Löschen',
+      message: 'Wollen Sie diese Kompetenz wirklich löschen?',
+      buttons: [
+        {
+          text: 'Abbrechen',
+          role: 'cancel'
+        },
+        {
+          text: 'Löschen',
+          handler: () => {
+            self.userDataService.removeCompetence(id).then(function(res){
+              let index = _.findIndex(self.competences, {competence: {id: id}});
+              self.competences.splice(index, 1)[0];
+              self.toast.create({
+                message: "Kompetenz gelöscht",
+                position: 'top',
+                duration: 3000
+              }).present();
+            }, function(error) {
+              self.toast.create({
+                message: "Kompetenz kann nicht gelöscht werden: " + error.message,
+                position: 'top',
+                duration: 3000
+              }).present();
+            });
+          }
+        }
+      ]
+    }).present();
   }
 
   update(c){
