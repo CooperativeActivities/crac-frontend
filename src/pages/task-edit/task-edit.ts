@@ -192,7 +192,7 @@ export class TaskEditPage {
      */
 
     /* @TODO replace date check*/
-    if(self.task.endTime/* || !angular.isDate(self.task.endTime)*/) {
+    if(!self.task.endTime/* || !angular.isDate(self.task.endTime)*/) {
       self.task.startTime = new Date(self.task.startTime);
       self.task.endTime = new Date(self.task.startTime);
     } else {
