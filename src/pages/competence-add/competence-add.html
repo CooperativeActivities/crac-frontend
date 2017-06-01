@@ -2,7 +2,7 @@
   <ion-navbar>
     <ion-title>Kompetenz Hinzufügen</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="save()">
+      <button ion-button icon-only (click)="add()">
         <ion-icon name="checkmark"></ion-icon>
       </button>
     </ion-buttons>
@@ -12,16 +12,17 @@
   <ion-list *ngIf="competenceAreaList.length > 0">
     <ion-item>
       <ion-label stacked>Kompetenzbereich</ion-label>
+      <ion-input *ngIf="competenceArea" type="text" disabled [(ngModel)]="competenceArea.name"></ion-input>
     </ion-item>
-    <ion-searchbar (ionInput)="filterAreas($event)"></ion-searchbar>
-    <ion-list>
+    <ion-searchbar *ngIf="!competenceArea" (ionInput)="filterAreas($event)"></ion-searchbar>
+    <ion-list *ngIf="!competenceArea">
       <ion-item *ngFor="let area of competenceAreaList" (click)="getCompetencesForArea(area)">
         {{area.name}}
       </ion-item>
     </ion-list>
   </ion-list>
 
-  <ion-list *ngIf="competenceArea != -1">
+  <ion-list *ngIf="competenceArea && newComp.id == -1">
     <ion-item *ngFor="let item of competences" (click)="setCompetenceSelect(item)">{{item.name}}</ion-item>
   </ion-list>
 
@@ -39,9 +40,9 @@
       </ion-range>
     </ion-item>
     <ion-item>
-      <ion-label stacked>Kann ich<span float-right>{{comp.proficiencyValue}}</span></ion-label>
+      <ion-label stacked>Kann ich<span float-right>{{newComp.proficiencyValue}}</span></ion-label>
       <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
-                 [(ngModel)]="comp.proficiencyValue">
+                 [(ngModel)]="newComp.proficiencyValue">
       </ion-range>
     </ion-item>
   </ion-list>

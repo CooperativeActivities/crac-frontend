@@ -16,25 +16,26 @@ export class CompetenceAddPage {
 
   allCompetenceAreas: Array<any> = [];
   competenceAreaList: Array<any> = [];
-  competenceArea: number;
+  competenceArea: any;
   competences : Array<any> = [];
   newComp: any;
 
   constructor(public navCtrl: NavController, public userDataService: UserDataService,
               public toast: ToastController) {
     this.onRefresh();
+    this.getCompetenceAreas();
   }
 
   onRefresh() {
     let self = this;
 
-    self.competenceArea = -1;
     self.newComp = {
       id: -1,
       likeValue: 50,
       proficiencyValue: 50
     };
-    self.getCompetenceAreas();
+    self.competenceArea = null;
+    self.competences = [];
   }
 
   getCompetenceAreas() {
@@ -84,6 +85,33 @@ export class CompetenceAddPage {
     }
   }
 
+  getCompetencesForArea(newValue){
+    let self = this;
+
+    self.competenceArea = newValue;
+
+    if(newValue.id === -1) return;
+    self.userDataService.getCompetencesForArea(newValue.id)
+      .then(function(res) {
+        if(res.object.mappedCompetences.length === 0) {
+          self.toast.create({
+            message: "Keine Kompetenzen in diesem Bereich gefunden",
+            position: 'top',
+            duration: 3000
+          }).present();
+          return;
+        } else {
+          self.competences = res.meta.competences;
+        }
+      }, function(error) {
+        self.toast.create({
+          message: "Kompetenzen dieses Bereichs können nicht geladen werden: " + error.message,
+          position: 'top',
+          duration: 3000
+        }).present();
+      });
+  }
+
   setCompetenceSelect(comp) {
     let self = this;
 
@@ -106,7 +134,7 @@ export class CompetenceAddPage {
         likeValue: 50,
         proficiencyValue: 50
       };
-      self.competenceArea = -1;
+      self.competenceArea = null;
     }, function(error) {
       self.toast.create({
         message: "Kompetenz kann nicht hinzufügt werden: " + error.message,
