@@ -18,10 +18,14 @@ export class MyProfilePage {
 
   ngOnInit(): void {
     this.userDataService.getCurrentUser().then((res) => {
-      this.user = res.object
-    }).catch((err)=>{
-      console.log(err)
-      //ionicToast.show("Benutzerinformation kann nicht gefolgt werden: " + error.message, 'top', false, 5000);
+      this.user = res.object;
+    }).catch((error)=>{
+      console.log(error);
+      this.toast.create({
+        message: "Benutzerinformation kann nicht gefolgt werden: " + error.message,
+        position: 'top',
+        duration: 3000
+      }).present();
     })
   }
 
@@ -39,6 +43,11 @@ export class MyProfilePage {
     this.userDataService.updateCurrentUser(profileData).then(res => {
       console.log(profileData);
       console.log(res.data);
+      this.toast.create({
+        message: "Account gespeichert",
+        position: 'top',
+        duration: 3000
+      }).present();
       this.navCtrl.pop()
     }, error => {
       console.log(error)
