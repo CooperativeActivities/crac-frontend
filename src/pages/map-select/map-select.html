@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Ortsuche</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="save_address()">
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<!--<ion-content *ngIf="map" data-tap-disabled="true">
+  <leaflet defaults="map.defaults" center="map.center" markers="map.markers" ng-if="map"></leaflet>
+</ion-content>-->
+
+<ion-content [attr.noScroll]="shouldScroll">
+  <div id="map"></div>
+  <div class="crosshair">
+    <ion-icon name="locate"></ion-icon>
+  </div>
+</ion-content>
+
+
+
+<!--
+<ion-view hide-nav-bar="false">
+  <ion-nav-title>Ortsuche</ion-nav-title>
+  <ion-nav-buttons side="right">
+    <button class="button icon ion-checkmark"  ng-click="save_address()"></button>
+  </ion-nav-buttons>
+
+  <ion-content data-tap-disabled="true">
+
+    <leaflet defaults="map.defaults" center="map.center" markers="map.markers" ng-if="map"></leaflet>
+    <div class="icon ion-android-locate crosshair"></div>
+
+  </ion-content>
+
+</ion-view>
+-->

@@ -84,11 +84,9 @@
             <ion-datetime displayFormat="DD-MM-YYYY HH:mm" [(ngModel)]="task.endTime" name="endTime"></ion-datetime>
           </ion-item>
           <ion-item>
-            <!-- @TODO uncomment when map view is ready
             <button ion-button icon-only (click)="openMap()" item-right>
               <ion-icon name="locate"></ion-icon>
             </button>
-            -->
             <ion-label stacked>Adresse
             </ion-label>
             <ion-input type="text" [(ngModel)]="task.address" name="address"></ion-input>

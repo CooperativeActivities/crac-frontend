@@ -46,4 +46,5 @@
         <variable name="DEEPLINK_HOST" value="crac.at" />
     </plugin>
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
+    <plugin name="cordova-plugin-geolocation" spec="~2.4.3" />
 </widget>

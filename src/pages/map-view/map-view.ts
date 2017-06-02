@@ -7,6 +7,8 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import * as Leaflet from 'leaflet';
 
+const mapzenKey = (<any>window).crac_config.mapzenKey
+
 @IonicPage({
   name: "map-view",
 })
@@ -146,7 +148,7 @@ export class MapViewPage implements OnInit {
       "text": adr,
       //"boundary.country": "AT", // Search only in Austria
       "size": 1,
-      "api_key": "mapzen-FZZdZ5c",
+      "api_key": mapzenKey,
     }
     let options = new RequestOptions({
       headers: new Headers({
@@ -207,7 +209,7 @@ export class MapViewPage implements OnInit {
 
     this.drawMarker();
   }
-  locateUsr = function(){
+  locateUsr (){
     // //web location
     // map.locate({ setView: true});
 
@@ -228,7 +230,7 @@ export class MapViewPage implements OnInit {
 
     // map.on('locationerror', onLocationError);
   }
-  drawMarker = function(){
+  drawMarker (){
     Leaflet.marker([this.lat, this.lng]).addTo(this.map)
       .bindPopup(this.impAddr).openPopup();
   }

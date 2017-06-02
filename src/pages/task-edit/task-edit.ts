@@ -89,6 +89,16 @@ export class TaskEditPage {
       }
     }
   }
+// Check if Address field has been updated on Map Page
+  ionViewDidEnter(){
+    console.log(this.navParams)
+    if (this.navParams.data.address != null) {
+      this.task.address = this.navParams.data.address;
+      this.task.lat = this.navParams.data.lat;
+      this.task.lng = this.navParams.data.lng;
+      console.log("Import Address: " + this.navParams.data.address + " | lat: " + this.navParams.data.lat + " / lng: " + this.navParams.data.lng);
+    }
+  }
 
   getDateString(d){
     let tzo = -d.getTimezoneOffset(),
@@ -161,15 +171,13 @@ export class TaskEditPage {
   };
 
   openMap() {
-    /* @TODO release this once map view is ready
-    this.navCtrl.push('map-view',
+    this.navCtrl.push('map-select',
       {
        id: this.taskId,
        address: this.task.address,
        lat: this.task.lat,
        lng: this.task.lng
      });
-    */
   }
 
   getProcessedTaskData() {
@@ -684,16 +692,4 @@ export class TaskEditPage {
 }
 
 /*
-// Check if Address field has been updated on Map Page
-    $scope.$on("$ionicView.enter", function(event, data){
-      if (data.stateParams.address != null) {
-        $scope.task.address = data.stateParams.address;
-        $scope.task.lat = data.stateParams.lat;
-        $scope.task.lng = data.stateParams.lng;
-        console.log("Import Address: " + data.stateParams.address + " | lat: " + data.stateParams.lat + " / lng: " + data.stateParams.lng);
-      }
-    });
-
-    $scope.load();
-  }]);
  */

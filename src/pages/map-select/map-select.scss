@@ -1,0 +1,16 @@
+@import "leaflet";
+@import "leaflet-geocoder-mapzen";
+
+.crosshair {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-size: 35px;
+  color: #000;
+  z-index: 1000;
+  .icon{
+    margin-left: -50%;
+    margin-top: -50%;
+  }
+  pointer-events: none;
+}
