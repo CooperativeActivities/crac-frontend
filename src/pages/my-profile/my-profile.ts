@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { IonicPage, NavController, ToastController } from 'ionic-angular';
 
-import { NavController } from 'ionic-angular';
 import { UserDataService } from '../../services/user_service';
 
 @IonicPage({
@@ -15,7 +14,7 @@ import { UserDataService } from '../../services/user_service';
 export class MyProfilePage {
   public user: any;
 
-  constructor(public navCtrl: NavController, public userDataService: UserDataService) { }
+  constructor(public navCtrl: NavController, public userDataService: UserDataService, public toast: ToastController) { }
 
   ngOnInit(): void {
     this.userDataService.getCurrentUser().then((res) => {
@@ -27,22 +26,31 @@ export class MyProfilePage {
   }
 
   save(){
-    var profileData : any = {};
-    profileData.firstName= this.user.firstName;
-    profileData.lastName= this.user.lastName;
-    profileData.address= this.user.address;
-    profileData.phone= this.user.phone;
-    profileData.email= this.user.email;
-    profileData.birthDate= this.user.birthDate;
+    var profileData : any = {
+      firstName: this.user.firstName,
+      lastName: this.user.lastName,
+      address: this.user.address,
+      phone: this.user.phone,
+      email: this.user.email,
+      birthDate: this.user.birthDate,
+    }
 
 
-    this.userDataService.updateCurrentUser(profileData).then(function(res) {
+    this.userDataService.updateCurrentUser(profileData).then(res => {
       console.log(profileData);
       console.log(res.data);
-    }, function(error) {
+      this.navCtrl.pop()
+    }, error => {
       console.log(error)
-      //ionicToast.show("Account kann nicht gespeichert werden: " + error.message, 'top', false, 5000);
+      this.toast.create({
+        message: "Account kann nicht gespeichert werden: " + error.message,
+        position: 'top',
+        duration: 3000
+      }).present();
     });
+  }
+  cancel(){
+    this.navCtrl.pop()
   }
 
 }
