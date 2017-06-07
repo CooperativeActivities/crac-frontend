@@ -14,3 +14,11 @@
   }
   pointer-events: none;
 }
+
+.leaflet-container .leaflet-control-attribution, .leaflet-container .leaflet-control-scale {
+    font-size: 9px;
+}
+
+li:nth-child( n + 6 ){
+    display: none;
+}

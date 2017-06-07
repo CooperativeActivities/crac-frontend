@@ -56,8 +56,9 @@ export class MapSelectPage implements OnInit {
 
   setupMap(): void {
     this.map = Leaflet.map('map', {
-      zoomControl: false,
+      zoomControl: false
     });
+
     Leaflet.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
       maxZoom: 18,
@@ -70,10 +71,12 @@ export class MapSelectPage implements OnInit {
     var parameters = {
       "boundary.country": "AT"
     };
+
     var geocoderOptions = {
       autocomplete: true,
       expanded: true,
       collapsible: false,
+      focus: true,
       //fullWidth: true,
       markers: false,
       placeholder: "Ort suchen",
