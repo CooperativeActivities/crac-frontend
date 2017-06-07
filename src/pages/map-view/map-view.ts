@@ -71,8 +71,21 @@ export class MapViewPage implements OnInit {
     //   lng : this.lng,
     //   zoom : 15
     // };
-    Leaflet.marker([this.lat, this.lng]).addTo(this.map)
-      .bindPopup(this.impAddr).openPopup();
+    // var markerIcon = Leaflet.icon({
+    //     iconUrl: 'assets/images/marker-icon.png',
+    //     shadowUrl: 'assets/images/marker-shadow.png',
+
+    //     // iconSize:     [38, 95], // size of the icon
+    //     // shadowSize:   [50, 64], // size of the shadow
+    //     iconAnchor:      [0, 0], // point of the icon which will correspond to marker's location
+    //     // shadowAnchor: [4, 62],  // the same for the shadow
+    //     // popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    // });
+
+    // Leaflet.marker([this.lat, this.lng], {icon: markerIcon})
+    //   .addTo(this.map)
+    //   .bindPopup(this.impAddr)
+    //   .openPopup();
 
 
     // if (this.impAddr != null) {
@@ -232,7 +245,20 @@ export class MapViewPage implements OnInit {
     // map.on('locationerror', onLocationError);
   }
   drawMarker (){
-    Leaflet.marker([this.lat, this.lng]).addTo(this.map)
-      .bindPopup(this.impAddr).openPopup();
+    var markerIcon = Leaflet.icon({
+        iconUrl: 'assets/images/marker-icon.png',
+        shadowUrl: 'assets/images/marker-shadow.png',
+
+        // iconSize:     [38, 95], // size of the icon
+        // shadowSize:   [50, 64], // size of the shadow
+        iconAnchor:      [12.5, 41], // point of the icon which will correspond to marker's location
+        // shadowAnchor: [4, 62],  // the same for the shadow
+        popupAnchor:  [0, -35] // point from which the popup should open relative to the iconAnchor
+    });
+
+    Leaflet.marker([this.lat, this.lng], {icon: markerIcon})
+      .addTo(this.map)
+      .bindPopup(this.impAddr)
+      .openPopup();
   }
 }
