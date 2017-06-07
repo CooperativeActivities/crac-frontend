@@ -3,10 +3,17 @@
     <ion-title>Aufgabe</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="edit()">
-        <ion-icon name="menu"></ion-icon>
+        <ion-icon name="md-create"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
+  <ion-toolbar>
+    <ion-title>
+    <span *ngIf="task">
+      {{ task.name }}
+    </span>
+  </ion-title>
+  </ion-toolbar>
 </ion-header>
 <ion-content>
   <ion-refresher (ionRefresh)="doRefresh($event)">

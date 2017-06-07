@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{pageTitle}}</ion-title>
+    <ion-title>{{task?.name || pageTitle}}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="save_changes()">
         <ion-icon name="checkmark"></ion-icon>
@@ -294,13 +294,13 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-grid no-padding>
+    <ion-grid>
       <ion-row>
         <ion-col *ngIf="showDelete">
           <button ion-button (click)="delete()" color="danger" block> Löschen </button>
         </ion-col>
         <ion-col *ngIf="showUnpublish">
-          <button ion-button (click)="unpublish()" color="default" block> Zurückziehen </button>
+          <button ion-button (click)="unpublish()" color="light" block> Zurückziehen </button>
         </ion-col>
         <ion-col *ngIf="showPublish">
           <button ion-button (click)="publish()" color="secondary" block> Veröffentlichen </button>

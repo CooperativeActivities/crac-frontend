@@ -23,8 +23,7 @@
         <ng-content select="[task-preview-button]"></ng-content>
       </ion-item>
       -->
-      <ion-item>
-        <ion-icon name="calendar"></ion-icon>
+      <ion-item class="desc">
         <span *ngIf="isSingleTime">
           {{task.startTime | date: 'short'}}
         </span>

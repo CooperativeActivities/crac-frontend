@@ -26,9 +26,9 @@ $tabs-tab-color-active: rgba(255,255,255,1);
 $tabs-tab-color-inactive: rgba(255,255,255,0.7);
 $refresher-border-color: none;
 $tabs-md-tab-color-inactive: $tabs-tab-color-inactive;
-$card-ios-border-radius: 10px;
-$card-md-border-radius: 10px;
-$card-wp-border-radius: 10px;
+$card-ios-border-radius: 5px;
+$card-md-border-radius: 5px;
+$card-wp-border-radius: 5px;
 
 // Named Color Variables
 // --------------------------------------------------
@@ -39,10 +39,15 @@ $card-wp-border-radius: 10px;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #387ef5,
-  secondary:  #32db64,
-  danger:     #f53d3d,
-  light:      #f4f4f4,
+  //primary:    $card-header-background,
+  //primary:    #387ef5,
+  primary:    $toolbar-background,
+  //secondary:  #32db64,
+  secondary:  #26a94d,
+  //danger:     #f53d3d,
+  danger:     #dd3838,
+  //light:      #f4f4f4,
+  light: $card-header-background,
   dark:       #222
 );
 

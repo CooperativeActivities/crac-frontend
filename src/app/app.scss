@@ -19,8 +19,13 @@
   background-color: $content-background;
 }
 .card-header{
-  background-color: $card-header-background;
-  border: 2px solid $card-header-border-color;
+  /*background-color: $card-header-background;*/
+  /*border: 2px solid $card-header-border-color;*/
+  border: none;
+  background-color: $toolbar-background;
+  color: white;
+  font-weight: 500;
+  font-size: 1.8rem;
   margin-bottom: 1px;
 }
 .card-header-ios{ border-radius: $card-ios-border-radius $card-ios-border-radius 0 0; }
@@ -32,8 +37,24 @@
 .card-content {
   padding: 6px 8px 6px 8px;
 }
+.card-header{
+  padding-left: 10px;
+}
 .item{
-  padding-left: 8px;
+  padding-left: 2px;
+}
+.list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block{
+  border-bottom: 0;
+}
+.list-ios > .item-block:first-child{
+  border-top: 0;
+}
+ion-header{
+  background-color: $toolbar-background;
+  ion-navbar{
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    margin-bottom: 5px;
+  }
 }
 
 ion-card[task-list]{

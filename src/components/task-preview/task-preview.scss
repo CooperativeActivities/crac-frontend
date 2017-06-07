@@ -10,17 +10,28 @@ task-preview {
     }*/
   }
   .item{
-    padding-left: 4px;
+    padding-left: 10px;
     min-height: initial;
   }
+  .task-preview-wrapper>.item-inner>.input-wrapper>.label{
+    margin-top: 2px;
+    margin-bottom: 0px;
+  }
   .item.title {
+    padding-left: 0px;
+    /*font-size: 1.1em;*/
     border-bottom: 1px solid #ddd;
     .label{
       div{
-        font-weight: bold;
+        /*font-weight: 500;*/
       }
-      margin: 0;
+      /*margin: 0;*/
     }
+  }
+  .item.desc {
+    font-size: 0.9em;
+    padding-left: 0px;
+    color: grey;
   }
 
   .label {
