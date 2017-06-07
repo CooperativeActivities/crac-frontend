@@ -22,7 +22,7 @@
   /*background-color: $card-header-background;*/
   /*border: 2px solid $card-header-border-color;*/
   border: none;
-  background-color: $toolbar-background;
+  background-color: color($colors, primary);
   color: white;
   font-weight: 500;
   font-size: 1.8rem;
@@ -49,9 +49,13 @@
 .list-ios > .item-block:first-child{
   border-top: 0;
 }
+.toolbar ion-title{
+  padding: 0 12px;
+}
+
 ion-header{
-  background-color: $toolbar-background;
-  ion-navbar{
+  background-color: color($colors, primary);
+  ion-navbar:not(:only-child){
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
     margin-bottom: 5px;
   }

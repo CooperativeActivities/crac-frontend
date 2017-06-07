@@ -19,17 +19,11 @@
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <!-- no *ngIf on the ion-content, ionic doesn't like that -->
   <ng-template [ngIf]="task">
 
     <ion-card>
-
-      <ion-card-header class="task-detail__header__headline">
-        {{task.name}}
-      </ion-card-header>
-      <img src="../../assets/img/mOW8cSR4T4CA3L1GVQHG_rkessen.jpg" class="task-detail__header__img"/>
       <ion-card-content class="task-detail__header__desc">
-        <strong>Beschreibung:</strong>
+        <p style="font-weight: bold;">{{ task.name }}</p>
         <p>
           {{task.description}}
         </p>

@@ -27,8 +27,10 @@ export class TaskPreviewRecursiveComponent implements OnInit {
     }
   }
   taskPreviewHeaderClick(){
-    this.childrenVisible = !this.childrenVisible
-    return true;
+    if(this.showChildren){
+      this.childrenVisible = !this.childrenVisible
+      return true
+    }
   }
 
 }
