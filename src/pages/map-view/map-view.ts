@@ -34,6 +34,7 @@ export class MapViewPage implements OnInit {
     this.taskId = navParams.data.id;
   }
   ngOnInit(){
+    if (this.map != undefined) { this.map.off(); this.map.remove(); }
     this.drawMap();
     this.doRefresh()
   }

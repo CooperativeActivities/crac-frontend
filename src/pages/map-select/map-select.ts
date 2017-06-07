@@ -40,6 +40,7 @@ export class MapSelectPage implements OnInit {
   }
 
   ngOnInit(){
+    if (this.map != undefined) { this.map.off(); this.map.remove(); }
     this.setupMap();
 
     this.map.setView(new Leaflet.LatLng(this.adrLat, this.adrLng), 15);
