@@ -43,11 +43,13 @@
         <div *ngIf="timeChoice == 'point'">
           <div class="row"> {{ task.endTime | date: 'dd.MM.yyyy -- H:mm' }}</div>
         </div>
-        <ion-icon name="locate"></ion-icon>
-        <span class="task-detail__content__headline"> Adresse: </span>
-        <div>{{task.address}}</div>
-        <ion-icon name="open" (click)="openMapView()" tappable="tappable"></ion-icon>
-        Auf Karte anzeigen
+        <div *ngIf="task.address">
+          <ion-icon name="locate"></ion-icon>
+          <span class="task-detail__content__headline"> Adresse: </span>
+          <div>{{task.address}}</div>
+          <ion-icon name="open" (click)="openMapView()" tappable="tappable"></ion-icon>
+          Auf Karte anzeigen
+        </div>
       </div>
     </collapsible-card>
     <collapsible-card>
