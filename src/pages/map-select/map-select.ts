@@ -111,7 +111,6 @@ export class MapSelectPage implements OnInit {
       } //END TEMP ELSE
     });
 
-
   }
 
   mapzenRequest (url, params) : Promise<any> {
