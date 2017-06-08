@@ -8,7 +8,16 @@ task-preview-recursive > div > task-preview-recursive  {
   }
 }
 task-preview-recursive {
-  .item.title  button {
-    margin: 0;
+  .item.title {
+    button {
+      margin: 0;
+      padding-right: 0;
+      ion-icon{
+        margin-right: 0;
+      }
+    }
+    .item-inner{
+      padding-right: 0;
+    }
   }
 }

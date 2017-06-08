@@ -1,14 +1,14 @@
 <ion-header>
-
-  <ion-navbar>
+  <!-- navbar intentionally left out -->
+  <ion-toolbar>
     <ion-title>{{task?.name || pageTitle}}</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only (click)="save_changes()">
-        <ion-icon name="checkmark"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
-
+  </ion-toolbar>
+  <ion-toolbar>
+    <div class="toolbar-buttons">
+      <button ion-button (click)="cancel()" color="light" block> Abbrechen </button>
+      <button ion-button (click)="save_changes()" color="secondary" block> Speichern </button>
+    </div>
+  </ion-toolbar>
 </ion-header>
 
 
@@ -290,22 +290,11 @@
       </collapsible-card>
     </ng-template>
   </form>
+  <ion-toolbar>
+    <div class="toolbar-buttons">
+      <button ion-button (click)="delete()" color="danger" block> Löschen </button>
+      <button ion-button (click)="unpublish()" color="light" block> Zurückziehen </button>
+    </div>
+  </ion-toolbar>
 </ion-content>
 
-<ion-footer>
-  <ion-toolbar>
-    <ion-grid>
-      <ion-row>
-        <ion-col *ngIf="showDelete">
-          <button ion-button (click)="delete()" color="danger" block> Löschen </button>
-        </ion-col>
-        <ion-col *ngIf="showUnpublish">
-          <button ion-button (click)="unpublish()" color="light" block> Zurückziehen </button>
-        </ion-col>
-        <ion-col *ngIf="showPublish">
-          <button ion-button (click)="publish()" color="secondary" block> Veröffentlichen </button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-toolbar>
-</ion-footer>

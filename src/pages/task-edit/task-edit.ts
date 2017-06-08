@@ -99,6 +99,9 @@ export class TaskEditPage {
       console.log("Import Address: " + this.navParams.data.address + " | lat: " + this.navParams.data.lat + " / lng: " + this.navParams.data.lng);
     }
   }
+  cancel(){
+    this.navCtrl.pop()
+  }
 
   getDateString(d){
     let tzo = -d.getTimezoneOffset(),
@@ -690,6 +693,3 @@ export class TaskEditPage {
   }
 
 }
-
-/*
- */

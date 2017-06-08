@@ -79,6 +79,6 @@
         ]
     },
     "config": {
-      "ionic_sass": "./sass.config.js"
+        "ionic_sass": "./sass.config.js"
     }
 }

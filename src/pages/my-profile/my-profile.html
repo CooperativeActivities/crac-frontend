@@ -7,7 +7,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-grid>
+  <ion-grid no-padding>
     <ion-row align-items-center justify-content-center>
       <!-- ion-col intentionally left out -->
       <ion-card style="max-width: 60em;">
@@ -54,15 +54,9 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-grid no-padding>
-      <ion-row>
-        <ion-col>
-          <button ion-button (click)="cancel()" color="danger" block> Abbrechen </button>
-        </ion-col>
-        <ion-col>
-          <button ion-button (click)="save()" color="default" block> Speichern </button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <div class="toolbar-buttons">
+      <button ion-button (click)="cancel()" color="light" block> Abbrechen </button>
+      <button ion-button (click)="save()" color="secondary" block> Speichern </button>
+    </div>
   </ion-toolbar>
 </ion-footer>

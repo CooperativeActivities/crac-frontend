@@ -33,8 +33,9 @@ $colors: (
 
 // variables defined by me
 $content-background: #BBD8EF;
-$card-header-background: color($colors, light);
 $card-header-border-color: #ddd;
+$global-card-margin: 10px;
+$global-card-padding: 10px;
 
 
 // overriding ionic default vars:
@@ -47,7 +48,9 @@ $tabs-md-tab-color-inactive: $tabs-tab-color-inactive;
 $card-ios-border-radius: 5px;
 $card-md-border-radius: 5px;
 $card-wp-border-radius: 5px;
-
+$card-md-margin-left: $global-card-margin; $card-md-margin-right: $global-card-margin; $card-md-margin-start: $global-card-margin; $card-md-margin-end: $global-card-margin; $card-md-margin-top: $global-card-margin; $card-md-margin-bottom: $global-card-margin;
+$card-ios-margin-left: $global-card-margin; $card-ios-margin-right: $global-card-margin; $card-ios-margin-start: $global-card-margin; $card-ios-margin-end: $global-card-margin; $card-ios-margin-top: $global-card-margin; $card-ios-margin-bottom: $global-card-margin;
+$card-wp-margin-left: $global-card-margin; $card-wp-margin-right: $global-card-margin; $card-wp-margin-start: $global-card-margin; $card-wp-margin-end: $global-card-margin; $card-wp-margin-top: $global-card-margin; $card-wp-margin-bottom: $global-card-margin;
 
 // App iOS Variables
 // --------------------------------------------------
