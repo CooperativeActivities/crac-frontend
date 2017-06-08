@@ -246,8 +246,8 @@ export class MapViewPage implements OnInit {
   }
   drawMarker (){
     var markerIcon = Leaflet.icon({
-        iconUrl: 'assets/images/marker-icon.png',
-        shadowUrl: 'assets/images/marker-shadow.png',
+        iconUrl: '../assets/img/leaflet/marker-icon.png',
+        shadowUrl: '../assets/img/leaflet/marker-shadow.png',
 
         // iconSize:     [38, 95], // size of the icon
         // shadowSize:   [50, 64], // size of the shadow
