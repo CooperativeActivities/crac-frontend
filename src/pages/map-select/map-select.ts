@@ -32,14 +32,15 @@ export class MapSelectPage implements OnInit {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http, public geolocation: Geolocation) {
     console.log(navParams);
-    this.impAddr = navParams.data.address;
-    this.adrLat = navParams.data.lat;
-    this.adrLng = navParams.data.lng;
-    this.taskId = navParams.data.id;
+    if (navParams.data.address != null) {this.impAddr = navParams.data.address;}
+    if (navParams.data.lat != null) {this.adrLat = navParams.data.lat;}
+    if (navParams.data.lng != null) {this.adrLng = navParams.data.lng;}
+    if (navParams.data.id != null) {this.taskId = navParams.data.id;}
     console.log("Map view for taskId: " + this.taskId);
   }
 
   ngOnInit(){
+    if (this.map != undefined) { this.map.off(); this.map.remove(); }
     this.setupMap();
 
     this.map.setView(new Leaflet.LatLng(this.adrLat, this.adrLng), 15);
@@ -55,8 +56,9 @@ export class MapSelectPage implements OnInit {
 
   setupMap(): void {
     this.map = Leaflet.map('map', {
-      zoomControl: false,
+      zoomControl: false
     });
+
     Leaflet.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
       maxZoom: 18,
@@ -69,10 +71,12 @@ export class MapSelectPage implements OnInit {
     var parameters = {
       "boundary.country": "AT"
     };
+
     var geocoderOptions = {
       autocomplete: true,
       expanded: true,
       collapsible: false,
+      focus: true,
       //fullWidth: true,
       markers: false,
       placeholder: "Ort suchen",
