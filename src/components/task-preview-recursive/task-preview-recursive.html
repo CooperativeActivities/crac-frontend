@@ -1,0 +1,14 @@
+<div>
+  <task-preview item-block [task]="task" [headerClick]="taskPreviewHeaderClick.bind(this)">
+    <button
+      *ngIf="showChildren"
+      task-preview-button ion-button clear color="dark" item-right icon-left small>
+        <ion-icon *ngIf="childrenVisible" name="arrow-dropup" item-right></ion-icon>
+        <ion-icon *ngIf="!childrenVisible" name="arrow-dropdown" item-right></ion-icon>
+        {{ task.childTasks.length }}
+      </button>
+  </task-preview>
+  <ng-template [ngIf]="showChildren && childrenVisible">
+    <task-preview-recursive *ngFor="let childTask of childTasks" [task]="childTask"></task-preview-recursive>
+  </ng-template>
+</div>

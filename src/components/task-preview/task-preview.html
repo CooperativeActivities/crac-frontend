@@ -1,0 +1,73 @@
+<ion-item-sliding>
+  <ion-item class="task-preview-wrapper" (click)="loadSingleTask(task)">
+    <ion-list>
+      <!-- NOTE:
+      this is an ion-item component unwrapped into what ionic renders that into,
+      just to make use of ionic's css.
+      this was legal in ionic1, i hope it's alright in ionic2 as well?
+      -->
+      <div class="title item item-block item-md" (click)="privateHeaderClick($event)">
+        <div class="item-inner">
+          <div class="input-wrapper">
+            <div class="label label-md">
+              <div>{{ task.name }}</div>
+            </div>
+          </div>
+          <ng-content select="[task-preview-button]"></ng-content>
+        </div>
+        <div class="button-effect"></div>
+      </div>
+      <!--
+      <ion-item class="title">
+        <div>{{ task.name }}</div>
+        <ng-content select="[task-preview-button]"></ng-content>
+      </ion-item>
+      -->
+      <ion-item>
+        <ion-icon name="calendar"></ion-icon>
+        <span *ngIf="isSingleTime">
+          {{task.startTime | date: 'short'}}
+        </span>
+        <span *ngIf="!isSingleTime && isSingleDate">
+          {{task.startTime | date: 'short'}} - {{task.endTime | date: 'shortTime'}}
+        </span>
+        <span *ngIf="!isSingleDate">
+          {{task.startTime | date: 'shortDate'}} - {{task.endTime | date: 'shortDate'}}
+        </span>
+      </ion-item>
+    </ion-list>
+  </ion-item>
+  <ion-item-options side="right">
+    <button ion-button color="primary" (click)="follow(task.id)" *ngIf="showFollow">Folgen</button>
+    <button ion-button color="danger" (click)="unfollow(task.id)" *ngIf="showUnfollow">Nicht mehr Folgen</button>
+    <!--
+    <ion-delete-button class="ion-minus-circled" ng-click="items.splice($index, 1)"></ion-delete-button>
+    <ion-reorder-button class="ion-navicon" on-reorder="reorderItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
+    -->
+  </ion-item-options>
+</ion-item-sliding>
+<!--
+<div class="title item item-block item-md">
+  <div class="item-inner">
+    <div class="input-wrapper">
+      <ion-label class="label label-md">
+        <div>Klo putzen</div>
+      </ion-label>
+    </div>
+  </div>
+  <div class="button-effect"></div>
+</div>
+<div class="col status-icons">
+  <!-- only show non-published status for task owner -->
+  <!--
+  <i ng-if="showAllIcons"
+    class="icon ion-compose icon-step1"
+    ng-class="{ current : (task.taskState == 'NOT_PUBLISHED') }"></i>
+  <span ng-if="showAllIcons" class="icon-connector"></span>
+  <i class="icon ion-eye icon-step3"  ng-class="{ current: task.taskState == 'PUBLISHED' }"></i>
+  <span class="icon-connector"></span>
+  <i class="icon ion-load-a icon-step4"      ng-class="{ current: task.taskState == 'STARTED' }"></i>
+  <span class="icon-connector"></span>
+  <i class="icon ion-checkmark icon-step5" ng-class="{ current: task.taskState == 'COMPLETED' }"></i>
+</div>
+-->

@@ -1,0 +1,54 @@
+<ion-header>
+</ion-header>
+<ion-content padding>
+  <ion-grid>
+    <ion-row align-items-center justify-content-center>
+      <!-- ion-col intentionally left out -->
+      <ion-card style="max-width: 30em;">
+        <img src="assets/img/logo.png">
+        <ion-card-content>
+          <ion-card-title text-center>
+            Anmelden
+          </ion-card-title>
+          <ion-list>
+            <ion-item>
+              <ion-label floating>Username</ion-label>
+              <ion-input type="text" [(ngModel)]="username"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label floating>Password</ion-label>
+              <ion-input type="password" [(ngModel)]="password"></ion-input>
+            </ion-item>
+            <br>
+            <button ion-button block outline color="secondary"
+              (click)="login()"
+              >Login</button>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </ion-row>
+  </ion-grid>
+
+    <!--
+      <div class="row">
+        <div class="col">
+          <button class="button button-block button-outline button-positive button-face" disabled ng-click="facebookLogin()">
+            <i class="ion-social-facebook-outline"></i> Anmelden
+          </button>
+        </div>
+          -->
+        <!--<div class="col">
+          <button class="button button-block button-outline button-positive button-google">
+            <i class="ion-social-google-outline"></i> Anmelden
+          </button>
+        </div>-->
+    <!--
+      </div>
+      <a ui-sref="signup" id="anmelden-button2" class="button button-block button-outline button-positive button-energized" disabled>Neuen Account anlegen</a>
+      <button class="button button-clear" disabled>
+        Password vergessen?
+      </button>
+    </form>
+          -->
+</ion-content>

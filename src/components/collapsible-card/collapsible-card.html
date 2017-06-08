@@ -1,0 +1,12 @@
+<ion-card>
+  <ion-card-header class="collapsible-header" (click)="toggle()" icon-right>
+    <ion-item-divider icon-right color="light">
+      <ion-icon *ngIf="visible" name="arrow-dropup" item-right></ion-icon>
+      <ion-icon *ngIf="!visible" name="arrow-dropdown" item-right></ion-icon>
+      <ng-content select="[card-header]"></ng-content>
+    </ion-item-divider>
+  </ion-card-header>
+  <ion-card-content *ngIf="visible">
+    <ng-content select="[card-content]"></ng-content>
+  </ion-card-content>
+</ion-card>

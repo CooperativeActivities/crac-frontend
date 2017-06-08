@@ -1,0 +1,14 @@
+
+task-preview-recursive > div > task-preview-recursive  {
+  &> div{
+    margin-left: 16px;
+  }
+  &:last-child>div{
+    margin-bottom: 8px;
+  }
+}
+task-preview-recursive {
+  .item.title  button {
+    margin: 0;
+  }
+}

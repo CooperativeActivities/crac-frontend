@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Nachrichten</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let notification of notifications">
+          <div *ngIf="notification.name === 'Friend Request'; else nonFriendNotification">
+            <div>
+              Freundschaftsanfrage von {{ notification.user.name }}
+            </div>
+            <br>
+            <button ion-button (click)="accept(notification)" color="secondary">
+              <ion-icon name="checkmark"></ion-icon>
+              Zustimmen
+            </button>
+            <button ion-button (click)="decline(notification)" color="danger">
+              <ion-icon name="close"></ion-icon>
+              Ablehnen
+            </button>
+          </div>
+
+          <ng-template #nonFriendNotification>
+            <div>
+              {{ notification.name }}
+            </div>
+          </ng-template>
+        </ion-item>
+        <p *ngIf="notifications.length < 1">
+          Nichts hier.
+        </p>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

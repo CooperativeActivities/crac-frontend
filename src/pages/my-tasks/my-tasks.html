@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="makeNewTask()">
+        <ion-icon name="add-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Meine Aufgaben</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content> </ion-refresher-content>
+  </ion-refresher>
+  <ion-card task-list>
+    <ion-card-header>
+      Teilgenommene Aufgaben
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <task-preview item-block *ngFor="let task of participatingTasks" [task]="task"></task-preview><!-- | orderBy: 'assessment'">-->
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card task-list>
+    <ion-card-header>
+       Beobachtete Aufgaben
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <task-preview item-block *ngFor="let task of followingTasks" [task]="task" [action]="'unfollow'"></task-preview><!-- | orderBy: 'assessment'">-->
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card task-list>
+    <ion-card-header>
+      Von mir angeführte Aufgaben
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <task-preview item-block *ngFor="let task of leadingTasks" [task]="task"></task-preview><!-- | orderBy: 'assessment'">-->
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

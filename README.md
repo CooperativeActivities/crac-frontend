@@ -6,12 +6,14 @@
 git clone git@github.com:CooperativeActivities/crac-frontend.git
 ```
 ## Dependencies:
-- ionic-cli
-- bower
+latest version of ionic-cli:
+```sh
+npm install -g ionic@latest
+```
 
 # Setup
 ```
-bower install
+npm install
 ```
 
 # Run local test server

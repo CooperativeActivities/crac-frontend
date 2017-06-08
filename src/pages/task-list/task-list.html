@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Aufgabenliste</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher-content> </ion-refresher-content>
+  </ion-refresher>
+  <ion-card task-list>
+    <ion-card-header>
+      Vorgeschlagene Aufgaben
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <task-preview item-block *ngFor="let task of matchingTasks" [task]="task.task" [action]="'follow'"></task-preview>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card task-list>
+    <ion-card-header>
+      Alle Aufgaben/Projekte
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <task-preview-recursive item-block *ngFor="let task of parentTasks" [task]="task"></task-preview-recursive>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
