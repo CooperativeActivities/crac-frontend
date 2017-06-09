@@ -52,6 +52,12 @@ export class MapSelectPage implements OnInit {
       console.log("No Address specified, searching for user location instead")
       this.locateUsr();
     }
+    //Hack to reset map size after initial View setup, as in Android version the lower navigation
+    // bar is not counted, resulting in an off-center crosshair
+    setTimeout(()=>{
+      this.map.invalidateSize(true);
+      console.log("Map Size Invalidated");
+    }, 200);
   }
 
   setupMap(): void {
@@ -106,6 +112,7 @@ export class MapSelectPage implements OnInit {
         //var curLL = parseFloat(center.lat).toFixed(6) + ", " + parseFloat(center.lng).toFixed(6);
         let curLat = parseFloat(center.lat);
         let curLon = parseFloat(center.lng);
+        //Leaflet.marker([curLat, curLon]).addTo(this.map);
 
         this.setAddressField(curLat, curLon);
       } //END TEMP ELSE
@@ -142,31 +149,33 @@ export class MapSelectPage implements OnInit {
     }
     console.log("Mapzen request received:", data);
 
-    var rStreet = data.features[0].properties.street || data.features[0].properties.name;
-    var rHouse = data.features[0].properties.housenumber || "";
-    var rPost = data.features[0].properties.postalcode || "";
-    var rCity = data.features[0].properties.locality || data.features[0].properties.county;
+    if (data.features[0] != null){
+      var rStreet = data.features[0].properties.street || data.features[0].properties.name;
+      var rHouse = data.features[0].properties.housenumber || "";
+      var rPost = data.features[0].properties.postalcode || "";
+      var rCity = data.features[0].properties.locality || data.features[0].properties.county;
 
-    var Lat = data.features[0].geometry.coordinates[1];
-    var Lng = data.features[0].geometry.coordinates[0];
+      var Lat = data.features[0].geometry.coordinates[1];
+      var Lng = data.features[0].geometry.coordinates[0];
 
-    if (rStreet != "") {
-      if (rHouse != "") {
-        rStreet += " ";
-        rHouse += ", ";
-      } else {
-        rStreet += ", ";
+      if (rStreet != "") {
+        if (rHouse != "") {
+          rStreet += " ";
+          rHouse += ", ";
+        } else {
+          rStreet += ", ";
+        }
       }
-    }
-    if (rPost != "") {
-      rPost += " ";
-    }
+      if (rPost != "") {
+        rPost += " ";
+      }
 
-    this.result = rStreet + rHouse + rPost + rCity;
-    this.adrLat = Lat;
-    this.adrLng = Lng;
+      this.result = rStreet + rHouse + rPost + rCity;
+      this.adrLat = Lat;
+      this.adrLng = Lng;
 
-    this.geocoder._input.value = this.result
+      this.geocoder._input.value = this.result
+    }
   }
 
   /**
@@ -246,10 +255,9 @@ export class MapSelectPage implements OnInit {
         // or other error, load map with center on Austria
 
         this.map.setView(new Leaflet.LatLng(47.67, 13.35), 6);
+
       });
-
   }
-
 
   save_address(){
     let backView = this.navCtrl.getPrevious()

@@ -3,11 +3,25 @@
 
 $imgLoc: "../assets/img/leaflet";
 
+[noScroll] {
+  overflow: hidden;
+}
+
+.mapContainer {
+  height: 100%;
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+}
+
 .crosshair {
   position: absolute;
   left: 50%;
   top: 50%;
-  font-size: 35px;
+  margin-top: -18px;
+  font-size: 36px;
   color: #000;
   z-index: 1000;
   .icon{
