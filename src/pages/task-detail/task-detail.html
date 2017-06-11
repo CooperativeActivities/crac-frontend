@@ -90,11 +90,13 @@
           <div *ngFor="let task of task.childTasks">
             <task-preview item-block [task]="task"></task-preview>
           </div>
+          <ion-item>
+            <button ion-button (click)="makeNewSubTask()" *ngIf="task.permissions" block>
+              <ion-icon name="add"></ion-icon>
+              Unteraufgaben hinzufügen
+            </button>
+          </ion-item>
         </ion-list>
-        <button ion-button (click)="makeNewSubTask()" *ngIf="addSubTaskFlag" block>
-          <ion-icon name="add"></ion-icon>
-          Unteraufgaben hinzufügen
-        </button>
       </div>
     </collapsible-card>
 
