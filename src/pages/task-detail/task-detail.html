@@ -69,7 +69,25 @@
 
       </div>
     </collapsible-card>
-    <collapsible-card (click)="loadShifts()">
+
+    <collapsible-card *ngIf="task.taskType == 'ORGANISATIONAL'">
+      <div card-header>
+        Unteraufgabe ({{task?.childTasks.length}})
+      </div>
+      <div card-content>
+        <ion-list>
+          <div *ngFor="let task of task.childTasks">
+            <task-preview item-block [task]="task"></task-preview>
+          </div>
+        </ion-list>
+        <button ion-button (click)="makeNewSubTask()" *ngIf="addSubTaskFlag" block>
+          <ion-icon name="add"></ion-icon>
+          Unteraufgaben hinzufügen
+        </button>
+      </div>
+    </collapsible-card>
+
+    <collapsible-card (click)="loadShifts()" *ngIf="task.taskType == 'WORKABLE'">
       <div card-header>
         Schichten ({{task?.childTasks.length}})
       </div>
@@ -337,18 +355,6 @@
         <task-preview task="task.superTask" ng-click="loadSingleTask(task.superTask.id)"></task-preview>
         <br>
       </c-accordion>
-
-      <c-accordion title="'Unteraufgaben (' + task.childTasks.length + ')'" ng-show="task.childTasks.length > 0 && task.taskType == 'ORGANISATIONAL'">
-        <ion-list>
-          <div ng-repeat="subTask in task.childTasks | orderBy: ['startTime', 'name']" ng-cloak>
-            <task-preview task="subTask" ng-click="loadSingleTask(subTask.id)"></task-preview>
-          </div>
-        </ion-list>
-        <br>
-        <button ng-click="makeNewSubTask()" ng-if="addSubTaskFlag" class="button button-full button-small button-balanced ion-android-add-circle item-divider"> Unteraufgaben hinzufügen</button>
-        <br>
-      </c-accordion>
-
 
       <c-accordion title="'Kommentare (' + task.comments.length + ')'">
         <ion-list can-swipe="true" ng-show="task.comments.length > 0">
