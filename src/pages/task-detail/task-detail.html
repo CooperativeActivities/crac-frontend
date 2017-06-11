@@ -142,13 +142,13 @@
             </ion-avatar>
             <h2>{{comment?.name}}</h2>
 
-            <p>{{comment?.content}}</p>
+            <p text-wrap>{{comment?.content}}</p>
           </ion-item>
 
 
           <ion-item>
             <ion-label floating>Kommentar hinzufügen</ion-label>
-            <ion-input type="text" [(ngModel)]="newComment"></ion-input>
+            <ion-textarea type="text" [(ngModel)]="newComment"></ion-textarea>
             <button ion-button color="dark" clear item-right icon-only (click)="addNewComment()">
               <ion-icon name="send"></ion-icon>
             </button>
