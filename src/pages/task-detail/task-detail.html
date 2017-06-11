@@ -70,9 +70,20 @@
       </div>
     </collapsible-card>
 
+    <collapsible-card *ngIf="task.superTask">
+      <div card-header>
+        Übergeordnete Aufgabe
+      </div>
+      <div card-content>
+        <ion-list>
+          <task-preview [task]="task.superTask"></task-preview>
+        </ion-list>
+      </div>
+    </collapsible-card>
+
     <collapsible-card *ngIf="task.taskType == 'ORGANISATIONAL'">
       <div card-header>
-        Unteraufgabe ({{task?.childTasks.length}})
+        Unteraufgaben ({{task?.childTasks.length}})
       </div>
       <div card-content>
         <ion-list>
@@ -348,11 +359,6 @@
 
           </div>
         </ion-list>
-        <br>
-      </c-accordion>
-
-      <c-accordion title="'Übergeordnete Aufgabe'" ng-if="task.superTask">
-        <task-preview task="task.superTask" ng-click="loadSingleTask(task.superTask.id)"></task-preview>
         <br>
       </c-accordion>
 
