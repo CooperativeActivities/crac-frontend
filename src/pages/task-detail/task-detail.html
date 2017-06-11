@@ -2,7 +2,7 @@
   <ion-navbar>
     <ion-title>Aufgabe</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="edit()">
+      <button *ngIf="task?.permissions" ion-button icon-only (click)="edit()">
         <ion-icon name="md-create"></ion-icon>
       </button>
     </ion-buttons>
