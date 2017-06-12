@@ -111,12 +111,31 @@
             {{shift.startTime | date: 'dd.MM.yyyy H:mm'}} - {{shift.endTime | date: 'H:mm'}}
           </h2>
           <p>
-            <ion-icon name="contact" item-left></ion-icon>
-            {{shift.signedUsers}} / {{shift.minAmountOfVolunteers}}
+            <collapsible-card>
+              <div card-header>
+                <ion-icon name="contact" item-left></ion-icon>
+                {{shift.signedUsers}} / {{shift.minAmountOfVolunteers}}
+              </div>
+              <div card-content>
+                Zusagen von:
+                <span *ngFor="let curUser of shift?.userRelationships">
+                {{curUser.name}}<span *ngIf="$index != shift?.userRelationships.length - 1">,</span>
+                </span>
+                <div *ngIf="true">
+                <button ion-button small (click)="addToShift(shift)"
+                *ngIf="!shift.assigned">Ich arbeite mit!</button>
+                <button ion-button small (click)="removeFromShift(shift)"
+                 *ngIf="shift.assigned">Absagen</button>
+                </div>
+
+              </div>
+            </collapsible-card>
+
           </p>
         </ion-item>
       </div>
     </collapsible-card>
+
     <collapsible-card *ngIf="task.materials.length > 0">
       <div card-header>
         Material ({{task?.materials.length}})
@@ -163,26 +182,26 @@
 </ion-content>
 <ion-footer>
 
-    <button ion-button icon-left full (click)="publish()" *ngIf="showPublish">
-      <ion-icon name="ion-eye"></ion-icon>
-      Veröffentlichen
-    </button>
-    <button ion-button icon-left full (click)="enroll()" *ngIf="showEnroll">
-      <ion-icon name="ion-checkmark"></ion-icon>
-      Ich arbeite mit!
-    </button>
-    <button ion-button icon-left full (click)="cancel()" *ngIf="showCancel">
-      <ion-icon name="ion-close"></ion-icon>
-      Absagen
-    </button>
-    <button ion-button icon-left full (click)="follow()" *ngIf="showFollow">
-      <ion-icon name="ion-eye"></ion-icon>
-      Folgen
-    </button>
-    <button ion-button icon-left full (click)="cancel()" *ngIf="showUnfollow">
-      <ion-icon name="ion-eye-disabled"></ion-icon>
-      Nicht mehr folgen
-    </button>
+  <button ion-button icon-left full (click)="publish()" *ngIf="showPublish">
+    <ion-icon name="ion-eye"></ion-icon>
+    Veröffentlichen
+  </button>
+  <button ion-button icon-left full (click)="enroll()" *ngIf="showEnroll">
+    <ion-icon name="ion-checkmark"></ion-icon>
+    Ich arbeite mit!
+  </button>
+  <button ion-button icon-left full (click)="cancel()" *ngIf="showCancel">
+    <ion-icon name="ion-close"></ion-icon>
+    Absagen
+  </button>
+  <button ion-button icon-left full (click)="follow()" *ngIf="showFollow">
+    <ion-icon name="ion-eye"></ion-icon>
+    Folgen
+  </button>
+  <button ion-button icon-left full (click)="cancel()" *ngIf="showUnfollow">
+    <ion-icon name="ion-eye-disabled"></ion-icon>
+    Nicht mehr folgen
+  </button>
 
 
 </ion-footer>

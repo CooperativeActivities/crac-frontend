@@ -19,6 +19,8 @@ export class TaskDetailPage {
   timeChoice = 'slot';
   taskId: number;
   newComment = "";
+  user: any;
+  loaded: any;
   showPublish: boolean = false;
   showEnroll: boolean = false;
   showCancel: boolean = false;
@@ -34,6 +36,8 @@ export class TaskDetailPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public taskDataService: TaskDataService, public toastCtrl: ToastController, private authCtrl: AuthService) {
     this.taskId = navParams.data.id;
     this.SUBTASKS_LIMITED_TO_SHALLOW = false;
+    this.loaded = {};
+    this.loaded.shifts = false;
     this.doRefresh();
 
   }
@@ -88,6 +92,7 @@ export class TaskDetailPage {
   }
 
   loadShifts() {
+    if(this.loaded.shifts) return;
     for (let i = 0; i < this.task.childTasks.length; i++) {
       let that = this;
       this.taskDataService.getTaskById(this.task.childTasks[i].id).then(function (res) {
@@ -98,6 +103,7 @@ export class TaskDetailPage {
         this.presentToast("Schichtinformation konnte nicht geladen werden: " + error.message, 'top', false, 5000);
       });
     }
+    this.loaded.shifts = true;
   }
 
   presentToast(msg, position, closeButton, duration) {
@@ -122,10 +128,10 @@ export class TaskDetailPage {
     let comment = await this.taskDataService.addComment(this.taskId, newComment)
       .catch(error => {
         this.presentToast("Kommentar kann nicht hinzufügen werden: " + error.message, 'top', false, 5000);
-      })
+      });
     if (comment) {
       console.log("comment added", comment);
-      this.newComment = ""
+      this.newComment = "";
       this.task.comments.push(comment.object)
       //@TODO we should not need to refresh the whole task to add/remove comments
       //this.doRefresh();
@@ -196,10 +202,11 @@ export class TaskDetailPage {
 
   //Publish a task
   publish() {
+    let that = this;
     console.log('publish');
     if (this.task.taskType === 'ORGANISATIONAL') {
       if (this.task.childTasks.length <= 0) {
-        this.presentToast("Übersicht hat noch keine Unteraufgabe! Bitte füge eine Unteraufgabe hinzu!", 'top', false, 5000);
+        that.presentToast("Übersicht hat noch keine Unteraufgabe! Bitte füge eine Unteraufgabe hinzu!", 'top', false, 5000);
       }
     }
 
@@ -216,12 +223,13 @@ export class TaskDetailPage {
       this.presentToast("Task veröffentlicht", 'top', false, 5000);
       this.showPublish = false;
     }, function (error) {
-      this.presentToast("Aufgabe kann nicht veröffentlicht werden: " + error.message, 'top', false, 5000);
+      that.presentToast("Aufgabe kann nicht veröffentlicht werden: " + error.message, 'top', false, 5000);
     });
   };
 
   //Enroll for a task
   enroll() {
+    let that = this;
     if (this.task.taskType === 'WORKABLE' && this.task.childTasks.length > 0) {
       //if a task has shifts, general enrolment is forbidden, this shouldn't happen
       return;
@@ -233,12 +241,13 @@ export class TaskDetailPage {
       this.task.userRelationships.push(this.user);
       this.updateFlags();
     }, function (error) {
-      this.presentToast("An der Aufgabe kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
+      that.presentToast("An der Aufgabe kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
     });
   };
 
   // Deleting all participating types
   cancel() {
+    let that = this;
     //failsafe, so you dont accidentally cancel leading a task
     if (this.participationType !== "LEADING") {
       this.taskDataService.removeOpenTask(this.task.id).then(function (res) {
@@ -251,20 +260,73 @@ export class TaskDetailPage {
         }
         this.updateFlags();
       }, function (error) {
-        this.presentToast("Aufgabe kann nicht abgesagt werden: " + error.message, 'top', false, 5000);
+        that.presentToast("Aufgabe kann nicht abgesagt werden: " + error.message, 'top', false, 5000);
       });
     }
   };
 
   // follow a task
   follow() {
+    let that = this;
     this.taskDataService.changeTaskPartState(this.task.id, 'follow').then(function (res) {
       this.participationType = "FOLLOWING";
       this.updateFlags();
     }, function (error) {
-      this.presentToast("Aufgabe kann nicht gefolgt werden: " + error.message, 'top', false, 5000);
+      that.presentToast("Aufgabe kann nicht gefolgt werden: " + error.message, 'top', false, 5000);
     });
   };
+
+  //add self to a shift
+  addToShift(shift) {
+  let that = this;
+  this.taskDataService.changeTaskPartState(shift.id ,'participate').then(function(res) {
+    //@TODO update task object
+
+    shift.assigned = true;
+    shift.signedUsers++;
+    shift.userRelationships.push(this.user);
+
+    let alreadyInShift = _.find(this.task.childTasks, function(task){
+      return shift.id != task.id && task.assigned;
+    });
+    if(!alreadyInShift && this.participationType != 'PARTICIPATING') {
+      this.task.signedUsers++;
+      this.task.userRelationships.push(this.user);
+    }
+  }, function(error) {
+    that.presentToast("An der Schicht kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
+  });
+
+
+};
+
+  //remove self from shift
+  removeFromShift(shift) {
+  this.taskDataService.removeOpenTask(shift.id).then(function (res) {
+    console.log('Not participating in shift ' + shift.id);
+    shift.assigned = false;
+    shift.signedUsers--;
+    let shiftIdx = _.findIndex(shift.userRelationships, {id: this.user.id});
+    if(shiftIdx > -1) {
+      shift.userRelationships.splice(shiftIdx, 1);
+    }
+
+    let alreadyInShift = _.find(this.task.childTasks, function(task){
+      return shift.id !== task.id && task.assigned;
+    });
+    if(!alreadyInShift && this.participationType != 'PARTICIPATING') {
+      this.task.signedUsers--;
+      var userIdx = _.findIndex(this.task.userRelationships, {id: this.user.id});
+      if(userIdx > -1) {
+        this.task.userRelationships.splice(userIdx, 1);
+      }
+    }
+    this.task.signedUsers--;
+  }, function(error) {
+    this.presentToast("An der Schicht kann nicht zurückgezogen werden: " + error.message, 'top', false, 5000);
+  });
+
+};
 
 
 }
