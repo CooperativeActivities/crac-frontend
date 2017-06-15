@@ -42,6 +42,10 @@ export class TaskDetailPage {
 
   }
 
+  ionViewDidEnter(){
+    this.adjustFooter();
+  }
+
   edit() {
     this.navCtrl.push('task-edit', {id: this.taskId});
   }
@@ -70,7 +74,7 @@ export class TaskDetailPage {
         this.userIsDone = false;
       }
       this.updateFlags();
-
+     // this.adjustFooter();
 
     }
     //Stop the ion-refresher from spinning
@@ -198,6 +202,7 @@ export class TaskDetailPage {
         }
         break;
     }
+
   };
 
   //Publish a task
@@ -327,6 +332,19 @@ export class TaskDetailPage {
   });
 
 };
+
+  adjustFooter(){
+    console.log('construtor into task-detail');
+    let fh = document.querySelector('ion-footer').clientHeight;
+    let sc = document.querySelectorAll('.scroll-content');
+    fh = (fh + 56);
+
+    if (sc != null) {
+      Object.keys(sc).map((key) => {
+        sc[key].style.marginBottom = fh+'px';
+      });
+    }
+  }
 
 
 }
