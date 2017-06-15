@@ -122,10 +122,12 @@
                 {{curUser.name}}<span *ngIf="$index != shift?.userRelationships.length - 1">,</span>
                 </span>
                 <div *ngIf="true">
-                <button ion-button small (click)="addToShift(shift)"
-                *ngIf="!shift.assigned">Ich arbeite mit!</button>
-                <button ion-button small (click)="removeFromShift(shift)"
-                 *ngIf="shift.assigned">Absagen</button>
+                  <button ion-button small (click)="addToShift(shift)"
+                          *ngIf="!shift.assigned">Ich arbeite mit!
+                  </button>
+                  <button ion-button small (click)="removeFromShift(shift)"
+                          *ngIf="shift.assigned">Absagen
+                  </button>
                 </div>
 
               </div>
@@ -143,10 +145,29 @@
       <div card-content>
 
         <ion-list>
-          <button ion-item *ngFor="let material of task.materials">
-            <ion-icon name="cube" item-left></ion-icon>
-            {{material?.name}}: {{material?.subscribedQuantity}} / {{material?.quantity}}
-          </button>
+          <ion-item   *ngFor="let material of task.materials">
+
+
+            <collapsible-card>
+              <div card-header>
+                <ion-icon name="cube" item-left></ion-icon>
+                {{material?.name}}: {{material?.subscribedQuantity}} / {{material?.quantity}}
+              </div>
+              <div card-content>
+
+                <div >
+                  <button ion-button small (click)="addMaterial(material)"
+                          *ngIf="!material.assigned">Ich bringe!
+                  </button>
+                  <button ion-button small (click)="removeMaterial(material)"
+                          *ngIf="material.assigned">Ich bringe doch nicht!
+                  </button>
+                </div>
+
+              </div>
+            </collapsible-card>
+
+          </ion-item >
         </ion-list>
 
       </div>

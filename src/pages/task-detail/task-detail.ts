@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 
 import {TaskDataService} from '../../services/task_service';
 import {AuthService} from '../../services/auth_service';
+import {UserDataService} from "../../services/user_service";
 
 @IonicPage({
   name: "task-detail",
@@ -11,7 +12,7 @@ import {AuthService} from '../../services/auth_service';
 @Component({
   selector: 'page-task-detail',
   templateUrl: 'task-detail.html',
-  providers: [TaskDataService],
+  providers: [TaskDataService, UserDataService],
 })
 export class TaskDetailPage {
 
@@ -33,7 +34,8 @@ export class TaskDetailPage {
   SUBTASKS_LIMITED_TO_SHALLOW: boolean = false;
   participationType: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public taskDataService: TaskDataService, public toastCtrl: ToastController, private authCtrl: AuthService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public taskDataService: TaskDataService,
+              public userDataService: UserDataService, public toastCtrl: ToastController, private authCtrl: AuthService) {
     this.taskId = navParams.data.id;
     this.SUBTASKS_LIMITED_TO_SHALLOW = false;
     this.loaded = {};
@@ -41,6 +43,17 @@ export class TaskDetailPage {
     this.doRefresh();
 
   }
+
+  ngOnInit(): void {
+    let that = this;
+    this.userDataService.getCurrentUser().then((res) => {
+      that.user = res.object;
+    }).catch((error)=>{
+      console.log(error);
+      that.presentToast("Benutzerinformation kann nicht gefolgt werden: " + error.message, 'top', false, 5000);
+    })
+  }
+
 
   ionViewDidEnter(){
     this.adjustFooter();
@@ -51,6 +64,7 @@ export class TaskDetailPage {
   }
 
   async doRefresh(refresher = null) {
+    let that = this;
     let task = await this.taskDataService.getTaskById(this.taskId)
       .catch(e => {
         console.warn("Task could not be retrieved", e)
@@ -73,8 +87,10 @@ export class TaskDetailPage {
         this.participationType = "NOT_PARTICIPATING";
         this.userIsDone = false;
       }
+      that.loaded.shifts;
       this.updateFlags();
-     // this.adjustFooter();
+
+      console.log('current task', this.task);
 
     }
     //Stop the ion-refresher from spinning
@@ -96,9 +112,9 @@ export class TaskDetailPage {
   }
 
   loadShifts() {
-    if(this.loaded.shifts) return;
+    if (this.loaded.shifts) return;
+    let that = this;
     for (let i = 0; i < this.task.childTasks.length; i++) {
-      let that = this;
       this.taskDataService.getTaskById(this.task.childTasks[i].id).then(function (res) {
         console.log('child shift', res);
         let shift = _.findIndex(that.task.childTasks, {id: res.object.id});
@@ -143,6 +159,7 @@ export class TaskDetailPage {
   }
 
   updateFlags() {
+    let that = this;
     let task = this.task;
     let userHasPermissions = task.permissions;
     let relation = task.participationType;
@@ -182,7 +199,6 @@ export class TaskDetailPage {
         if (userHasPermissions) {
           this.editableFlag = true;
           this.addSubTaskFlag = this.task.taskType === 'ORGANISATIONAL' && (!this.SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask);
-          this.editableFlag = true;
         }
         if (relation === "LEADING") {
           // @TODO allow leaders to also participate/follow
@@ -209,6 +225,7 @@ export class TaskDetailPage {
   publish() {
     let that = this;
     console.log('publish');
+
     if (this.task.taskType === 'ORGANISATIONAL') {
       if (this.task.childTasks.length <= 0) {
         that.presentToast("Übersicht hat noch keine Unteraufgabe! Bitte füge eine Unteraufgabe hinzu!", 'top', false, 5000);
@@ -225,8 +242,8 @@ export class TaskDetailPage {
 
     let taskId = this.task.id;
     this.taskDataService.changeTaskState(taskId, 'publish').then(function (res) {
-      this.presentToast("Task veröffentlicht", 'top', false, 5000);
-      this.showPublish = false;
+      that.presentToast("Task veröffentlicht", 'top', false, 5000);
+      that.showPublish = false;
     }, function (error) {
       that.presentToast("Aufgabe kann nicht veröffentlicht werden: " + error.message, 'top', false, 5000);
     });
@@ -241,10 +258,10 @@ export class TaskDetailPage {
     }
 
     this.taskDataService.changeTaskPartState(this.taskId, 'participate').then(function (res) {
-      this.participationType = "PARTICIPATING";
-      this.task.signedUsers++;
-      this.task.userRelationships.push(this.user);
-      this.updateFlags();
+      that.participationType = "PARTICIPATING";
+      that.task.signedUsers++;
+      that.task.userRelationships.push(that.user);
+      that.updateFlags();
     }, function (error) {
       that.presentToast("An der Aufgabe kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
     });
@@ -255,15 +272,15 @@ export class TaskDetailPage {
     let that = this;
     //failsafe, so you dont accidentally cancel leading a task
     if (this.participationType !== "LEADING") {
-      this.taskDataService.removeOpenTask(this.task.id).then(function (res) {
+      this.taskDataService.removeOpenTask(that.task.id).then(function (res) {
         console.log("unfollowed/cancelled");
-        this.participationType = "NOT_PARTICIPATING";
-        this.task.signedUsers--;
-        let userIdx = _.findIndex(this.task.userRelationships, {id: this.user.id});
+        that.participationType = "NOT_PARTICIPATING";
+        that.task.signedUsers--;
+        let userIdx = _.findIndex(that.task.userRelationships, {id: that.user.id});
         if (userIdx > -1) {
-          this.task.userRelationships.splice(userIdx, 1);
+          that.task.userRelationships.splice(userIdx, 1);
         }
-        this.updateFlags();
+        that.updateFlags();
       }, function (error) {
         that.presentToast("Aufgabe kann nicht abgesagt werden: " + error.message, 'top', false, 5000);
       });
@@ -274,8 +291,8 @@ export class TaskDetailPage {
   follow() {
     let that = this;
     this.taskDataService.changeTaskPartState(this.task.id, 'follow').then(function (res) {
-      this.participationType = "FOLLOWING";
-      this.updateFlags();
+      that.participationType = "FOLLOWING";
+      that.updateFlags();
     }, function (error) {
       that.presentToast("Aufgabe kann nicht gefolgt werden: " + error.message, 'top', false, 5000);
     });
@@ -284,8 +301,8 @@ export class TaskDetailPage {
   //add self to a shift
   addToShift(shift) {
     let that = this;
+    console.log('shift', shift);
     this.taskDataService.changeTaskPartState(shift.id, 'participate').then(function (res) {
-      //@TODO update task object
 
       shift.assigned = true;
       shift.signedUsers++;
@@ -294,7 +311,7 @@ export class TaskDetailPage {
       let alreadyInShift = _.find(that.task.childTasks, function (task) {
         return shift.id != task.id && task.assigned;
       });
-      if (!alreadyInShift && this.participationType != 'PARTICIPATING') {
+      if (!alreadyInShift && that.participationType != 'PARTICIPATING') {
         that.task.signedUsers++;
         that.task.userRelationships.push(that.user);
       }
@@ -349,7 +366,19 @@ export class TaskDetailPage {
 
   makeNewSubTask() {
     this.navCtrl.push('task-edit', {parentId: this.task.id});
-   // this.go('tabsController.newTask', { parentId: $scope.task.id });
+    // this.go('tabsController.newTask', { parentId: $scope.task.id });
+  }
+
+  ionViewWillLeave() {
+    let fh = 0;
+    let sc = document.querySelectorAll('.scroll-content');
+    fh = (fh + 56);
+
+    if (sc != null) {
+      Object.keys(sc).map((key) => {
+        sc[key].style.marginBottom = fh + 'px';
+      });
+    }
   }
 
 
