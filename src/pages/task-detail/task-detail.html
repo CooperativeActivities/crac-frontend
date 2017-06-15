@@ -100,7 +100,7 @@
       </div>
     </collapsible-card>
 
-    <collapsible-card (click)="loadShifts()" *ngIf="task.taskType == 'WORKABLE'">
+    <collapsible-card (click)="loadShifts()" *ngIf="task.taskType == 'WORKABLE' && task?.childTasks.length > 0">
       <div card-header>
         Schichten ({{task?.childTasks.length}})
       </div>

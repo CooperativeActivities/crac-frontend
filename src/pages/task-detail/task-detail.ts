@@ -283,67 +283,73 @@ export class TaskDetailPage {
 
   //add self to a shift
   addToShift(shift) {
-  let that = this;
-  this.taskDataService.changeTaskPartState(shift.id ,'participate').then(function(res) {
-    //@TODO update task object
+    let that = this;
+    this.taskDataService.changeTaskPartState(shift.id, 'participate').then(function (res) {
+      //@TODO update task object
 
-    shift.assigned = true;
-    shift.signedUsers++;
-    shift.userRelationships.push(this.user);
+      shift.assigned = true;
+      shift.signedUsers++;
+      shift.userRelationships.push(that.user);
 
-    let alreadyInShift = _.find(this.task.childTasks, function(task){
-      return shift.id != task.id && task.assigned;
+      let alreadyInShift = _.find(that.task.childTasks, function (task) {
+        return shift.id != task.id && task.assigned;
+      });
+      if (!alreadyInShift && this.participationType != 'PARTICIPATING') {
+        that.task.signedUsers++;
+        that.task.userRelationships.push(that.user);
+      }
+    }, function (error) {
+      that.presentToast("An der Schicht kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
     });
-    if(!alreadyInShift && this.participationType != 'PARTICIPATING') {
-      this.task.signedUsers++;
-      this.task.userRelationships.push(this.user);
-    }
-  }, function(error) {
-    that.presentToast("An der Schicht kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
-  });
 
 
-};
+  };
 
   //remove self from shift
   removeFromShift(shift) {
-  this.taskDataService.removeOpenTask(shift.id).then(function (res) {
-    console.log('Not participating in shift ' + shift.id);
-    shift.assigned = false;
-    shift.signedUsers--;
-    let shiftIdx = _.findIndex(shift.userRelationships, {id: this.user.id});
-    if(shiftIdx > -1) {
-      shift.userRelationships.splice(shiftIdx, 1);
-    }
-
-    let alreadyInShift = _.find(this.task.childTasks, function(task){
-      return shift.id !== task.id && task.assigned;
-    });
-    if(!alreadyInShift && this.participationType != 'PARTICIPATING') {
-      this.task.signedUsers--;
-      var userIdx = _.findIndex(this.task.userRelationships, {id: this.user.id});
-      if(userIdx > -1) {
-        this.task.userRelationships.splice(userIdx, 1);
+    let that = this;
+    this.taskDataService.removeOpenTask(shift.id).then(function (res) {
+      console.log('Not participating in shift ' + shift.id);
+      shift.assigned = false;
+      shift.signedUsers--;
+      let shiftIdx = _.findIndex(shift.userRelationships, {id: that.user.id});
+      if (shiftIdx > -1) {
+        shift.userRelationships.splice(shiftIdx, 1);
       }
-    }
-    this.task.signedUsers--;
-  }, function(error) {
-    this.presentToast("An der Schicht kann nicht zurückgezogen werden: " + error.message, 'top', false, 5000);
-  });
 
-};
+      let alreadyInShift = _.find(that.task.childTasks, function (task) {
+        return shift.id !== task.id && task.assigned;
+      });
+      if (!alreadyInShift && that.participationType != 'PARTICIPATING') {
+        this.task.signedUsers--;
+        let userIdx = _.findIndex(that.task.userRelationships, {id: that.user.id});
+        if (userIdx > -1) {
+          that.task.userRelationships.splice(userIdx, 1);
+        }
+      }
+      that.task.signedUsers--;
+    }, function (error) {
+      that.presentToast("Die Zusage kann nicht nicht zurückgezogen werden: " + error.message, 'top', false, 5000);
+    });
 
-  adjustFooter(){
-    console.log('construtor into task-detail');
+  };
+
+  adjustFooter() {
+
     let fh = document.querySelector('ion-footer').clientHeight;
     let sc = document.querySelectorAll('.scroll-content');
     fh = (fh + 56);
 
     if (sc != null) {
       Object.keys(sc).map((key) => {
-        sc[key].style.marginBottom = fh+'px';
+        sc[key].style.marginBottom = fh + 'px';
       });
     }
+  };
+
+  makeNewSubTask() {
+    this.navCtrl.push('task-edit', {parentId: this.task.id});
+   // this.go('tabsController.newTask', { parentId: $scope.task.id });
   }
 
 
