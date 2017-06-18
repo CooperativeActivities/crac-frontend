@@ -17,9 +17,11 @@ export class TaskListPage {
   parentTasks: Array<any>
   matchingTasks: Array<any>
   constructor(public navCtrl: NavController, public navParams: NavParams, public taskDataService: TaskDataService) { }
-  ngOnInit(){
-    this.doRefresh()
+
+  ionViewDidEnter() {
+    this.doRefresh();
   }
+
   async doRefresh (refresher=null) {
     await Promise.all([
       this.taskDataService.getMatchingTasks(5).then((res) => {
