@@ -19,9 +19,8 @@ export class MyTasksPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public taskDataService: TaskDataService) { }
 
-
-  ngOnInit(){
-    this.doRefresh()
+  ionViewDidEnter() {
+    this.doRefresh();
   }
 
   makeNewTask() {

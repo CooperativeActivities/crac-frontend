@@ -40,8 +40,6 @@ export class TaskDetailPage {
     this.SUBTASKS_LIMITED_TO_SHALLOW = false;
     this.loaded = {};
     this.loaded.shifts = false;
-    this.doRefresh();
-
   }
 
   ngOnInit(): void {
@@ -56,6 +54,7 @@ export class TaskDetailPage {
 
 
   ionViewDidEnter(){
+    this.doRefresh();
     this.adjustFooter();
   }
 
@@ -159,7 +158,6 @@ export class TaskDetailPage {
   }
 
   updateFlags() {
-    let that = this;
     let task = this.task;
     let userHasPermissions = task.permissions;
     let relation = task.participationType;
