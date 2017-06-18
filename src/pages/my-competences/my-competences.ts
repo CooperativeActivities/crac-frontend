@@ -19,6 +19,9 @@ export class MyCompetencesPage {
 
   constructor(public navCtrl: NavController, public userDataService: UserDataService,
               public toast: ToastController, public alert: AlertController) {
+  }
+
+  ionViewDidEnter() {
     this.onRefresh();
   }
 
