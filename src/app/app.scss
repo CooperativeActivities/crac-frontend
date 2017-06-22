@@ -15,6 +15,18 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+.app-root{
+  background-color: $content-background;
+}
+
+.rootWrapper{
+  position: relative;
+  max-width: 100rem;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+}
+
 .content{
   background-color: $content-background;
 }
@@ -67,14 +79,20 @@ ion-header{
   padding: 0;
 }
 
-ion-toolbar div.toolbar-buttons{
-  display: flex;
-  padding: 0 $global-card-margin;
-  > button:not(:first-child){
-    margin-left: $global-card-margin / 2;
+ion-toolbar {
+  &.clear .toolbar-background {
+    background-color: transparent;
+    border-color: transparent;
   }
-  > button:not(:last-child){
-    margin-right: $global-card-margin / 2;
+  div.toolbar-buttons{
+    padding: 0 $global-card-margin;
+    display: flex;
+    > button:not(:first-child){
+      margin-left: $global-card-margin / 2;
+    }
+    > button:not(:last-child){
+      margin-right: $global-card-margin / 2;
+    }
   }
 }
 

@@ -160,7 +160,7 @@ export class TaskDetailPage {
   updateFlags() {
     let task = this.task;
     let userHasPermissions = task.permissions;
-    let relation = task.participationType;
+    let relation = this.participationType;
     let taskIsWorkable = task.taskType === 'WORKABLE';
     let taskHasShifts = task.childTasks.length > 0 && taskIsWorkable;
     let taskIsSubtask = !!task.superTask;
@@ -249,19 +249,19 @@ export class TaskDetailPage {
 
   //Enroll for a task
   enroll() {
-    let that = this;
     if (this.task.taskType === 'WORKABLE' && this.task.childTasks.length > 0) {
       //if a task has shifts, general enrolment is forbidden, this shouldn't happen
       return;
     }
 
-    this.taskDataService.changeTaskPartState(this.taskId, 'participate').then(function (res) {
-      that.participationType = "PARTICIPATING";
-      that.task.signedUsers++;
-      that.task.userRelationships.push(that.user);
-      that.updateFlags();
-    }, function (error) {
-      that.presentToast("An der Aufgabe kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
+    this.taskDataService.changeTaskPartState(this.taskId, 'participate').then( (res) => {
+      //this.task = res.object
+      this.participationType = "PARTICIPATING";
+      this.task.signedUsers++;
+      this.task.userRelationships.push(this.user);
+      this.updateFlags();
+    }, (error) => {
+      this.presentToast("An der Aufgabe kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
     });
   };
 

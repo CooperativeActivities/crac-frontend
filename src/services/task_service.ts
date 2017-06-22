@@ -6,9 +6,9 @@ export class TaskDataService {
   constructor(public helpers: HelperService){ }
   // Get all task
   getAllParentTasks(){
-    return this.helpers.ajax("task/parents", "get", { handleSpecificErrors: function(response){
+    return this.helpers.ajax("task/parents", "get", { handleSpecificErrors: function(response, responseData){
       // switch .data.cause here
-      throw { error: response.data, message: "Aufgabenliste konnte nicht geladen werden" };
+      throw { error: responseData, message: "Aufgabenliste konnte nicht geladen werden" };
     }});
   };
   //Get a TAsk by ID

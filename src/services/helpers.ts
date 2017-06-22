@@ -10,7 +10,7 @@ export class HelperService {
   private _baseURL = (<any>window).crac_config.SERVER;
   constructor(private http: Http, private errorDisplayService: ErrorDisplayService, private authService: AuthService) { }
 
-  ajax(path, method, { handleSpecificErrors = (response)=>{}, payload = null, transformResponse = (response)=>response } = {}): Promise<any>{
+  async ajax(path, method, { handleSpecificErrors = (response, responseData)=>{}, payload = null, transformResponse = (response)=>response } = {}): Promise<any>{
     let options = this.authService.getAuthRequestOptions()
     let promise: any;
     let url = this._baseURL + path;
@@ -20,33 +20,39 @@ export class HelperService {
       promise = this.http[method](url, options)
     }
 
-    return promise.toPromise()
-      .then((res) => res.json()).then((response)=>{
-        if(response &&  response.success){ return transformResponse(response); }
-        else {
-          throw response
+    return promise.toPromise().then(res => res.json())
+    .then(
+      (response)=>{
+        if(response && response.success){ return transformResponse(response); }
+        else { throw response }
+      },
+      // error handler
+      async (response: Response) => {
+        if(response.status === 0 || response.status === -1){
+          throw { error: response, message: "Keine Verbindung" };
         }
-      }, function(response){
+        let responseData
+        try{ responseData = await response.json() }
+        catch(e){ }
         // handle specific errors first since we might want to have a special message for 404, for example
-        var res = handleSpecificErrors(response);
+        var res = handleSpecificErrors(response, responseData);
         // if the function returned something instead of throwing, we return that - prevents errors from throwing
         if(res){ return res; }
 
         switch(response.status)
         {
-          case -1:
-            throw { error: response, message: "Keine Verbindung" };
           case 401:
-            throw { error: response, message: "Sie sind nicht eingeloggt." };
+            throw { error: response, data: responseData, message: "Sie sind nicht eingeloggt." };
           case 404:
-            throw { error: response, message: "Resource nicht gefunden" };
+            throw { error: response, data: responseData, message: "Resource nicht gefunden" };
           case 400:
-            if(response && response.errors){
-              throw { error: response, message: "hi" /*this.errorDisplayService.getMessagesFromCodes(response.data.errors)*/ };
+            debugger
+            if(responseData && responseData.errors){
+              throw { error: response, message: this.errorDisplayService.getMessagesFromCodes(responseData.errors) };
             }
             break;
         }
-        throw { error: response, message: "Anderer Fehler" };
+        throw { error: response, data: responseData, message: "Anderer Fehler" };
       });
   };
 };
