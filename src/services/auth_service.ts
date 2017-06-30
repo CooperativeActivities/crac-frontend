@@ -43,11 +43,17 @@ export class AuthService {
 
   async getCredentials(): Promise<string>{
     await this.storage.ready()
-    let token = await this.storage.get("token")
-    if(token){
-      this.token = token
-      await this.loadUser()
-      return token
+    try{
+      let token = await this.storage.get("token")
+      if(token){
+        this.token = token
+        await this.loadUser()
+        return token
+      }
+    } catch(e) {
+      this.token = null
+      await this.storage.remove("token")
+      throw e
     }
   }
   async loadUser(){
@@ -78,50 +84,6 @@ export class AuthService {
   }
 
 };
-
-/*
-  SetCredentials(response) {
-    //var authdata = Base64.encode(username + ':' + password);
-
-    $rootScope.globals = {
-      currentUser: {
-        user: response.meta.user,
-        id: response.object.userId,
-        //authdata: authdata,
-        token : response.object.code,
-        roles : response.meta.roles
-      }
-    };
-
-    //$http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
-    $http.defaults.headers.common["Token"] = response.token;
-    $cookieStore.put('globals', $rootScope.globals);
-  }
-
-  function SuperLogout() {
-    $http.get(baseURL+'/user/logout').success(function(response){
-      ClearCredentials();
-      window.location.reload()
-    }).
-      error(function(response){
-        console.log("Logout failed");
-      });
-
-  }
-  function Logout() {
-    ClearCredentials();
-    window.location.reload()
-  }
-
-  function ClearCredentials() {
-    $rootScope.globals = {};
-    $cookieStore.remove('globals');
-    $http.defaults.headers.common["Token"] = "";
-    $http.defaults.headers.common.Authorization = 'Basic';
-
-  }
-}
- */
 
 // Base64 encoding service used by AuthenticationService
 var Base64 = {
