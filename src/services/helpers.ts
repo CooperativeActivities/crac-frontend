@@ -46,7 +46,6 @@ export class HelperService {
           case 404:
             throw { error: response, data: responseData, message: "Resource nicht gefunden" };
           case 400:
-            debugger
             if(responseData && responseData.errors){
               throw { error: response, message: this.errorDisplayService.getMessagesFromCodes(responseData.errors) };
             }

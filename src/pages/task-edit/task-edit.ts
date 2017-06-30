@@ -183,31 +183,45 @@ export class TaskEditPage {
      });
   }
 
+  toTimestamp(datestring): Number {
+    if(!datestring) return
+    let date = Date.parse(datestring)
+    if(isNaN(date)) return
+    return date
+  }
+
   getProcessedTaskData() {
     let taskData : any = {};
 
     taskData.name = this.task.name;
 
+    let startTime = this.toTimestamp(this.task.startTime)
+    let endTime = this.toTimestamp(this.task.endTime)
     // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
 
-    /* @TODO replace date check
-     if(!angular.isDate(this.task.startTime)){
-     toast.show("Aufgabe kann nicht gespeichert werden: " + "Bitte ein gültiges Startdatum eingeben!", 'top', false, 5000);
-     return;
-     }
-     */
-
-    /* @TODO replace date check*/
-    if(!this.task.endTime/* || !angular.isDate(this.task.endTime)*/) {
-      this.task.startTime = new Date(this.task.startTime);
-      this.task.endTime = new Date(this.task.startTime);
-    } else {
-      this.task.startTime = new Date(this.task.startTime);
-      this.task.endTime = new Date(this.task.endTime);
+    if(!startTime){
+      this.toast.create({
+        message: "Aufgabe kann nicht gespeichert werden: " + "Bitte ein gültiges Startdatum eingeben!",
+        duration: 3000,
+        position: 'top'
+      }).present();
+      return;
+    }
+    if(!endTime){
+      endTime = startTime
+    }
+    if(endTime < startTime){
+      this.toast.create({
+        message: "Aufgabe kann nicht gespeichert werden: " + "Startdatum muss vor Enddatum liegen!",
+        duration: 3000,
+        position: 'top'
+      }).present();
+      return;
     }
 
-    if(this.task.startTime) taskData.startTime = this.task.startTime.getTime();
-    if(this.task.endTime) taskData.endTime = this.task.endTime.getTime();
+    taskData.startTime = startTime
+    taskData.endTime = endTime
+
     if(this.task.description) taskData.description = this.task.description;
     if(this.task.location) taskData.location = this.task.location;
     if(this.task.address) taskData.address = this.task.address;
@@ -220,60 +234,61 @@ export class TaskEditPage {
     return taskData;
   }
 
-  create() {
-    let promises: Array<any> = [];
+
+  save_changes() {
+    this.save_task().then((success) => {
+      if(!success){ return }
+      if(this.isNewTask) {
+        this.toast.create({
+          message: "Aufgabe erstellt",
+          duration: 3000,
+          position: 'top'
+        }).present();
+
+        this.navCtrl.push('task-detail', {id: this.task.id});
+      } else {
+        this.toast.create({
+          message: "Aufgabe gespeichert",
+          duration: 3000,
+          position: 'top'
+        }).present();
+      }
+    })
+  };
+
+  async save_task(): Promise<boolean> {
     if(!this.task.name){
       this.toast.create({
         message: "Aufgabe kann nicht gespeichert werden: " + "Name muss angegeben werden",
         duration: 3000,
         position: 'top'
       }).present();
-      promises.push(new Promise((resolve) => {resolve(false)}));
-      return promises;
+      return false
     }
-
-    let taskData = this.getProcessedTaskData();
-    if (!this.parentTask) {
-      promises.push(this.taskDataService.createNewTask(taskData));
-    } else {
-      promises.push(this.taskDataService.createNewSubTask(taskData, this.parentTask.id));
-    }
-
-    return promises;
-  }
-
-  save(promises) {
-    if(promises.length === 0) {
-      return new Promise((resolve) => {resolve(false)});
-    }
-    let promise = Promise.all(promises).then((res) => { return res; });
-    return promise.then((res) => {
-      return res[0];
-    }, (error) => {
+    try {
+      const taskData = this.getProcessedTaskData();
+      if(!taskData) return
+      let res
+      if(this.isNewTask) {
+        if (!this.parentTask) {
+          res = await this.taskDataService.createNewTask(taskData)
+        } else {
+          res = await this.taskDataService.createNewSubTask(taskData, this.parentTask.id)
+        }
+      } else {
+        res = await this.taskDataService.updateTaskById(taskData, this.task.id)
+      }
+      let task = res.object
+      await this.save_details(task)
+      return true
+    } catch(error) {
       this.toast.create({
         message: "Aufgabe kann nicht gespeichert werden: " + error.message,
         duration: 3000,
         position: 'top'
       }).present();
-      return new Promise((resolve) => {resolve(false)});
-    });
-  }
-
-  update() {
-    let promises = [];
-    if(!this.task.name){
-      this.toast.create({
-        message: "Aufgabe kann nicht gespeichert werden: " + "Name muss angegeben werden",
-        duration: 3000,
-        position: 'top'
-      }).present();
-      promises.push(new Promise((resolve) => {resolve(false)}));
-      return promises;
+      return false
     }
-
-    let taskData = this.getProcessedTaskData();
-    promises = [this.taskDataService.updateTaskById(taskData, this.task.id)];
-    return promises;
   }
 
   save_details(task) {
@@ -295,16 +310,15 @@ export class TaskEditPage {
         mandatory: competence.mandatory ? 1 : 0
       }
     });
-    let shiftsToAdd = (this.shifts.toAdd).map((shift) => {
-      shift.startTime = new Date(shift.startTime);
-      shift.endTime = new Date(shift.endTime);
+    let shiftsToAdd = (this.shifts.toAdd).map(shift => {
 
       return {
         taskType: 'SHIFT',
         name: task.name,
         minAmountOfVolunteers: shift.minAmountOfVolunteers,
-        startTime: shift.startTime.getTime(),
-        endTime: shift.endTime.getTime()
+        // startTime & endTime have to be timestamps ( => Number)
+        startTime: shift.startTime,
+        endTime: shift.endTime
       }
     });
     let materialsToAdd = (this.materials.toAdd).map((material) => {
@@ -337,38 +351,10 @@ export class TaskEditPage {
       promises.push(this.taskDataService.removeMaterialFromTask(task.id, this.materials.toRemove[i]));
     }
 
-    return promises;
+    return Promise.all(promises);
   }
 
-  save_changes() {
-    if(this.isNewTask) {
-      this.save(this.create()).then((res:any) => {
-        if(!res) return;
-        let task = res.object;
-        this.toast.create({
-          message: "Aufgabe erstellt",
-          duration: 3000,
-          position: 'top'
-        }).present();
-
-        this.save(this.save_details(task)).then((res:any) => {
-          this.navCtrl.push('task-detail', {id: task.id});
-        });
-      });
-    } else {
-      let promises = this.update().concat(this.save_details(this.task));
-      this.save(promises).then((res:any) => {
-        if(!res) return;
-        this.toast.create({
-          message: "Aufgabe gespeichert",
-          duration: 3000,
-          position: 'top'
-        }).present();
-      });
-    }
-  };
-
-  delete(){
+  task_delete(){
     let template = 'Wollen sie diese Aufgabe wirklich löschen? Es wird die Aufgabe mit ALLEN darunterliegenden Aufgabes permanent gelöscht.';
     if( this.task.taskState === 'PUBLISHED' )
       template += "<p><strong>Aufgabe ist schon veröffentlicht. Aufgabe trotzdem löschen?</strong></p>";
@@ -410,7 +396,7 @@ export class TaskEditPage {
     }).present();
   };
 
-  publish() {
+  async publish() {
     if(this.task.taskType === 'ORGANISATIONAL'){
       if(this.task.childTasks.length <= 0){
         let message = "Übersicht hat noch keine Unteraufgabe! Bitte füge eine Unteraufgabe hinzu!";
@@ -422,25 +408,16 @@ export class TaskEditPage {
         return;
       }
     }
-
-    let promises = this.update().concat(this.save_details(this.task));
-    this.save(promises).then((res:any) => {
-      if(!res) return;
-      this.taskDataService.changeTaskState(this.task.id, 'publish').then((res) => {
-        this.task.taskState = 'PUBLISHED';
-        this.updateFlags();
-        this.toast.create({
-          message: "Aufgabe veröffentlicht",
-          position: 'top',
-          duration: 3000
-        }).present();
-      }, (error) => {
-        this.toast.create({
-          message: "Aufgabe kann nicht veröffentlicht werden: " + error.message,
-          position: 'top',
-          duration: 3000
-        }).present();
-      });
+    let success = await this.save_task()
+    if(!success){ return }
+    this.taskDataService.changeTaskState(this.task.id, 'publish').then((res) => {
+      this.task.taskState = 'PUBLISHED';
+      this.updateFlags();
+      this.toast.create({
+        message: "Aufgabe veröffentlicht",
+        position: 'top',
+        duration: 3000
+      }).present();
     }, (error) => {
       this.toast.create({
         message: "Aufgabe kann nicht veröffentlicht werden: " + error.message,
@@ -450,26 +427,18 @@ export class TaskEditPage {
     });
   };
 
-  unpublish() {
-    let promises = this.update().concat(this.save_details(this.task));
-    this.save(promises).then((res:any) => {
-      if(!res) return;
-      this.taskDataService.changeTaskState(this.task.id, 'unpublish').then((res) => {
-        this.task.taskState = 'NOT_PUBLISHED';
-        this.updateFlags();
-        this.toast.create({
-          message: "Aufgabe zurückgezogen",
-          position: 'top',
-          duration: 3000
-        }).present();
-        this.navCtrl.push('task-detail', {id: this.task.id});
-      }, (error) => {
-        this.toast.create({
-          message: "Aufgabe kann nicht zurückgezogen werden: " + error.message,
-          position: 'top',
-          duration: 3000
-        }).present();
-      });
+  async unpublish() {
+    let success = await this.save_task()
+    if(!success){ return }
+    this.taskDataService.changeTaskState(this.task.id, 'unpublish').then((res) => {
+      this.task.taskState = 'NOT_PUBLISHED';
+      this.updateFlags();
+      this.toast.create({
+        message: "Aufgabe zurückgezogen",
+        position: 'top',
+        duration: 3000
+      }).present();
+      this.navCtrl.push('task-detail', {id: this.task.id});
     }, (error) => {
       this.toast.create({
         message: "Aufgabe kann nicht zurückgezogen werden: " + error.message,
@@ -595,8 +564,20 @@ export class TaskEditPage {
       return;
     }
 
-    if(!this.shifts.newObj.startTime || !this.shifts.newObj.endTime) return;
+    let startTime = this.toTimestamp(this.shifts.newObj.startTime)
+    let endTime = this.toTimestamp(this.shifts.newObj.endTime)
+    if(!(startTime && endTime && startTime < endTime)){
+      let message = 'Start- und Endzeit müssen gültig sein!';
+      this.toast.create({
+        message: "Schicht konnte nicht hinzugefügt werden: " + message,
+        position: 'top',
+        duration: 3000
+      }).present();
+      return;
+    }
     let newShift = _.clone(this.shifts.newObj);
+    newShift.startTime = startTime
+    newShift.endTime = endTime
     this.shifts.all.push(newShift);
     this.shifts.toAdd.push(newShift);
   };
