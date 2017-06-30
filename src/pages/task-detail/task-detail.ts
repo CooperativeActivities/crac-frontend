@@ -43,19 +43,18 @@ export class TaskDetailPage {
   }
 
   ngOnInit(): void {
-    let that = this;
     this.userDataService.getCurrentUser().then((res) => {
-      that.user = res.object;
+      this.user = res.object;
     }).catch((error)=>{
       console.log(error);
-      that.presentToast("Benutzerinformation kann nicht gefolgt werden: " + error.message, 'top', false, 5000);
+      this.presentToast("Benutzerinformation kann nicht gefolgt werden: " + error.message, 'top', false, 5000);
     })
   }
 
 
   ionViewDidEnter(){
     this.doRefresh();
-    this.adjustFooter();
+    //this.adjustFooter();
   }
 
   edit() {
@@ -63,7 +62,6 @@ export class TaskDetailPage {
   }
 
   async doRefresh(refresher = null) {
-    let that = this;
     let task = await this.taskDataService.getTaskById(this.taskId)
       .catch(e => {
         console.warn("Task could not be retrieved", e)
@@ -72,7 +70,16 @@ export class TaskDetailPage {
       this.task = task.object;
       this.task.childTasks = _.orderBy(this.task.childTasks, ["startTime"]);
       if (this.task.userRelationships) this.task.userRelationships = _.orderBy(this.task.userRelationships, [(rel => (rel.friend || rel.participationType === "LEADING") ? 0 : 1), "name"]);
-      this.task.materials = _.orderBy(this.task.materials, ["name"]);
+      this.task.materials = _.orderBy(this.task.materials, ["name"]).map(material => {
+        material.subscribedQuantityOtherUsers =
+          material.subscribedUsers
+      // subscription.userId here
+          .filter(subscription => subscription.userId !== this.user.id)
+          .reduce((acc, val) => acc + val.quantity, 0)
+        material.mySubscribedQuantity = material.subscribedQuantity - material.subscribedQuantityOtherUsers
+        console.log(material)
+        return material
+      })
       // @TODO order by creationDate
       //this.task.comments = _.orderBy(this.task.comments, [ "name" ])
 
@@ -86,7 +93,7 @@ export class TaskDetailPage {
         this.participationType = "NOT_PARTICIPATING";
         this.userIsDone = false;
       }
-      that.loaded.shifts;
+      this.loaded.shifts;
       this.updateFlags();
 
       console.log('current task', this.task);
@@ -106,7 +113,6 @@ export class TaskDetailPage {
       lat: this.task.lat,
       lng: this.task.lng
     });
-    //$state.go('tabsController.openMapView', { id: $scope.taskId, address: $scope.task.address, lat: $scope.task.lat, lng: $scope.task.lng});
 
   }
 
@@ -221,29 +227,27 @@ export class TaskDetailPage {
 
   //Publish a task
   publish() {
-    let that = this;
     console.log('publish');
 
     if (this.task.taskType === 'ORGANISATIONAL') {
       if (this.task.childTasks.length <= 0) {
-        that.presentToast("Übersicht hat noch keine Unteraufgabe! Bitte füge eine Unteraufgabe hinzu!", 'top', false, 5000);
+        this.presentToast("Übersicht hat noch keine Unteraufgabe! Bitte füge eine Unteraufgabe hinzu!", 'top', false, 5000);
       }
     }
 
     if (!this.task.readyToPublish) {
       // @TODO - display popup with reason(s) why it's not ready
-      /*
        var message = "";
-       ionicToast.show("Task kann nicht veröffentlicht werden: " + message, 'top', false, 5000)*/
+       this.presentToast("Task kann nicht veröffentlicht werden: " + message, 'top', false, 5000)
       return;
     }
 
     let taskId = this.task.id;
-    this.taskDataService.changeTaskState(taskId, 'publish').then(function (res) {
-      that.presentToast("Task veröffentlicht", 'top', false, 5000);
-      that.showPublish = false;
-    }, function (error) {
-      that.presentToast("Aufgabe kann nicht veröffentlicht werden: " + error.message, 'top', false, 5000);
+    this.taskDataService.changeTaskState(taskId, 'publish').then( (res) => {
+      this.presentToast("Task veröffentlicht", 'top', false, 5000);
+      this.showPublish = false;
+    }, (error) => {
+      this.presentToast("Aufgabe kann nicht veröffentlicht werden: " + error.message, 'top', false, 5000);
     });
   };
 
@@ -348,6 +352,47 @@ export class TaskDetailPage {
     });
 
   };
+  subscribeToMaterial(material){
+    //save material subscription for any quantity. If zero, call unsubscribe, otherwise continue.
+    if( material.mySubscribedQuantity === 0 ) {
+      if(material.subscribedQuantityOtherUsers === material.subscribedQuantity) {
+        return false;
+      }
+      this.unsubscribeFromMaterial(material);
+      return
+    }
+    if( typeof material.mySubscribedQuantity !== "number" ) {
+      this.presentToast("Menge ungültig. Menge muss eine Zahl sein.", 'top', false, 5000);
+      return
+    }
+    if(material.mySubscribedQuantity < 0 || material.mySubscribedQuantity > (material.quantity - material.subscribedQuantityOtherUsers)){
+      this.presentToast("Menge ungültig. Menge muss zwischen 0 und " + (material.quantity - material.subscribedQuantityOtherUsers) + " sein.", 'top', false, 5000);
+      return
+    }
+
+    this.taskDataService.subscribeToMaterial(this.task.id, material.id, material.mySubscribedQuantity).then((res) => {
+      const newMaterial = res.object
+      console.log("Material subscribed");
+      Object.assign(material, newMaterial)
+      material.subscribedQuantityOtherUsers =
+          material.subscribedUsers
+      // subscription.user here
+          .filter(subscription => subscription.user !== this.user.id)
+          .reduce((acc, val) => acc + val.quantity, 0)
+      material.mySubscribedQuantity = material.subscribedQuantity - material.subscribedQuantityOtherUsers
+    }, (error) => {
+      this.presentToast("Materialien können nicht gespeichert werden: " + error.message, 'top', false, 5000);
+    })
+
+  }
+
+  unsubscribeFromMaterial (material){
+    this.taskDataService.unsubscribeFromMaterial(this.task.id, material.id).then((res) => {
+      console.log("Material unsubscribed");
+    }, (error) => {
+      this.presentToast("Materialien können nicht gespeichert werden: " + error.message, 'top', false, 5000);
+    });
+  };
 
   adjustFooter() {
 
@@ -364,7 +409,6 @@ export class TaskDetailPage {
 
   makeNewSubTask() {
     this.navCtrl.push('task-edit', {parentId: this.task.id});
-    // this.go('tabsController.newTask', { parentId: $scope.task.id });
   }
 
   ionViewWillLeave() {

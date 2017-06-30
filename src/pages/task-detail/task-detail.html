@@ -148,18 +148,21 @@
           <ion-item   *ngFor="let material of task.materials">
 
 
-            <collapsible-card>
+            <collapsible-card *ngIf="material">
               <div card-header>
                 <ion-icon name="cube" item-left></ion-icon>
-                {{material?.name}}: {{material?.subscribedQuantity}} / {{material?.quantity}}
+                {{material.name}}: {{material.subscribedQuantity}} / {{material.quantity}}
               </div>
               <div card-content>
-
-                <div >
-                  <button ion-button small (click)="addMaterial(material)"
+                <div>
+                  <input type="number" placeholder="Anzahl..." [(ngModel)] ="material.mySubscribedQuantity"
+                    min="0"
+                    [max]="material.quantity - material.subscribedQuantityOtherUsers"
+                    ng-class="{'has-error' : materialSubscribeError(material) }" />
+                  <button ion-button small (click)="subscribeToMaterial(material)"
                           *ngIf="!material.assigned">Ich bringe!
                   </button>
-                  <button ion-button small (click)="removeMaterial(material)"
+                  <button ion-button small (click)="unsubscribeFromMaterial(material)"
                           *ngIf="material.assigned">Ich bringe doch nicht!
                   </button>
                 </div>

@@ -1,5 +1,5 @@
 (<any>window).crac_config = {
   // example: "https://my.url.at/path/"
-  SERVER: "https://core.crac.at/crac-core/",
+  SERVER: "REPLACE_SERVER",
   mapzenKey: "mapzen-FZZdZ5c",
 }
