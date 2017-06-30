@@ -41,10 +41,6 @@ export class UserDataService {
   }
 
 
-  //Returns the competences of the currently logged in user, wrapped in the relationship-object
-  getCompRelationships () {
-    return this.helpers.ajax("competence", "get");
-  }
   createNewCompetence (competenceData) {
     return this.helpers.ajax("admin/competence", "post", { payload: competenceData });
   }

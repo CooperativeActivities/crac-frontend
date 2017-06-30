@@ -31,8 +31,9 @@ export class MyApp {
     this.splashScreen.hide();
 
     await this.authService.getCredentials().catch(e => {
+      console.error(e)
       this.toast.create({
-        message: "Benutzerinformation kann nicht gefolgt werden: " + e.message,
+        message: "Benutzerinformationen konnten nicht geladen werden: " + e.message,
         position: 'top',
         duration: 3000
       }).present();

@@ -26,12 +26,10 @@ export class MyCompetencesPage {
   }
 
   onRefresh() {
-    let self = this;
-
-    self.userDataService.getCompRelationships().then(function(res){
-      self.competences = res.object;
-      console.log(self.competences);
-    }, function(error) {
+    this.userDataService.getCurrentUser().then((res) => {
+      this.competences = res.object.competenceRelationships;
+      console.log(this.competences);
+    }, (error) => {
       //@TODO error shows when user has no competences, should come as success
     });
   }
