@@ -55,10 +55,20 @@
     </collapsible-card>
     <collapsible-card>
       <div card-header>
-        Team ({{task?.userRelationships.length}})
+        Team ({{task?.userRelationships.length + (task?.participationDetails?.length > 0 ? 1 : 0)}})
       </div>
       <div card-content>
-
+        <ion-item *ngIf="task?.participationDetails?.length > 0">
+          <ion-avatar item-left>
+            <img src="../../assets/img/avatar-placeholder1.png">
+          </ion-avatar>
+          <h2><strong>Ich</strong></h2>
+          <p>Typ:
+            <span *ngFor="let role of task.participationDetails; let idx = index">
+              {{role.participationType}}<span *ngIf="idx != task.participationDetails.length - 1">,</span>
+            </span>
+          </p>
+        </ion-item>
         <ion-item *ngFor="let user of task.userRelationships">
           <ion-avatar item-left>
             <img src="../../assets/img/avatar-placeholder1.png">
