@@ -86,7 +86,7 @@ export class TaskDetailPage {
       if (this.task.startTime != this.task.endTime) this.timeChoice = 'slot';
       else this.timeChoice = 'point';
 
-      if (this.task.participationDetails) {
+      if (this.task.participationDetails && this.task.participationDetails.length > 0) {
         this.participationType = this.task.participationDetails[0].participationType;
         this.userIsDone = this.task.participationDetails[0].completed;
       } else {
