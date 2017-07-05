@@ -451,13 +451,14 @@ export class TaskEditPage {
 
   openNewCompetenceForm(){
     if(this.competenceAreaList.length === 0) {
-      this.getCompetenceAreas();
+      this.getCompetenceAreas().then(()=> {
+        this.addNewCompetence = !this.addNewCompetence;
+      });
     }
-    this.addNewCompetence = !this.addNewCompetence;
   }
 
   getCompetenceAreas() {
-    this.userDataService.getCompetenceAreas()
+    return this.userDataService.getCompetenceAreas()
       .then((res) => {
         if (res.object.length === 0) {
           this.toast.create({

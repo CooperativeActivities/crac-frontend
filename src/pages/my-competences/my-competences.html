@@ -14,7 +14,10 @@
 <ion-content>
   <ion-card>
     <ion-card-content>
-      <ion-list>
+      <ion-item *ngIf="competences?.length == 0">
+        Keine Kompetenzen gefunden.
+      </ion-item>
+      <ion-list *ngIf="competences?.length > 0">
           <ion-item *ngFor="let comp of competences">
             <button ion-item (click)="comp.editing = !comp.editing">
               {{comp.competence.name}}

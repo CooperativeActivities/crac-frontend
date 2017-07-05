@@ -26,8 +26,8 @@ export class MyCompetencesPage {
   }
 
   onRefresh() {
-    this.userDataService.getCurrentUser().then((res) => {
-      this.competences = res.object.competenceRelationships;
+    this.userDataService.userCompetences().then((res) => {
+      this.competences = res.object;
       console.log(this.competences);
     }, (error) => {
       //@TODO error shows when user has no competences, should come as success
