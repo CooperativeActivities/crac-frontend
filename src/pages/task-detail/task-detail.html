@@ -160,10 +160,10 @@
                     [max]="material.quantity - material.subscribedQuantityOtherUsers"
                     ng-class="{'has-error' : materialSubscribeError(material) }" />
                   <button ion-button small (click)="subscribeToMaterial(material)"
-                          *ngIf="!material.assigned">Ich bringe!
+                          *ngIf="!material.assigned">Nehm ich mit
                   </button>
                   <button ion-button small (click)="unsubscribeFromMaterial(material)"
-                          *ngIf="material.assigned">Ich bringe doch nicht!
+                          *ngIf="material.assigned">Nicht mehr mitnehmen
                   </button>
                 </div>
 
