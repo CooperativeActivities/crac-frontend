@@ -206,7 +206,7 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
+  <ion-toolbar *ngIf="showPublish || showEnroll || showCancel || showFollow || showUnfollow">
     <div class="toolbar-buttons">
       <button ion-button icon-left full color="light" (click)="publish()" *ngIf="showPublish">
         <ion-icon name="ion-eye"></ion-icon>

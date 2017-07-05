@@ -290,11 +290,12 @@
       </collapsible-card>
     </ng-template>
   </form>
-  <ion-toolbar *ngIf="!isNewTask">
+</ion-content>
+<ion-footer *ngIf="!isNewTask">
+  <ion-toolbar>
     <div class="toolbar-buttons">
       <button ion-button (click)="task_delete()" color="danger" block> Löschen </button>
       <button ion-button (click)="unpublish()" color="light" block> Zurückziehen </button>
     </div>
   </ion-toolbar>
-</ion-content>
-
+</ion-footer>
