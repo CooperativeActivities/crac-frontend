@@ -145,4 +145,19 @@ export class TaskDataService {
   unsubscribeFromMaterial(taskId, materialId){
     return this.helpers.ajax("task/" + taskId + "/material/" + materialId + "/unsubscribe", "delete");
   };
+
+  getTasksToEvaluate(){
+    return this.helpers.ajax(" /evaluation", "get");
+  };
+
+  getTasksToEvaluateById(evaluationId){
+    return this.helpers.ajax(" /evaluation/"+evaluationId, "get");
+  };
+
+
+
+
+
+
+
 };
