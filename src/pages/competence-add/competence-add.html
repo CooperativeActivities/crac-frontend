@@ -28,9 +28,11 @@
         </ion-item>
         <ion-searchbar *ngIf="!competenceArea" (ionInput)="filterAreas($event)"></ion-searchbar>
         <ion-list *ngIf="!competenceArea">
-          <button ion-item *ngFor="let area of competenceAreaList" (click)="getCompetencesForArea(area)" [ngClass]="{'empty-competence-area': area.mappedCompetences.length == 0 }">
-            {{area.name}}
-          </button>
+          <ng-container *ngFor="let area of competenceAreaList">
+            <button ion-item *ngIf="area.mappedCompetences.length != 0" (click)="getCompetencesForArea(area)">
+              {{area.name}}
+            </button>
+          </ng-container>
         </ion-list>
       </ion-list>
     </ion-card-content>
