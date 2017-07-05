@@ -291,11 +291,11 @@
     </ng-template>
   </form>
 </ion-content>
-<ion-footer *ngIf="!isNewTask">
-  <ion-toolbar>
+<ion-footer>
+  <ion-toolbar *ngIf="!isNewTask">
     <div class="toolbar-buttons">
       <button ion-button (click)="task_delete()" color="danger" block> Löschen </button>
-      <button ion-button (click)="unpublish()" color="light" block> Zurückziehen </button>
+      <button ion-button (click)="unpublish()" color="light" block *ngIf="task.taskState == 'PUBLISHED'"> Zurückziehen </button>
     </div>
   </ion-toolbar>
 </ion-footer>
