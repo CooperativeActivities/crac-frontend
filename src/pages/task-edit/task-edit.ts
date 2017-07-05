@@ -279,6 +279,7 @@ export class TaskEditPage {
         res = await this.taskDataService.updateTaskById(taskData, this.task.id)
       }
       let task = res.object
+      this.task = task;
       await this.save_details(task)
       return true
     } catch(error) {
