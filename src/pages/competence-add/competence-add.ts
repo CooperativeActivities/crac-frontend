@@ -161,6 +161,10 @@ export class CompetenceAddPage {
     });
   }
 
+  cancel(){
+    this.navCtrl.pop()
+  }
+
   addCompetence() {
     this.navCtrl.push('competence-add');
   }

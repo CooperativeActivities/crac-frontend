@@ -1,12 +1,17 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>Kompetenz Hinzufügen</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only (click)="add()">
-        <ion-icon name="checkmark"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
+ 
+    <ion-toolbar>
+      <ion-title>Kompetenz Hinzufügen</ion-title>
+    </ion-toolbar>
+
+    <ion-toolbar>
+      <div class="toolbar-buttons">
+        <button ion-button (click)="cancel()" color="light" block> Abbrechen</button>
+        <button ion-button (click)="add()" color="secondary" block> Speichern</button>
+      </div>
+    </ion-toolbar>
+
+
 </ion-header>
 <ion-content>
   <ion-card *ngIf="competenceAreaList.length > 0">
@@ -28,7 +33,8 @@
         </ion-item>
         <ion-searchbar *ngIf="!competenceArea" (ionInput)="filterAreas($event)"></ion-searchbar>
         <ion-list *ngIf="!competenceArea">
-          <button ion-item *ngFor="let area of competenceAreaList" (click)="getCompetencesForArea(area)" [ngClass]="{'empty-competence-area': area.mappedCompetences.length == 0 }">
+          <button ion-item *ngFor="let area of competenceAreaList" (click)="getCompetencesForArea(area)"
+                  [ngClass]="{'empty-competence-area': area.mappedCompetences.length == 0 }">
             {{area.name}}
           </button>
         </ion-list>

@@ -90,4 +90,5 @@ export class MyCompetencesPage {
   addCompetence() {
     this.navCtrl.push('competence-add');
   }
+
 }
