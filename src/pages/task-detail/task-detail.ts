@@ -194,7 +194,7 @@ export class TaskDetailPage {
         } else {
           // @DISCUSS: cannot unfollow started task?
           this.showShiftsMaterialsEnroll = true;
-          this.showEnroll = relation !== "PARTICIPATING" && !taskHasShifts;
+          this.showEnroll = relation !== "PARTICIPATING" && !taskHasShifts && taskIsWorkable;
           this.showFollow = relation !== "FOLLOWING" && relation !== "PARTICIPATING";
           this.showCancel = relation === "PARTICIPATING";
         }
@@ -208,7 +208,7 @@ export class TaskDetailPage {
           // @TODO allow leaders to also participate/follow
         } else {
           this.showShiftsMaterialsEnroll = true;
-          this.showEnroll = relation !== "PARTICIPATING" && !taskHasShifts;
+          this.showEnroll = relation !== "PARTICIPATING" && !taskHasShifts && taskIsWorkable;
           this.showFollow = relation !== "FOLLOWING" && relation !== "PARTICIPATING";
           this.showCancel = relation === "PARTICIPATING";
           this.showUnfollow = relation === "FOLLOWING";
