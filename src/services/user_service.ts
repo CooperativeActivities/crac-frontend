@@ -44,6 +44,10 @@ export class UserDataService {
   createNewCompetence (competenceData) {
     return this.helpers.ajax("admin/competence", "post", { payload: competenceData });
   }
+  //Returns an array of competences associated with the user
+  userCompetences () {
+    return this.helpers.ajax("competence", "get");
+  }
   //Returns an array containing all competences
   allCompetences () {
     return this.helpers.ajax("competence/all", "get");
