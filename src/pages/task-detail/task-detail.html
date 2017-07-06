@@ -102,6 +102,19 @@
       </div>
     </collapsible-card>
 
+    <collapsible-card *ngIf="task?.taskType == 'WORKABLE'">
+      <div card-header>
+        Kompetenzen ({{task?.taskCompetences?.length}})
+      </div>
+      <div card-content>
+        <ion-list>
+          <ion-item *ngFor="let comp of task.taskCompetences">
+            {{comp.name}}
+          </ion-item>
+        </ion-list>
+      </div>
+    </collapsible-card>
+
     <collapsible-card (click)="loadShifts()" *ngIf="task.taskType == 'WORKABLE' && task?.childTasks.length > 0">
       <div card-header>
         Schichten ({{task?.childTasks.length}})
