@@ -188,7 +188,7 @@
                   </td>
                 </tr>
                 <ng-container *ngFor="let subscriber of material?.subscribedUsers">
-                  <tr *ngIf="subscriber.userName != user.name">
+                  <tr *ngIf="subscriber.userName != user?.name">
                     <td>{{subscriber.userName}}</td>
                     <td>{{subscriber.quantity}}</td>
                   </tr>
