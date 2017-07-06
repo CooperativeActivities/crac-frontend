@@ -371,17 +371,11 @@ export class TaskDetailPage {
     }
 
     this.taskDataService.subscribeToMaterial(this.task.id, material.id, material.mySubscribedQuantity).then((res) => {
-      const newMaterial = res.object
       console.log("Material subscribed");
-      Object.assign(material, newMaterial)
-      material.subscribedQuantityOtherUsers =
-          material.subscribedUsers
-      // subscription.user here
-          .filter(subscription => subscription.user !== this.user.id)
-          .reduce((acc, val) => acc + val.quantity, 0)
-      material.mySubscribedQuantity = material.subscribedQuantity - material.subscribedQuantityOtherUsers
+      this.presentToast("Menge des Materials gespeichtert", 'top', false, 3000);
+      material.subscribedQuantity = material.subscribedQuantityOtherUsers + material.mySubscribedQuantity;
     }, (error) => {
-      this.presentToast("Materialien können nicht gespeichert werden: " + error.message, 'top', false, 5000);
+      this.presentToast("Materialien können nicht gespeichert werden: " + error.message, 'top', false, 3000);
     })
 
   }
@@ -389,8 +383,10 @@ export class TaskDetailPage {
   unsubscribeFromMaterial (material){
     this.taskDataService.unsubscribeFromMaterial(this.task.id, material.id).then((res) => {
       console.log("Material unsubscribed");
+      this.presentToast("Menge des Materials gespeichtert", 'top', false, 3000);
+      material.subscribedQuantity = material.subscribedQuantityOtherUsers + material.mySubscribedQuantity;
     }, (error) => {
-      this.presentToast("Materialien können nicht gespeichert werden: " + error.message, 'top', false, 5000);
+      this.presentToast("Materialien können nicht gespeichert werden: " + error.message, 'top', false, 3000);
     });
   };
 
