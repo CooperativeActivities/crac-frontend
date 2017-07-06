@@ -1,5 +1,5 @@
-import  {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController, AlertController} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {IonicPage, Content, NavController, NavParams, ToastController, AlertController} from 'ionic-angular';
 import * as _ from 'lodash';
 
 import {TaskDataService} from '../../services/task_service';
@@ -15,6 +15,7 @@ import {UserDataService} from "../../services/user_service";
   providers: [TaskDataService, UserDataService],
 })
 export class TaskDetailPage {
+  @ViewChild(Content) content: Content;
 
   task: any;
   timeChoice = 'slot';
@@ -55,7 +56,6 @@ export class TaskDetailPage {
 
   ionViewDidEnter(){
     this.doRefresh();
-    //this.adjustFooter();
   }
 
   edit() {
@@ -224,6 +224,7 @@ export class TaskDetailPage {
         break;
     }
 
+    this.content.resize();
   };
 
   //Publish a task
@@ -458,34 +459,7 @@ export class TaskDetailPage {
     });
   };
 
-  adjustFooter() {
-
-    let fh = document.querySelector('ion-footer').clientHeight;
-    let sc = document.querySelectorAll('.scroll-content');
-    fh = (fh + 56);
-
-    if (sc != null) {
-      Object.keys(sc).map((key) => {
-        sc[key].style.marginBottom = fh + 'px';
-      });
-    }
-  };
-
   makeNewSubTask() {
     this.navCtrl.push('task-edit', {parentId: this.task.id});
   }
-
-  ionViewWillLeave() {
-    let fh = 0;
-    let sc = document.querySelectorAll('.scroll-content');
-    fh = (fh + 56);
-
-    if (sc != null) {
-      Object.keys(sc).map((key) => {
-        sc[key].style.marginBottom = fh + 'px';
-      });
-    }
-  }
-
-
 }
