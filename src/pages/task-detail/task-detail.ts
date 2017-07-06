@@ -193,11 +193,10 @@ export class TaskDetailPage {
         if (relation === "LEADING") {
           // @TODO allow leaders to also participate/follow?
         } else {
-          // @DISCUSS: cannot unfollow started task?
+          // @DISCUSS: cannot unfollow/cancel started task?
           this.showShiftsMaterialsEnroll = true;
           this.showEnroll = relation !== "PARTICIPATING" && !taskHasShifts && taskIsWorkable;
           this.showFollow = relation !== "FOLLOWING" && relation !== "PARTICIPATING";
-          this.showCancel = relation === "PARTICIPATING";
         }
         break;
       case "PUBLISHED":
