@@ -136,7 +136,7 @@
                 <span *ngFor="let curUser of shift?.userRelationships">
                 {{curUser.name}}<span *ngIf="$index != shift?.userRelationships.length - 1">,</span>
                 </span>
-                <div *ngIf="true">
+                <div *ngIf="showShiftsMaterialsEnroll">
                   <button ion-button small (click)="addToShift(shift)"
                           *ngIf="!shift.assigned">Ich arbeite mit!
                   </button>
@@ -164,7 +164,7 @@
             {{material.name}}: {{material.subscribedQuantity}} / {{material.quantity}}
           </div>
           <div card-content>
-            <table>
+            <table *ngIf="showShiftsMaterialsEnroll || material.subscribedQuantity > 0">
               <thead>
                 <tr>
                   <th>User</th>
@@ -173,7 +173,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr *ngIf="showShiftsMaterialsEnroll">
                   <td>Ich</td>
                   <td>
                     <input type="number" placeholder="Anzahl..." [(ngModel)] ="material.mySubscribedQuantity"

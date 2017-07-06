@@ -206,6 +206,7 @@ export class TaskDetailPage {
         }
         if (relation === "LEADING") {
           // @TODO allow leaders to also participate/follow
+          this.showShiftsMaterialsEnroll = true;
         } else {
           this.showShiftsMaterialsEnroll = true;
           this.showEnroll = relation !== "PARTICIPATING" && !taskHasShifts && taskIsWorkable;
@@ -245,7 +246,8 @@ export class TaskDetailPage {
     let taskId = this.task.id;
     this.taskDataService.changeTaskState(taskId, 'publish').then( (res) => {
       this.presentToast("Task veröffentlicht", 'top', false, 5000);
-      this.showPublish = false;
+      this.task.taskState = 'PUBLISHED';
+      this.updateFlags();
     }, (error) => {
       this.presentToast("Aufgabe kann nicht veröffentlicht werden: " + error.message, 'top', false, 5000);
     });
