@@ -32,18 +32,12 @@ export class MyHistoryPage {
         this.openTasks = _.orderBy(res.meta.participating, [ "startTime" ], [ "asc" ])
       }, (error) => {
         console.warn("Open evaluations could not be retrieved: ", error);
-      })
-    ]);
-
-    await Promise.all([
+      }),
       this.taskDataService.getCompletedTasks('PARTICIPATING').then((res) => {
         this.participatedTasks = res.object;
       }, (error) => {
         console.warn("Participated tasks could not be retrieved: ", error);
-      })
-    ]);
-
-    await Promise.all([
+      }),
       this.taskDataService.getCompletedTasks('LEADING').then((res) => {
         this.ledTasks = res.object;
       }, (error) => {
