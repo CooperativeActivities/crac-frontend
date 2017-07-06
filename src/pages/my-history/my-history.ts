@@ -5,15 +5,15 @@ import _ from "lodash"
 
 
 @IonicPage({
-  name: "my-evaluation",
-  segment: "my-evaluation",
+  name: "my-history",
+  segment: "my-history",
 })
 @Component({
   selector: 'page-my-evaluation',
-  templateUrl: 'my-evaluation.html',
+  templateUrl: 'src/pages/my-history/my-history.html',
   providers: [ TaskDataService ],
 })
-export class MyEvaluationPage {
+export class MyHistoryPage {
 
   openTasks : any[];
   participatedTasks : any[];
