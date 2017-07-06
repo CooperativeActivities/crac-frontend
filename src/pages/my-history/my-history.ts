@@ -9,8 +9,8 @@ import _ from "lodash"
   segment: "my-history",
 })
 @Component({
-  selector: 'page-my-evaluation',
-  templateUrl: 'src/pages/my-history/my-history.html',
+  selector: 'page-my-history',
+  templateUrl: 'my-history.html',
   providers: [ TaskDataService ],
 })
 export class MyHistoryPage {
