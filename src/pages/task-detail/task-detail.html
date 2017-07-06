@@ -208,7 +208,7 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar *ngIf="showPublish || showEnroll || showCancel || showFollow || showUnfollow">
+  <ion-toolbar *ngIf="showPublish || showEnroll || showCancel || showFollow || showUnfollow || (participationType == 'PARTICIPATING' || participationType == 'LEADING') && task.taskState == 'STARTED'">
     <div class="toolbar-buttons">
       <button ion-button icon-left full color="light" (click)="publish()" *ngIf="showPublish">
         <ion-icon name="ion-eye"></ion-icon>
@@ -230,6 +230,23 @@
         <ion-icon name="ion-eye-disabled"></ion-icon>
         Nicht mehr folgen
       </button>
+      <ng-container *ngIf="task.taskState == 'STARTED'">
+        <ng-container *ngIf="participationType == 'PARTICIPATING'">
+          <button ion-button icon-left full color="secondary" (click)="done()" *ngIf="!userIsDone">
+            <ion-icon name="ion-checkmark"></ion-icon>
+            Ich bin fertig
+          </button>
+          <button ion-button icon-left full color="danger" (click)="notDone()" *ngIf="userIsDone">
+            <ion-icon name="ion-close"></ion-icon>
+            Ich bin nicht fertig
+          </button>
+        </ng-container>
+        <button ion-button icon-left full color="secondary" (click)="complete()" *ngIf="participationType == 'LEADING'">
+          <ion-icon name="ion-checkmark"></ion-icon>
+          Aufgabe ist fertig
+        </button>
+      </ng-container>
+
     </div>
   </ion-toolbar>
 </ion-footer>

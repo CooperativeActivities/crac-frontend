@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
+import  {Component} from '@angular/core';
+import {IonicPage, NavController, NavParams, ToastController, AlertController} from 'ionic-angular';
 import * as _ from 'lodash';
 
 import {TaskDataService} from '../../services/task_service';
@@ -35,7 +35,8 @@ export class TaskDetailPage {
   participationType: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public taskDataService: TaskDataService,
-              public userDataService: UserDataService, public toastCtrl: ToastController, private authCtrl: AuthService) {
+              public userDataService: UserDataService, public toastCtrl: ToastController, public alert: AlertController,
+              private authCtrl: AuthService) {
     this.taskId = navParams.data.id;
     this.SUBTASKS_LIMITED_TO_SHALLOW = false;
     this.loaded = {};
@@ -192,11 +193,10 @@ export class TaskDetailPage {
         if (relation === "LEADING") {
           // @TODO allow leaders to also participate/follow?
         } else {
-          // @DISCUSS: cannot unfollow started task?
+          // @DISCUSS: cannot unfollow/cancel started task?
           this.showShiftsMaterialsEnroll = true;
           this.showEnroll = relation !== "PARTICIPATING" && !taskHasShifts && taskIsWorkable;
           this.showFollow = relation !== "FOLLOWING" && relation !== "PARTICIPATING";
-          this.showCancel = relation === "PARTICIPATING";
         }
         break;
       case "PUBLISHED":
@@ -391,6 +391,72 @@ export class TaskDetailPage {
       console.log("Material unsubscribed");
     }, (error) => {
       this.presentToast("Materialien können nicht gespeichert werden: " + error.message, 'top', false, 5000);
+    });
+  };
+
+  areAllParticipantsDone() {
+    for(let u of this.task.userRelationships) {
+      if( u.participationType === "PARTICIPATING" && !u.completed ) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  //Complete a task
+  complete() {
+    let allDone = this.areAllParticipantsDone();
+    if(allDone) {
+      this.completeTask('complete');
+    } else {
+      this.alert.create({
+        title: "Task kann nicht als fertig markiert werden:",
+        message: "Noch nicht alle Teilnehmer haben die Task als fertig markiert. Task trotzdem abschließen?",
+        buttons: [
+          {
+            text: 'Abbrechen',
+            role: 'cancel'
+          },
+          {
+            text: 'Abschließen',
+            handler: () => {
+              this.completeTask('forceComplete');
+            }
+          }
+        ]
+      }).present();
+    }
+  };
+
+  completeTask(state) {
+    if(!this.task.permissions) return false;
+
+    this.taskDataService.changeTaskState(this.task.id, state).then((res) => {
+      console.log("Task is completed");
+      this.task.taskState = 'COMPLETED';
+      this.updateFlags();
+      console.log(res);
+    }, (error) => {
+      this.presentToast("Aufgabe kann nicht abgeschlossen werden: " + error.message, 'top', false, 5000);
+    });
+  };
+
+  //Set a task as done
+  done(){
+    this.taskDataService.setTaskDone(this.task.id,"true").then((res) => {
+      console.log("Task is done");
+      this.userIsDone = true;
+    }, (error) => {
+      this.presentToast("Aufgabe kann nicht als fertig markiert werden: " + error.message, 'top', false, 5000);
+    });
+  };
+
+  //unset task as done
+  notDone() {
+    this.taskDataService.setTaskDone(this.task.id,"false").then((res) => {
+      this.userIsDone = false;
+    }, (error) => {
+      this.presentToast("Aufgabe kann nicht gelost werden: " + error.message, 'top', false, 5000);
     });
   };
 
