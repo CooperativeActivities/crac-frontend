@@ -158,30 +158,45 @@
         Material ({{task?.materials.length}})
       </div>
       <div card-content>
-
         <ion-list>
-          <ion-item   *ngFor="let material of task.materials">
-
-
+          <ion-item *ngFor="let material of task.materials">
             <collapsible-card *ngIf="material">
               <div card-header>
                 <ion-icon name="cube" item-left></ion-icon>
                 {{material.name}}: {{material.subscribedQuantity}} / {{material.quantity}}
               </div>
               <div card-content>
-                <div>
-                  <input type="number" placeholder="Anzahl..." [(ngModel)] ="material.mySubscribedQuantity"
-                    min="0"
-                    [max]="material.quantity - material.subscribedQuantityOtherUsers"
-                    ng-class="{'has-error' : materialSubscribeError(material) }" />
-                  <button ion-button small (click)="subscribeToMaterial(material)"
-                          *ngIf="!material.assigned">Nehm ich mit
-                  </button>
-                  <button ion-button small (click)="unsubscribeFromMaterial(material)"
-                          *ngIf="material.assigned">Nicht mehr mitnehmen
-                  </button>
-                </div>
-
+                <table>
+                  <thead>
+                    <tr>
+                      <th>User</th>
+                      <th>Menge</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Ich</td>
+                      <td>
+                        <input type="number" placeholder="Anzahl..." [(ngModel)] ="material.mySubscribedQuantity"
+                               min="0"
+                               [max]="material.quantity - material.subscribedQuantityOtherUsers"
+                               ng-class="{'has-error' : materialSubscribeError(material) }" />
+                      </td>
+                      <td>
+                        <button ion-button small (click)="subscribeToMaterial(material)">
+                          Nehm ich mit!
+                        </button>
+                      </td>
+                    </tr>
+                    <ng-container *ngFor="let subscriber of material.subscribedUsers">
+                      <tr *ngIf="subscriber.userName != user.name">
+                        <td>{{subscriber.userName}}</td>
+                        <td>{{subscriber.quantity}}</td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
               </div>
             </collapsible-card>
 
