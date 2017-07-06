@@ -32,13 +32,13 @@
     </ion-card>
   </ion-card>
 
-  <ion-card task-list *ngIf="participatedTasks?.length > 0">
+  <ion-card task-list *ngIf="letTasks?.length > 0">
     <ion-card-header>
       Von mir angeführte Aufgaben
     </ion-card-header>
     <ion-card>
       <ion-list>
-        <task-preview item-block *ngFor="let pTask of ledTasks" [task]="lTask"></task-preview>
+        <task-preview item-block *ngFor="let lTask of ledTasks" [task]="lTask"></task-preview>
       </ion-list>
     </ion-card>
   </ion-card>
