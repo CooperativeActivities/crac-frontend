@@ -16,6 +16,8 @@ import _ from "lodash"
 export class MyEvaluationPage {
 
   openTasks : any[];
+  participatedTasks : any[];
+  ledTasks : any[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,  public taskDataService: TaskDataService) {
   }
@@ -29,7 +31,23 @@ export class MyEvaluationPage {
       this.taskDataService.getTasksToEvaluate().then((res) => {
         this.openTasks = _.orderBy(res.meta.participating, [ "startTime" ], [ "asc" ])
       }, (error) => {
-        console.warn("Matching tasks could not be retrieved", error)
+        console.warn("Open evaluations could not be retrieved: ", error);
+      })
+    ]);
+
+    await Promise.all([
+      this.taskDataService.getCompletedTasks('PARTICIPATING').then((res) => {
+        this.participatedTasks = res.object;
+      }, (error) => {
+        console.warn("Participated tasks could not be retrieved: ", error);
+      })
+    ]);
+
+    await Promise.all([
+      this.taskDataService.getCompletedTasks('LEADING').then((res) => {
+        this.ledTasks = res.object;
+      }, (error) => {
+        console.warn("Led tasks could not be retrieved: ", error);
       })
     ]);
 

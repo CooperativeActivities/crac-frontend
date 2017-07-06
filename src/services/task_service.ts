@@ -146,6 +146,12 @@ export class TaskDataService {
     return this.helpers.ajax("task/" + taskId + "/material/" + materialId + "/unsubscribe", "delete");
   };
 
+  //returns the completed tasks for the current user by participation type (LEADING, PARTICIPATING, FOLLOWING)
+  getCompletedTasks(participationType){
+    return this.helpers.ajax(" /task/completed/" + participationType, "get");
+  };
+
+  //returns all evaluations for the current user
   getTasksToEvaluate(){
     return this.helpers.ajax(" /evaluation", "get");
   };

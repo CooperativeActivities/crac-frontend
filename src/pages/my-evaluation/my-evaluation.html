@@ -8,23 +8,43 @@
 </ion-header>
 
 
-<ion-content padding>
-
+<ion-content>
   <ion-card task-list>
     <ion-card-header>
       Offene Evaluierungen
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <task-preview item-block *ngFor="let task of openTasks" [task]="task"></task-preview>
+        <task-preview item-block *ngFor="let eval of openTasks" [task]="eval"></task-preview>
       </ion-list>
 
       <ion-item *ngIf="!openTasks || openTasks.length == 0">
-        Momentan sind keine Evaluierungen offen
+        <p padding>Momentan sind keine Evaluierungen offen</p>
       </ion-item>
 
     </ion-card-content>
   </ion-card>
 
+  <ion-card task-list *ngIf="participatedTasks?.length > 0">
+    <ion-card-header>
+      Teilgenommene Aufgaben
+    </ion-card-header>
+    <ion-card>
+      <ion-list>
+        <task-preview item-block *ngFor="let pTask of participatedTasks" [task]="pTask"></task-preview>
+      </ion-list>
+    </ion-card>
+  </ion-card>
+
+  <ion-card task-list *ngIf="participatedTasks?.length > 0">
+    <ion-card-header>
+      Von mir angeführte Aufgaben
+    </ion-card-header>
+    <ion-card>
+      <ion-list>
+        <task-preview item-block *ngFor="let pTask of ledTasks" [task]="lTask"></task-preview>
+      </ion-list>
+    </ion-card>
+  </ion-card>
 
 </ion-content>
