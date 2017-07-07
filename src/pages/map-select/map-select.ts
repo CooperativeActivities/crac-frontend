@@ -132,7 +132,7 @@ export class MapSelectPage implements OnInit {
    * Put current location into the address field
    */
   async setAddressField (curLat, curLon) {
-    let url = "http://search.mapzen.com/v1/reverse"
+    let url = "https://search.mapzen.com/v1/reverse"
     let params = {
       "point.lat": curLat,
       "point.lon": curLon,
@@ -190,7 +190,7 @@ export class MapSelectPage implements OnInit {
     }
     let data
     try {
-      data = await this.mapzenRequest("http://search.mapzen.com/v1/search", params)
+      data = await this.mapzenRequest("https://search.mapzen.com/v1/search", params)
     } catch(e) {
       console.log( "Something went wrong!" );
       return
