@@ -133,9 +133,11 @@
               </div>
               <div card-content>
                 Zusagen von:
-                <span *ngFor="let curUser of shift?.userRelationships">
-                {{curUser.name}}<span *ngIf="$index != shift?.userRelationships.length - 1">,</span>
-                </span>
+                <ng-container *ngFor="let curUser of shift?.userRelationships; let idx = index">
+                  <span *ngIf="curUser.participationType != 'LEADING'">
+                    {{curUser.name}}<span *ngIf="idx != shift?.userRelationships.length - 1">,</span>
+                  </span>
+                </ng-container>
                 <div *ngIf="showShiftsMaterialsEnroll">
                   <button ion-button small (click)="addToShift(shift)"
                           *ngIf="!shift.assigned">Ich arbeite mit!
