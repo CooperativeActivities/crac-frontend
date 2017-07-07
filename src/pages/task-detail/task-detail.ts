@@ -234,6 +234,7 @@ export class TaskDetailPage {
     if (this.task.taskType === 'ORGANISATIONAL') {
       if (this.task.childTasks.length <= 0) {
         this.presentToast("Übersicht hat noch keine Unteraufgabe! Bitte füge eine Unteraufgabe hinzu!", 'top', false, 5000);
+        return;
       }
     }
 
