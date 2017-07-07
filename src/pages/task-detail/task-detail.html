@@ -132,12 +132,12 @@
                 {{shift.signedUsers}} / {{shift.minAmountOfVolunteers}}
               </div>
               <div card-content>
-                Zusagen von:
+                <ion-item text-wrap>Zusagen von:
                 <ng-container *ngFor="let curUser of shift?.userRelationships; let idx = index">
                   <span *ngIf="curUser.participationType != 'LEADING'">
                     {{curUser.name}}<span *ngIf="idx != shift?.userRelationships.length - 1">,</span>
                   </span>
-                </ng-container>
+                </ng-container></ion-item>
                 <div *ngIf="showShiftsMaterialsEnroll">
                   <button ion-button small (click)="addToShift(shift)"
                           *ngIf="!shift.assigned">Ich arbeite mit!
