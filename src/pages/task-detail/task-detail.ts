@@ -218,7 +218,7 @@ export class TaskDetailPage {
       case "NOT_PUBLISHED":
         if (userHasPermissions) {
           this.editableFlag = true;
-          this.showPublish = true;
+          this.showPublish = (this.task.superTask === null);
           this.addSubTaskFlag = this.task.taskType === 'ORGANISATIONAL' && (!this.SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask);
         }
         break;
