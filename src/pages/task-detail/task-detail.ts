@@ -218,7 +218,7 @@ export class TaskDetailPage {
       case "NOT_PUBLISHED":
         if (userHasPermissions) {
           this.editableFlag = true;
-          this.showPublish = true;
+          this.showPublish = (this.task.superTask === null);
           this.addSubTaskFlag = this.task.taskType === 'ORGANISATIONAL' && (!this.SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask);
         }
         break;
@@ -234,6 +234,7 @@ export class TaskDetailPage {
     if (this.task.taskType === 'ORGANISATIONAL') {
       if (this.task.childTasks.length <= 0) {
         this.presentToast("Übersicht hat noch keine Unteraufgabe! Bitte füge eine Unteraufgabe hinzu!", 'top', false, 5000);
+        return;
       }
     }
 

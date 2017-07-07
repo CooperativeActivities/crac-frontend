@@ -252,6 +252,8 @@ export class TaskEditPage {
           duration: 3000,
           position: 'top'
         }).present();
+
+        this.navCtrl.push('task-detail', {id: this.task.id});
       }
     })
   };
