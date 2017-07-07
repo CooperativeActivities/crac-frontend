@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Mein Profil</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-grid no-padding>
+    <ion-row align-items-center justify-content-center>
+      <!-- ion-col intentionally left out -->
+      <ion-card style="max-width: 60em;">
+        <img src="assets/img/avatar-placeholder1.png" style="width:80%; max-width: 30em; margin: auto;">
+        <ion-card-content>
+          <ion-card-title text-center>
+            Mein Profil
+          </ion-card-title>
+          <ion-list *ngIf="user">
+            <ion-item>
+              <ion-label fixed>Username</ion-label>
+              <ion-input type="text" [(ngModel)]="user.name"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label fixed>Email</ion-label>
+              <ion-input type="email" [(ngModel)]="user.email"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label fixed>Vorname</ion-label>
+              <ion-input type="text" [(ngModel)]="user.firstName"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label fixed>Nachname</ion-label>
+              <ion-input type="text" [(ngModel)]="user.lastName"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label fixed>Adresse</ion-label>
+              <ion-input type="text" [(ngModel)]="user.address"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label fixed>Telefonnummer</ion-label>
+              <ion-input type="text" [(ngModel)]="user.phone"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label fixed>Geburtstag</ion-label>
+              <ion-input type="text" [(ngModel)]="user.birthDate"></ion-input>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="toolbar-buttons">
+      <button ion-button (click)="cancel()" color="light" block> Abbrechen </button>
+      <button ion-button (click)="save()" color="secondary" block> Speichern </button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

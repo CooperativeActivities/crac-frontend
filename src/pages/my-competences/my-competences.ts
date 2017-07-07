@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import {AlertController, IonicPage, NavController, ToastController} from 'ionic-angular';
+import * as _ from 'lodash';
+
+import {UserDataService} from "../../services/user_service";
 
 @IonicPage({
   name: "my-competences",
@@ -8,57 +11,84 @@ import { IonicPage } from 'ionic-angular';
 @Component({
   selector: 'page-my-competences',
   templateUrl: 'my-competences.html',
+  providers: [ UserDataService ],
 })
 export class MyCompetencesPage {
 
-  constructor() {
+  competences : Array<any> = [];
+
+  constructor(public navCtrl: NavController, public userDataService: UserDataService,
+              public toast: ToastController, public alert: AlertController) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad MyCompetencesPage');
+  ionViewDidEnter() {
+    this.onRefresh();
+  }
+
+  onRefresh() {
+    this.userDataService.userCompetences().then((res) => {
+      this.competences = res.object;
+      console.log(this.competences);
+    }, (error) => {
+      //@TODO error shows when user has no competences, should come as success
+    });
+  }
+
+  remove(id){
+    let self = this;
+
+    self.alert.create({
+      title: 'Löschen',
+      message: 'Wollen Sie diese Kompetenz wirklich löschen?',
+      buttons: [
+        {
+          text: 'Abbrechen',
+          role: 'cancel'
+        },
+        {
+          text: 'Löschen',
+          handler: () => {
+            self.userDataService.removeCompetence(id).then(function(res){
+              let index = _.findIndex(self.competences, {competence: {id: id}});
+              self.competences.splice(index, 1)[0];
+              self.toast.create({
+                message: "Kompetenz gelöscht",
+                position: 'top',
+                duration: 3000
+              }).present();
+            }, function(error) {
+              self.toast.create({
+                message: "Kompetenz kann nicht gelöscht werden: " + error.message,
+                position: 'top',
+                duration: 3000
+              }).present();
+            });
+          }
+        }
+      ]
+    }).present();
+  }
+
+  update(c){
+    let self = this;
+
+    self.userDataService.updateCompetence(c.competence.id, c.likeValue, c.proficiencyValue).then(function(res){
+      self.toast.create({
+        message: "Kompetenz gespeichert",
+        position: 'top',
+        duration: 3000
+      }).present();
+    }, function(error) {
+      self.toast.create({
+        message: "Kompetenz kann nicht gespeichert werden: " + error.message,
+        position: 'top',
+        duration: 3000
+      }).present();
+    });
+  }
+
+  addCompetence() {
+    this.navCtrl.push('competence-add');
   }
 
 }
-  /*
-cracApp.controller('myCompetenciesCtrl', ['$rootScope','$scope','UserDataService','ionicToast','$state',
-  function($rootScope,$scope,UserDataService, ionicToast, $state) {
- // console.log("Userid: " +$rootScope.globals.currentUser.id)
-  UserDataService.getUserById($rootScope.globals.currentUser.id).then(function(res) {
-    $scope.user = res.object;
-    console.log($scope.user);
-  }, function(error) {
-    ionicToast.show("Benutzerinformation kann nicht geladen werden: " + error.message, 'top', false, 5000);
-  });
-
-  UserDataService.getCompRelationships().then(function(res){
-    $scope.competences = res.object;
-    console.log($scope.competences);
-  }, function(error) {
-    //@TODO error shows when user has no competences, should come as success
-  });
-
-  $scope.competenceInfo = function(indx){
-    $state.go('tabsController.myCompetenciesInfo', { index:indx });
-  };
-  $scope.createNewCompetence = function(){
-    $state.go('tabsController.newCompetence');
-  };
-
-  $scope.addCompetence = function(){
-    $state.go('tabsController.addCompetence');
-  };
-
-  $scope.remove = function(id){
-    UserDataService.removeCompetence(id).then(function(res){
-      UserDataService.getCompRelationships().then(function(res){
-        $scope.competences = res.object;
-        console.log($scope.competences);
-      }, function(error) {
-        //@TODO error shows when user has no competences, should come as success
-      });
-    }, function(error) {
-      ionicToast.show("Kompetenz kann nicht gelöscht werden: " + error.message, 'top', false, 5000);
-    });
-  }
-}]);
-   */

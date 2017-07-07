@@ -1,0 +1,100 @@
+@import "leaflet";
+@import "leaflet-geocoder-mapzen";
+
+$imgLoc: "../assets/img/leaflet";
+
+[noScroll] {
+  overflow: hidden;
+}
+
+.mapContainer {
+  height: 100%;
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+}
+
+.crosshair {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -18px;
+  font-size: 36px;
+  color: #000;
+  z-index: 1000;
+  .icon{
+    margin-left: -50%;
+    margin-top: -50%;
+  }
+  pointer-events: none;
+}
+
+.leaflet-container .leaflet-control-attribution, .leaflet-container .leaflet-control-scale {
+    font-size: 9px;
+}
+
+li:nth-child( n + 6 ){
+    display: none;
+}
+
+.leaflet-control-layers-toggle {
+  background-image: url(#{$imgLoc}/layers.png);
+  width: 36px;
+  height: 36px;
+}
+.leaflet-retina .leaflet-control-layers-toggle {
+  background-image: url(#{$imgLoc}/layers-2x.png);
+  background-size: 26px 26px;
+}
+
+/* Default icon URLs */
+.leaflet-default-icon-path {
+  background-image: url(#{$imgLoc}/marker-icon.png);
+}
+
+.leaflet-pelias-layer-icon-point {
+  background-image: url('#{$imgLoc}/point_icon.png');
+}
+
+.leaflet-pelias-layer-icon-polygon {
+  background-image: url('#{$imgLoc}/polygon_icon.png');
+}
+
+@media only screen and (min--moz-device-pixel-ratio: 1.25),
+only screen and (-o-min-device-pixel-ratio: 2.5/2),
+only screen and (-webkit-min-device-pixel-ratio: 1.25),
+only screen and (min-device-pixel-ratio: 1.25),
+only screen and (min-resolution: 120dpi),
+only screen and (min-resolution: 1.25dppx) {
+  .leaflet-pelias-layer-icon-point {
+    background-image: url('#{$imgLoc}/point_icon@2x.png');
+  }
+
+  .leaflet-pelias-layer-icon-polygon {
+    background-image: url('#{$imgLoc}/polygon_icon@2x.png');
+  }
+}
+
+.leaflet-pelias-search-icon {
+  background-image: url('#{$imgLoc}/search.png');
+}
+
+.leaflet-pelias-search-icon.leaflet-pelias-loading {
+  background-image: url('#{$imgLoc}/loading.gif');
+}
+
+@media only screen and (min--moz-device-pixel-ratio: 1.25),
+only screen and (-o-min-device-pixel-ratio: 2.5/2),
+only screen and (-webkit-min-device-pixel-ratio: 1.25),
+only screen and (min-device-pixel-ratio: 1.25),
+only screen and (min-resolution: 120dpi),
+only screen and (min-resolution: 1.25dppx) {
+  .leaflet-pelias-search-icon {
+    background-image: url('#{$imgLoc}/search@2x.png');
+  }
+  .leaflet-pelias-search-icon.leaflet-pelias-loading {
+    background-image: url('#{$imgLoc}/loading@2x.gif');
+  }
+}

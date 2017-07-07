@@ -1,0 +1,32 @@
+//@import "../../assets/leaflet.css";
+@import "leaflet";
+
+$imgLoc: "../assets/img/leaflet";
+
+[noScroll] {
+  overflow: hidden;
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+}
+
+.leaflet-container .leaflet-control-attribution, .leaflet-container .leaflet-control-scale {
+    font-size: 9px;
+}
+
+.leaflet-control-layers-toggle {
+  background-image: url(#{$imgLoc}/layers.png);
+  width: 36px;
+  height: 36px;
+}
+.leaflet-retina .leaflet-control-layers-toggle {
+  background-image: url(#{$imgLoc}/layers-2x.png);
+  background-size: 26px 26px;
+}
+
+/* Default icon URLs */
+.leaflet-default-icon-path {
+  background-image: url(#{$imgLoc}/marker-icon.png);
+}

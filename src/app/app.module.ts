@@ -6,6 +6,7 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { Geolocation } from '@ionic-native/geolocation';
 
 
 import { MyApp } from './app.component';
@@ -38,6 +39,7 @@ import { ErrorDisplayService } from '../services/error_service';
     HelperService,
     AuthService,
     ErrorDisplayService,
+    Geolocation,
     StatusBar,
     SplashScreen
   ]

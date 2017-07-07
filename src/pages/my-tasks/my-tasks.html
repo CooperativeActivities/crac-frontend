@@ -1,45 +1,46 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
+    <ion-buttons end *ngIf="userHasPermissions">
+      <button ion-button icon-only (click)="makeNewTask()">
+        <ion-icon name="md-add-circle"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>Meine Aufgaben</ion-title>
   </ion-navbar>
 </ion-header>
-<!--
-  <ion-nav-buttons side="right" class="has-header">
-    <button class="button button-energized2 icon ion-android-add-circle scale" ng-click="makeNewTask()"></button>
-  </ion-nav-buttons>
-  -->
-<ion-content padding>
-  Meine Aufgaben Platzhalter
-<!--
-    <ion-refresher on-refresh="doRefresh()"></ion-refresher>
-    <div class="item item-divider">Teilgenommene Aufgaben:</div>
-    <ion-list can-swipe="false">
-      <!-- @TODO: sort-->
-<!--
-      <div ng-repeat="task in participatingTasks | orderBy: 'startTime'" class="parent item">
-        <task-preview task="task" action="" ng-click="loadSingleTask(task)"></task-preview>
-      </div>
-    </ion-list>
-    <hr>
-    <div class="item item-divider">Beobachtete Aufgaben:</div>
-    <ion-list can-swipe="true">
-      <!-- @TODO: sort-->
-<!--
-      <div ng-repeat="task in followingTasks | orderBy: 'startTime'" class="parent item">
-        <task-preview task="task" action="'unfollow'" ng-click="loadSingleTask(task)"></task-preview>
-      </div>
-    </ion-list>
-    <hr>
-    <div class="item item-divider">Von mir angeführte Aufgaben:</div>
-    <ion-list can-swipe="false">
-      <!-- @TODO: sort-->
-<!--
-      <div ng-repeat="task in leadingTasks | orderBy: 'startTime'" class="parent item">
-        <task-preview task="task" action="" show-all-icons="true" ng-click="loadSingleTask(task)"></task-preview>
-      </div>
-    </ion-list>
-    -->
+
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content> </ion-refresher-content>
+  </ion-refresher>
+  <ion-card task-list>
+    <ion-card-header>
+      Teilgenommene Aufgaben
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <task-preview item-block *ngFor="let task of participatingTasks" [task]="task"></task-preview>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card task-list>
+    <ion-card-header>
+       Beobachtete Aufgaben
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <task-preview item-block *ngFor="let task of followingTasks" [task]="task" [action]="'unfollow'"></task-preview>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card task-list>
+    <ion-card-header>
+      Von mir angeführte Aufgaben
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <task-preview item-block *ngFor="let task of leadingTasks" [task]="task"></task-preview>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

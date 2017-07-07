@@ -1,26 +1,63 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
     <ion-title>Meine Kompetenzen</ion-title>
+    <ion-buttons end>
+      <!--<button ion-button icon-only (click)="createNewCompetence()">
+        <ion-icon name="add"></ion-icon>
+      </button>-->
+      <button ion-button icon-only (click)="addCompetence()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
-  <!--
-  <ion-nav-buttons side="right" class="has-header">
-    <button ng-if="false" class="button icon ion-android-add-circle" ng-click="createNewCompetence()"></button>
-    <button class="button icon ion-android-add-circle scale" ng-click="addCompetence()"></button>
-  </ion-nav-buttons>
-  <ion-list ng-controller="swipeCtrl"
-    show-delete="shouldShowDelete"
-    show-reorder="shouldShowReorder"
-    can-swipe="listCanSwipe">
-    <ion-item  ng-click="competenceInfo($index)" ng-repeat="item in competences">
-      {{item.competence.name}}
-      <ion-option-button class="button-assertive" ng-click="remove(item.competence.id)">Löschen</ion-option-button>
-    </ion-item>
-  </ion-list>
-  -->
-  Meine Kompetenzen
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-item *ngIf="competences?.length == 0">
+        Keine Kompetenzen gefunden.
+      </ion-item>
+      <ion-list *ngIf="competences?.length > 0">
+          <ion-item *ngFor="let comp of competences">
+            <button ion-item (click)="comp.editing = !comp.editing">
+              {{comp.competence.name}}
+            </button>
+            <ion-list *ngIf="comp.editing">
+              <ion-item>
+                {{comp.competence.description}}
+              </ion-item>
+              <ion-item>
+                <ion-label stacked>Gefällt mir<span float-right>{{comp.likeValue}}</span></ion-label>
+                <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
+                           [(ngModel)]="comp.likeValue">
+                </ion-range>
+              </ion-item>
+              <ion-item>
+                <ion-label stacked>Kann ich<span float-right>{{comp.proficiencyValue}}</span></ion-label>
+                <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
+                           [(ngModel)]="comp.proficiencyValue">
+                </ion-range>
+              </ion-item>
+
+              <ion-item>
+                <ion-grid no-padding>
+                  <ion-row>
+                    <ion-col>
+                      <button ion-button (click)="remove(comp.competence.id)" block color="danger">
+                        <ion-icon name="trash"></ion-icon> Löschen
+                      </button>
+                    </ion-col>
+                    <ion-col>
+                      <button ion-button (click)="update(comp)" block>
+                        <ion-icon name="checkmark"></ion-icon> Speichern
+                      </button>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+            </ion-list>
+          </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

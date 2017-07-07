@@ -1,0 +1,23 @@
+
+task-preview-recursive > div > task-preview-recursive  {
+  &> div{
+    margin-left: 16px;
+  }
+  &:last-child>div{
+    margin-bottom: 8px;
+  }
+}
+task-preview-recursive {
+  .item.title {
+    button {
+      margin: 0;
+      padding-right: 0;
+      ion-icon{
+        margin-right: 0;
+      }
+    }
+    .item-inner{
+      padding-right: 0;
+    }
+  }
+}

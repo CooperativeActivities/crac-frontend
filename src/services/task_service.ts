@@ -6,9 +6,9 @@ export class TaskDataService {
   constructor(public helpers: HelperService){ }
   // Get all task
   getAllParentTasks(){
-    return this.helpers.ajax("task/parents", "get", { handleSpecificErrors: function(response){
+    return this.helpers.ajax("task/parents", "get", { handleSpecificErrors: function(response, responseData){
       // switch .data.cause here
-      throw { error: response.data, message: "Aufgabenliste konnte nicht geladen werden" };
+      throw { error: responseData, message: "Aufgabenliste konnte nicht geladen werden" };
     }});
   };
   //Get a TAsk by ID
@@ -27,7 +27,7 @@ export class TaskDataService {
 
   //Returns all tasks of logged in user, divided in the TaskParticipationTypes
   getMyTasks(){
-    return this.helpers.ajax("task/type", "get", { transformResponse: function(response){ return response.data } });
+    return this.helpers.ajax("task/type", "get");
   };
   //Creates a new task
   createNewTask(taskData){
@@ -145,4 +145,19 @@ export class TaskDataService {
   unsubscribeFromMaterial(taskId, materialId){
     return this.helpers.ajax("task/" + taskId + "/material/" + materialId + "/unsubscribe", "delete");
   };
+
+  getTasksToEvaluate(){
+    return this.helpers.ajax(" /evaluation", "get");
+  };
+
+  getTasksToEvaluateById(evaluationId){
+    return this.helpers.ajax(" /evaluation/"+evaluationId, "get");
+  };
+
+
+
+
+
+
+
 };

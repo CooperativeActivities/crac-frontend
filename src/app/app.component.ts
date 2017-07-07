@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, ToastController } from 'ionic-angular';
 
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -18,6 +18,7 @@ export class MyApp {
   constructor(public platform: Platform,
     private authService: AuthService,
     public statusBar: StatusBar, public splashScreen: SplashScreen,
+    public toast: ToastController,
   ) {
     this.initializeApp();
   }
@@ -29,7 +30,14 @@ export class MyApp {
     this.statusBar.styleDefault();
     this.splashScreen.hide();
 
-    await this.authService.getCredentials()
+    await this.authService.getCredentials().catch(e => {
+      console.error(e)
+      this.toast.create({
+        message: "Benutzerinformationen konnten nicht geladen werden: " + e.message,
+        position: 'top',
+        duration: 3000
+      }).present();
+    })
     if(!this.authService.isAuthenticated()){
       this.nav.setRoot("login")
     } else {

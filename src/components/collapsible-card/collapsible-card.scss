@@ -1,0 +1,16 @@
+
+.card-header.collapsible-header{
+  background-color: color($colors, light);
+  .item{
+    background: none;
+    min-height: 0;
+    .label{
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+    .icon{
+      margin: 0;
+    }
+  }
+  padding: $global-card-padding;
+}

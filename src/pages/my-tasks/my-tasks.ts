@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { TaskDataService } from '../../services/task_service';
+import _ from "lodash"
+import {UserDataService} from "../../services/user_service";
 
 @IonicPage({
   name: "my-tasks",
@@ -7,48 +10,58 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 @Component({
   selector: 'page-my-tasks',
   templateUrl: 'my-tasks.html',
+  providers: [ TaskDataService, UserDataService ],
 })
 export class MyTasksPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  participatingTasks : any[];
+  followingTasks : any[];
+  leadingTasks: any[];
+  userHasPermissions: boolean = false;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              public taskDataService: TaskDataService, public userDataService: UserDataService) { }
+
+  ionViewDidEnter() {
+    this.doRefresh();
   }
+
+  makeNewTask() {
+    this.navCtrl.push('task-edit');
+  }
+
+  async doRefresh (refresher=null) {
+    await Promise.all([
+      this.taskDataService.getMyTasks().then((res) => {
+        this.participatingTasks = _.orderBy(res.meta.participating, [ "startTime" ], [ "asc" ])
+        this.followingTasks = _.orderBy(res.meta.following, [ "startTime" ], [ "asc" ])
+        this.leadingTasks = _.orderBy(res.meta.leading, [ "startTime" ], [ "asc" ])
+      }, (error) => {
+        console.warn("Matching tasks could not be retrieved", error)
+      }),
+      this.userDataService.getCurrentUser().then((res) => {
+        let roles = res.object.roles;
+        let isAdmin = roles.find((r) => {
+          return r.id === 1;
+        });
+        this.userHasPermissions = isAdmin || false;
+      }).catch((error)=>{
+        console.log(error);
+        console.warn("Matching tasks could not be retrieved", error)
+      })
+    ]);
+
+    //Stop the ion-refresher from spinning
+    if(refresher){
+      refresher.complete()
+    }
+  }
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MyTasksPage');
   }
-
-}
-  /*
-cracApp.controller('myTasksCtrl', ['$scope','$window','$route', '$stateParams','$routeParams','TaskDataService','ionicToast','$state',
-  // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-function ($scope,$window, $route, $stateParams, $routeParams, TaskDataService, ionicToast, $state) {
-
-  $scope.completed ="'!' + 'COMPLETED'";
-  $scope.doRefresh = function(){
-    TaskDataService.getMyTasks().then(function(res) {
-      console.log("My Tasks: ");
-		  console.log(res);
-      $scope.participatingTasks = res.meta.participating;
-      $scope.followingTasks = res.meta.following;
-      $scope.leadingTasks = res.meta.leading;
-      $scope.$broadcast('scroll.refreshComplete');
-    }, function(error) {
-      ionicToast.show("Aufgabe kann nicht geladen werden: " + error.message, 'top', false, 5000)
-    })
-  };
-
-  $scope.doRefresh();
-
-  $scope.makeNewTask= function(){
+  /*$scope.makeNewTask= function(){
     $state.go('tabsController.newTask');
-  };
-
-  $scope.loadSingleTask = function(task){
-    if(task.taskType === "SHIFT"){
-      $state.go('tabsController.task', { id:task.superTask }, {reload:true});
-    } else {
-      $state.go('tabsController.task', { id:task.id }, {reload:true});
-    }
-  }
-}]);
-   */
+  };*/
+}

@@ -1,11 +1,49 @@
 
-.item{
-  padding-left: 8px;
-}
+task-preview {
+  .item-wrapper{
+    /*margin-left: 8px;*/
+    margin-top: 4px;
+    background: none;
+    /*&>.item{
+      padding-left: 0;
+      padding-left: 4px;
+    }*/
+  }
+  .item{
+    padding-left: 10px;
+    min-height: initial;
+  }
+  .task-preview-wrapper>.item-inner>.input-wrapper>.label{
+    margin-top: 2px;
+    margin-bottom: 0px;
+  }
+  .item.title {
+    padding-left: 0px;
+    /*font-size: 1.1em;*/
+    border-bottom: 1px solid #ddd;
+    .label{
+      div{
+        /*font-weight: 500;*/
+      }
+      /*margin: 0;*/
+    }
+  }
+  .item.desc {
+    font-size: 0.9em;
+    padding-left: 0px;
+    color: grey;
+  }
 
-.label {
-  margin: 6px 4px 6px 0;
+  .label {
+    margin: 6px 4px 6px 0;
+  }
+
 }
-.card .list task-preview[item-block]:not(:last-child) .item-inner {
-  border-bottom: 1px solid #ddd;
+.card .list task-preview[item-block]{
+  &:not(:last-child) .item-wrapper{
+    border-bottom: 1px solid #ddd;
+  }
+  &:not(:first-child) .item-wrapper{
+    border-top: 1px solid #ddd;
+  }
 }

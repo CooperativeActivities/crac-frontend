@@ -1,0 +1,30 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Meine Evaluierungen</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-card task-list>
+    <ion-card-header>
+      Offene Evaluierungen
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <task-preview item-block *ngFor="let task of openTasks" [task]="task"></task-preview>
+      </ion-list>
+
+      <ion-item *ngIf="!openTasks || openTasks.length == 0">
+        Momentan sind keine Evaluierungen offen
+      </ion-item>
+
+    </ion-card-content>
+  </ion-card>
+
+
+</ion-content>

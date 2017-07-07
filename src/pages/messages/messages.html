@@ -1,38 +1,38 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
     <ion-title>Nachrichten</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
-  Nachrichten Platzhalter
-  <!--
-  <ion-refresher on-refresh="reload()"></ion-refresher>
-  <div class="item item-divider">Nachrichten</div>
-  <ion-list>
-    <ion-item ng-repeat="notification in notifications | orderBy: 'startTime'">
-      <div ng-if="notification.name === 'Friend Request'">
-        <div>
-          Freundschaftsanfrage von {{ notification.user.name }}
-        </div>
-        <br>
-        <button ng-click="accept(notification)"
-          class="button button-small button-balanced ion-checkmark">Zustimmen</button>
-        <button ng-click="decline(notification)"
-          class="button button-small button-assertive ion-checkmark">Ablehnen</button>
-      </div>
-      -->
-      <!-- is there an ng-else directive? -->
-      <!--
-      <div ng-if="notification.name !== 'Friend Request'">
-          {{ notification.name }}
-      </div>
-    </ion-item>
-    <p ng-if="notifications.length < 1">
-      Nichts hier.
-    </p>
-  </ion-list>
-  -->
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let notification of notifications">
+          <div *ngIf="notification.name === 'Friend Request'; else nonFriendNotification">
+            <div>
+              Freundschaftsanfrage von {{ notification.user.name }}
+            </div>
+            <br>
+            <button ion-button (click)="accept(notification)" color="secondary" icon-left>
+              <ion-icon name="checkmark"></ion-icon>
+              Zustimmen
+            </button>
+            <button ion-button (click)="decline(notification)" color="danger" icon-left>
+              <ion-icon name="close"></ion-icon>
+              Ablehnen
+            </button>
+          </div>
+
+          <ng-template #nonFriendNotification>
+            <div>
+              {{ notification.name }}
+            </div>
+          </ng-template>
+        </ion-item>
+        <p *ngIf="notifications.length < 1">
+          Nichts hier.
+        </p>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
