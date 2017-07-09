@@ -19,6 +19,8 @@ export class TaskEditPage {
   public parentId : any;
   parentTask: any;
   task : any = {};
+  hasStartTime: boolean = false;
+  hasEndTime: boolean = false;
   isNewTask: boolean = true;
   isChildTask: boolean = false;
   addNewCompetence: boolean = false;
@@ -80,7 +82,7 @@ export class TaskEditPage {
         this.pageTitle = "Aufgabe Erstellen";
 
         let now = new Date();
-        now.setHours(now.getHours() + Math.round(now.getMinutes()/60));
+        now.setHours(0);
         now.setMinutes(0);
         now.setSeconds(0);
         now.setMilliseconds(0);
@@ -252,6 +254,8 @@ export class TaskEditPage {
           duration: 3000,
           position: 'top'
         }).present();
+
+        this.navCtrl.push('task-detail', {id: this.task.id});
       }
     })
   };
@@ -646,9 +650,11 @@ export class TaskEditPage {
 
         this.updateFlags();
 
+        this.hasStartTime = true;
         this.task.startTime = this.getDateString(new Date(this.task.startTime));
         if(this.task.startTime != this.task.endTime ){
           this.task.endTime = this.getDateString(new Date(this.task.endTime));
+          this.hasEndTime = true;
         }
 
         this.competences.all = _.orderBy(_.clone(this.task.taskCompetences), [ "name" ])

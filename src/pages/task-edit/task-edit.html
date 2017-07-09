@@ -74,15 +74,45 @@
       </ion-card-header>
       <ion-card-content>
         <ion-list>
-          <ion-item>
-            <ion-label stacked>Beginn*</ion-label>
-            <ion-datetime displayFormat="DD-MM-YYYY HH:mm" [(ngModel)]="task.startTime" name="startTime"
-                       [ngClass]="{'has-error' : !task.startTime}"></ion-datetime>
-          </ion-item>
-          <ion-item>
-            <ion-label stacked>Ende</ion-label>
-            <ion-datetime displayFormat="DD-MM-YYYY HH:mm" [(ngModel)]="task.endTime" name="endTime"></ion-datetime>
-          </ion-item>
+          <ion-grid no-padding>
+            <ion-row>
+              <ion-col no-padding>
+                <ion-item>
+                  <ion-label stacked>Beginndatum*</ion-label>
+                  <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="task.startTime" name="startDate"
+                                [ngClass]="{'has-error' : !startDate}"></ion-datetime>
+                </ion-item>
+              </ion-col>
+              <ion-col no-padding>
+                <ion-item *ngIf="!hasStartTime">
+                  <a (click)="hasStartTime = true">Zeitpunkt hinzufügen</a>
+                </ion-item>
+                <ion-item *ngIf="hasStartTime">
+                  <ion-label stacked>Beginnzeit</ion-label>
+                  <ion-datetime displayFormat="HH:mm" [(ngModel)]="task.startTime" name="startTime"></ion-datetime>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <ion-grid no-padding>
+            <ion-row>
+              <ion-col no-padding>
+                <ion-item>
+                  <ion-label stacked>Enddatum</ion-label>
+                  <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="task.endTime" name="endTime"></ion-datetime>
+                </ion-item>
+              </ion-col>
+              <ion-col no-padding>
+                <ion-item *ngIf="!hasEndTime">
+                  <a (click)="hasEndTime = true">Zeitpunkt hinzufügen</a>
+                </ion-item>
+                <ion-item *ngIf="hasEndTime">
+                  <ion-label stacked>Endzeit</ion-label>
+                  <ion-datetime displayFormat="HH:mm" [(ngModel)]="task.endTime" name="endTime"></ion-datetime>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
           <ion-item>
             <button ion-button icon-only (click)="openMap()" item-right>
               <ion-icon name="locate"></ion-icon>

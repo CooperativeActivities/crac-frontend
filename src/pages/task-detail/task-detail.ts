@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {IonicPage, Content, NavController, NavParams, ToastController, AlertController} from 'ionic-angular';
 import * as _ from 'lodash';
 
 import {TaskDataService} from '../../services/task_service';
@@ -15,6 +15,7 @@ import {UserDataService} from "../../services/user_service";
   providers: [TaskDataService, UserDataService],
 })
 export class TaskDetailPage {
+  @ViewChild(Content) content: Content;
 
   task: any;
   timeChoice = 'slot';
@@ -37,7 +38,8 @@ export class TaskDetailPage {
   participationType: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public taskDataService: TaskDataService,
-              public userDataService: UserDataService, public toastCtrl: ToastController, private authCtrl: AuthService) {
+              public userDataService: UserDataService, public toastCtrl: ToastController, public alert: AlertController,
+              private authCtrl: AuthService) {
     this.taskId = navParams.data.id;
     this.SUBTASKS_LIMITED_TO_SHALLOW = false;
     this.loaded = {};
@@ -56,7 +58,6 @@ export class TaskDetailPage {
 
   ionViewDidEnter(){
     this.doRefresh();
-    //this.adjustFooter();
   }
 
   edit() {
@@ -200,11 +201,10 @@ export class TaskDetailPage {
         if (relation === "LEADING") {
           // @TODO allow leaders to also participate/follow?
         } else {
-          // @DISCUSS: cannot unfollow started task?
+          // @DISCUSS: cannot unfollow/cancel started task?
           this.showShiftsMaterialsEnroll = true;
           this.showEnroll = relation !== "PARTICIPATING" && !taskHasShifts && taskIsWorkable;
           this.showFollow = relation !== "FOLLOWING" && relation !== "PARTICIPATING";
-          this.showCancel = relation === "PARTICIPATING";
         }
         break;
       case "PUBLISHED":
@@ -214,6 +214,7 @@ export class TaskDetailPage {
         }
         if (relation === "LEADING") {
           // @TODO allow leaders to also participate/follow
+          this.showShiftsMaterialsEnroll = true;
         } else {
           this.showShiftsMaterialsEnroll = true;
           this.showEnroll = relation !== "PARTICIPATING" && !taskHasShifts && taskIsWorkable;
@@ -225,12 +226,13 @@ export class TaskDetailPage {
       case "NOT_PUBLISHED":
         if (userHasPermissions) {
           this.editableFlag = true;
-          this.showPublish = true;
+          this.showPublish = (this.task.superTask === null);
           this.addSubTaskFlag = this.task.taskType === 'ORGANISATIONAL' && (!this.SUBTASKS_LIMITED_TO_SHALLOW || !taskIsSubtask);
         }
         break;
     }
 
+    this.content.resize();
   };
 
   //Publish a task
@@ -240,6 +242,7 @@ export class TaskDetailPage {
     if (this.task.taskType === 'ORGANISATIONAL') {
       if (this.task.childTasks.length <= 0) {
         this.presentToast("Übersicht hat noch keine Unteraufgabe! Bitte füge eine Unteraufgabe hinzu!", 'top', false, 5000);
+        return;
       }
     }
 
@@ -253,7 +256,8 @@ export class TaskDetailPage {
     let taskId = this.task.id;
     this.taskDataService.changeTaskState(taskId, 'publish').then( (res) => {
       this.presentToast("Task veröffentlicht", 'top', false, 5000);
-      this.showPublish = false;
+      this.task.taskState = 'PUBLISHED';
+      this.updateFlags();
     }, (error) => {
       this.presentToast("Aufgabe kann nicht veröffentlicht werden: " + error.message, 'top', false, 5000);
     });
@@ -379,17 +383,11 @@ export class TaskDetailPage {
     }
 
     this.taskDataService.subscribeToMaterial(this.task.id, material.id, material.mySubscribedQuantity).then((res) => {
-      const newMaterial = res.object
       console.log("Material subscribed");
-      Object.assign(material, newMaterial)
-      material.subscribedQuantityOtherUsers =
-          material.subscribedUsers
-      // subscription.user here
-          .filter(subscription => subscription.user !== this.user.id)
-          .reduce((acc, val) => acc + val.quantity, 0)
-      material.mySubscribedQuantity = material.subscribedQuantity - material.subscribedQuantityOtherUsers
+      this.presentToast("Menge des Materials gespeichtert", 'top', false, 3000);
+      material.subscribedQuantity = material.subscribedQuantityOtherUsers + material.mySubscribedQuantity;
     }, (error) => {
-      this.presentToast("Materialien können nicht gespeichert werden: " + error.message, 'top', false, 5000);
+      this.presentToast("Materialien können nicht gespeichert werden: " + error.message, 'top', false, 3000);
     })
 
   }
@@ -397,9 +395,20 @@ export class TaskDetailPage {
   unsubscribeFromMaterial (material){
     this.taskDataService.unsubscribeFromMaterial(this.task.id, material.id).then((res) => {
       console.log("Material unsubscribed");
+      this.presentToast("Menge des Materials gespeichtert", 'top', false, 3000);
+      material.subscribedQuantity = material.subscribedQuantityOtherUsers + material.mySubscribedQuantity;
     }, (error) => {
-      this.presentToast("Materialien können nicht gespeichert werden: " + error.message, 'top', false, 5000);
+      this.presentToast("Materialien können nicht gespeichert werden: " + error.message, 'top', false, 3000);
     });
+  };
+
+  areAllParticipantsDone() {
+    for(let u of this.task.userRelationships) {
+      if( u.participationType === "PARTICIPATING" && !u.completed ) {
+        return false;
+      }
+    }
+    return true;
   };
 
   //evaluations
@@ -421,32 +430,64 @@ export class TaskDetailPage {
 
   adjustFooter() {
 
-    let fh = document.querySelector('ion-footer').clientHeight;
-    let sc = document.querySelectorAll('.scroll-content');
-    fh = (fh + 56);
-
-    if (sc != null) {
-      Object.keys(sc).map((key) => {
-        sc[key].style.marginBottom = fh + 'px';
-      });
+  //Complete a task
+  complete() {
+    let allDone = this.areAllParticipantsDone();
+    if(allDone) {
+      this.completeTask('complete');
+    } else {
+      this.alert.create({
+        title: "Task kann nicht als fertig markiert werden:",
+        message: "Noch nicht alle Teilnehmer haben die Task als fertig markiert. Task trotzdem abschließen?",
+        buttons: [
+          {
+            text: 'Abbrechen',
+            role: 'cancel'
+          },
+          {
+            text: 'Abschließen',
+            handler: () => {
+              this.completeTask('forceComplete');
+            }
+          }
+        ]
+      }).present();
     }
+  };
+
+  completeTask(state) {
+    if(!this.task.permissions) return false;
+
+    this.taskDataService.changeTaskState(this.task.id, state).then((res) => {
+      console.log("Task is completed");
+      this.task.taskState = 'COMPLETED';
+      this.updateFlags();
+      console.log(res);
+    }, (error) => {
+      this.presentToast("Aufgabe kann nicht abgeschlossen werden: " + error.message, 'top', false, 5000);
+    });
+  };
+
+  //Set a task as done
+  done(){
+    this.taskDataService.setTaskDone(this.task.id,"true").then((res) => {
+      console.log("Task is done");
+      this.userIsDone = true;
+    }, (error) => {
+      this.presentToast("Aufgabe kann nicht als fertig markiert werden: " + error.message, 'top', false, 5000);
+    });
+  };
+
+  //unset task as done
+  notDone() {
+    this.taskDataService.setTaskDone(this.task.id,"false").then((res) => {
+      this.userIsDone = false;
+    }, (error) => {
+      this.presentToast("Aufgabe kann nicht gelost werden: " + error.message, 'top', false, 5000);
+    });
   };
 
   makeNewSubTask() {
     this.navCtrl.push('task-edit', {parentId: this.task.id});
   }
-
-  ionViewWillLeave() {
-    let fh = 0;
-    let sc = document.querySelectorAll('.scroll-content');
-    fh = (fh + 56);
-
-    if (sc != null) {
-      Object.keys(sc).map((key) => {
-        sc[key].style.marginBottom = fh + 'px';
-      });
-    }
-  }
-
-
 }

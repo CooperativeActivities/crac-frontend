@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-buttons end>
+    <ion-buttons end *ngIf="userHasPermissions">
       <button ion-button icon-only (click)="makeNewTask()">
         <ion-icon name="md-add-circle"></ion-icon>
       </button>
