@@ -64,7 +64,7 @@ export class MessagesPage {
       }
       let promises = [];
       notifications.forEach(function(notification){
-        if(notification.name = "Friend Request"){
+        if(notification.name == "Friend Request"){
           promises.push(self.userDataService.getUserById(notification.senderId).then(function(res){
             notification.user = res.object
           }))
