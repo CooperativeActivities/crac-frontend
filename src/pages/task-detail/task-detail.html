@@ -208,27 +208,35 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar *ngIf="showPublish || showEnroll || showCancel || showFollow || showUnfollow">
+  <ion-toolbar *ngIf="showPublish || showEnroll || showCancel || showFollow || showUnfollow || showEvaluate || showTriggerEval">
     <div class="toolbar-buttons">
       <button ion-button icon-left full color="light" (click)="publish()" *ngIf="showPublish">
-        <ion-icon name="ion-eye"></ion-icon>
+        <ion-icon name="eye"></ion-icon>
         Veröffentlichen
       </button>
       <button ion-button icon-left full color="secondary" (click)="enroll()" *ngIf="showEnroll">
-        <ion-icon name="ion-checkmark"></ion-icon>
+        <ion-icon name="checkmark"></ion-icon>
         Ich arbeite mit!
       </button>
       <button ion-button icon-left full color="danger" (click)="cancel()" *ngIf="showCancel">
-        <ion-icon name="ion-close"></ion-icon>
+        <ion-icon name="close"></ion-icon>
         Absagen
       </button>
       <button ion-button icon-left full color="light" (click)="follow()" *ngIf="showFollow">
-        <ion-icon name="ion-eye"></ion-icon>
+        <ion-icon name="eye"></ion-icon>
         Folgen
       </button>
       <button ion-button icon-left full color="danger" (click)="cancel()" *ngIf="showUnfollow">
-        <ion-icon name="ion-eye-disabled"></ion-icon>
+        <ion-icon name="eye-off"></ion-icon>
         Nicht mehr folgen
+      </button>
+      <button ion-button icon-left full color="light" (click)="evaluate()" *ngIf="showEvaluate">
+        <ion-icon name="ion-star"></ion-icon>
+        Aufgabe bewerten
+      </button>
+      <button ion-button icon-left full color="light" (click)="triggerEval()" *ngIf="showTriggerEval">
+        <ion-icon name="ion-star"></ion-icon>
+        Bewertungnachrichten senden
       </button>
     </div>
   </ion-toolbar>

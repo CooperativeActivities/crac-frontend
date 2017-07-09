@@ -27,6 +27,8 @@ export class TaskDetailPage {
   showCancel: boolean = false;
   showFollow: boolean = false;
   showUnfollow: boolean = false;
+  showEvaluate: boolean = false;
+  showTriggerEval: boolean = false;
   editableFlag: boolean = false;
   addSubTaskFlag: boolean = false;
   userIsDone: boolean = false;
@@ -184,6 +186,12 @@ export class TaskDetailPage {
 
     switch (task.taskState) {
       case "COMPLETED":
+        if(relation === "LEADING") {
+          this.showTriggerEval = true;
+        }
+        if(relation === "PARTICIPATING") {
+          this.showEvaluate = true;
+        }
         break;
       case "STARTED":
         if (userHasPermissions) {
@@ -393,6 +401,23 @@ export class TaskDetailPage {
       this.presentToast("Materialien können nicht gespeichert werden: " + error.message, 'top', false, 5000);
     });
   };
+
+  //evaluations
+  evaluate() {
+    this.taskDataService.createEvaluationForUser(this.task.id).then((res) => {
+      this.navCtrl.push('evolution-detail', {id: res.object.id});
+    }, (error) => {
+      this.presentToast("Bewertung konnte nicht erstellt werden: " + error.message, 'top', false, 5000);
+    });
+  }
+
+  triggerEval() {
+    this.taskDataService.createEvaluationForAll(this.task.id).then((res) => {
+      this.presentToast("Bewertungen erstellt und Nachrichten gesendet", 'top', false, 5000);
+    }, (error) => {
+      this.presentToast("Bewertungen konnten nicht erstellt werden: " + error.message, 'top', false, 5000);
+    });
+  }
 
   adjustFooter() {
 

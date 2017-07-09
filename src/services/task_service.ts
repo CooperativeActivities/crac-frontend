@@ -148,22 +148,26 @@ export class TaskDataService {
 
   //returns the completed tasks for the current user by participation type (LEADING, PARTICIPATING, FOLLOWING)
   getCompletedTasks(participationType){
-    return this.helpers.ajax(" /task/completed/" + participationType, "get");
+    return this.helpers.ajax("task/completed/" + participationType, "get");
   };
 
   //returns all evaluations for the current user
   getTasksToEvaluate(){
-    return this.helpers.ajax(" /evaluation", "get");
+    return this.helpers.ajax("evaluation", "get");
   };
 
-  getTasksToEvaluateById(evaluationId){
-    return this.helpers.ajax(" /evaluation/"+evaluationId, "get");
+  //create a new evaluation for self
+  createEvaluationForUser(taskId) {
+    return this.helpers.ajax("evalution/task/" + taskId + "/self", "post");
+  }
+
+  //create a new evaluation for all users in a task
+  createEvaluationForAll(taskId) {
+    return this.helpers.ajax("evaluation/task/" + taskId + "/all", "post");
+  }
+
+  //send evaluation values
+  evaluateTask(evaluationId, values){
+    return this.helpers.ajax("evaluation/"+evaluationId, "put", { payload: values });
   };
-
-
-
-
-
-
-
-};
+}
