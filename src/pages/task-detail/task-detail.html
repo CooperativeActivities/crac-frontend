@@ -255,11 +255,11 @@
         Nicht mehr folgen
       </button>
       <button ion-button icon-left full color="light" (click)="evaluate()" *ngIf="showEvaluate">
-        <ion-icon name="ion-star"></ion-icon>
+        <ion-icon name="checkmark"></ion-icon>
         Aufgabe bewerten
       </button>
       <button ion-button icon-left full color="light" (click)="triggerEval()" *ngIf="showTriggerEval">
-        <ion-icon name="ion-star"></ion-icon>
+        <ion-icon name="send"></ion-icon>
         Bewertungnachrichten senden
       </button>
       <ng-container *ngIf="task.taskState == 'STARTED'">
