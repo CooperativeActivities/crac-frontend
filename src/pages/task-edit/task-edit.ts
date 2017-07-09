@@ -80,7 +80,7 @@ export class TaskEditPage {
         this.pageTitle = "Aufgabe Erstellen";
 
         let now = new Date();
-        now.setHours(now.getHours() + Math.round(now.getMinutes()/60));
+        now.setHours(0);
         now.setMinutes(0);
         now.setSeconds(0);
         now.setMilliseconds(0);
