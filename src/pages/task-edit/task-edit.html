@@ -84,7 +84,10 @@
                 </ion-item>
               </ion-col>
               <ion-col no-padding>
-                <ion-item>
+                <ion-item *ngIf="!hasStartTime">
+                  <a (click)="hasStartTime = true">Zeitpunkt hinzufügen</a>
+                </ion-item>
+                <ion-item *ngIf="hasStartTime">
                   <ion-label stacked>Beginnzeit</ion-label>
                   <ion-datetime displayFormat="HH:mm" [(ngModel)]="task.startTime" name="startTime"></ion-datetime>
                 </ion-item>
@@ -100,7 +103,10 @@
                 </ion-item>
               </ion-col>
               <ion-col no-padding>
-                <ion-item>
+                <ion-item *ngIf="!hasEndTime">
+                  <a (click)="hasEndTime = true">Zeitpunkt hinzufügen</a>
+                </ion-item>
+                <ion-item *ngIf="hasEndTime">
                   <ion-label stacked>Endzeit</ion-label>
                   <ion-datetime displayFormat="HH:mm" [(ngModel)]="task.endTime" name="endTime"></ion-datetime>
                 </ion-item>

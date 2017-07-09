@@ -19,6 +19,8 @@ export class TaskEditPage {
   public parentId : any;
   parentTask: any;
   task : any = {};
+  hasStartTime: boolean = false;
+  hasEndTime: boolean = false;
   isNewTask: boolean = true;
   isChildTask: boolean = false;
   addNewCompetence: boolean = false;
@@ -648,9 +650,11 @@ export class TaskEditPage {
 
         this.updateFlags();
 
+        this.hasStartTime = true;
         this.task.startTime = this.getDateString(new Date(this.task.startTime));
         if(this.task.startTime != this.task.endTime ){
           this.task.endTime = this.getDateString(new Date(this.task.endTime));
+          this.hasEndTime = true;
         }
 
         this.competences.all = _.orderBy(_.clone(this.task.taskCompetences), [ "name" ])
