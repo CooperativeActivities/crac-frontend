@@ -75,9 +75,13 @@
       <ion-card-content>
         <ion-list>
           <ion-item>
-            <ion-label stacked>Beginn*</ion-label>
-            <ion-datetime displayFormat="DD-MM-YYYY HH:mm" [(ngModel)]="task.startTime" name="startTime"
-                       [ngClass]="{'has-error' : !task.startTime}"></ion-datetime>
+            <ion-label stacked>Beginndatum*</ion-label>
+            <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="task.startTime" name="startDate"
+                          [ngClass]="{'has-error' : !startDate}"></ion-datetime>
+          </ion-item>
+          <ion-item>
+            <ion-label stacked>Beginnzeitpunkt</ion-label>
+            <ion-datetime displayFormat="HH:mm" [(ngModel)]="task.startTime" name="startTime"></ion-datetime>
           </ion-item>
           <ion-item>
             <ion-label stacked>Ende</ion-label>
