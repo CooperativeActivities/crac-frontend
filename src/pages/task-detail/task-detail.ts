@@ -428,8 +428,6 @@ export class TaskDetailPage {
     });
   }
 
-  adjustFooter() {
-
   //Complete a task
   complete() {
     let allDone = this.areAllParticipantsDone();
