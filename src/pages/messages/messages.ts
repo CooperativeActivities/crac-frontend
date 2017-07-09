@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, NavController, ToastController } from 'ionic-angular';
 import * as _ from 'lodash';
 
 import { UserDataService } from "../../services/user_service";
+import {TaskDataService} from "../../services/task_service";
 
 @IonicPage({
   name: "messages",
@@ -10,13 +11,14 @@ import { UserDataService } from "../../services/user_service";
 @Component({
   selector: 'page-messages',
   templateUrl: 'messages.html',
-  providers: [ UserDataService ],
+  providers: [ UserDataService, TaskDataService ],
 })
 export class MessagesPage {
 
   notifications: Array<any> = [];
 
-  constructor(public navCtrl: NavController, public userDataService: UserDataService) {
+  constructor(public navCtrl: NavController, public userDataService: UserDataService,
+              public taskDataService: TaskDataService, public toast: ToastController) {
     this.onReload();
   }
 
@@ -24,14 +26,23 @@ export class MessagesPage {
     console.log('ionViewDidLoad MessagesPage');
   }
 
-  accept(notification){
-    let self = this;
+  evaluate(notification) {
+    this.taskDataService.createEvaluationForUser(notification.taskId).then((res) => {
+      this.navCtrl.push('evolution-detail', {id: res.object.id});
+    }, (error) => {
+      this.toast.create({
+        message: "Bewertung konnte nicht erstellt werden: " + error.message,
+        position: 'top',
+        duration: 5000
+      });
+    });
+  }
 
-    console.log(notification);
-    self.userDataService.acceptNotification(notification.notificationId).then(function(){
-      let index = _.findIndex(self.notifications, {id: notification.notificationId});
-      self.notifications.splice(index, 1)[0];
-    }, function(error) {
+  accept(notification){
+    this.userDataService.acceptNotification(notification.notificationId).then(() => {
+      let index = _.findIndex(this.notifications, {id: notification.notificationId});
+      this.notifications.splice(index, 1)[0];
+    }, (error) => {
       this.toast.create({
         message: "Nachrichten konnte nicht zugestimmt werden: " + error.message,
         duration: 3000,
@@ -41,12 +52,10 @@ export class MessagesPage {
   }
 
   decline(notification){
-    let self = this;
-
-    self.userDataService.declineNotification(notification.notificationId).then(function(){
-      let index = _.findIndex(self.notifications, {id: notification.notificationId});
-      self.notifications.splice(index, 1)[0];
-    }, function(error) {
+    this.userDataService.declineNotification(notification.notificationId).then(() => {
+      let index = _.findIndex(this.notifications, {id: notification.notificationId});
+      this.notifications.splice(index, 1)[0];
+    }, (error) => {
       this.toast.create({
         message: "Nachrichten konnte nicht abgelehnt werden: " + error.message,
         duration: 3000,
@@ -54,6 +63,7 @@ export class MessagesPage {
       }).present();
     });
   }
+
   onReload() {
     let self = this;
 

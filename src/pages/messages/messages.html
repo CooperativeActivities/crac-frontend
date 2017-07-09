@@ -8,7 +8,7 @@
     <ion-card-content>
       <ion-list>
         <ion-item *ngFor="let notification of notifications">
-          <div *ngIf="notification.name === 'Friend Request'; else nonFriendNotification">
+          <div *ngIf="notification.name === 'Friend Request'">
             <div>
               Freundschaftsanfrage von {{ notification.user.name }}
             </div>
@@ -23,11 +23,20 @@
             </button>
           </div>
 
-          <ng-template #nonFriendNotification>
+          <div *ngIf="notification.name === 'Evaluation'">
             <div>
-              {{ notification.name }}
+              Aufgabe bewerten: {{notification.taskId}}
             </div>
-          </ng-template>
+            <br>
+            <button ion-button (click)="evaluate(notification)" color="secondary" icon-left>
+              <ion-icon name="checkmark"></ion-icon>
+              Bewerten
+            </button>
+            <button ion-button (click)="decline(notification)" color="danger" icon-left>
+              <ion-icon name="close"></ion-icon>
+              Ablehnen
+            </button>
+          </div>
         </ion-item>
         <p *ngIf="notifications.length < 1">
           Nichts hier.
