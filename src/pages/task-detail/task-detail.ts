@@ -414,7 +414,7 @@ export class TaskDetailPage {
   //evaluations
   evaluate() {
     this.taskDataService.createEvaluationForUser(this.task.id).then((res) => {
-      this.navCtrl.push('evolution-detail', {id: res.object.id});
+      this.navCtrl.push('evaluation-detail', {taskId: this.task.id, evalId: res.object.id});
     }, (error) => {
       this.presentToast("Bewertung konnte nicht erstellt werden: " + error.message, 'top', false, 5000);
     });

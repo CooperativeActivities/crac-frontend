@@ -1,13 +1,51 @@
-
 <ion-header>
-
   <ion-navbar>
-    <ion-title>Task: </ion-title>
+    <ion-title>Aufgabe</ion-title>
   </ion-navbar>
-
+  <ion-toolbar>
+    <ion-title>{{task?.name || "Aufgabe bewerten"}}</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <div class="toolbar-buttons">
+      <button ion-button (click)="cancel()" color="light" block> Abbrechen </button>
+      <button ion-button (click)="submitEvaluation()" color="secondary" block> Abgeben </button>
+    </div>
+  </ion-toolbar>
 </ion-header>
 
+<ion-content>
+  <form name="evalForm" onsubmit="event.preventDefault" novalidate>
+    <ion-card>
+      <ion-card-header>
+        Details
+      </ion-card-header>
+      <ion-card-content>
+        <p style="font-weight: bold;">{{ task.name }}</p>
+        <p>
+          {{task.description}}
+        </p>
+        <p>Zeit:</p>
+        <div> Von: {{ task.startTime | date: 'dd.MM.yyyy H:mm' }}</div>
+        <div *ngIf="task.endTime"> Bis: {{ task.endTime | date: 'dd.MM.yyyy H:mm' }}</div>
+      </ion-card-content>
+    </ion-card>
 
-<ion-content padding>
-
+    <ion-card>
+      <ion-card-header>Bewertung</ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label stacked>Mitarbeiter<span float-right>{{othersVal}}</span></ion-label>
+            <ion-range min="1" max="5" [(ngModel)]="othersVal">
+            </ion-range>
+          </ion-item>
+          <ion-item>
+            <ion-label stacked>Aufgabe<span float-right>{{teamVal}}</span></ion-label>
+            <ion-range min="1" max="5" [(ngModel)]="teamVal">
+            </ion-range>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </form>
 </ion-content>

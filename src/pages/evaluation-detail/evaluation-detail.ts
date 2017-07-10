@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import { TaskDataService } from '../../services/task_service';
-import _ from "lodash"
 
 @IonicPage({
   name: "evaluation-detail",
@@ -14,11 +13,51 @@ import _ from "lodash"
 })
 export class EvaluationDetailPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public taskDataService: TaskDataService) {
+  task: any;
+  taskId: number;
+  evalId: number;
+  othersVal: number = 0;
+  taskVal: number = 0;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastController,
+              public taskDataService: TaskDataService) {
+    this.taskId = navParams.data.taskId;
+    this.evalId = navParams.data.evalId;
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad EvaluationDetailPage');
+  ionViewDidEnter(){
+    this.doRefresh();
   }
 
+  async doRefresh(refresher = null) {
+    let task = await this.taskDataService.getTaskById(this.taskId)
+      .catch(e => {
+        console.warn("Task could not be retrieved", e)
+      });
+    if (task) {
+      this.task = task.object;
+    }
+  }
+
+  normalizeValueScale(val) {
+    return (val - 3) / 2;
+  }
+
+  submitEval() {
+    let vals = {
+      likeValOthers: this.normalizeValueScale(this.othersVal),
+      likeValTask: this.normalizeValueScale(this.taskVal)
+    };
+
+    this.taskDataService.evaluateTask(this.evalId, vals)
+      .then((res) => {
+        this.navCtrl.push('my-tasks');
+      }, (error) => {
+        this.toast.create({
+          message: "Bewertung konnte nicht abgegeben werden: " + error.message,
+          position: 'top',
+          duration: 3000
+        });
+      })
+  }
 }

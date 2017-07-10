@@ -28,7 +28,7 @@ export class MessagesPage {
 
   evaluate(notification) {
     this.taskDataService.createEvaluationForUser(notification.taskId).then((res) => {
-      this.navCtrl.push('evolution-detail', {id: res.object.id});
+      this.navCtrl.push('evaluation-detail', {taskId: res.object.taskId, evalId: res.object.id});
     }, (error) => {
       this.toast.create({
         message: "Bewertung konnte nicht erstellt werden: " + error.message,
