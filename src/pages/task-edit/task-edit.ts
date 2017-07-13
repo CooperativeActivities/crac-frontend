@@ -455,6 +455,8 @@ export class TaskEditPage {
       this.getCompetenceAreas().then(()=> {
         this.addNewCompetence = !this.addNewCompetence;
       });
+    } else {
+      this.addNewCompetence = true;
     }
   }
 
@@ -524,6 +526,12 @@ export class TaskEditPage {
 
     this.competences.toAdd.push(newComp);
     this.competences.all.push(newComp);
+
+    this.competences.newObj = {
+      neededProficiencyLevel: 50
+    };
+    this.competenceArea = null;
+    this.addNewCompetence = false;
   };
 
   updateCompetence(competence){
@@ -583,6 +591,9 @@ export class TaskEditPage {
     newShift.endTime = endTime
     this.shifts.all.push(newShift);
     this.shifts.toAdd.push(newShift);
+
+    this.shifts.newObj = {};
+    this.addNewShift = false;
   };
 
   removeShift(shift) {
@@ -631,7 +642,9 @@ export class TaskEditPage {
     newMaterial.quantity = newMaterial.quantity || 1;
     this.materials.all.push(newMaterial);
     this.materials.toAdd.push(newMaterial);
+
     this.materials.newObj = {};
+    this.addNewMaterial = false;
   };
 
   updateMaterial(material){
@@ -675,8 +688,6 @@ export class TaskEditPage {
 
         this.competences.all = _.orderBy(_.clone(this.task.taskCompetences), [ "name" ])
         this.materials.all = _.orderBy(_.clone(this.task.materials), [ "name" ])
-        this.shifts.newObj.startTime = this.task.startTime;
-        this.shifts.newObj.endTime = this.task.endTime;
         this.shifts.all = _.orderBy(_.clone(this.task.childTasks), [ "startTime" ])
 
         for(let shift of this.shifts.all) {
