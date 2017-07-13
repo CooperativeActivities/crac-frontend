@@ -330,17 +330,17 @@ export class TaskEditPage {
     if(competencesToAdd.length > 0 ) {
       promises.push(this.taskDataService.addCompetencesToTask(task.id, competencesToAdd));
     }
-    for(let i=0; i<competencesToUpdate.length; i++) {
-      promises.push(this.taskDataService.updateTaskCompetence(task.id, competencesToUpdate[i]));
+    for(let c of competencesToUpdate) {
+      promises.push(this.taskDataService.updateTaskCompetence(task.id, c));
     }
-    for(let i=0; i<this.competences.toRemove.length; i++) {
-      promises.push(this.taskDataService.removeCompetenceFromTask(task.id, this.competences.toRemove[i]));
+    for(let c of this.competences.toRemove) {
+      promises.push(this.taskDataService.removeCompetenceFromTask(task.id, c));
     }
-    for(let i=0; i<this.shifts.toAdd.length; i++) {
-      promises.push(this.taskDataService.createNewSubTask(shiftsToAdd[i], task.id));
+    for(let s of this.shifts.toAdd) {
+      promises.push(this.taskDataService.createNewSubTask(s, task.id));
     }
-    for(let i=0; i<this.shifts.toRemove.length; i++) {
-      promises.push(this.taskDataService.deleteTaskById(this.shifts.toRemove[i]));
+    for(let s of this.shifts.toRemove) {
+      promises.push(this.taskDataService.deleteTaskById(s));
     }
     if(materialsToAdd.length > 0 ) {
       promises.push(this.taskDataService.addMaterialsToTask(task.id, materialsToAdd));
@@ -348,8 +348,8 @@ export class TaskEditPage {
     for(let m of materialsToUpdate) {
       promises.push(this.taskDataService.updateMaterial(task.id, m));
     }
-    for(let i=0; i<this.materials.toRemove.length; i++) {
-      promises.push(this.taskDataService.removeMaterialFromTask(task.id, this.materials.toRemove[i]));
+    for(let m of this.materials.toRemove) {
+      promises.push(this.taskDataService.removeMaterialFromTask(task.id, m));
     }
 
     return Promise.all(promises);
@@ -678,9 +678,9 @@ export class TaskEditPage {
         this.shifts.newObj.endTime = this.task.endTime;
         this.shifts.all = _.orderBy(_.clone(this.task.childTasks), [ "startTime" ])
 
-        for(let i=0; i<this.shifts.all.length; i++) {
-          this.shifts.all[i].startTime = new Date(this.shifts.all[i].startTime);
-          this.shifts.all[i].endTime = new Date(this.shifts.all[i].endTime);
+        for(let shift of this.shifts.all) {
+          shift.startTime = new Date(shift.startTime);
+          shift.endTime = new Date(shift.endTime);
         }
       }, (error) => {
         this.toast.create({
