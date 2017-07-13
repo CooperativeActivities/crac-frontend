@@ -527,12 +527,16 @@ export class TaskEditPage {
     this.competences.toAdd.push(newComp);
     this.competences.all.push(newComp);
 
+    this.closeAddCompetence();
+  };
+
+  closeAddCompetence() {
     this.competences.newObj = {
       neededProficiencyLevel: 50
     };
     this.competenceArea = null;
     this.addNewCompetence = false;
-  };
+  }
 
   updateCompetence(competence){
     if(!competence) return;
@@ -592,9 +596,13 @@ export class TaskEditPage {
     this.shifts.all.push(newShift);
     this.shifts.toAdd.push(newShift);
 
+    this.closeAddShift();
+  };
+
+  closeAddShift() {
     this.shifts.newObj = {};
     this.addNewShift = false;
-  };
+  }
 
   removeShift(shift) {
     if (!shift) return;
@@ -643,9 +651,13 @@ export class TaskEditPage {
     this.materials.all.push(newMaterial);
     this.materials.toAdd.push(newMaterial);
 
+    this.closeAddMaterial();
+  };
+
+  closeAddMaterial() {
     this.materials.newObj = {};
     this.addNewMaterial = false;
-  };
+  }
 
   updateMaterial(material){
     if(!this.validateMaterial(material)) {

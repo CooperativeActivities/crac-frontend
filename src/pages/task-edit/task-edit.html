@@ -205,12 +205,23 @@
                     <!--</span>-->
                     <!--</span>-->
 
-            <ion-item>
-              <label>*Pflichtfelder</label>
-              <button ion-button  (click)="addCompetence()" block>
-                <ion-icon name="add"></ion-icon> Hinzufügen
-              </button>
-            </ion-item>
+            <ion-grid>
+              <ion-row>
+                <label>*Pflichtfelder</label>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <button ion-button  (click)="closeAddCompetence()" color="light" block>
+                    <ion-icon name="close"></ion-icon> Abbrechen
+                  </button>
+                </ion-col>
+                <ion-col>
+                  <button ion-button  (click)="addCompetence()" block>
+                    <ion-icon name="add"></ion-icon> Hinzufügen
+                  </button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           </ion-list>
         </div>
       </collapsible-card>
@@ -252,13 +263,23 @@
                          [ngClass]="{'has-error' : !shifts.newObj.minAmountOfVolunteers}">
               </ion-input>
             </ion-item>
-            <ion-item>
-              <label>*Pflichtfelder</label>
-
-              <button ion-button (click)="addShift()" block>
-                <ion-icon name="add"></ion-icon> Hinzufügen
-              </button>
-            </ion-item>
+            <ion-grid>
+              <ion-row>
+                <label>*Pflichtfelder</label>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <button ion-button  (click)="closeAddShift()" color="light" block>
+                    <ion-icon name="close"></ion-icon> Abbrechen
+                  </button>
+                </ion-col>
+                <ion-col>
+                  <button ion-button (click)="addShift()" block>
+                    <ion-icon name="add"></ion-icon> Hinzufügen
+                  </button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           </ion-list>
         </div>
       </collapsible-card>
@@ -343,12 +364,23 @@
               <ion-label stacked>Beschreibung</ion-label>
               <ion-textarea [(ngModel)]="materials.newObj.description" name="materialDescription"></ion-textarea>
             </ion-item>
-            <ion-item>
-              <label>*Pflichtfelder</label>
-              <button ion-button (click)="addMaterial()" block>
-                <ion-icon name="add"></ion-icon> Hinzufügen
-              </button>
-            </ion-item>
+            <ion-grid>
+              <ion-row>
+                <label>*Pflichtfelder</label>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <button ion-button  (click)="closeAddMaterial()" color="light" block>
+                    <ion-icon name="close"></ion-icon> Abbrechen
+                  </button>
+                </ion-col>
+                <ion-col>
+                  <button ion-button (click)="addMaterial()" block>
+                    <ion-icon name="add"></ion-icon> Hinzufügen
+                  </button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           </ion-list>
         </div>
       </collapsible-card>
