@@ -173,6 +173,7 @@ export class TaskEditPage {
 
   toTimestamp(datestring): Number {
     if(!datestring) return
+    if(!isNaN(datestring)) return datestring;
     let date = Date.parse(datestring)
     if(isNaN(date)) return
     return date
@@ -336,7 +337,7 @@ export class TaskEditPage {
     for(let c of this.competences.toRemove) {
       promises.push(this.taskDataService.removeCompetenceFromTask(task.id, c));
     }
-    for(let s of this.shifts.toAdd) {
+    for(let s of shiftsToAdd) {
       promises.push(this.taskDataService.createNewSubTask(s, task.id));
     }
     for(let s of this.shifts.toRemove) {
