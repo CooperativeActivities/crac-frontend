@@ -223,7 +223,6 @@
             <ion-item *ngFor="let shift of shifts.all">
               {{shift.startTime | date: "dd.MM.yyyy HH:mm"}} -
               {{shift.endTime | date: "dd.MM.yyyy HH:mm"}}
-              ({{shift.minAmountOfVolunteers}})
               <ion-icon name="trash" (click)="removeShift(shift)" float-right></ion-icon>
             </ion-item>
           </ion-list>
