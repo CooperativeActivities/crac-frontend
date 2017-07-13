@@ -34,6 +34,7 @@ export class TaskEditPage {
     newObj: {},
     toAdd: [],
     toRemove: [],
+    toUpdate: [],
     all: []
   };
   shifts:any = {
@@ -132,21 +133,6 @@ export class TaskEditPage {
     });
 
   }
-
-  resetObjects() {
-    this.materials.newObj = {};
-    this.materials.toAdd = [];
-    this.materials.toRemove = [];
-    this.shifts.newObj = {};
-    this.shifts.toAdd = [];
-    this.shifts.toRemove = [];
-    this.competences.newObj = {
-      neededProficiencyLevel: 50
-    };
-    this.competences.toAdd = [];
-    this.competences.toRemove = [];
-    this.competences.toUpdate = [];
-  };
 
   updateFlags(){
     let task = this.task;
@@ -316,7 +302,6 @@ export class TaskEditPage {
       }
     });
     let shiftsToAdd = (this.shifts.toAdd).map(shift => {
-
       return {
         taskType: 'SHIFT',
         name: task.name,
@@ -328,6 +313,14 @@ export class TaskEditPage {
     });
     let materialsToAdd = (this.materials.toAdd).map((material) => {
       return {
+        name: material.name,
+        description: material.description || "",
+        quantity: material.quantity || 0
+      }
+    });
+    let materialsToUpdate = this.materials.toUpdate.map((material) => {
+      return {
+        id: material.id,
         name: material.name,
         description: material.description || "",
         quantity: material.quantity || 0
@@ -351,6 +344,9 @@ export class TaskEditPage {
     }
     if(materialsToAdd.length > 0 ) {
       promises.push(this.taskDataService.addMaterialsToTask(task.id, materialsToAdd));
+    }
+    for(let m of materialsToUpdate) {
+      promises.push(this.taskDataService.updateMaterial(task.id, m));
     }
     for(let i=0; i<this.materials.toRemove.length; i++) {
       promises.push(this.taskDataService.removeMaterialFromTask(task.id, this.materials.toRemove[i]));
@@ -600,25 +596,33 @@ export class TaskEditPage {
     }
   }
 
-  addMaterial(){
-    if(!this.materials.newObj.name || !this.materials.newObj.quantity) {
+  validateMaterial(material) {
+    if (!material.name || !material.quantity) {
       let message = "Bitte geben Sie ";
-      if(!this.materials.newObj.name) {
+      if (!material.name) {
         message += "den Namen ";
       }
-      if(!this.materials.newObj.quantity){
-        if(!this.materials.newObj.name) {
+      if (!material.quantity) {
+        if (!material.name) {
           message += "und ";
         }
         message += "die Menge";
       }
       message += " an!";
       this.toast.create({
-        message: "Material konnte nicht hinzugefügt werden: " + message,
+        message: message,
         position: 'top',
         duration: 3000
       }).present();
-      return;
+      return false;
+    }
+
+    return true;
+  }
+
+  addMaterial(){
+    if(!this.validateMaterial(this.materials.newObj)) {
+      return false;
     }
 
     //save later
@@ -627,6 +631,17 @@ export class TaskEditPage {
     this.materials.all.push(newMaterial);
     this.materials.toAdd.push(newMaterial);
     this.materials.newObj = {};
+  };
+
+  updateMaterial(material){
+    if(!this.validateMaterial(material)) {
+      return false;
+    }
+
+    material.edit = false;
+
+    //save later
+    this.materials.toUpdate.push(material);
   };
 
   removeMaterial(material){
