@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { TaskDataService } from '../../services/task_service';
-import _ from "lodash"
-
 
 @IonicPage({
   name: "my-history",
@@ -26,10 +24,14 @@ export class MyHistoryPage {
     this.doRefresh();
   }
 
+  goToEvaluation(evaluation) {
+    this.navCtrl.push('evaluation-detail', {taskId: evaluation.task, evalId: evaluation.id});
+  }
+
   async doRefresh (refresher=null) {
     await Promise.all([
       this.taskDataService.getTasksToEvaluate().then((res) => {
-        this.openTasks = _.orderBy(res.meta.participating, [ "startTime" ], [ "asc" ])
+        this.openTasks = res.object;
       }, (error) => {
         console.warn("Open evaluations could not be retrieved: ", error);
       }),

@@ -29,23 +29,23 @@
               <div class="item-inner">
                 <div class="input-wrapper">
                   <div class="label label-md">
-                    <div>{{ task.name }}</div>
+                    <div>{{ eval.task }}</div>
                   </div>
                 </div>
               </div>
               <div class="button-effect"></div>
             </div>
-            <ion-item class="desc">
+            <!--<ion-item class="desc">
               <span *ngIf="isSingleTime">
-                {{task.startTime | date: 'dd.MM.yyyy -- H:mm'}}
+                {{task?.startTime | date: 'dd.MM.yyyy -- H:mm'}}
               </span>
                   <span *ngIf="!isSingleTime && isSingleDate">
-                {{task.startTime | date: 'dd.MM.yyyy -- H:mm'}} - {{task.endTime | date: 'H:mm'}}
+                {{task?.startTime | date: 'dd.MM.yyyy -- H:mm'}} - {{task.endTime | date: 'H:mm'}}
               </span>
                   <span *ngIf="!isSingleDate">
-                {{task.startTime | date: 'dd.MM.yyyy'}} - {{task.endTime | date: 'dd.MM.yyyy'}}
+                {{task?.startTime | date: 'dd.MM.yyyy'}} - {{task.endTime | date: 'dd.MM.yyyy'}}
               </span>
-            </ion-item>
+            </ion-item>-->
           </ion-list>
         </ion-item>
       </ion-list>
