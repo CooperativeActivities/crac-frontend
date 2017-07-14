@@ -39,6 +39,10 @@ export class EvaluationDetailPage {
     }
   }
 
+  cancel(){
+    this.navCtrl.pop()
+  }
+
   normalizeValueScale(val) {
     let retVal = 0;
     if(val === 4) {
