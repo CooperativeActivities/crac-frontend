@@ -27,15 +27,7 @@ export class MessagesPage {
   }
 
   evaluate(notification) {
-    this.taskDataService.createEvaluationForUser(notification.taskId).then((res) => {
-      this.navCtrl.push('evaluation-detail', {taskId: res.object.taskId, evalId: res.object.id});
-    }, (error) => {
-      this.toast.create({
-        message: "Bewertung konnte nicht erstellt werden: " + error.message,
-        position: 'top',
-        duration: 5000
-      });
-    });
+    this.navCtrl.push('evaluation-detail', {taskId: notification.taskId, evalId: notification.targetId});
   }
 
   accept(notification){
