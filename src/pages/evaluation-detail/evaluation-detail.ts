@@ -40,7 +40,13 @@ export class EvaluationDetailPage {
   }
 
   normalizeValueScale(val) {
-    return (val - 3) / 2;
+    let retVal = 0;
+    if(val === 4) {
+      retVal = 0.5;
+    } else if(val === 5) {
+      retVal = 1;
+    }
+    return retVal;
   }
 
   submitEval() {
