@@ -49,7 +49,7 @@ export class EvaluationDetailPage {
     return retVal;
   }
 
-  submitEval() {
+  submitEvaluation() {
     let vals = {
       likeValOthers: this.normalizeValueScale(this.othersVal),
       likeValTask: this.normalizeValueScale(this.taskVal)

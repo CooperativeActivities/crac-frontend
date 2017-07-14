@@ -27,7 +27,7 @@ export class MessagesPage {
   }
 
   evaluate(notification) {
-    this.navCtrl.push('evaluation-detail', {taskId: notification.taskId, evalId: notification.targetId});
+    this.navCtrl.push('evaluation-detail', {taskId: notification.taskId, evalId: notification.evaluationId});
   }
 
   accept(notification){

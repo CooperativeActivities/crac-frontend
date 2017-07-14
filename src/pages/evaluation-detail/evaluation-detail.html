@@ -3,9 +3,6 @@
     <ion-title>Aufgabe</ion-title>
   </ion-navbar>
   <ion-toolbar>
-    <ion-title>{{task?.name || "Aufgabe bewerten"}}</ion-title>
-  </ion-toolbar>
-  <ion-toolbar>
     <div class="toolbar-buttons">
       <button ion-button (click)="cancel()" color="light" block> Abbrechen </button>
       <button ion-button (click)="submitEvaluation()" color="secondary" block> Abgeben </button>
@@ -20,13 +17,13 @@
         Details
       </ion-card-header>
       <ion-card-content>
-        <p style="font-weight: bold;">{{ task.name }}</p>
+        <p style="font-weight: bold;">{{ task?.name }}</p>
         <p>
-          {{task.description}}
+          {{task?.description}}
         </p>
         <p>Zeit:</p>
-        <div> Von: {{ task.startTime | date: 'dd.MM.yyyy H:mm' }}</div>
-        <div *ngIf="task.endTime"> Bis: {{ task.endTime | date: 'dd.MM.yyyy H:mm' }}</div>
+        <div> Von: {{ task?.startTime | date: 'dd.MM.yyyy H:mm' }}</div>
+        <div *ngIf="task?.endTime"> Bis: {{ task?.endTime | date: 'dd.MM.yyyy H:mm' }}</div>
       </ion-card-content>
     </ion-card>
 
@@ -35,14 +32,14 @@
       <ion-card-content>
         <ion-list>
           <ion-item>
-            <ion-label stacked>Mitarbeiter<span float-right>{{othersVal}}</span></ion-label>
-            <rating [(ngModel)]="othersVal"></rating>
+            <label>Mitarbeiter</label>
+            <rating [(ngModel)]="othersVal" name="othersVal"></rating>
             <!--<ion-range min="1" max="5" [(ngModel)]="othersVal">
             </ion-range>-->
           </ion-item>
           <ion-item>
-            <ion-label stacked>Aufgabe<span float-right>{{teamVal}}</span></ion-label>
-            <rating [(ngModel)]="teamVal"></rating>
+            <label>Aufgabe</label>
+            <rating [(ngModel)]="teamVal" name="teamVal"></rating>
             <!--<ion-range min="1" max="5" [(ngModel)]="teamVal">
             </ion-range>-->
           </ion-item>
