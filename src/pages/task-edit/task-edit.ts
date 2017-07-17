@@ -692,11 +692,11 @@ export class TaskEditPage {
         this.updateFlags();
 
         this.hasStartTime = true;
-        this.task.startTime = this.getDateString(new Date(this.task.startTime));
         if(this.task.startTime != this.task.endTime ){
           this.task.endTime = this.getDateString(new Date(this.task.endTime));
           this.hasEndTime = true;
         }
+        this.task.startTime = this.getDateString(new Date(this.task.startTime));
 
         this.competences.all = _.orderBy(_.clone(this.task.taskCompetences), [ "name" ])
         this.materials.all = _.orderBy(_.clone(this.task.materials), [ "name" ])
