@@ -344,31 +344,28 @@ export class TaskDetailPage {
 
   //remove self from shift
   removeFromShift(shift) {
-    let that = this;
-    this.taskDataService.removeOpenTask(shift.id).then(function (res) {
+    this.taskDataService.removeOpenTask(shift.id).then((res) => {
       console.log('Not participating in shift ' + shift.id);
       shift.assigned = false;
       shift.signedUsers--;
-      let shiftIdx = _.findIndex(shift.userRelationships, {id: that.user.id});
+      let shiftIdx = _.findIndex(shift.userRelationships, {id: this.user.id});
       if (shiftIdx > -1) {
         shift.userRelationships.splice(shiftIdx, 1);
       }
 
-      let alreadyInShift = _.find(that.task.childTasks, function (task) {
-        return shift.id !== task.id && task.assigned;
+      let alreadyInShift = _.find(this.task.childTasks, function (task) {
+        return (shift.id !== task.id) && task.assigned;
       });
-      if (!alreadyInShift && that.participationType != 'PARTICIPATING') {
+      if (!alreadyInShift) {
         this.task.signedUsers--;
-        let userIdx = _.findIndex(that.task.userRelationships, {id: that.user.id});
+        let userIdx = _.findIndex(this.task.userRelationships, {id: this.user.id});
         if (userIdx > -1) {
-          that.task.userRelationships.splice(userIdx, 1);
+          this.task.userRelationships.splice(userIdx, 1);
         }
       }
-      that.task.signedUsers--;
-    }, function (error) {
-      that.presentToast("Die Zusage kann nicht nicht zurückgezogen werden: " + error.message, 'top', false, 5000);
-    });
-
+    }, (error) => {
+      this.presentToast("Die Zusage kann nicht nicht zurückgezogen werden: " + error.message, 'top', false, 5000);
+    })
   };
   subscribeToMaterial(material){
     //save material subscription for any quantity. If zero, call unsubscribe, otherwise continue.
