@@ -579,8 +579,8 @@ export class TaskEditPage {
       return;
     }
 
-    let startTime = this.toTimestamp(this.shifts.newObj.startTime)
-    let endTime = this.toTimestamp(this.shifts.newObj.endTime)
+    let startTime = this.toTimestamp(this.shifts.newObj.startTime);
+    let endTime = this.toTimestamp(this.shifts.newObj.endTime);
     if(!(startTime && endTime && startTime < endTime)){
       let message = 'Start- und Endzeit müssen gültig sein!';
       this.toast.create({
@@ -703,8 +703,8 @@ export class TaskEditPage {
         this.shifts.all = _.orderBy(_.clone(this.task.childTasks), [ "startTime" ])
 
         for(let shift of this.shifts.all) {
-          shift.startTime = new Date(shift.startTime);
-          shift.endTime = new Date(shift.endTime);
+          shift.startTime = this.getDateString(new Date(shift.startTime));
+          shift.endTime = this.getDateString(new Date(shift.endTime));
         }
       }, (error) => {
         this.toast.create({
