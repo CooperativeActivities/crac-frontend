@@ -12,11 +12,11 @@
 
 <ion-content>
   <form name="evalForm" onsubmit="event.preventDefault" novalidate>
-    <ion-card>
-      <ion-card-header>
+    <collapsible-card>
+      <div card-header>
         Details
-      </ion-card-header>
-      <ion-card-content>
+      </div>
+      <div card-content>
         <p style="font-weight: bold;">{{ task?.name }}</p>
         <p>
           {{task?.description}}
@@ -24,14 +24,34 @@
         <p>Zeit:</p>
         <div> Von: {{ task?.startTime | date: 'dd.MM.yyyy H:mm' }}</div>
         <div *ngIf="task?.endTime"> Bis: {{ task?.endTime | date: 'dd.MM.yyyy H:mm' }}</div>
-      </ion-card-content>
-    </ion-card>
+      </div>
+    </collapsible-card>
+
+    <collapsible-card *ngIf="task?.signedUsers > 1">
+      <div card-header>
+        Mitarbeiter
+      </div>
+      <div card-content>
+        <ion-item *ngFor="let user of task?.userRelationships">
+          <ng-template *ngIf="user.participationType === 'PARTICIPATING' && !user.self">
+            <ion-avatar item-left>
+              <img src="../../assets/img/avatar-placeholder1.png">
+            </ion-avatar>
+            <h2>
+              {{user.name}}
+            </h2>
+          </ng-template>
+        </ion-item>
+
+      </div>
+    </collapsible-card>
+
 
     <ion-card>
       <ion-card-header>Bewertung</ion-card-header>
       <ion-card-content>
         <ion-list>
-          <ion-item>
+          <ion-item *ngIf="task?.signedUsers > 1">
             <button ion-button icon-start clear default no-padding (click)="changeOthersVal()">
               <ion-icon *ngIf="othersVal === 0" name="heart-outline" padding-right></ion-icon>
               <ion-icon *ngIf="othersVal === 1" name="heart" padding-right></ion-icon>
