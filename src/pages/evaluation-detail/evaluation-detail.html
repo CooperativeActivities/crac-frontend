@@ -12,7 +12,7 @@
 
 <ion-content>
   <form name="evalForm" onsubmit="event.preventDefault" novalidate>
-    <collapsible-card>
+    <collapsible-card shown="true">
       <div card-header>
         Details
       </div>
@@ -51,16 +51,6 @@
       <ion-card-header>Bewertung</ion-card-header>
       <ion-card-content>
         <ion-list>
-          <ion-item *ngIf="task?.signedUsers > 1">
-            <button ion-button icon-start clear default no-padding (click)="changeOthersVal()">
-              <ion-icon *ngIf="othersVal === 0" name="heart-outline" padding-right></ion-icon>
-              <ion-icon *ngIf="othersVal === 1" name="heart" padding-right></ion-icon>
-              Mitarbeiter
-            </button>
-            <!--<rating [(ngModel)]="othersVal" name="othersVal"></rating>-->
-            <!--<ion-range min="1" max="5" [(ngModel)]="othersVal">
-            </ion-range>-->
-          </ion-item>
           <ion-item>
             <button ion-button icon-start clear default no-padding (click)="changeTaskVal()">
               <ion-icon *ngIf="taskVal === 0" name="heart-outline" padding-right></ion-icon>
@@ -69,6 +59,16 @@
             </button>
             <!--<rating [(ngModel)]="teamVal" name="teamVal"></rating>-->
             <!--<ion-range min="1" max="5" [(ngModel)]="teamVal">
+            </ion-range>-->
+          </ion-item>
+          <ion-item *ngIf="task?.signedUsers > 1">
+            <button ion-button icon-start clear default no-padding (click)="changeOthersVal()">
+              <ion-icon *ngIf="othersVal === 0" name="heart-outline" padding-right></ion-icon>
+              <ion-icon *ngIf="othersVal === 1" name="heart" padding-right></ion-icon>
+              Mitarbeiter
+            </button>
+            <!--<rating [(ngModel)]="othersVal" name="othersVal"></rating>-->
+            <!--<ion-range min="1" max="5" [(ngModel)]="othersVal">
             </ion-range>-->
           </ion-item>
         </ion-list>
