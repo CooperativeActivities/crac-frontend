@@ -32,14 +32,22 @@
       <ion-card-content>
         <ion-list>
           <ion-item>
-            <label>Mitarbeiter</label>
-            <rating [(ngModel)]="othersVal" name="othersVal"></rating>
+            <button ion-button icon-start clear default no-padding (click)="changeOthersVal()">
+              <ion-icon *ngIf="othersVal === 0" name="heart-outline" padding-right></ion-icon>
+              <ion-icon *ngIf="othersVal === 1" name="heart" padding-right></ion-icon>
+              Mitarbeiter
+            </button>
+            <!--<rating [(ngModel)]="othersVal" name="othersVal"></rating>-->
             <!--<ion-range min="1" max="5" [(ngModel)]="othersVal">
             </ion-range>-->
           </ion-item>
           <ion-item>
-            <label>Aufgabe</label>
-            <rating [(ngModel)]="teamVal" name="teamVal"></rating>
+            <button ion-button icon-start clear default no-padding (click)="changeTaskVal()">
+              <ion-icon *ngIf="taskVal === 0" name="heart-outline" padding-right></ion-icon>
+              <ion-icon *ngIf="taskVal === 1" name="heart" padding-right></ion-icon>
+              Aufgabe
+            </button>
+            <!--<rating [(ngModel)]="teamVal" name="teamVal"></rating>-->
             <!--<ion-range min="1" max="5" [(ngModel)]="teamVal">
             </ion-range>-->
           </ion-item>

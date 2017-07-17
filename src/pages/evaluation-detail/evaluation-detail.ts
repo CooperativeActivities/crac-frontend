@@ -43,14 +43,31 @@ export class EvaluationDetailPage {
     this.navCtrl.pop()
   }
 
+  toggleBinary(val) {
+    if(val === 0) {
+      val = 1;
+    } else if(val === 1) {
+      val = 0;
+    }
+    return val;
+  }
+
+  changeOthersVal() {
+    this.othersVal = this.toggleBinary(this.othersVal);
+  }
+  changeTaskVal() {
+    this.taskVal = this.toggleBinary(this.taskVal);
+  }
+
   normalizeValueScale(val) {
-    let retVal = 0;
+    /*let retVal = 0;
     if(val === 4) {
       retVal = 0.5;
     } else if(val === 5) {
       retVal = 1;
     }
-    return retVal;
+    return retVal;*/
+    return (val === 1) ? 0.5 : 0;
   }
 
   submitEvaluation() {
