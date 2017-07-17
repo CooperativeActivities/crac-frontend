@@ -275,20 +275,19 @@ export class TaskDetailPage {
 
   // Deleting all participating types
   cancel() {
-    let that = this;
     //failsafe, so you dont accidentally cancel leading a task
     if (this.participationType !== "LEADING") {
-      this.taskDataService.removeOpenTask(that.task.id).then(function (res) {
-        console.log("unfollowed/cancelled");
-        that.participationType = "NOT_PARTICIPATING";
-        that.task.signedUsers--;
-        let userIdx = _.findIndex(that.task.userRelationships, {id: that.user.id});
+      this.taskDataService.removeOpenTask(this.task.id).then((res) => {
+        console.log("cancelled");
+        this.task.signedUsers--;
+        this.participationType = "NOT_PARTICIPATING";
+        let userIdx = _.findIndex(this.task.userRelationships, {id: this.user.id});
         if (userIdx > -1) {
-          that.task.userRelationships.splice(userIdx, 1);
+          this.task.userRelationships.splice(userIdx, 1);
         }
-        that.updateFlags();
+        this.updateFlags();
       }, function (error) {
-        that.presentToast("Aufgabe kann nicht abgesagt werden: " + error.message, 'top', false, 5000);
+        this.presentToast("Aufgabe kann nicht abgesagt werden: " + error.message, 'top', false, 5000);
       });
     }
   };
@@ -303,6 +302,21 @@ export class TaskDetailPage {
       that.presentToast("Aufgabe kann nicht gefolgt werden: " + error.message, 'top', false, 5000);
     });
   };
+
+  //unfollow a task
+  unfollow() {
+    this.taskDataService.removeOpenTask(this.task.id).then((res) => {
+      console.log("unfollowed");
+      this.participationType = "NOT_PARTICIPATING";
+      let userIdx = _.findIndex(this.task.userRelationships, {id: this.user.id});
+      if (userIdx > -1) {
+        this.task.userRelationships.splice(userIdx, 1);
+      }
+      this.updateFlags();
+    }, function (error) {
+      this.presentToast("Aufgabe kann nicht abgesagt werden: " + error.message, 'top', false, 5000);
+    });
+  }
 
   //add self to a shift
   addToShift(shift) {
