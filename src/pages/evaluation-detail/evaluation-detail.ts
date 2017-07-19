@@ -52,28 +52,18 @@ export class EvaluationDetailPage {
     return val;
   }
 
-  changeOthersVal() {
-    this.othersVal = this.toggleBinary(this.othersVal);
-  }
-  changeTaskVal() {
-    this.taskVal = this.toggleBinary(this.taskVal);
+  getFiveStarValue(val) {
+    return (val - 3) / 2;
   }
 
-  normalizeValueScale(val) {
-    /*let retVal = 0;
-    if(val === 4) {
-      retVal = 0.5;
-    } else if(val === 5) {
-      retVal = 1;
-    }
-    return retVal;*/
+  getBinaryVal(val) {
     return (val === 1) ? 0.5 : 0;
   }
 
   submitEvaluation() {
     let vals = {
-      likeValOthers: this.normalizeValueScale(this.othersVal),
-      likeValTask: this.normalizeValueScale(this.taskVal)
+      likeValOthers: this.getBinaryVal(this.othersVal),
+      likeValTask: this.getFiveStarValue(this.taskVal)
     };
 
     this.taskDataService.evaluateTask(this.evalId, vals)

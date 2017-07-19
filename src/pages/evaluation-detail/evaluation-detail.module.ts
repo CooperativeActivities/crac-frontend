@@ -11,7 +11,7 @@ import {ComponentsModule} from "../../components/components.module";
   imports: [
     IonicPageModule.forChild(EvaluationDetailPage),
     ComponentsModule,
-    //Ionic2RatingModule
+    Ionic2RatingModule
   ],
   exports: [
     EvaluationDetailPage
