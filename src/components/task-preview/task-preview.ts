@@ -8,14 +8,15 @@ import { TaskDataService } from '../../services/task_service';
   providers: [ TaskDataService ],
 })
 export class TaskPreviewComponent implements OnInit {
-  @Input() task: any
-  @Input() action: any
-  @Input() showAllIcons: Boolean
-  @Input() headerClick: Function
-  showFollow : Boolean = false
-  showUnfollow : Boolean = false
-  isSingleDate : Boolean
-  isSingleTime : Boolean
+  @Input() task: any;
+  @Input() clickData: any;
+  @Input() action: any;
+  @Input() showAllIcons: Boolean;
+  @Input() headerClick: Function;
+  showFollow : Boolean = false;
+  showUnfollow : Boolean = false;
+  isSingleDate : Boolean;
+  isSingleTime : Boolean;
 
   constructor(public navCtrl: NavController, public taskDataService: TaskDataService) { }
 
@@ -67,18 +68,25 @@ export class TaskPreviewComponent implements OnInit {
 
   privateHeaderClick(event){
     if(this.headerClick){
-      let stopPropagation = this.headerClick()
-      if(stopPropagation) event.stopPropagation()
+      let stopPropagation = this.headerClick();
+      if(stopPropagation) event.stopPropagation();
     }
   }
 
-  loadSingleTask (task) {
-    if(task.taskType === "SHIFT"){
-      this.navCtrl.push('task-detail', { id: task.superTask })
+  clickItem() {
+    if(this.clickData !== undefined) {
+      this.navCtrl.push(this.clickData.loc, this.clickData.params);
     } else {
-      this.navCtrl.push('task-detail', { id: task.id })
+      this.navCtrl.push( 'task-detail', this.getTaskRedirectParams());
     }
   }
 
+  getTaskRedirectParams() {
+    if(this.task.taskType === "SHIFT") {
+      return {id: this.task.superTask};
+    }
+
+    return { id: this.task.id }
+  }
 }
 

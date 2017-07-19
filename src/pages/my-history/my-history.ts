@@ -24,10 +24,6 @@ export class MyHistoryPage {
     this.doRefresh();
   }
 
-  goToEvaluation(evaluation) {
-    this.navCtrl.push('evaluation-detail', {taskId: evaluation.task, evalId: evaluation.id});
-  }
-
   async doRefresh (refresher=null) {
     await Promise.all([
       this.taskDataService.getTasksToEvaluate().then((res) => {

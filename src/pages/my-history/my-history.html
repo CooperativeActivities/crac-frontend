@@ -11,43 +11,15 @@
     </ion-item>
   </ion-card>
 
-  <ion-card *ngIf="openTasks?.length > 0">
+  <ion-card task-list *ngIf="openTasks?.length > 0">
     <ion-card-header>
       Offene Evaluierungen
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <ion-item *ngFor="let eval of openTasks" class="task-preview-wrapper"
-                  (click)="goToEvaluation(eval)">
-          <ion-list>
-            <!-- NOTE:
-            this is an ion-item component unwrapped into what ionic renders that into,
-            just to make use of ionic's css.
-            this was legal in ionic1, i hope it's alright in ionic2 as well?
-            -->
-            <div class="title item item-block item-md">
-              <div class="item-inner">
-                <div class="input-wrapper">
-                  <div class="label label-md">
-                    <div>{{ eval.task }}</div>
-                  </div>
-                </div>
-              </div>
-              <div class="button-effect"></div>
-            </div>
-            <!--<ion-item class="desc">
-              <span *ngIf="isSingleTime">
-                {{task?.startTime | date: 'dd.MM.yyyy -- H:mm'}}
-              </span>
-                  <span *ngIf="!isSingleTime && isSingleDate">
-                {{task?.startTime | date: 'dd.MM.yyyy -- H:mm'}} - {{task.endTime | date: 'H:mm'}}
-              </span>
-                  <span *ngIf="!isSingleDate">
-                {{task?.startTime | date: 'dd.MM.yyyy'}} - {{task.endTime | date: 'dd.MM.yyyy'}}
-              </span>
-            </ion-item>-->
-          </ion-list>
-        </ion-item>
+        <task-preview item-block *ngFor="let eval of openTasks" [task]="eval.task"
+                      [clickData]="{loc:'evaluation-detail',params:{taskId: eval.task.id, evalId: eval.evaluation.id}}">
+        </task-preview>
       </ion-list>
     </ion-card-content>
   </ion-card>
@@ -56,22 +28,22 @@
     <ion-card-header>
       Teilgenommene Aufgaben
     </ion-card-header>
-    <ion-card>
+    <ion-card-content>
       <ion-list>
         <task-preview item-block *ngFor="let pTask of participatedTasks" [task]="pTask"></task-preview>
       </ion-list>
-    </ion-card>
+    </ion-card-content>
   </ion-card>
 
   <ion-card task-list *ngIf="ledTasks?.length > 0">
     <ion-card-header>
       Von mir angeführte Aufgaben
     </ion-card-header>
-    <ion-card>
+    <ion-card-content>
       <ion-list>
         <task-preview item-block *ngFor="let lTask of ledTasks" [task]="lTask"></task-preview>
       </ion-list>
-    </ion-card>
+    </ion-card-content>
   </ion-card>
 
 </ion-content>
