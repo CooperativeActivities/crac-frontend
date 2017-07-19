@@ -43,6 +43,10 @@ export class EvaluationDetailPage {
     this.navCtrl.pop()
   }
 
+  changeOthersVal() {
+    this.othersVal = this.toggleBinary(this.othersVal);
+  }
+
   toggleBinary(val) {
     if(val === 0) {
       val = 1;
