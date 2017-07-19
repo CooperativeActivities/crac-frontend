@@ -1,3 +1,19 @@
 page-evaluation-detail {
+  ion-label {
+    rating {
+      color: color($colors, primary);
 
+      ul.rating[_ngcontent-c0] {
+        margin-bottom: 0;
+        padding-left: 0;
+
+        li[_ngcontent-c0] {
+          padding-left: 0;
+        }
+      }
+    }
+    .button {
+      margin-bottom: 0;
+    }
+  }
 }

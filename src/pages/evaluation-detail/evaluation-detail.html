@@ -32,17 +32,18 @@
         Mitarbeiter
       </div>
       <div card-content>
-        <ion-item *ngFor="let user of task?.userRelationships">
-          <ng-template *ngIf="user.participationType === 'PARTICIPATING' && !user.self">
-            <ion-avatar item-left>
-              <img src="../../assets/img/avatar-placeholder1.png">
-            </ion-avatar>
-            <h2>
-              {{user.name}}
-            </h2>
-          </ng-template>
-        </ion-item>
-
+        <ion-list>
+          <ng-container *ngFor="let participant of task?.userRelationships">
+            <ion-item *ngIf="participant.participationType === 'PARTICIPATING' && !participant.self">
+              <ion-avatar item-left>
+                <img src="../../assets/img/avatar-placeholder1.png">
+              </ion-avatar>
+              <h2>
+                {{participant.name}}
+              </h2>
+            </ion-item>
+          </ng-container>
+        </ion-list>
       </div>
     </collapsible-card>
 
@@ -56,10 +57,12 @@
             <rating [(ngModel)]="taskVal" name="taskVal"></rating>
           </ion-item>
           <ion-item *ngIf="task?.signedUsers > 1">
+            <label>Zufriedenheit mit Partner</label>
+            <br>
             <button ion-button icon-start clear default no-padding (click)="changeOthersVal()">
-              <ion-icon *ngIf="othersVal === 0" name="heart-outline" padding-right></ion-icon>
-              <ion-icon *ngIf="othersVal === 1" name="heart" padding-right></ion-icon>
-              Mitarbeiter
+              <ion-icon *ngIf="othersVal === 0" name="ios-thumbs-up-outline" padding-right></ion-icon>
+              <ion-icon *ngIf="othersVal === 1" name="thumbs-up" padding-right></ion-icon>
+              Gefällt mir
             </button>
           </ion-item>
         </ion-list>
