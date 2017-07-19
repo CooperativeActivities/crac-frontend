@@ -17,7 +17,8 @@ export class LoginPage {
     public toastCtrl: ToastController,
     private auth_service: AuthService) {}
 
-  public async login(){
+  public async login(event){
+    event.preventDefault();
     let res, err;
     try {
       res = await this.auth_service.login(this.username, this.password)

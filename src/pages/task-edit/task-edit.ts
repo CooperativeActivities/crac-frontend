@@ -34,6 +34,7 @@ export class TaskEditPage {
     newObj: {},
     toAdd: [],
     toRemove: [],
+    toUpdate: [],
     all: []
   };
   shifts:any = {
@@ -133,21 +134,6 @@ export class TaskEditPage {
 
   }
 
-  resetObjects() {
-    this.materials.newObj = {};
-    this.materials.toAdd = [];
-    this.materials.toRemove = [];
-    this.shifts.newObj = {};
-    this.shifts.toAdd = [];
-    this.shifts.toRemove = [];
-    this.competences.newObj = {
-      neededProficiencyLevel: 50
-    };
-    this.competences.toAdd = [];
-    this.competences.toRemove = [];
-    this.competences.toUpdate = [];
-  };
-
   updateFlags(){
     let task = this.task;
 
@@ -187,6 +173,7 @@ export class TaskEditPage {
 
   toTimestamp(datestring): Number {
     if(!datestring) return
+    if(!isNaN(datestring)) return datestring;
     let date = Date.parse(datestring)
     if(isNaN(date)) return
     return date
@@ -316,7 +303,6 @@ export class TaskEditPage {
       }
     });
     let shiftsToAdd = (this.shifts.toAdd).map(shift => {
-
       return {
         taskType: 'SHIFT',
         name: task.name,
@@ -333,27 +319,38 @@ export class TaskEditPage {
         quantity: material.quantity || 0
       }
     });
+    let materialsToUpdate = this.materials.toUpdate.map((material) => {
+      return {
+        id: material.id,
+        name: material.name,
+        description: material.description || "",
+        quantity: material.quantity || 0
+      }
+    });
 
     if(competencesToAdd.length > 0 ) {
       promises.push(this.taskDataService.addCompetencesToTask(task.id, competencesToAdd));
     }
-    for(let i=0; i<competencesToUpdate.length; i++) {
-      promises.push(this.taskDataService.updateTaskCompetence(task.id, competencesToUpdate[i]));
+    for(let c of competencesToUpdate) {
+      promises.push(this.taskDataService.updateTaskCompetence(task.id, c));
     }
-    for(let i=0; i<this.competences.toRemove.length; i++) {
-      promises.push(this.taskDataService.removeCompetenceFromTask(task.id, this.competences.toRemove[i]));
+    for(let c of this.competences.toRemove) {
+      promises.push(this.taskDataService.removeCompetenceFromTask(task.id, c));
     }
-    for(let i=0; i<this.shifts.toAdd.length; i++) {
-      promises.push(this.taskDataService.createNewSubTask(shiftsToAdd[i], task.id));
+    for(let s of shiftsToAdd) {
+      promises.push(this.taskDataService.createNewSubTask(s, task.id));
     }
-    for(let i=0; i<this.shifts.toRemove.length; i++) {
-      promises.push(this.taskDataService.deleteTaskById(this.shifts.toRemove[i]));
+    for(let s of this.shifts.toRemove) {
+      promises.push(this.taskDataService.deleteTaskById(s));
     }
     if(materialsToAdd.length > 0 ) {
       promises.push(this.taskDataService.addMaterialsToTask(task.id, materialsToAdd));
     }
-    for(let i=0; i<this.materials.toRemove.length; i++) {
-      promises.push(this.taskDataService.removeMaterialFromTask(task.id, this.materials.toRemove[i]));
+    for(let m of materialsToUpdate) {
+      promises.push(this.taskDataService.updateMaterial(task.id, m));
+    }
+    for(let m of this.materials.toRemove) {
+      promises.push(this.taskDataService.removeMaterialFromTask(task.id, m));
     }
 
     return Promise.all(promises);
@@ -458,6 +455,8 @@ export class TaskEditPage {
       this.getCompetenceAreas().then(()=> {
         this.addNewCompetence = !this.addNewCompetence;
       });
+    } else {
+      this.addNewCompetence = true;
     }
   }
 
@@ -527,7 +526,17 @@ export class TaskEditPage {
 
     this.competences.toAdd.push(newComp);
     this.competences.all.push(newComp);
+
+    this.closeAddCompetence();
   };
+
+  closeAddCompetence() {
+    this.competences.newObj = {
+      neededProficiencyLevel: 50
+    };
+    this.competenceArea = null;
+    this.addNewCompetence = false;
+  }
 
   updateCompetence(competence){
     if(!competence) return;
@@ -570,8 +579,8 @@ export class TaskEditPage {
       return;
     }
 
-    let startTime = this.toTimestamp(this.shifts.newObj.startTime)
-    let endTime = this.toTimestamp(this.shifts.newObj.endTime)
+    let startTime = this.toTimestamp(this.shifts.newObj.startTime);
+    let endTime = this.toTimestamp(this.shifts.newObj.endTime);
     if(!(startTime && endTime && startTime < endTime)){
       let message = 'Start- und Endzeit müssen gültig sein!';
       this.toast.create({
@@ -586,7 +595,14 @@ export class TaskEditPage {
     newShift.endTime = endTime
     this.shifts.all.push(newShift);
     this.shifts.toAdd.push(newShift);
+
+    this.closeAddShift();
   };
+
+  closeAddShift() {
+    this.shifts.newObj = {};
+    this.addNewShift = false;
+  }
 
   removeShift(shift) {
     if (!shift) return;
@@ -600,25 +616,33 @@ export class TaskEditPage {
     }
   }
 
-  addMaterial(){
-    if(!this.materials.newObj.name || !this.materials.newObj.quantity) {
+  validateMaterial(material) {
+    if (!material.name || !material.quantity) {
       let message = "Bitte geben Sie ";
-      if(!this.materials.newObj.name) {
+      if (!material.name) {
         message += "den Namen ";
       }
-      if(!this.materials.newObj.quantity){
-        if(!this.materials.newObj.name) {
+      if (!material.quantity) {
+        if (!material.name) {
           message += "und ";
         }
         message += "die Menge";
       }
       message += " an!";
       this.toast.create({
-        message: "Material konnte nicht hinzugefügt werden: " + message,
+        message: message,
         position: 'top',
         duration: 3000
       }).present();
-      return;
+      return false;
+    }
+
+    return true;
+  }
+
+  addMaterial(){
+    if(!this.validateMaterial(this.materials.newObj)) {
+      return false;
     }
 
     //save later
@@ -626,7 +650,24 @@ export class TaskEditPage {
     newMaterial.quantity = newMaterial.quantity || 1;
     this.materials.all.push(newMaterial);
     this.materials.toAdd.push(newMaterial);
+
+    this.closeAddMaterial();
+  };
+
+  closeAddMaterial() {
     this.materials.newObj = {};
+    this.addNewMaterial = false;
+  }
+
+  updateMaterial(material){
+    if(!this.validateMaterial(material)) {
+      return false;
+    }
+
+    material.edit = false;
+
+    //save later
+    this.materials.toUpdate.push(material);
   };
 
   removeMaterial(material){
@@ -651,21 +692,19 @@ export class TaskEditPage {
         this.updateFlags();
 
         this.hasStartTime = true;
-        this.task.startTime = this.getDateString(new Date(this.task.startTime));
         if(this.task.startTime != this.task.endTime ){
           this.task.endTime = this.getDateString(new Date(this.task.endTime));
           this.hasEndTime = true;
         }
+        this.task.startTime = this.getDateString(new Date(this.task.startTime));
 
         this.competences.all = _.orderBy(_.clone(this.task.taskCompetences), [ "name" ])
         this.materials.all = _.orderBy(_.clone(this.task.materials), [ "name" ])
-        this.shifts.newObj.startTime = this.task.startTime;
-        this.shifts.newObj.endTime = this.task.endTime;
         this.shifts.all = _.orderBy(_.clone(this.task.childTasks), [ "startTime" ])
 
-        for(let i=0; i<this.shifts.all.length; i++) {
-          this.shifts.all[i].startTime = new Date(this.shifts.all[i].startTime);
-          this.shifts.all[i].endTime = new Date(this.shifts.all[i].endTime);
+        for(let shift of this.shifts.all) {
+          shift.startTime = this.getDateString(new Date(shift.startTime));
+          shift.endTime = this.getDateString(new Date(shift.endTime));
         }
       }, (error) => {
         this.toast.create({

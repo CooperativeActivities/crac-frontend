@@ -128,6 +128,10 @@ export class TaskDataService {
   removeMaterialFromTask(taskId,materialId){
     return this.helpers.ajax("task/" + taskId + "/material/" + materialId + "/remove", "delete");
   };
+  //updates a specific material
+  updateMaterial(taskId, material) {
+    return this.helpers.ajax("task/" + taskId + "/material/" + material.id + "/update", "put", { payload: material });
+  }
   //Adds array of material objects
   addMaterialsToTask(taskId, materials){
     return this.helpers.ajax("task/" + taskId + "/material/multiple/add", "post", { payload: materials });
