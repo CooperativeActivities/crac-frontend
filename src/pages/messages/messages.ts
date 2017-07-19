@@ -26,6 +26,10 @@ export class MessagesPage {
     console.log('ionViewDidLoad MessagesPage');
   }
 
+  getVisibleNotifications(n) {
+    return n.name === 'Friend Request' || n.name === 'Evaluation';
+  }
+
   evaluate(notification) {
     this.navCtrl.push('evaluation-detail', {taskId: notification.taskId, evalId: notification.evaluationId});
   }
