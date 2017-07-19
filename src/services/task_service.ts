@@ -158,7 +158,7 @@ export class TaskDataService {
 
   //create a new evaluation for self
   createEvaluationForUser(taskId) {
-    return this.helpers.ajax("evalution/task/" + taskId + "/self", "post");
+    return this.helpers.ajax("evaluation/task/" + taskId + "/self", "post");
   }
 
   //create a new evaluation for all users in a task
