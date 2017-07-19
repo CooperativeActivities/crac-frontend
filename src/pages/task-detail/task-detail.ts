@@ -33,6 +33,7 @@ export class TaskDetailPage {
   editableFlag: boolean = false;
   addSubTaskFlag: boolean = false;
   userIsDone: boolean = false;
+  evaluation: any = null;
   showShiftsMaterialsEnroll: boolean = false;
   SUBTASKS_LIMITED_TO_SHALLOW: boolean = false;
   participationType: any;
@@ -92,6 +93,9 @@ export class TaskDetailPage {
       if (this.task.participationDetails && this.task.participationDetails.length > 0) {
         this.participationType = this.task.participationDetails[0].participationType;
         this.userIsDone = this.task.participationDetails[0].completed;
+        if(this.task.participationDetails[0].evaluation) {
+          this.evaluation = this.task.participationDetails[0].evaluation;
+        }
       } else {
         this.participationType = "NOT_PARTICIPATING";
         this.userIsDone = false;
@@ -181,7 +185,6 @@ export class TaskDetailPage {
     this.showFollow = false;
     this.showUnfollow = false;
     this.editableFlag = false;
-    this.userIsDone = false;
     this.showShiftsMaterialsEnroll = false;
     this.addSubTaskFlag = false;
 
@@ -191,7 +194,7 @@ export class TaskDetailPage {
           this.showTriggerEval = true;
         }
         if(relation === "PARTICIPATING") {
-          this.showEvaluate = true;
+          this.showEvaluate = this.evaluation === null || !this.evaluation.filled;
         }
         break;
       case "STARTED":
@@ -413,6 +416,11 @@ export class TaskDetailPage {
 
   //evaluations
   evaluate() {
+    if(this.evaluation !== null) {
+      this.navCtrl.push('evaluation-detail', {taskId: this.task.id, evalId: this.evaluation.id});
+      return;
+    }
+
     this.taskDataService.createEvaluationForUser(this.task.id).then((res) => {
       this.navCtrl.push('evaluation-detail', {taskId: this.task.id, evalId: res.object.id});
     }, (error) => {
