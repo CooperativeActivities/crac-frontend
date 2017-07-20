@@ -23,4 +23,8 @@ export class HomePage {
       console.log(err)
     })
   }
+
+  goToMyCompetences() {
+
+  }
 }

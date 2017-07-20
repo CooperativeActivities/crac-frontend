@@ -7,7 +7,28 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-card task-list>
+  <ion-card *ngIf="tasks?.length === 0">
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <p>Keine vorgeschlagene Aufgaben gefunden.</p>
+          <p>
+            <button ion-button block (click)="navCtrl.push('my-competences')">
+              Kompetenzen aktualisieren
+            </button>
+            <button ion-button block (click)="navCtrl.push('my-history')">
+              Meine Aufgabegeschichte
+            </button>
+            <button ion-button block (click)="navCtrl.push('task-list')">
+              Alle Aufgaben
+            </button>
+          </p>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card task-list *ngIf="tasks?.length > 0">
     <ion-card-header>
       Vorgeschlagene Aufgaben
     </ion-card-header>
