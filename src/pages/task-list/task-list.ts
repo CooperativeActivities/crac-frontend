@@ -30,7 +30,11 @@ export class TaskListPage {
         console.warn("Matching tasks could not be retrieved", error)
       }),
       this.taskDataService.getAllParentTasks().then((res) => {
-        this.parentTasks = _.orderBy(res.object, [ "startTime" ], [ "asc" ])
+        let ptasks = _.orderBy(res.object, [ "startTime" ], [ "asc" ]);
+        ptasks = ptasks.filter((task) => {
+          return task.taskState !== 'COMPLETED';
+        });
+        this.parentTasks = ptasks;
       }, (error) => {
         console.warn("All task list could not be retrieved", error)
       })

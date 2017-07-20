@@ -10,7 +10,23 @@
   <ion-refresher (ionRefresh)="doRefresh($event)">
   <ion-refresher-content> </ion-refresher-content>
   </ion-refresher>
-  <ion-card task-list>
+
+  <ion-card *ngIf="matchingTasks?.length === 0 && parentTasks?.length === 0">
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <p>Keine offene Aufgaben gefunden.</p>
+          <p>
+            <button ion-button block (click)="navCtrl.push('my-history')">
+              Vergangene Aufgaben anschauen
+            </button>
+          </p>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card task-list *ngIf="matchingTasks?.length > 0">
     <ion-card-header>
       Vorgeschlagene Aufgaben
     </ion-card-header>
@@ -21,9 +37,9 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card task-list>
+  <ion-card task-list *ngIf="parentTasks?.length > 0">
     <ion-card-header>
-      Alle Aufgaben/Projekte
+      Alle offene Aufgaben/Projekte
     </ion-card-header>
     <ion-card-content>
       <ion-list>
