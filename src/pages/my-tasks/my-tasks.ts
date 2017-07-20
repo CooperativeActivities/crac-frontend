@@ -30,12 +30,16 @@ export class MyTasksPage {
     this.navCtrl.push('task-edit');
   }
 
+  getOpenTasks(t) {
+    return t.taskState !== 'COMPLETED';
+  }
+
   async doRefresh (refresher=null) {
     await Promise.all([
       this.taskDataService.getMyTasks().then((res) => {
-        this.participatingTasks = _.orderBy(res.meta.participating, [ "startTime" ], [ "asc" ])
-        this.followingTasks = _.orderBy(res.meta.following, [ "startTime" ], [ "asc" ])
-        this.leadingTasks = _.orderBy(res.meta.leading, [ "startTime" ], [ "asc" ])
+        this.participatingTasks = _.orderBy(res.meta.participating, [ "startTime" ], [ "asc" ]).filter(this.getOpenTasks);
+        this.followingTasks = _.orderBy(res.meta.following, [ "startTime" ], [ "asc" ]).filter(this.getOpenTasks);
+        this.leadingTasks = _.orderBy(res.meta.leading, [ "startTime" ], [ "asc" ]).filter(this.getOpenTasks);
       }, (error) => {
         console.warn("Matching tasks could not be retrieved", error)
       }),

@@ -5,7 +5,7 @@
         <ion-icon name="md-add-circle"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>Meine Aufgaben</ion-title>
+    <ion-title>Meine offene Aufgaben</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -13,7 +13,27 @@
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content> </ion-refresher-content>
   </ion-refresher>
-  <ion-card task-list>
+
+  <ion-card *ngIf="participatingTasks?.length === 0 && followingTasks?.length === 0 && leadingTasks?.length === 0">
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <p>Keine offene Aufgaben gefunden.</p>
+          <p>
+            <button ion-button block icon-left (click)="makeNewTask()" *ngIf="userHasPermissions">
+              <ion-icon name="md-add-circle"></ion-icon>
+              Neue Aufgabe erstellen
+            </button>
+            <button ion-button block (click)="navCtrl.push('my-history')">
+              Vergangene Aufgaben anschauen
+            </button>
+          </p>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card task-list *ngIf="participatingTasks?.length > 0">
     <ion-card-header>
       Teilgenommene Aufgaben
     </ion-card-header>
@@ -23,7 +43,8 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
-  <ion-card task-list>
+
+  <ion-card task-list *ngIf="followingTasks?.length > 0">
     <ion-card-header>
        Beobachtete Aufgaben
     </ion-card-header>
@@ -33,7 +54,7 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
-  <ion-card task-list>
+  <ion-card task-list *ngIf="leadingTasks?.length > 0">
     <ion-card-header>
       Von mir angeführte Aufgaben
     </ion-card-header>
