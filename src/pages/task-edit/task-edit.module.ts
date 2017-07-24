@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { TaskEditPage } from './task-edit';
 import { ComponentsModule } from "../../components/components.module"
+import {InviteModalModule} from "../../components/invite-modal/invite-modal.module";
 
 @NgModule({
   declarations: [
@@ -9,7 +10,8 @@ import { ComponentsModule } from "../../components/components.module"
   ],
   imports: [
     IonicPageModule.forChild(TaskEditPage),
-    ComponentsModule
+    ComponentsModule,
+    InviteModalModule
   ],
   exports: [
     TaskEditPage

@@ -16,7 +16,8 @@ import { LogoutModal } from '../components/logoutModal/logoutModal';
 import { HelperService } from "../services/helpers";
 import { AuthService } from "../services/auth_service";
 import { ErrorDisplayService } from '../services/error_service';
-import {InviteModal} from "../components/invite-modal/invite-modal";
+import {InviteGroups} from "../components/invite-modal/invite-groups";
+import {InvitePeople} from "../components/invite-modal/invite-people";
 import {InviteModalModule} from "../components/invite-modal/invite-modal.module";
 
 
@@ -36,7 +37,8 @@ import {InviteModalModule} from "../components/invite-modal/invite-modal.module"
   entryComponents: [
     MyApp,
     LogoutModal,
-    InviteModal
+    InviteGroups,
+    InvitePeople
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},

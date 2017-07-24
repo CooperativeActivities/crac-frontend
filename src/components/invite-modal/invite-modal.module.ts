@@ -1,16 +1,19 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { InviteModal } from "./invite-modal";
+import {IonicModule} from "ionic-angular";
+import { InviteGroups } from "./invite-groups";
+import {InvitePeople} from "./invite-people";
 
 @NgModule({
   declarations: [
-    InviteModal
+    InviteGroups,
+    InvitePeople
   ],
   imports: [
-    IonicPageModule.forChild(InviteModal),
+    IonicModule
   ],
   exports: [
-    InviteModal
+    InviteGroups,
+    InvitePeople
   ]
 })
 export class InviteModalModule {}

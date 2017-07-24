@@ -4,7 +4,8 @@ import * as _ from 'lodash';
 
 import { TaskDataService } from '../../services/task_service';
 import { UserDataService } from "../../services/user_service";
-import {InviteModal} from "../../components/invite-modal/invite-modal";
+import {InviteGroups} from "../../components/invite-modal/invite-groups";
+import {InvitePeople} from "../../components/invite-modal/invite-people";
 
 @IonicPage({
   name: "task-edit",
@@ -455,7 +456,7 @@ export class TaskEditPage {
   };
 
   openGroupInviteForm() {
-    let inviteModal = this.modal.create(InviteModal, this.invitedGroups);
+    let inviteModal = this.modal.create(InviteGroups, this.invitedGroups);
     inviteModal.onDidDismiss(data => {
       if(data === {}) {alert('empty');}
       else {alert('invites!')}
@@ -463,8 +464,8 @@ export class TaskEditPage {
     inviteModal.present();
   }
 
-  openPersonInviteForm() {
-    let inviteModal = this.modal.create(InviteModal, this.invitedPeople);
+  openPeopleInviteForm() {
+    let inviteModal = this.modal.create(InvitePeople, this.invitedPeople);
     inviteModal.onDidDismiss(data => {
       if(data === {}) {alert('empty');}
       else {alert('invites!')}
