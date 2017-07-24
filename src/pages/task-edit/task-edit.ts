@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ToastController, AlertController, ModalController} from 'ionic-angular';
 import * as _ from 'lodash';
 
 import { TaskDataService } from '../../services/task_service';
 import { UserDataService } from "../../services/user_service";
+import {InviteModal} from "../../components/invite-modal/invite-modal";
 
 @IonicPage({
   name: "task-edit",
@@ -27,6 +28,8 @@ export class TaskEditPage {
   addNewShift: boolean = false;
   addNewMaterial: boolean = false;
   pageTitle: string;
+  invitedGroups: Array<any> = [];
+  invitedPeople: Array<any> = [];
   competenceArea: any;
   competenceAreaList: Array<any> = [];
   availableCompetences: Array<any> = [];
@@ -56,7 +59,8 @@ export class TaskEditPage {
   showPublish: boolean = false;
   showUnpublish: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastController, public alert: AlertController,
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              public toast: ToastController, public alert: AlertController, public modal: ModalController,
               public taskDataService: TaskDataService, public userDataService: UserDataService) {
     this.taskId = navParams.get("id");
     this.parentId = navParams.get("parentId");
@@ -449,6 +453,24 @@ export class TaskEditPage {
       }).present();
     });
   };
+
+  openGroupInviteForm() {
+    let inviteModal = this.modal.create(InviteModal, this.invitedGroups);
+    inviteModal.onDidDismiss(data => {
+      if(data === {}) {alert('empty');}
+      else {alert('invites!')}
+    });
+    inviteModal.present();
+  }
+
+  openPersonInviteForm() {
+    let inviteModal = this.modal.create(InviteModal, this.invitedPeople);
+    inviteModal.onDidDismiss(data => {
+      if(data === {}) {alert('empty');}
+      else {alert('invites!')}
+    });
+    inviteModal.present();
+  }
 
   openNewCompetenceForm(){
     if(this.competenceAreaList.length === 0) {

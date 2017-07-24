@@ -70,20 +70,20 @@
               <ion-item class="item item-input item-stacked-label" no-padding>
                 <label>Gruppen</label>
                 <p text-wrap *ngIf="false">Group 1, Group 2, Group 3, Group 4, Group 5</p>
-                <button ion-button item-right *ngIf="true">
+                <button ion-button item-right *ngIf="true" (click)="openGroupInviteForm()">
                   Einladen
                 </button>
-                <button ion-button item-right *ngIf="false">
+                <button ion-button item-right *ngIf="false" (click)="openGroupInviteForm()">
                   Bearbeiten
                 </button>
               </ion-item>
               <ion-item class="item item-input item-stacked-label" no-padding>
                 <label>Personen</label>
                 <p text-wrap *ngIf="false">Person 1, Person 2</p>
-                <button ion-button item-right *ngIf="true">
+                <button ion-button item-right *ngIf="true" (click)="openPersonInviteForm()">
                   Einladen
                 </button>
-                <button ion-button item-right *ngIf="false">
+                <button ion-button item-right *ngIf="false" (click)="openPersonInviteForm()">
                   Bearbeiten
                 </button>
               </ion-item>
