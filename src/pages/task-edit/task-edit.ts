@@ -30,6 +30,7 @@ export class TaskEditPage {
   addNewMaterial: boolean = false;
   pageTitle: string;
   invitedGroups: Array<any> = [];
+  restrictiveToGroups: boolean = false;
   invitedPeople: Array<any> = [];
   competenceArea: any;
   competenceAreaList: Array<any> = [];
@@ -357,6 +358,9 @@ export class TaskEditPage {
     for(let m of this.materials.toRemove) {
       promises.push(this.taskDataService.removeMaterialFromTask(task.id, m));
     }
+    for(let g of this.invitedGroups) {
+      promises.push(this.taskDataService.inviteGroupToTask(task.id, g.id));
+    }
 
     return Promise.all(promises);
   }
@@ -463,6 +467,8 @@ export class TaskEditPage {
       }
       else {
         console.log(data);
+        this.invitedGroups = data.invites;
+        this.restrictiveToGroups = data.restrictive;
       }
     });
     inviteModal.present();

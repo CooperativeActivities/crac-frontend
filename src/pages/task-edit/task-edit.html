@@ -69,7 +69,11 @@
             <div card-content>
               <ion-item class="item item-input item-stacked-label" no-padding>
                 <label>Gruppen</label>
-                <p text-wrap *ngIf="false">Group 1, Group 2, Group 3, Group 4, Group 5</p>
+                <p text-wrap *ngIf="invitedGroups?.length > 0">
+                  <span *ngFor="let group of invitedGroups; let i = index">
+                    {{group.name}}<span *ngIf="i < invitedGroups.length - 1">,</span>
+                  </span>
+                </p>
                 <button ion-button item-right *ngIf="true" (click)="openGroupInviteForm()">
                   Einladen
                 </button>

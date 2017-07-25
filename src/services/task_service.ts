@@ -174,4 +174,12 @@ export class TaskDataService {
   evaluateTask(evaluationId, values){
     return this.helpers.ajax("evaluation/"+evaluationId, "put", { payload: values });
   };
+
+  //invite a group or user to the task
+  inviteGroupToTask(taskId, groupId) {
+    return this.helpers.ajax("task/"+taskId+"/invite/group/"+groupId, "put");
+  }
+  inviteUserToTask(taskId, groupId) {
+    return this.helpers.ajax("task/"+taskId+"/invite/user/"+groupId, "put");
+  }
 }

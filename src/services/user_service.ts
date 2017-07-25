@@ -99,8 +99,6 @@ export class UserDataService {
     return this.helpers.ajax("notification/" + notificationId + "/deny", "get");
   }
 
-
-
   //get friends of logged in user
   getFriends () {
     return this.helpers.ajax("user/friends", "get");
@@ -108,5 +106,10 @@ export class UserDataService {
   // send a friend request notification to specified user
   friendRequest (userId) {
     return this.helpers.ajax("user/" + userId + "/friend", "get");
+  }
+
+  //get all user groups
+  getAllGroups() {
+    return this.helpers.ajax("group", "get");
   }
 }
