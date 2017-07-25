@@ -458,8 +458,12 @@ export class TaskEditPage {
   openGroupInviteForm() {
     let inviteModal = this.modal.create(InviteGroups, this.invitedGroups);
     inviteModal.onDidDismiss(data => {
-      if(data === {}) {alert('empty');}
-      else {alert('invites!')}
+      if(data === null) {
+        console.log('empty');
+      }
+      else {
+        console.log(data);
+      }
     });
     inviteModal.present();
   }
@@ -467,8 +471,12 @@ export class TaskEditPage {
   openPeopleInviteForm() {
     let inviteModal = this.modal.create(InvitePeople, this.invitedPeople);
     inviteModal.onDidDismiss(data => {
-      if(data === {}) {alert('empty');}
-      else {alert('invites!')}
+      if(data === null) {
+        console.log('empty');
+      }
+      else {
+        console.log(data);
+      }
     });
     inviteModal.present();
   }

@@ -6,14 +6,40 @@ import { ViewController} from 'ionic-angular';
   templateUrl: './invite-groups.html'
 })
 export class InviteGroups {
-  constructor(private viewCtrl: ViewController) { }
+  groups: Array<any> = [];
+  restrictive: boolean = false;
+
+  constructor(private viewCtrl: ViewController) {
+    //this.taskDataService.getAllGroups.then((res) => {
+    let res = {object: [
+      {
+        id: 1,
+        name: 'Group 1'
+      },
+      {
+        id: 2,
+        name: 'Group 2'
+      },
+      {
+        id: 3,
+        name: 'Group 3'
+      }
+    ]};
+    this.groups = res.object;
+    //}
+  }
 
   invite(){
-    let invites = {};
-    this.viewCtrl.dismiss(invites);
+    let invites = this.groups.filter((group) => {
+      return group.checked;
+    });
+    this.closeModal(invites);
   }
 
   closeModal(invites){
-    this.viewCtrl.dismiss(invites);
+    this.viewCtrl.dismiss({
+      invites: invites,
+      restrictive: this.restrictive
+    });
   }
 }

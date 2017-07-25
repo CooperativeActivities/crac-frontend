@@ -1,19 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Gruppen Einladen</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <div class="toolbar-buttons">
+      <button ion-button (click)="closeModal(null)" color="light" block> Abbrechen </button>
+      <button ion-button (click)="invite()" color="secondary" block> Einladen </button>
+    </div>
+  </ion-toolbar>
+</ion-header>
 <ion-content>
   <ion-card>
     <ion-card-header>
-      Einladen
+      Gruppen
     </ion-card-header>
     <ion-card-content>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <button ion-button (click)="invite()" block outline color="secondary"> Einladen </button>
-          </ion-col>
-          <ion-col>
-            <button ion-button (click)="closeModal({})" block outline color="light"> Abbrechen </button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+      <ion-list>
+        <ion-item>
+          <ion-label>Zwingend</ion-label>
+          <ion-toggle [(ngModel)]="restrictive" [ngModelOptions]="{standalone: true}">
+          </ion-toggle>
+        </ion-item>
+        <ion-item *ngFor="let group of groups">
+          <ion-label>{{group.name}}</ion-label>
+          <ion-checkbox [(ngModel)]="group.checked"></ion-checkbox>
+        </ion-item>
+      </ion-list>
     </ion-card-content>
   </ion-card>
 </ion-content>
