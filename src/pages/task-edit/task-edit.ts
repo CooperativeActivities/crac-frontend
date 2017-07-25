@@ -460,7 +460,11 @@ export class TaskEditPage {
   };
 
   openGroupInviteForm() {
-    let inviteModal = this.modal.create(InviteGroups, this.invitedGroups);
+    let params = {
+      invites: this.invitedGroups,
+      restrictive: this.restrictiveToGroups
+    };
+    let inviteModal = this.modal.create(InviteGroups, params);
     inviteModal.onDidDismiss(data => {
       if(data === null) {
         console.log('empty');
