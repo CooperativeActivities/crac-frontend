@@ -18,12 +18,10 @@ export class MessagesPage {
   notifications: Array<any> = [];
 
   constructor(public navCtrl: NavController, public userDataService: UserDataService,
-              public taskDataService: TaskDataService, public toast: ToastController) {
-    this.onReload();
-  }
+              public taskDataService: TaskDataService, public toast: ToastController) {}
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad MessagesPage');
+  ionViewDidEnter() {
+    this.onReload();
   }
 
   getVisibleNotifications(n) {
