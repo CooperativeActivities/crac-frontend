@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, ToastController } from 'ionic-angular';
+import {Events, IonicPage, NavController, ToastController} from 'ionic-angular';
 import * as _ from 'lodash';
 
 import { UserDataService } from "../../services/user_service";
@@ -17,8 +17,8 @@ export class MessagesPage {
 
   notifications: Array<any> = [];
 
-  constructor(public navCtrl: NavController, public userDataService: UserDataService,
-              public taskDataService: TaskDataService, public toast: ToastController) {
+  constructor(public navCtrl: NavController, public events: Events, public toast: ToastController,
+              public userDataService: UserDataService, public taskDataService: TaskDataService) {
     this.onReload();
   }
 
@@ -36,8 +36,7 @@ export class MessagesPage {
 
   accept(notification){
     this.userDataService.acceptNotification(notification.notificationId).then(() => {
-      let index = _.findIndex(this.notifications, {id: notification.notificationId});
-      this.notifications.splice(index, 1)[0];
+      this.removeNotification(notification);
     }, (error) => {
       this.toast.create({
         message: "Nachrichten konnte nicht zugestimmt werden: " + error.message,
@@ -49,8 +48,7 @@ export class MessagesPage {
 
   decline(notification){
     this.userDataService.declineNotification(notification.notificationId).then(() => {
-      let index = _.findIndex(this.notifications, {id: notification.notificationId});
-      this.notifications.splice(index, 1)[0];
+      this.removeNotification(notification);
     }, (error) => {
       this.toast.create({
         message: "Nachrichten konnte nicht abgelehnt werden: " + error.message,
@@ -60,26 +58,31 @@ export class MessagesPage {
     });
   }
 
-  onReload() {
-    let self = this;
+  removeNotification(n) {
+    let index = _.findIndex(this.notifications, {id: n.notificationId});
+    this.notifications.splice(index, 1)[0];
+    this.events.publish('notification:update', this.notifications.length);
+  }
 
-    self.userDataService.getNotification().then(function(res){
+  onReload() {
+    this.userDataService.getNotification().then((res) => {
       let notifications = res.object;
       if(notifications.length === 0) {
         return [new Promise((resolve) => {resolve(false)})];
       }
       let promises = [];
-      notifications.forEach(function(notification){
+      notifications.forEach((notification) => {
         if(notification.name == "Friend Request"){
-          promises.push(self.userDataService.getUserById(notification.senderId).then(function(res){
+          promises.push(this.userDataService.getUserById(notification.senderId).then((res) => {
             notification.user = res.object
           }))
         }
       });
-      return Promise.all(promises).then(function(){
-        self.notifications = notifications
+      return Promise.all(promises).then(() => {
+        this.notifications = notifications.filter(this.getVisibleNotifications);
+        this.events.publish('notification:update', this.notifications.length);
       });
-    }, function(error) {
+    }, (error) => {
       this.toast.create({
         message: "Nachrichten konnte nicht geladen werden: " + error.message,
         duration: 3000,
