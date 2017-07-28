@@ -51,6 +51,6 @@ export class TabsPage {
 
   ionViewDidEnter() {
     this.getNotifications();
-    setInterval(()=>{this.getNotifications();}, 30000);
+    setInterval(()=>{this.getNotifications();}, 120000);
   }
 }
