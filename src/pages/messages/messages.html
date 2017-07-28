@@ -7,7 +7,7 @@
   <ion-card>
     <ion-card-content>
       <ion-list>
-        <ion-item *ngFor="let notification of notifications.filter(getVisibleNotifications)">
+        <ion-item *ngFor="let notification of notifications">
           <div *ngIf="notification.name === 'Friend Request'">
             <div>
               Freundschaftsanfrage von {{ notification.user.name }}
