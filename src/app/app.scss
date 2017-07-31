@@ -104,3 +104,9 @@ ion-card[task-list]{
     background-color: color($colors, light);
   }
 }
+
+button:not([icon-only]) {
+  ion-icon {
+    margin: 0 5px;
+  }
+}

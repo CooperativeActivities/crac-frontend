@@ -17,7 +17,7 @@ export class EvaluationDetailPage {
   taskId: number;
   evalId: number;
   othersVal: number = 0;
-  taskVal: number = 0;
+  taskVal: number = 3;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastController,
               public taskDataService: TaskDataService) {
@@ -57,6 +57,7 @@ export class EvaluationDetailPage {
   }
 
   getFiveStarValue(val) {
+    if(val === 0) return 0;
     return (val - 3) / 2;
   }
 
