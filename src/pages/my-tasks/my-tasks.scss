@@ -1,6 +1,7 @@
 page-my-tasks {
   ion-segment,
-  .segment-ios {
+  .segment-ios,
+  .segment-md{
     .segment-button:first-of-type,
     .segment-button:last-of-type {
       border-radius: 0;
@@ -8,9 +9,12 @@ page-my-tasks {
     .segment-button {
       border-color: #69717d;
       color: #69717d;
+      font-size: 0.7em;
     }
     .segment-button.segment-activated {
       background-color: #69717d;
+      border-color: #69717d;
+      color: #fff;
     }
   }
 }
