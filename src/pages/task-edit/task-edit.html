@@ -80,6 +80,7 @@
                 <ion-item>
                   <ion-label stacked>Beginndatum*</ion-label>
                   <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="task.startTime" name="startDate"
+                                [min]="minimumDate" [max]="maximumDate"
                                 [ngClass]="{'has-error' : !startDate}"></ion-datetime>
                 </ion-item>
               </ion-col>
@@ -89,7 +90,9 @@
                 </ion-item>
                 <ion-item *ngIf="hasStartTime">
                   <ion-label stacked>Beginnzeit</ion-label>
-                  <ion-datetime displayFormat="HH:mm" [(ngModel)]="task.startTime" name="startTime"></ion-datetime>
+                  <ion-datetime displayFormat="HH:mm" [(ngModel)]="task.startTime" name="startTime"
+                                [min]="minimumDate" [max]="maximumDate">
+                  </ion-datetime>
                 </ion-item>
               </ion-col>
             </ion-row>
@@ -99,7 +102,9 @@
               <ion-col no-padding>
                 <ion-item>
                   <ion-label stacked>Enddatum</ion-label>
-                  <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="task.endTime" name="endTime"></ion-datetime>
+                  <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="task.endTime" name="endTime"
+                                [min]="minimumDate" [max]="maximumDate">
+                  </ion-datetime>
                 </ion-item>
               </ion-col>
               <ion-col no-padding>
@@ -108,7 +113,9 @@
                 </ion-item>
                 <ion-item *ngIf="hasEndTime">
                   <ion-label stacked>Endzeit</ion-label>
-                  <ion-datetime displayFormat="HH:mm" [(ngModel)]="task.endTime" name="endTime"></ion-datetime>
+                  <ion-datetime displayFormat="HH:mm" [(ngModel)]="task.endTime" name="endTime"
+                                [min]="minimumDate" [max]="maximumDate">
+                  </ion-datetime>
                 </ion-item>
               </ion-col>
             </ion-row>
@@ -248,13 +255,15 @@
             <ion-item>
               <ion-label stacked>Beginn*</ion-label>
               <ion-datetime name="shiftStartTime" displayFormat="DD-MM-YYYY HH:mm" [(ngModel)]="shifts.newObj.startTime"
-                         [ngClass]="{'has-error' : !shifts.newObj.startTime}" >
+                            [min]="minimumDate" [max]="maximumDate"
+                            [ngClass]="{'has-error' : !shifts.newObj.startTime}" >
               </ion-datetime>
             </ion-item>
             <ion-item>
               <ion-label stacked>Ende*</ion-label>
               <ion-datetime name="shiftEndTime" displayFormat="DD-MM-YYYY HH:mm" [(ngModel)]="shifts.newObj.endTime"
-                         [ngClass]="{'has-error' : !shifts.newObj.endTime}">
+                            [min]="minimumDate" [max]="maximumDate"
+                            [ngClass]="{'has-error' : !shifts.newObj.endTime}">
               </ion-datetime>
             </ion-item>
             <ion-item>
