@@ -55,12 +55,24 @@ export class TaskEditPage {
   showDelete: boolean = false;
   showPublish: boolean = false;
   showUnpublish: boolean = false;
+  minimumDate: string;
+  maximumDate: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastController, public alert: AlertController,
               public taskDataService: TaskDataService, public userDataService: UserDataService) {
     this.taskId = navParams.get("id");
     this.parentId = navParams.get("parentId");
-    console.log(this.taskId);
+
+    let now = new Date();
+    now.setHours(0);
+    now.setMinutes(0);
+    now.setSeconds(0);
+    now.setMilliseconds(0);
+    this.minimumDate = this.getDateString(now);
+
+    now.setFullYear(now.getFullYear() + 4);
+    this.maximumDate = this.getDateString(now);
+
     if(this.taskId !== undefined) {
       this.pageTitle = 'Aufgabe Bearbeiten';
       this.isNewTask = false;
@@ -72,7 +84,7 @@ export class TaskEditPage {
         taskCompetences: [],
         childTasks: [],
         materials: []
-      }
+      };
 
       if (this.parentId) {
         this.isChildTask = true;
@@ -82,13 +94,7 @@ export class TaskEditPage {
         this.isChildTask = false;
         this.pageTitle = "Aufgabe Erstellen";
 
-        let now = new Date();
-        now.setHours(0);
-        now.setMinutes(0);
-        now.setSeconds(0);
-        now.setMilliseconds(0);
-        let str = this.getDateString(now);
-        this.task.startTime = str;
+        this.task.startTime = this.minimumDate;
       }
     }
   }

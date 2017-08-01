@@ -14,7 +14,7 @@
     <ion-refresher-content> </ion-refresher-content>
   </ion-refresher>
 
-  <ion-card *ngIf="participatingTasks?.length === 0 && followingTasks?.length === 0 && leadingTasks?.length === 0">
+  <ion-card *ngIf="allTasks?.participating?.length === 0 && allTasks?.following?.length === 0 && allTasks?.leading?.length === 0">
     <ion-card-content>
       <ion-list>
         <ion-item>
@@ -33,32 +33,74 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card task-list *ngIf="participatingTasks?.length > 0">
+  <ion-card task-list *ngIf="allTasks?.participating?.length > 0">
     <ion-card-header>
       Teilgenommene Aufgaben
     </ion-card-header>
     <ion-card-content>
+      <ion-segment [(ngModel)]="filters.participating" (ionChange)="filterParticipatingTasks($event)">
+        <ion-segment-button value="started">
+          Gestartet
+        </ion-segment-button>
+        <ion-segment-button value="open">
+          Anstehende
+        </ion-segment-button>
+        <ion-segment-button value="closed">
+          Beendet
+        </ion-segment-button>
+        <ion-segment-button value="all">
+          Alle
+        </ion-segment-button>
+      </ion-segment>
       <ion-list>
         <task-preview item-block *ngFor="let task of participatingTasks" [task]="task"></task-preview>
       </ion-list>
     </ion-card-content>
   </ion-card>
 
-  <ion-card task-list *ngIf="followingTasks?.length > 0">
+  <ion-card task-list *ngIf="allTasks?.following?.length > 0">
     <ion-card-header>
        Beobachtete Aufgaben
     </ion-card-header>
     <ion-card-content>
+      <ion-segment [(ngModel)]="filters.following" (ionChange)="filterFollowingTasks($event)">
+        <ion-segment-button value="started">
+          Gestartet
+        </ion-segment-button>
+        <ion-segment-button value="open">
+          Anstehende
+        </ion-segment-button>
+        <ion-segment-button value="closed">
+          Beendet
+        </ion-segment-button>
+        <ion-segment-button value="all">
+          Alle
+        </ion-segment-button>
+      </ion-segment>
       <ion-list>
         <task-preview item-block *ngFor="let task of followingTasks" [task]="task" [action]="'unfollow'"></task-preview>
       </ion-list>
     </ion-card-content>
   </ion-card>
-  <ion-card task-list *ngIf="leadingTasks?.length > 0">
+  <ion-card task-list *ngIf="allTasks?.leading?.length > 0">
     <ion-card-header>
       Von mir angeführte Aufgaben
     </ion-card-header>
     <ion-card-content>
+      <ion-segment [(ngModel)]="filters.leading" (ionChange)="filterLeadingTasks($event)">
+        <ion-segment-button value="started">
+          Gestartet
+        </ion-segment-button>
+        <ion-segment-button value="open">
+          Anstehende
+        </ion-segment-button>
+        <ion-segment-button value="closed">
+          Beendet
+        </ion-segment-button>
+        <ion-segment-button value="all">
+          Alle
+        </ion-segment-button>
+      </ion-segment>
       <ion-list>
         <task-preview item-block *ngFor="let task of leadingTasks" [task]="task"></task-preview>
       </ion-list>
