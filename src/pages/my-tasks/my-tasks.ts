@@ -45,7 +45,9 @@ export class MyTasksPage {
 
   filterTasks(type, filter) {
     switch(filter) {
-      case 'open':
+      case 'unpublished':
+        return this.allTasks[type].filter(this.getUnpublishedTasks);
+      case 'published':
         return this.allTasks[type].filter(this.getPublishedTasks);
       case 'started':
         return this.allTasks[type].filter(this.getStartedTasks);
@@ -65,6 +67,9 @@ export class MyTasksPage {
     this.leadingTasks = this.filterTasks('leading', e.value);
   }
 
+  getUnpublishedTasks(t) {
+    return t.taskState === 'NOT_PUBLISHED';
+  }
   getPublishedTasks(t) {
     return t.taskState === 'PUBLISHED';
   }
