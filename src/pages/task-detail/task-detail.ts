@@ -275,9 +275,11 @@ export class TaskDetailPage {
 
     this.taskDataService.changeTaskPartState(this.taskId, 'participate').then( (res) => {
       //this.task = res.object
-      this.participationType = "PARTICIPATING";
+      let userRel = this.user;
+      userRel.participationType = 'PARTICIPATING';
+      this.participationType = 'PARTICIPATING';
       this.task.signedUsers++;
-      this.task.userRelationships.push(this.user);
+      this.task.userRelationships.push(userRel);
       this.updateFlags();
     }, (error) => {
       this.presentToast("An der Aufgabe kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
@@ -334,7 +336,6 @@ export class TaskDetailPage {
     let that = this;
     console.log('shift', shift);
     this.taskDataService.changeTaskPartState(shift.id, 'participate').then(function (res) {
-
       shift.assigned = true;
       shift.signedUsers++;
       shift.userRelationships.push(that.user);
@@ -343,8 +344,10 @@ export class TaskDetailPage {
         return shift.id != task.id && task.assigned;
       });
       if (!alreadyInShift && that.participationType != 'PARTICIPATING') {
+        let userRel = that.user;
+        userRel.participationType = 'PARTICIPATING';
         that.task.signedUsers++;
-        that.task.userRelationships.push(that.user);
+        that.task.userRelationships.push(userRel);
       }
     }, function (error) {
       that.presentToast("An der Schicht kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
