@@ -28,6 +28,9 @@ export class TabsPage {
     events.subscribe('notification:update', (newCt) => {
       this.notificationCount = newCt;
     });
+    events.subscribe('notification:remove', () => {
+      this.notificationCount--;
+    });
   }
 
   getNotificationCount() {
