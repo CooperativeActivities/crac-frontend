@@ -416,6 +416,18 @@ export class TaskDetailPage {
     });
   };
 
+  getLeaders() {
+    return this.task.userRelationships.filter((u) => {
+      return u.participationType === 'LEADING';
+    });
+  }
+
+  getParticipants() {
+    return this.task.userRelationships.filter((u) => {
+      return u.participationType === 'PARTICIPATING';
+    });
+  }
+
   areAllParticipantsDone() {
     for(let u of this.task.userRelationships) {
       if( u.participationType === "PARTICIPATING" && !u.completed ) {
@@ -488,7 +500,6 @@ export class TaskDetailPage {
   //Set a task as done
   done(){
     this.taskDataService.setTaskDone(this.task.id,"true").then((res) => {
-      console.log("Task is done");
       this.userIsDone = true;
     }, (error) => {
       this.presentToast("Aufgabe kann nicht als fertig markiert werden: " + error.message, 'top', false, 5000);
