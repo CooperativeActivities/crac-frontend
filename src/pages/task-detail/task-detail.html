@@ -60,6 +60,7 @@
       <div card-content>
         <ion-list>
           <ion-item *ngFor="let leader of getLeaders()">
+            <ion-icon name="star" color="primary" class="icon-role"></ion-icon>
             <ion-avatar item-left>
               <img src="../../assets/img/avatar-placeholder1.png">
             </ion-avatar>
@@ -67,11 +68,11 @@
               <strong *ngIf="leader?.self">Ich</strong>
               <span *ngIf="!leader?.self">{{leader?.name}}</span>
             </h2>
-            <ion-icon name="star" color="primary" item-right></ion-icon>
           </ion-item>
         </ion-list>
         <ion-list *ngIf="getParticipants().length > 0">
           <ion-item *ngFor="let participant of getParticipants()">
+            <ion-icon name="person" class="icon-role"></ion-icon>
             <ion-avatar item-left>
               <img src="../../assets/img/avatar-placeholder1.png">
             </ion-avatar>
