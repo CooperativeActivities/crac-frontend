@@ -381,15 +381,15 @@ export class TaskDetailPage {
   addToShift(shift) {
     this.taskDataService.changeTaskPartState(shift.id, 'participate').then((res) => {
       shift.assigned = true;
+      let userRel = this.user;
+      userRel.participationType = 'PARTICIPATING';
       shift.signedUsers++;
-      shift.userRelationships.push(this.user);
+      shift.userRelationships.push(userRel);
 
       let alreadyInShift = _.find(this.task.childTasks, (task) => {
         return shift.id != task.id && task.assigned;
       });
       if (!alreadyInShift) {
-        let userRel = this.user;
-        userRel.participationType = 'PARTICIPATING';
         this.task.signedUsers++;
         this.task.userRelationships.push(userRel);
         let teamIdx = _.findIndex(this.team, {id: this.user.id});
