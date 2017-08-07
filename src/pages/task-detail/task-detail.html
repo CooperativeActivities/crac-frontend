@@ -69,9 +69,9 @@
               <strong *ngIf="member?.self">Ich</strong>
               <span *ngIf="!member?.self">{{member?.name}}</span>
             </h2>
-            <ng-template *ngIf="member?.isParticipant && participationType === 'LEADING' && task.taskType === 'WORKABLE'">
-              <ion-icon name="checkmark-circle" color="secondary" item-right *ngIf="member?.completed"></ion-icon>
-              <ion-icon name="checkmark-circle-outline" color="light" item-right *ngIf="!member?.completed"></ion-icon>
+            <ng-template item-right [ngIf]="member?.isParticipant && participationType === 'LEADING' && task.taskType === 'WORKABLE'">
+              <ion-icon name="checkmark-circle" color="secondary" *ngIf="member?.completed"></ion-icon>
+              <ion-icon name="checkmark-circle-outline" color="light" *ngIf="!member?.completed"></ion-icon>
             </ng-template>
           </ion-item>
         </ion-list>

@@ -304,9 +304,15 @@ export class TaskDetailPage {
       //this.task = res.object
       let userRel = this.user;
       userRel.participationType = 'PARTICIPATING';
-      this.participationType = 'PARTICIPATING';
+      if(this.participationType !== 'LEADING') {
+        this.participationType = 'PARTICIPATING';
+      }
       this.task.signedUsers++;
       this.task.userRelationships.push(userRel);
+      userRel.isLeading = this.participationType === 'LEADING';
+      userRel.isParticipant = true;
+      userRel.isFriend = false;
+      this.team.push(userRel);
       this.updateFlags();
     }, (error) => {
       this.presentToast("An der Aufgabe kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
@@ -324,6 +330,14 @@ export class TaskDetailPage {
         let userIdx = _.findIndex(this.task.userRelationships, {id: this.user.id});
         if (userIdx > -1) {
           this.task.userRelationships.splice(userIdx, 1);
+        }
+        let teamIdx = _.findIndex(this.team, {id: this.user.id});
+        if(teamIdx > -1) {
+          if(!this.team[teamIdx].isLeading) {
+            this.team.splice(teamIdx, 1);
+          } else {
+            this.team[teamIdx].isParticipant = false;
+          }
         }
         this.updateFlags();
       }, function (error) {
@@ -360,24 +374,28 @@ export class TaskDetailPage {
 
   //add self to a shift
   addToShift(shift) {
-    let that = this;
-    console.log('shift', shift);
-    this.taskDataService.changeTaskPartState(shift.id, 'participate').then(function (res) {
+    this.taskDataService.changeTaskPartState(shift.id, 'participate').then((res) => {
       shift.assigned = true;
       shift.signedUsers++;
-      shift.userRelationships.push(that.user);
+      shift.userRelationships.push(this.user);
 
-      let alreadyInShift = _.find(that.task.childTasks, function (task) {
+      let alreadyInShift = _.find(this.task.childTasks, (task) => {
         return shift.id != task.id && task.assigned;
       });
-      if (!alreadyInShift && that.participationType != 'PARTICIPATING') {
-        let userRel = that.user;
-        userRel.participationType = 'PARTICIPATING';
-        that.task.signedUsers++;
-        that.task.userRelationships.push(userRel);
+      if (!alreadyInShift && this.participationType != 'PARTICIPATING') {
+        let userRel = this.user;
+        if(userRel.participationType !== 'LEADING') {
+          userRel.participationType = 'PARTICIPATING';
+          userRel.isLeading = this.participationType === 'LEADING';
+          userRel.isParticipant = true;
+          userRel.isFriend = false;
+          this.team.push(userRel);
+        }
+        this.task.signedUsers++;
+        this.task.userRelationships.push(userRel);
       }
-    }, function (error) {
-      that.presentToast("An der Schicht kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
+    }, (error) => {
+      this.presentToast("An der Schicht kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
     });
 
 
@@ -402,6 +420,14 @@ export class TaskDetailPage {
         let userIdx = _.findIndex(this.task.userRelationships, {id: this.user.id});
         if (userIdx > -1) {
           this.task.userRelationships.splice(userIdx, 1);
+        }
+        let teamIdx = _.findIndex(this.team, {id: this.user.id});
+        if (teamIdx > -1) {
+          if(!this.team[teamIdx].isLeading) {
+            this.team.splice(teamIdx, 1);
+          } else {
+            this.team[teamIdx].isParticipant = false;
+          }
         }
       }
     }, (error) => {
