@@ -415,7 +415,7 @@ export class TaskDetailPage {
       console.log('Not participating in shift ' + shift.id);
       shift.assigned = false;
       shift.signedUsers--;
-      let shiftIdx = _.findIndex(shift.userRelationships, {id: this.user.id});
+      let shiftIdx = _.findIndex(shift.userRelationships, {id: this.user.id, participationType: 'PARTICIPATING'});
       if (shiftIdx > -1) {
         shift.userRelationships.splice(shiftIdx, 1);
       }
