@@ -309,10 +309,15 @@ export class TaskDetailPage {
       }
       this.task.signedUsers++;
       this.task.userRelationships.push(userRel);
-      userRel.isLeading = this.participationType === 'LEADING';
-      userRel.isParticipant = true;
-      userRel.isFriend = false;
-      this.team.push(userRel);
+      let teamIdx = _.findIndex(this.team, {id: this.user.id});
+      if(teamIdx > -1) {
+        this.team[teamIdx].isParticipant = true;
+      } else {
+        userRel.isLeading = false;
+        userRel.isParticipant = true;
+        userRel.isFriend = false;
+        this.team.push(userRel);
+      }
       this.updateFlags();
     }, (error) => {
       this.presentToast("An der Aufgabe kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
@@ -382,17 +387,20 @@ export class TaskDetailPage {
       let alreadyInShift = _.find(this.task.childTasks, (task) => {
         return shift.id != task.id && task.assigned;
       });
-      if (!alreadyInShift && this.participationType != 'PARTICIPATING') {
+      if (!alreadyInShift) {
         let userRel = this.user;
-        if(userRel.participationType !== 'LEADING') {
-          userRel.participationType = 'PARTICIPATING';
-          userRel.isLeading = this.participationType === 'LEADING';
+        userRel.participationType = 'PARTICIPATING';
+        this.task.signedUsers++;
+        this.task.userRelationships.push(userRel);
+        let teamIdx = _.findIndex(this.team, {id: this.user.id});
+        if(teamIdx > -1) {
+          this.team[teamIdx].isParticipant = true;
+        } else {
+          userRel.isLeading = false;
           userRel.isParticipant = true;
           userRel.isFriend = false;
           this.team.push(userRel);
         }
-        this.task.signedUsers++;
-        this.task.userRelationships.push(userRel);
       }
     }, (error) => {
       this.presentToast("An der Schicht kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
