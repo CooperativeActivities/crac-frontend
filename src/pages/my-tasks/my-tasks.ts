@@ -90,13 +90,13 @@ export class MyTasksPage {
     await Promise.all([
       this.taskDataService.getMyTasks().then((res) => {
         this.allTasks = {
-          participating: res.meta.participating,
-          following: res.meta.following,
-          leading: res.meta.leading
+          participating: _.orderBy(res.meta.participating, ["startTime","endTime","name"], ["asc","asc","asc"]),
+          following: _.orderBy(res.meta.following, ["startTime","endTime","name"], ["asc","asc","asc"]),
+          leading: _.orderBy(res.meta.leading, ["startTime","endTime","name"], ["asc","asc","asc"])
         };
-        this.participatingTasks = _.orderBy(res.meta.participating, [ "startTime" ], [ "asc" ]).filter(this.getStartedTasks);
-        this.followingTasks = _.orderBy(res.meta.following, [ "startTime" ], [ "asc" ]).filter(this.getStartedTasks);
-        this.leadingTasks = _.orderBy(res.meta.leading, [ "startTime" ], [ "asc" ]).filter(this.getStartedTasks);
+        this.participatingTasks = this.filterTasks('participating', this.filters.participating);
+        this.followingTasks = this.filterTasks('following', this.filters.following);
+        this.leadingTasks = this.filterTasks('leading', this.filters.leading);
       }, (error) => {
         console.warn("Matching tasks could not be retrieved", error)
       }),
