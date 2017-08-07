@@ -37,11 +37,13 @@ export class TaskDetailPage {
   showShiftsMaterialsEnroll: boolean = false;
   SUBTASKS_LIMITED_TO_SHALLOW: boolean = false;
   participationType: any;
+  team: Array<any>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public taskDataService: TaskDataService,
               public userDataService: UserDataService, public toastCtrl: ToastController, public alert: AlertController,
               private authCtrl: AuthService) {
     this.taskId = navParams.data.id;
+    this.team = [];
     this.SUBTASKS_LIMITED_TO_SHALLOW = false;
     this.loaded = {};
     this.loaded.shifts = false;
@@ -73,7 +75,32 @@ export class TaskDetailPage {
     if (task) {
       this.task = task.object;
       this.task.childTasks = _.orderBy(this.task.childTasks, ["startTime"]);
-      if (this.task.userRelationships) this.task.userRelationships = _.orderBy(this.task.userRelationships, [(rel => (rel.friend || rel.participationType === "LEADING") ? 0 : 1), "name"]);
+      if (this.task.userRelationships) {
+        for(let member of this.task.userRelationships) {
+          let newMember = this.team.find((tm) => {
+            return tm.id === member.id
+          });
+          if(newMember === undefined) {
+            newMember = member;
+            newMember.isLeading = false;
+            newMember.isParticipant = false;
+            newMember.isFriend = false;
+            this.team.push(newMember);
+          }
+          newMember.isLeading = newMember.isLeading || member.participationType === 'LEADING';
+          newMember.isParticipant = newMember.isParticipant || member.participationType === 'PARTICIPATING';
+          newMember.isFriend = newMember.isFriend || member.friend;
+
+          if(newMember.isLeading && newMember.id === this.user.id) {
+            this.participationType = 'LEADING';
+          }
+        }
+        this.team =_.orderBy(this.team, [
+          (rel => rel.isLeading ? 0 : 1),
+          (rel => rel.isFriend ? 0 : 1),
+          "name"
+        ]);
+      }
       this.task.materials = _.orderBy(this.task.materials, ["name"]).map(material => {
         material.subscribedQuantityOtherUsers =
           material.subscribedUsers

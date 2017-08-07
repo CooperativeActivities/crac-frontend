@@ -10,6 +10,10 @@ page-task-detail {
     position: absolute;
     bottom: 0;
     left: 0;
+
+    &.icon-role-leader {
+      left: 1.5em;
+    }
   }
 
   .icon-light,
