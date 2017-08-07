@@ -59,13 +59,15 @@ export class MessagesPage {
   removeNotification(n) {
     let index = _.findIndex(this.notifications, {id: n.notificationId});
     this.notifications.splice(index, 1)[0];
-    this.events.publish('notification:update', this.notifications.length);
+    this.events.publish('notification:remove');
   }
 
   onReload() {
     this.userDataService.getNotification().then((res) => {
       let notifications = res.object;
       if(notifications.length === 0) {
+        this.notifications = notifications.filter(this.getVisibleNotifications);
+        this.events.publish('notification:update', this.notifications.length);
         return [new Promise((resolve) => {resolve(false)})];
       }
       let promises = [];

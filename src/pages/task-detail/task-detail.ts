@@ -37,11 +37,13 @@ export class TaskDetailPage {
   showShiftsMaterialsEnroll: boolean = false;
   SUBTASKS_LIMITED_TO_SHALLOW: boolean = false;
   participationType: any;
+  team: Array<any>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public taskDataService: TaskDataService,
               public userDataService: UserDataService, public toastCtrl: ToastController, public alert: AlertController,
               private authCtrl: AuthService) {
     this.taskId = navParams.data.id;
+    this.team = [];
     this.SUBTASKS_LIMITED_TO_SHALLOW = false;
     this.loaded = {};
     this.loaded.shifts = false;
@@ -73,7 +75,32 @@ export class TaskDetailPage {
     if (task) {
       this.task = task.object;
       this.task.childTasks = _.orderBy(this.task.childTasks, ["startTime"]);
-      if (this.task.userRelationships) this.task.userRelationships = _.orderBy(this.task.userRelationships, [(rel => (rel.friend || rel.participationType === "LEADING") ? 0 : 1), "name"]);
+      if (this.task.userRelationships) {
+        for(let member of this.task.userRelationships) {
+          let newMember = this.team.find((tm) => {
+            return tm.id === member.id
+          });
+          if(newMember === undefined) {
+            newMember = member;
+            newMember.isLeading = false;
+            newMember.isParticipant = false;
+            newMember.isFriend = false;
+            this.team.push(newMember);
+          }
+          newMember.isLeading = newMember.isLeading || member.participationType === 'LEADING';
+          newMember.isParticipant = newMember.isParticipant || member.participationType === 'PARTICIPATING';
+          newMember.isFriend = newMember.isFriend || member.friend;
+
+          if(newMember.isLeading && newMember.id === this.user.id) {
+            this.participationType = 'LEADING';
+          }
+        }
+        this.team =_.orderBy(this.team, [
+          (rel => rel.isLeading ? 0 : 1),
+          (rel => rel.isFriend ? 0 : 1),
+          "name"
+        ]);
+      }
       this.task.materials = _.orderBy(this.task.materials, ["name"]).map(material => {
         material.subscribedQuantityOtherUsers =
           material.subscribedUsers
@@ -275,9 +302,11 @@ export class TaskDetailPage {
 
     this.taskDataService.changeTaskPartState(this.taskId, 'participate').then( (res) => {
       //this.task = res.object
-      this.participationType = "PARTICIPATING";
+      let userRel = this.user;
+      userRel.participationType = 'PARTICIPATING';
+      this.participationType = 'PARTICIPATING';
       this.task.signedUsers++;
-      this.task.userRelationships.push(this.user);
+      this.task.userRelationships.push(userRel);
       this.updateFlags();
     }, (error) => {
       this.presentToast("An der Aufgabe kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
@@ -334,7 +363,6 @@ export class TaskDetailPage {
     let that = this;
     console.log('shift', shift);
     this.taskDataService.changeTaskPartState(shift.id, 'participate').then(function (res) {
-
       shift.assigned = true;
       shift.signedUsers++;
       shift.userRelationships.push(that.user);
@@ -343,8 +371,10 @@ export class TaskDetailPage {
         return shift.id != task.id && task.assigned;
       });
       if (!alreadyInShift && that.participationType != 'PARTICIPATING') {
+        let userRel = that.user;
+        userRel.participationType = 'PARTICIPATING';
         that.task.signedUsers++;
-        that.task.userRelationships.push(that.user);
+        that.task.userRelationships.push(userRel);
       }
     }, function (error) {
       that.presentToast("An der Schicht kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
@@ -415,6 +445,18 @@ export class TaskDetailPage {
       this.presentToast("Materialien können nicht gespeichert werden: " + error.message, 'top', false, 3000);
     });
   };
+
+  getLeaders() {
+    return this.task.userRelationships.filter((u) => {
+      return u.participationType === 'LEADING';
+    });
+  }
+
+  getParticipants() {
+    return this.task.userRelationships.filter((u) => {
+      return u.participationType === 'PARTICIPATING';
+    });
+  }
 
   areAllParticipantsDone() {
     for(let u of this.task.userRelationships) {
@@ -488,7 +530,6 @@ export class TaskDetailPage {
   //Set a task as done
   done(){
     this.taskDataService.setTaskDone(this.task.id,"true").then((res) => {
-      console.log("Task is done");
       this.userIsDone = true;
     }, (error) => {
       this.presentToast("Aufgabe kann nicht als fertig markiert werden: " + error.message, 'top', false, 5000);

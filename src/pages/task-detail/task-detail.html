@@ -58,17 +58,23 @@
         Team ({{task?.signedUsers}}{{(task?.taskType == 'WORKABLE' && task?.childTasks?.length == 0) ? ' / ' + task?.minAmountOfVolunteers : ''}})
       </div>
       <div card-content>
-        <ion-item *ngFor="let user of task?.userRelationships">
-          <ion-avatar item-left>
-            <img src="../../assets/img/avatar-placeholder1.png">
-          </ion-avatar>
-          <h2>
-            <strong *ngIf="user?.self">Ich</strong>
-            <span *ngIf="!user?.self">{{user?.name}}</span>
-          </h2>
-          <p>Typ: {{user?.participationType}}</p>
-        </ion-item>
-
+        <ion-list>
+          <ion-item *ngFor="let member of team">
+            <ion-icon *ngIf="member.isLeading" name="star" color="primary" class="icon-role icon-role-leader"></ion-icon>
+            <ion-icon *ngIf="member.isParticipant" name="person" class="icon-role"></ion-icon>
+            <ion-avatar item-left>
+              <img src="../../assets/img/avatar-placeholder1.png">
+            </ion-avatar>
+            <h2>
+              <strong *ngIf="member?.self">Ich</strong>
+              <span *ngIf="!member?.self">{{member?.name}}</span>
+            </h2>
+            <ng-template *ngIf="member?.isParticipant && participationType === 'LEADING' && task.taskType === 'WORKABLE'">
+              <ion-icon name="checkmark-circle" color="secondary" item-right *ngIf="member?.completed"></ion-icon>
+              <ion-icon name="checkmark-circle-outline" color="light" item-right *ngIf="!member?.completed"></ion-icon>
+            </ng-template>
+          </ion-item>
+        </ion-list>
       </div>
     </collapsible-card>
 
