@@ -51,8 +51,6 @@ export class MyTasksPage {
         return this.allTasks[type].filter(this.getPublishedTasks);
       case 'started':
         return this.allTasks[type].filter(this.getStartedTasks);
-      case 'closed':
-        return this.allTasks[type].filter(this.getClosedTasks);
       default:
         return this.allTasks[type];
     }
@@ -76,14 +74,6 @@ export class MyTasksPage {
 
   getStartedTasks(t) {
     return t.taskState === 'STARTED';
-  }
-
-  getClosedTasks(t) {
-    return t.taskState === 'COMPLETED';
-  }
-
-  getOpenTasks(t) {
-    return t.taskState !== 'COMPLETED';
   }
 
   async doRefresh (refresher=null) {
