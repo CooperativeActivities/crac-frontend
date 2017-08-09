@@ -218,7 +218,7 @@
                     <!--</span>-->
                     <!--</span>-->
 
-            <ion-grid *ngIf="competences.newObj.id != -1">
+            <ion-grid>
               <ion-row>
                 <label>*Pflichtfelder</label>
               </ion-row>
@@ -229,7 +229,7 @@
                   </button>
                 </ion-col>
                 <ion-col>
-                  <button ion-button  (click)="addCompetence()" block icon-left>
+                  <button ion-button  (click)="addCompetence()" block icon-left [disabled]="competences.newObj.id == -1">
                     <ion-icon name="add"></ion-icon> Hinzufügen
                   </button>
                 </ion-col>
