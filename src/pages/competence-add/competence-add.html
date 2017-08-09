@@ -5,8 +5,11 @@
 
     <ion-toolbar>
       <div class="toolbar-buttons">
-        <button ion-button (click)="cancel()" color="light" block> Abbrechen</button>
-        <button ion-button (click)="add()" color="secondary" block> Speichern</button>
+        <button ion-button (click)="add()" color="secondary" block icon-left
+                [disabled]="newComp.id === -1">
+          <ion-icon name="checkmark"></ion-icon>
+          Speichern
+        </button>
       </div>
     </ion-toolbar>
 </ion-header>
