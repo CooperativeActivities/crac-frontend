@@ -106,5 +106,5 @@ ion-card[task-list]{
 }
 
 textarea.text-input {
-  resize: none;
+  max-width: calc(100% - 8px);
 }
