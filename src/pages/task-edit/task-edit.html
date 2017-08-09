@@ -191,21 +191,21 @@
                 </ng-container>
               </ion-select>
             </ion-item>
-            <ion-item>
-              <ion-label *ngIf="competenceArea != -1" stacked>Kompetenz*</ion-label>
+            <ion-item *ngIf="competenceAreaId != -1">
+              <ion-label stacked>Kompetenz*</ion-label>
               <ion-select [(ngModel)]="competences.newObj.id" name="competence">
                 <ion-option *ngFor="let competence of availableCompetences" value="{{competence.id}}">
                   {{ competence.name }}
                 </ion-option>
               </ion-select>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="competences.newObj.id != -1">
               <ion-label stacked>Können* <span float-right>{{competences.newObj.neededProficiencyLevel}}</span></ion-label>
               <ion-range min="0" max="100" name="neededProficiencyLevel"
                      [(ngModel)]="competences.newObj.neededProficiencyLevel">
               </ion-range>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="competences.newObj.id != -1">
               <ion-label>Zwingend</ion-label>
               <ion-toggle name="mandatory" [(ngModel)]="competences.newObj.mandatory">
               </ion-toggle>
@@ -218,7 +218,7 @@
                     <!--</span>-->
                     <!--</span>-->
 
-            <ion-grid>
+            <ion-grid *ngIf="competences.newObj.id != -1">
               <ion-row>
                 <label>*Pflichtfelder</label>
               </ion-row>

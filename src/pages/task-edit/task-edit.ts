@@ -27,7 +27,8 @@ export class TaskEditPage {
   addNewShift: boolean = false;
   addNewMaterial: boolean = false;
   pageTitle: string;
-  competenceArea: any;
+  competenceArea: any = null;
+  competenceAreaId: number = -1;
   competenceAreaList: Array<any> = [];
   availableCompetences: Array<any> = [];
   materials: any = {
@@ -45,6 +46,7 @@ export class TaskEditPage {
   };
   competences: any = {
     newObj: {
+      id: -1,
       neededProficiencyLevel: 50
     },
     toAdd: [],
@@ -490,7 +492,8 @@ export class TaskEditPage {
   }
 
   getCompetencesForArea(newValue){
-    if(newValue === -1) return;
+    if(newValue === null) return;
+    this.competences.newObj.id = -1;
     this.userDataService.getCompetencesForArea(newValue)
       .then((res) => {
         if(res.object.mappedCompetences.length === 0) {
@@ -501,6 +504,7 @@ export class TaskEditPage {
           }).present();
           return;
         } else {
+          this.competenceAreaId = newValue.id;
           this.availableCompetences = _.orderBy(res.meta.competences, [ "name" ])
         }
       }, (error) => {
