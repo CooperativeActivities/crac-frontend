@@ -21,7 +21,7 @@ export class ProfilePage {
       { title: 'Meine Kompetenzen', component: "my-competences" },
       { title: 'Mein Profil', component: "my-profile" },
       { title: 'Meine Freunde', component: "my-friends" },
-      { title: 'Meine Geschichte', component: "my-history" }
+      { title: 'Meine bisherigen Aufgaben', component: "my-history" }
     ];
   }
 
