@@ -5,8 +5,14 @@
   </ion-toolbar>
   <ion-toolbar>
     <div class="toolbar-buttons">
-      <button ion-button (click)="cancel()" color="light" block> Abbrechen </button>
-      <button ion-button (click)="save_changes()" color="secondary" block> Speichern </button>
+      <button ion-button (click)="cancel()" color="light" block icon-left>
+        <ion-icon name="close"></ion-icon>
+        Abbrechen
+      </button>
+      <button ion-button (click)="save_changes()" color="secondary" block icon-left>
+        <ion-icon name="checkmark"></ion-icon>
+        Speichern
+      </button>
     </div>
   </ion-toolbar>
 </ion-header>
