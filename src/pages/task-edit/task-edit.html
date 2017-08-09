@@ -161,7 +161,7 @@
 
                 <ion-item>
                   <button ion-button (click)="removeCompetence(competence)" block color="danger">
-                    <ion-icon name="trash-outline"></ion-icon> Löschen
+                    <ion-icon name="trash"></ion-icon> Löschen
                   </button>
                 </ion-item>
               </ion-list>
@@ -241,7 +241,7 @@
             <ion-item *ngFor="let shift of shifts.all">
               {{shift.startTime | date: "dd.MM.yyyy HH:mm"}} -
               {{shift.endTime | date: "dd.MM.yyyy HH:mm"}}
-              <ion-icon name="trash" (click)="removeShift(shift)" float-right></ion-icon>
+              <ion-icon name="close-circle" (click)="removeShift(shift)" float-right></ion-icon>
             </ion-item>
           </ion-list>
 
@@ -399,8 +399,15 @@
 <ion-footer>
   <ion-toolbar *ngIf="!isNewTask">
     <div class="toolbar-buttons">
-      <button ion-button (click)="task_delete()" color="danger" block> Löschen </button>
-      <button ion-button (click)="unpublish()" color="light" block *ngIf="task.taskState == 'PUBLISHED'"> Zurückziehen </button>
+      <button ion-button (click)="task_delete()" color="danger" block icon-left>
+        <ion-icon name="trash"></ion-icon>
+        Löschen
+      </button>
+      <button ion-button (click)="unpublish()" color="light" block icon-left
+              *ngIf="task.taskState == 'PUBLISHED'">
+        <ion-icon name="eye-off"></ion-icon>
+        Zurückziehen
+      </button>
     </div>
   </ion-toolbar>
 </ion-footer>
