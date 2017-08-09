@@ -16,16 +16,14 @@
       <ion-list>
         <ion-item>
           <ion-label stacked>Kompetenzbereich</ion-label>
-          <ion-label *ngIf="competenceArea">
+          <ion-label *ngIf="competenceArea" (click)="resetCompetenceArea()">
             {{competenceArea.name}}
-            <ion-icon name="close-circle" (click)="resetCompetenceArea()" float-right></ion-icon>
           </ion-label>
         </ion-item>
         <ion-item *ngIf="newComp.id != -1">
           <ion-label stacked>Kompetenz</ion-label>
-          <ion-label>
+          <ion-label (click)="resetCompetence()">
             {{newComp.name}}
-            <ion-icon name="close-circle" (click)="resetCompetence()" float-right></ion-icon>
           </ion-label>
         </ion-item>
         <ion-searchbar *ngIf="!competenceArea" (ionInput)="filterAreas($event)"></ion-searchbar>
