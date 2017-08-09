@@ -47,6 +47,7 @@ export class TaskEditPage {
   competences: any = {
     newObj: {
       id: -1,
+      mandatory: false,
       neededProficiencyLevel: 50
     },
     toAdd: [],
@@ -493,7 +494,12 @@ export class TaskEditPage {
 
   getCompetencesForArea(newValue){
     if(newValue === null) return;
-    this.competences.newObj.id = -1;
+    this.competences.newObj = {
+      id: -1,
+      mandatory: false,
+      neededProficiencyLevel: 50
+    };
+
     this.userDataService.getCompetencesForArea(newValue)
       .then((res) => {
         if(res.object.mappedCompetences.length === 0) {
@@ -542,9 +548,12 @@ export class TaskEditPage {
 
   closeAddCompetence() {
     this.competences.newObj = {
+      id: -1,
+      mandatory: false,
       neededProficiencyLevel: 50
     };
     this.competenceArea = null;
+    this.competenceAreaId = -1;
     this.addNewCompetence = false;
   }
 
