@@ -16,8 +16,8 @@ export class ProfileDetailsPage {
   userId: number;
   isCurrentUser: boolean = false;
 
-  constructor(public navCtrl: NavController, public userDataService: UserDataService,
-              public navParams: NavParams, public toast: ToastController) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              public userDataService: UserDataService, public toast: ToastController) {}
 
   ngOnInit(): void {
     let userId = this.navParams.get("id");

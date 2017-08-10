@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, ToastController} from 'ionic-angular';
+import {IonicPage, NavController, ToastController} from 'ionic-angular';
 import {UserDataService} from "../../services/user_service";
 
 @IonicPage({
@@ -16,7 +16,7 @@ export class MyFriendsPage {
   allUsers : Array<any> = [];
   userToSendRequestTo : any = null;
 
-  constructor(public userDataService: UserDataService, public toast: ToastController) {
+  constructor(public userDataService: UserDataService, public navCtrl: NavController, public toast: ToastController) {
     this.doRefresh();
   }
 
@@ -67,5 +67,9 @@ export class MyFriendsPage {
         duration: 3000
       }).present();
     })
+  }
+
+  viewProfile(friendId) {
+    this.navCtrl.push('profile-details', {id: friendId});
   }
 }
