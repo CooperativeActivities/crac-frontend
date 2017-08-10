@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
+import {Events, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 
 import { UserDataService } from '../../services/user_service';
 
@@ -15,11 +15,17 @@ export class ProfileDetailsPage {
   public user: any;
   userId: number;
   isCurrentUser: boolean = false;
+  friendNotificationId: number = -1;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events,
               public userDataService: UserDataService, public toast: ToastController) {}
 
   ngOnInit(): void {
+    let friendReq = this.navParams.get("friendRequest");
+    if(friendReq !== undefined) {
+      this.friendNotificationId = friendReq;
+    }
+
     let userId = this.navParams.get("id");
     if(userId !== undefined) {
       this.userId = userId;
@@ -60,5 +66,31 @@ export class ProfileDetailsPage {
 
   editProfile() {
     this.navCtrl.push('profile-edit');
+  }
+
+  accept(){
+    this.userDataService.acceptNotification(this.friendNotificationId).then(() => {
+      this.events.publish('notification:remove');
+      this.navCtrl.push('messages');
+    }, (error) => {
+      this.toast.create({
+        message: "Freunschaftanfrage konnte nicht zugestimmt werden: " + error.message,
+        duration: 3000,
+        position: 'top'
+      }).present();
+    });
+  }
+
+  decline(){
+    this.userDataService.declineNotification(this.friendNotificationId).then(() => {
+      this.events.publish('notification:remove');
+      this.navCtrl.push('messages');
+    }, (error) => {
+      this.toast.create({
+        message: "Freundschaftanfrage konnte nicht abgelehnt werden: " + error.message,
+        duration: 3000,
+        position: 'top'
+      }).present();
+    });
   }
 }

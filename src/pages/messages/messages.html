@@ -9,33 +9,40 @@
       <ion-list>
         <ion-item *ngFor="let notification of notifications">
           <div *ngIf="notification.name === 'Friend Request'">
-            <div>
+            <p text-wrap>
               Freundschaftsanfrage von {{ notification.user.name }}
-            </div>
-            <br>
-            <button ion-button (click)="accept(notification)" color="secondary" icon-left>
-              <ion-icon name="checkmark"></ion-icon>
-              Zustimmen
-            </button>
-            <button ion-button (click)="decline(notification)" color="danger" icon-left>
-              <ion-icon name="close"></ion-icon>
-              Ablehnen
-            </button>
+            </p>
+            <p text-wrap>
+              <button ion-button (click)="accept(notification)" color="secondary" icon-left>
+                <ion-icon name="checkmark"></ion-icon>
+                Zustimmen
+              </button>
+              <button ion-button (click)="decline(notification)" color="danger" icon-left>
+                <ion-icon name="close"></ion-icon>
+                Ablehnen
+              </button>
+              <button ion-button (click)="viewProfile(notification.senderId, notification.notificationId)" color="light" icon-left>
+                <ion-icon name="person"></ion-icon>
+                Profil anschauen
+              </button>
+            </p>
           </div>
 
           <div *ngIf="notification.name === 'Evaluation'">
-            <div>
+            <p text-wrap>
               Aufgabe bewerten: {{notification.taskId}}
-            </div>
+            </p>
             <br>
-            <button ion-button (click)="evaluate(notification)" color="secondary" icon-left>
-              <ion-icon name="checkmark"></ion-icon>
-              Bewerten
-            </button>
-            <button ion-button (click)="decline(notification)" color="danger" icon-left>
-              <ion-icon name="close"></ion-icon>
-              Ablehnen
-            </button>
+            <p text-wrap>
+              <button ion-button (click)="evaluate(notification)" color="secondary" icon-left>
+                <ion-icon name="checkmark"></ion-icon>
+                Bewerten
+              </button>
+              <button ion-button (click)="decline(notification)" color="danger" icon-left>
+                <ion-icon name="close"></ion-icon>
+                Ablehnen
+              </button>
+            </p>
           </div>
         </ion-item>
         <p *ngIf="notifications.filter(getVisibleNotifications).length < 1">

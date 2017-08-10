@@ -49,12 +49,18 @@
   </ng-template>
 </ion-content>
 
-<!-- send friend request?
 <ion-footer>
   <ion-toolbar>
     <div class="toolbar-buttons">
-      <button ion-button (click)="save()" color="secondary" block> Speichern </button>
+      <button ion-button (click)="decline()" color="danger" block
+              *ngIf="friendNotificationId !== -1">
+        Ablehnen
+      </button>
+      <button ion-button (click)="accept()" color="secondary" block
+              *ngIf="friendNotificationId > -1">
+        Zustimmen
+      </button>
+      <!-- send friend request here? -->
     </div>
   </ion-toolbar>
 </ion-footer>
--->
