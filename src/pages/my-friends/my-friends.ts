@@ -49,13 +49,21 @@ export class MyFriendsPage {
     }
   }
 
-  sendRequest() {
-    let friendRequests = this.friends.filter(this.getSelected);
+  sendRequests() {
+    let friendRequests = this.allUsers.filter(this.getSelected);
     let promises = [];
     for(let newFriend of friendRequests) {
       promises.push(this.userDataService.friendRequest(newFriend.id));
     }
-    if(promises.length === 0) return false;
+    if(promises.length === 0) {
+      this.toast.create({
+        message: "Bitte wenigstens einen User auswählen",
+        position: 'top',
+        duration: 3000
+      }).present();
+
+      return false;
+    }
 
     Promise.all(promises).then((res) => {
       this.toast.create({
