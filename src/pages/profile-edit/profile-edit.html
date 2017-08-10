@@ -5,6 +5,18 @@
     </button>
     <ion-title>Profil bearbeiten</ion-title>
   </ion-navbar>
+  <ion-toolbar>
+    <div class="toolbar-buttons">
+      <button ion-button (click)="cancel()" color="light" block icon-left>
+        <ion-icon name="close"></ion-icon>
+        Abbrechen
+      </button>
+      <button ion-button (click)="save_changes()" color="secondary" block icon-left>
+        <ion-icon name="checkmark"></ion-icon>
+        Speichern
+      </button>
+    </div>
+  </ion-toolbar>
 </ion-header>
 <ion-content>
   <ion-grid no-padding>
@@ -51,12 +63,3 @@
     </ion-row>
   </ion-grid>
 </ion-content>
-
-<ion-footer>
-  <ion-toolbar>
-    <div class="toolbar-buttons">
-      <button ion-button (click)="cancel()" color="light" block> Abbrechen </button>
-      <button ion-button (click)="save()" color="secondary" block> Speichern </button>
-    </div>
-  </ion-toolbar>
-</ion-footer>

@@ -1,9 +1,11 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Profil bearbeiten</ion-title>
+    <ion-buttons end *ngIf="isCurrentUser">
+      <button ion-button icon-only (click)="editProfile()">
+        <ion-icon name="md-create"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{user?.name || "Profildetails"}}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
@@ -13,9 +15,6 @@
       <ion-card style="max-width: 60em;">
         <img src="assets/img/avatar-placeholder1.png" style="width:80%; max-width: 30em; margin: auto;">
         <ion-card-content>
-          <ion-card-title text-center>
-            Mein Profil
-          </ion-card-title>
           <ion-list *ngIf="user">
             <ion-item>
               <ion-label fixed>Username</ion-label>
@@ -52,11 +51,12 @@
   </ion-grid>
 </ion-content>
 
+<!-- send friend request?
 <ion-footer>
   <ion-toolbar>
     <div class="toolbar-buttons">
-      <button ion-button (click)="cancel()" color="light" block> Abbrechen </button>
       <button ion-button (click)="save()" color="secondary" block> Speichern </button>
     </div>
   </ion-toolbar>
 </ion-footer>
+-->
