@@ -26,7 +26,10 @@
     </div>
     <div card-content>
       <ion-list>
-        <ion-item *ngFor="let u of allUsers">
+        <ion-item>
+          <ion-searchbar (ionInput)="filterUsers($event)"></ion-searchbar>
+        </ion-item>
+        <ion-item *ngFor="let u of userList">
           <ion-checkbox [(ngModel)]="u.checked"></ion-checkbox>
           <ion-label>{{u.firstName}} {{u.lastName}}</ion-label>
           <button ion-button item-end clear icon-only (click)="viewProfile(u.id)">

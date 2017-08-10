@@ -11,8 +11,9 @@ import {UserDataService} from "../../services/user_service";
   providers: [UserDataService]
 })
 export class MyFriendsPage {
-  friends : Array<any> = [];
-  allUsers : Array<any> = [];
+  friends: Array<any> = [];
+  allUsers: Array<any> = [];
+  userList: Array<any> = [];
   currentUser: any;
 
   constructor(public userDataService: UserDataService, public navCtrl: NavController, public toast: ToastController) {
@@ -46,6 +47,24 @@ export class MyFriendsPage {
 
     for(let user of this.allUsers) {
       user.checked = false;
+    }
+
+    this.userList = this.allUsers;
+  }
+
+  filterUsers(ev:any) {
+    // Reset items back to all of the items
+    this.userList = this.allUsers;
+
+    // set val to the value of the searchbar
+    let val = ev.target.value;
+
+    // if the value is an empty string don't filter the items
+    if (val && val.trim() != '') {
+      this.userList = this.allUsers.filter((item) => {
+        let name = item.firstName + " " + item.lastName;
+        return (name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
     }
   }
 
@@ -111,6 +130,7 @@ export class MyFriendsPage {
         this.allUsers = res.object.filter((u) => {
           return this.getAvailable(u);
         });
+        this.userList = this.allUsers;
       }, (error) => {
         this.toast.create({
           message: "Benutzer können nicht geladen werden: " + error.message,
