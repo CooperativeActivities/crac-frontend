@@ -4,14 +4,14 @@ import { IonicPage, NavController, ToastController } from 'ionic-angular';
 import { UserDataService } from '../../services/user_service';
 
 @IonicPage({
-  name: "my-profile",
+  name: "profile-edit",
 })
 @Component({
-  selector: 'page-my-profile',
-  templateUrl: 'my-profile.html',
+  selector: 'page-profile-edit',
+  templateUrl: 'profile-edit.html',
   providers: [ UserDataService ],
 })
-export class MyProfilePage {
+export class ProfileEditPage {
   public user: any;
 
   constructor(public navCtrl: NavController, public userDataService: UserDataService, public toast: ToastController) { }
