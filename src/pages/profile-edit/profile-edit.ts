@@ -1,7 +1,14 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, ToastController } from 'ionic-angular';
+import {IonicPage, NavController, ToastController, Platform, LoadingController, Loading} from 'ionic-angular';
+
+import { File } from '@ionic-native/file';
+import { Transfer, TransferObject } from '@ionic-native/transfer';
+import { FilePath } from '@ionic-native/file-path';
+import { Camera } from '@ionic-native/camera';
 
 import { UserDataService } from '../../services/user_service';
+
+declare let cordova: any;
 
 @IonicPage({
   name: "profile-edit",
@@ -11,13 +18,18 @@ import { UserDataService } from '../../services/user_service';
   templateUrl: 'profile-edit.html',
   providers: [ UserDataService ],
 })
+
 export class ProfileEditPage {
   public user: any;
   minimumDate: string;
   maximumDate: string;
 
-  constructor(public navCtrl: NavController, public userDataService: UserDataService, public toast: ToastController) { }
+  lastImage: string = null;
+  loading: Loading;
 
+  constructor(public navCtrl: NavController, public userDataService: UserDataService, public toast: ToastController,
+              private camera: Camera, private transfer: Transfer, private file: File, private filePath: FilePath,
+              public platform: Platform, public loadingCtrl: LoadingController) { }
   ngOnInit(): void {
     this.userDataService.getCurrentUser().then((res) => {
       this.user = res.object;
@@ -67,6 +79,124 @@ export class ProfileEditPage {
     return date
   }
 
+  takePicture(sourceType) {
+    let options = {
+      quality: 100,
+      sourceType: sourceType,
+      saveToPhotoAlbum: false,
+      correctOrientation: true
+    };
+
+    // Get the data of an image
+    this.camera.getPicture(options).then((imagePath) => {
+      // Special handling for Android library
+      if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+        this.filePath.resolveNativePath(imagePath)
+          .then(filePath => {
+            let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+            let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+            this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+          });
+      } else {
+        let currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+        let correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+        this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+      }
+    }, (err) => {
+      console.log(err);
+      this.toast.create({
+        message: "Foto konnte nicht hochgeladen werden: " + err.message,
+        position: 'top',
+        duration: 3000
+      }).present();
+    });
+  }
+
+  // Create a new name for the image
+  createFileName() {
+    let d = new Date(),
+      n = d.getTime();
+    return n + ".jpg";
+  }
+
+  // Copy the image to a local folder
+  copyFileToLocalDir(namePath, currentName, newFileName) {
+    this.file.copyFile(namePath, currentName, cordova.file.dataDirectory, newFileName).then(success => {
+      this.lastImage = newFileName;
+    }, err => {
+      this.toast.create({
+        message: "Foto konnte nicht hochgeladen werden: " + err.message,
+        position: 'top',
+        duration: 3000
+      }).present();
+    });
+  }
+
+  // Always get the accurate path to your apps folder
+  pathForImage(img) {
+    if (img === null) {
+      return '';
+    } else {
+      return cordova.file.dataDirectory + img;
+    }
+  }
+
+  libraryPicture() {
+    this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+  }
+
+  cameraPicture() {
+    this.takePicture(this.camera.PictureSourceType.CAMERA);
+  }
+
+  uploadImage() {
+    //@TODO implement actual upload api
+    console.log('image upload!');
+    return;
+/*
+    // Destination URL
+    let url = "http://yoururl/upload.php";
+
+    // File for Upload
+    let targetPath = this.pathForImage(this.lastImage);
+
+    // File name only
+    let filename = this.lastImage;
+
+    let options = {
+      fileKey: "file",
+      fileName: filename,
+      chunkedMode: false,
+      mimeType: "multipart/form-data",
+      params : {'fileName': filename}
+    };
+
+    const fileTransfer: TransferObject = this.transfer.create();
+
+    this.loading = this.loadingCtrl.create({
+      content: 'Uploading...',
+    });
+    this.loading.present();
+
+    // Use the FileTransfer to upload the image
+    fileTransfer.upload(targetPath, url, options).then(data => {
+      this.loading.dismissAll();
+      this.toast.create({
+        message: "Foto wird hochgeladen",
+        position: 'top',
+        duration: 3000
+      }).present();
+    }, err => {
+      this.loading.dismissAll();
+      this.toast.create({
+        message: "Foto konnte nicht hochgeladen werden: " + err.message,
+        position: 'top',
+        duration: 3000
+      }).present();
+    });
+    */
+  }
+
   save_changes(){
     let profileData : any = {
       firstName: this.user.firstName,
@@ -99,66 +229,3 @@ export class ProfileEditPage {
   }
 
 }
-
-
-
-
-/*  //Camera: Take a pic
-  $scope.takePic = function() {
-    var options =   {
-      quality: 50,
-      destinationType: Camera.DestinationType.FILE_URI,
-      sourceType: 1,      // 0:Photo Library, 1=Camera, 2=Saved Photo Album
-      encodingType: 0     // 0=JPG 1=PNG
-    }
-    navigator.camera.getPicture(onSuccess,onFail,options);
-  }
-  var onSuccess = function(FILE_URI) {
-    console.log(FILE_URI);
-    $scope.picData = FILE_URI;
-    $scope.$apply();
-  };
-  var onFail = function(e) {
-    console.log("On fail " + e);
-  }
-  $scope.send = function() {
-    var myImg = $scope.picData;
-    var options = new FileUploadOptions();
-    options.fileKey="post";
-    options.chunkedMode = false;
-    var params = {};
-    params.user_token = localStorage.getItem('auth_token');
-    params.user_email = localStorage.getItem('email');
-    options.params = params;
-    var ft = new FileTransfer();
-    ft.upload(myImg, encodeURI("https://example.com/posts/"), onUploadSuccess, onUploadFail, options);
-  } */
-
-
-
-  // Picture Change expand modal
- /* $ionicModal.fromTemplateUrl('profileimage-modal.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-  $scope.openModal = function() {
-    $scope.modal.show();
-  };
-  $scope.closeModal = function() {
-    $scope.modal.hide();
-  };
-  // Cleanup the modal when we're done with it!
-  $scope.$on('$destroy', function() {
-    $scope.modal.remove();
-  });
-  // Execute action on hide modal
-  $scope.$on('modal.hidden', function() {
-    // Execute action
-  });
-  // Execute action on remove modal
-  $scope.$on('modal.removed', function() {
-    // Execute action
-  }); */
-

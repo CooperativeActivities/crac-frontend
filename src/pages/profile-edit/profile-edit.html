@@ -69,16 +69,16 @@
           <ion-list>
             <ion-item>
               <img item-left src="assets/img/avatar-placeholder1.png">
-              <ion-label><!--
+              <ion-label>
                 <h2>Foto aktualisieren</h2>
-                <button ion-button block icon-left>
+                <button ion-button block icon-left (click)="libraryPicture()">
                   <ion-icon name="image"></ion-icon>
                   Foto hochladen
                 </button>
-                <button ion-button block icon-left>
+                <button ion-button block icon-left (click)="cameraPicture()">
                   <ion-icon name="camera"></ion-icon>
                   Foto machen
-                </button>-->
+                </button>
               </ion-label>
             </ion-item>
           </ion-list>
