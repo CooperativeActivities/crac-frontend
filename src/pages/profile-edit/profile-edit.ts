@@ -13,12 +13,15 @@ import { UserDataService } from '../../services/user_service';
 })
 export class ProfileEditPage {
   public user: any;
+  minimumDate: string;
+  maximumDate: string;
 
   constructor(public navCtrl: NavController, public userDataService: UserDataService, public toast: ToastController) { }
 
   ngOnInit(): void {
     this.userDataService.getCurrentUser().then((res) => {
       this.user = res.object;
+      this.user.birthDate = this.getDateString(new Date(this.user.birthDate));
     }).catch((error)=>{
       console.log(error);
       this.toast.create({
@@ -26,18 +29,53 @@ export class ProfileEditPage {
         position: 'top',
         duration: 3000
       }).present();
-    })
+    });
+
+    let now = new Date();
+    now.setHours(0);
+    now.setMinutes(0);
+    now.setSeconds(0);
+    now.setMilliseconds(0);
+    this.maximumDate = this.getDateString(now);
+
+    now.setFullYear(now.getFullYear() - 80);
+    this.minimumDate = this.getDateString(now);
+  }
+
+  getDateString(d){
+    let tzo = -d.getTimezoneOffset(),
+      dif = tzo >= 0 ? '+' : '-',
+      pad = (num) => {
+        let norm = Math.abs(Math.floor(num));
+        return (norm < 10 ? '0' : '') + norm;
+      };
+    return d.getFullYear() +
+      '-' + pad(d.getMonth() + 1) +
+      '-' + pad(d.getDate()) +
+      'T' + pad(d.getHours()) +
+      ':' + pad(d.getMinutes()) +
+      ':' + pad(d.getSeconds()) +
+      dif + pad(tzo / 60) +
+      ':' + pad(tzo % 60);
+  }
+
+  toTimestamp(datestring): Number {
+    if(!datestring) return
+    if(!isNaN(datestring)) return datestring;
+    let date = Date.parse(datestring)
+    if(isNaN(date)) return
+    return date
   }
 
   save_changes(){
-    var profileData : any = {
+    let profileData : any = {
       firstName: this.user.firstName,
       lastName: this.user.lastName,
       address: this.user.address,
       phone: this.user.phone,
       email: this.user.email,
-      birthDate: this.user.birthDate,
-    }
+      birthDate: this.toTimestamp(this.user.birthDate),
+    };
 
 
     this.userDataService.updateCurrentUser(profileData).then(res => {
@@ -48,7 +86,7 @@ export class ProfileEditPage {
       }).present();
       this.navCtrl.pop()
     }, error => {
-      console.log(error)
+      console.log(error);
       this.toast.create({
         message: "Account kann nicht gespeichert werden: " + error.message,
         position: 'top',

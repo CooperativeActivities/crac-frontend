@@ -54,7 +54,8 @@
             </ion-item>
             <ion-item>
               <ion-label stacked>Geburtstag</ion-label>
-              <ion-input type="text" [(ngModel)]="user.birthDate" name="birthDate"></ion-input>
+              <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="user.birthDate" name="birthDate"
+                            [min]="minimumDate" [max]="maximumDate"></ion-datetime>
             </ion-item>
           </ion-list>
         </ion-card-content>

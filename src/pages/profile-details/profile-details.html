@@ -41,7 +41,7 @@
           </ion-item>
           <ion-item>
             <ion-label fixed>Geburtstag</ion-label>
-            <ion-label>{{user.birthDate}}</ion-label>
+            <ion-label>{{ user.birthDate | date: 'dd.MM.yyyy' }}</ion-label>
           </ion-item>
         </ion-list>
       </ion-card-content>
