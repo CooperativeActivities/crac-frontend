@@ -29,7 +29,7 @@ export class ProfileEditPage {
     })
   }
 
-  save(){
+  save_changes(){
     var profileData : any = {
       firstName: this.user.firstName,
       lastName: this.user.lastName,
@@ -41,8 +41,6 @@ export class ProfileEditPage {
 
 
     this.userDataService.updateCurrentUser(profileData).then(res => {
-      console.log(profileData);
-      console.log(res.data);
       this.toast.create({
         message: "Account gespeichert",
         position: 'top',

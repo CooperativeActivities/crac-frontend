@@ -20,7 +20,7 @@ export class ProfileDetailsPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events,
               public userDataService: UserDataService, public toast: ToastController) {}
 
-  ngOnInit(): void {
+  ionViewDidEnter(){
     let friendReq = this.navParams.get("friendRequest");
     if(friendReq !== undefined) {
       this.friendNotificationId = friendReq;
@@ -32,6 +32,7 @@ export class ProfileDetailsPage {
     } else {
       this.isCurrentUser = true;
     }
+
     this.doRefresh();
   }
 

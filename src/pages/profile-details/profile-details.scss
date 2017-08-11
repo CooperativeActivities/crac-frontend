@@ -1,5 +1,13 @@
 page-profile-details {
   .user-details {
+    .item-block {
+      align-items: flex-start;
+      -webkit-align-items: flex-start;
+      -ms-flex-align: start;
+    }
+    ion-label {
+      white-space: normal;
+    }
     .item,
     .item-ios,
     .item-md {
