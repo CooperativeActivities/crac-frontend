@@ -106,8 +106,8 @@ export class TaskEditPage {
     console.log(this.navParams)
     if (this.navParams.data.address != null) {
       this.task.address = this.navParams.data.address;
-      this.task.lat = this.navParams.data.lat;
-      this.task.lng = this.navParams.data.lng;
+      this.task.geoLat = this.navParams.data.lat;
+      this.task.geoLng = this.navParams.data.lng;
       console.log("Import Address: " + this.navParams.data.address + " | lat: " + this.navParams.data.lat + " / lng: " + this.navParams.data.lng);
     }
   }
@@ -175,8 +175,8 @@ export class TaskEditPage {
       {
        id: this.taskId,
        address: this.task.address,
-       lat: this.task.lat,
-       lng: this.task.lng
+       lat: this.task.geoLat,
+       lng: this.task.geoLng
      });
   }
 
@@ -223,8 +223,8 @@ export class TaskEditPage {
     if(this.task.description) taskData.description = this.task.description;
     if(this.task.location) taskData.location = this.task.location;
     if(this.task.address) taskData.address = this.task.address;
-    if(this.task.lat) taskData.lat = this.task.lat;
-    if(this.task.lng) taskData.lng = this.task.lng;
+    if(this.task.geoLat) taskData.geoLat = this.task.geoLat;
+    if(this.task.geoLng) taskData.geoLng = this.task.geoLng;
     if(this.task.minAmountOfVolunteers) taskData.minAmountOfVolunteers = this.task.minAmountOfVolunteers;
     taskData.taskType = this.task.taskType;
     taskData.taskState = this.task.taskState;

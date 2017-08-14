@@ -144,8 +144,8 @@ export class TaskDetailPage {
     this.navCtrl.push('map-view', {
       id: this.taskId,
       address: this.task.address,
-      lat: this.task.lat,
-      lng: this.task.lng
+      lat: this.task.geoLat,
+      lng: this.task.geoLng
     });
 
   }
