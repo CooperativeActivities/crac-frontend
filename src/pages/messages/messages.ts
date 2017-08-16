@@ -32,6 +32,10 @@ export class MessagesPage {
     this.navCtrl.push('evaluation-detail', {taskId: notification.taskId, evalId: notification.evaluationId});
   }
 
+  viewProfile(userId, notificationId) {
+    this.navCtrl.push('profile-details', {id: userId, friendRequest: notificationId});
+  }
+
   accept(notification){
     this.userDataService.acceptNotification(notification.notificationId).then(() => {
       this.removeNotification(notification);

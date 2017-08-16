@@ -5,40 +5,45 @@
 </ion-header>
 
 <ion-content>
-  <ion-card>
-    <ion-card-header>
+  <collapsible-card [shown]="true">
+    <div card-header>
       Freunde
-    </ion-card-header>
-    <ion-card-content>
+    </div>
+    <div card-content>
       <ion-list>
-        <ion-item *ngFor="let friend of friends">
-          {{ friend.name }}</ion-item>
+        <ion-item *ngFor="let friend of friends" (click)="viewProfile(friend.id)">
+          {{ friend.firstName }} {{ friend.lastName }}</ion-item>
         <ion-item *ngIf="friends.length < 1">
           Du hast noch keine Freunde.
         </ion-item>
       </ion-list>
-    </ion-card-content>
-  </ion-card>
+    </div>
+  </collapsible-card>
 
-  <ion-card>
-    <ion-card-header>
+  <collapsible-card>
+    <div card-header>
       Neue Freundschaftsanfrage
-    </ion-card-header>
-    <ion-card-content>
+    </div>
+    <div card-content>
       <ion-list>
         <ion-item>
-          <ion-label stacked>User</ion-label>
-          <ion-select [(ngModel)]="userToSendRequestTo" name="userToSendRequestTo">
-            <ion-option *ngFor="let user of allUsers" value="{{user.id}}"> {{ user.name }} </ion-option>
-          </ion-select>
+          <ion-searchbar (ionInput)="filterUsers($event)"></ion-searchbar>
         </ion-item>
+        <ion-item *ngFor="let u of userList">
+          <ion-checkbox [(ngModel)]="u.checked"></ion-checkbox>
+          <ion-label>{{u.firstName}} {{u.lastName}}</ion-label>
+          <button ion-button item-end clear icon-only (click)="viewProfile(u.id)">
+            <ion-icon name="person" color="dark"></ion-icon>
+          </button>
+          </ion-item>
         <ion-item>
-          <button ion-button (click)="sendRequest()" block color="light" icon-left>
+          <button ion-button block icon-left
+                  (click)="sendRequests()" [disabled]="allUsers.filter(getSelected).length < 1">
             <ion-icon name="add"></ion-icon>
             Versenden
           </button>
         </ion-item>
       </ion-list>
-    </ion-card-content>
-  </ion-card>
+    </div>
+  </collapsible-card>
 </ion-content>
