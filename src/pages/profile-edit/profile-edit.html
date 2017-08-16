@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Profil bearbeiten</ion-title>
+  </ion-navbar>
+  <ion-toolbar>
+    <div class="toolbar-buttons">
+      <button ion-button (click)="cancel()" color="light" block icon-left>
+        <ion-icon name="close"></ion-icon>
+        Abbrechen
+      </button>
+      <button ion-button (click)="save_changes()" color="secondary" block icon-left>
+        <ion-icon name="checkmark"></ion-icon>
+        Speichern
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ng-template [ngIf]="user != undefined">
+    <form name="userForm" onsubmit="event.preventDefault" novalidate>
+      <ion-card>
+        <ion-card-header>
+          Userinformation
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-list>
+            <ion-item>
+              <ion-label stacked>Username</ion-label>
+              <ion-input type="text" [(ngModel)]="user.name" name="name"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>Email</ion-label>
+              <ion-input type="email" [(ngModel)]="user.email" name="email"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>Vorname</ion-label>
+              <ion-input type="text" [(ngModel)]="user.firstName" name="firstName"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>Nachname</ion-label>
+              <ion-input type="text" [(ngModel)]="user.lastName" name="lastName"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>Adresse</ion-label>
+              <ion-input type="text" [(ngModel)]="user.address" name="address"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>Telefonnummer</ion-label>
+              <ion-input type="text" [(ngModel)]="user.phone" name="phone"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>Geburtstag</ion-label>
+              <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="user.birthDate" name="birthDate"
+                            [min]="minimumDate" [max]="maximumDate"></ion-datetime>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <ion-card-header>
+          Profilfoto
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list>
+            <ion-item>
+              <img item-left src="assets/img/avatar-placeholder1.png">
+              <ion-label><!--
+                <h2>Foto aktualisieren</h2>
+                <button ion-button block icon-left>
+                  <ion-icon name="image"></ion-icon>
+                  Foto hochladen
+                </button>
+                <button ion-button block icon-left>
+                  <ion-icon name="camera"></ion-icon>
+                  Foto machen
+                </button>-->
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </form>
+  </ng-template>
+</ion-content>

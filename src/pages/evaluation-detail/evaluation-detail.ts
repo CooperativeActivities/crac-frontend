@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
+import {Events, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import { TaskDataService } from '../../services/task_service';
 
 @IonicPage({
@@ -19,8 +19,8 @@ export class EvaluationDetailPage {
   othersVal: number = 0;
   taskVal: number = 3;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastController,
-              public taskDataService: TaskDataService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public events: Events,
+              public toast: ToastController, public taskDataService: TaskDataService) {
     this.taskId = navParams.data.taskId;
     this.evalId = navParams.data.evalId;
   }
@@ -73,6 +73,7 @@ export class EvaluationDetailPage {
 
     this.taskDataService.evaluateTask(this.evalId, vals)
       .then((res) => {
+        this.events.publish('notification:remove');
         this.navCtrl.push('my-tasks');
       }, (error) => {
         this.toast.create({

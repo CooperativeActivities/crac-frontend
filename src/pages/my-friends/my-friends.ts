@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, ToastController} from 'ionic-angular';
+import {IonicPage, NavController, ToastController} from 'ionic-angular';
 import {UserDataService} from "../../services/user_service";
 
 @IonicPage({
@@ -11,12 +11,12 @@ import {UserDataService} from "../../services/user_service";
   providers: [UserDataService]
 })
 export class MyFriendsPage {
+  friends: Array<any> = [];
+  allUsers: Array<any> = [];
+  userList: Array<any> = [];
+  currentUser: any;
 
-  friends : Array<any> = [];
-  allUsers : Array<any> = [];
-  userToSendRequestTo : any = null;
-
-  constructor(public userDataService: UserDataService, public toast: ToastController) {
+  constructor(public userDataService: UserDataService, public navCtrl: NavController, public toast: ToastController) {
     this.doRefresh();
   }
 
@@ -24,20 +24,75 @@ export class MyFriendsPage {
     console.log('ionViewDidLoad MyFriendsPage');
   }
 
-  sendRequest() {
-    let self = this;
-    if (!self.userToSendRequestTo) return;
+  getSelected(user) {
+    return user.checked;
+  }
 
-    self.userDataService.friendRequest(self.userToSendRequestTo)
-    .then(function (res) {
-      self.toast.create({
+  getAvailable(user) {
+    let userIdx = this.friends.findIndex((u) => {
+      return u.id === user.id
+    });
+    return userIdx === -1 && user.id !== this.currentUser.id;
+  }
+
+  resetSelections(requests) {
+    for(let user of requests) {
+      let userIdx = this.allUsers.findIndex((u) => {
+        return u.id === user.id;
+      });
+      if( userIdx !== -1) {
+        this.allUsers.splice(userIdx, 1);
+      }
+    }
+
+    for(let user of this.allUsers) {
+      user.checked = false;
+    }
+
+    this.userList = this.allUsers;
+  }
+
+  filterUsers(ev:any) {
+    // Reset items back to all of the items
+    this.userList = this.allUsers;
+
+    // set val to the value of the searchbar
+    let val = ev.target.value;
+
+    // if the value is an empty string don't filter the items
+    if (val && val.trim() != '') {
+      this.userList = this.allUsers.filter((item) => {
+        let name = item.firstName + " " + item.lastName;
+        return (name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    }
+  }
+
+  sendRequests() {
+    let friendRequests = this.allUsers.filter(this.getSelected);
+    let promises = [];
+    for(let newFriend of friendRequests) {
+      promises.push(this.userDataService.friendRequest(newFriend.id));
+    }
+    if(promises.length === 0) {
+      this.toast.create({
+        message: "Bitte wenigstens einen User auswählen",
+        position: 'top',
+        duration: 3000
+      }).present();
+
+      return false;
+    }
+
+    Promise.all(promises).then((res) => {
+      this.toast.create({
         message: "Freundschaftsanfrage versandt",
         position: 'top',
         duration: 3000
       }).present();
-      self.userToSendRequestTo = null;
-    }, function (error) {
-      self.toast.create({
+      this.resetSelections(friendRequests);
+    }, (error) => {
+      this.toast.create({
         message: "Freundschaftsanfrage fehlgeschlagen: " + error.message,
         position: 'top',
         duration: 3000
@@ -46,26 +101,47 @@ export class MyFriendsPage {
   }
 
   doRefresh(){
-    let self = this;
+    let promises = [];
 
-    self.userDataService.getFriends().then(function(res){
-      self.friends = res.object
-    }, function(error){
-      self.toast.create({
-        message: "Freunde können nicht geladen werden: " + error.message,
-        position: 'top',
-        duration: 3000
-      }).present();
+    promises.push(this.userDataService.getCurrentUser().then((res) => {
+        this.currentUser = res.object;
+      },(error) => {
+        this.toast.create({
+          message: "Benutzerinfo können nicht geladen werden: " + error.message,
+          position: 'top',
+          duration: 3000
+        }).present();
+      })
+    );
+    promises.push(
+      this.userDataService.getFriends().then((res) => {
+        this.friends = res.object;
+      },(error) => {
+        this.toast.create({
+          message: "Freunde können nicht geladen werden: " + error.message,
+          position: 'top',
+          duration: 3000
+        }).present();
+      })
+    );
+
+    Promise.all(promises).then((res) => {
+      this.userDataService.getAllUsers().then((res) => {
+        this.allUsers = res.object.filter((u) => {
+          return this.getAvailable(u);
+        });
+        this.userList = this.allUsers;
+      }, (error) => {
+        this.toast.create({
+          message: "Benutzer können nicht geladen werden: " + error.message,
+          position: 'top',
+          duration: 3000
+        }).present();
+      });
     });
+  }
 
-    self.userDataService.getAllUsers().then(function(res){
-      self.allUsers = res.object
-    }, function(error){
-      self.toast.create({
-        message: "Benutzer können nicht geladen werden: " + error.message,
-        position: 'top',
-        duration: 3000
-      }).present();
-    })
+  viewProfile(friendId) {
+    this.navCtrl.push('profile-details', {id: friendId});
   }
 }

@@ -13,14 +13,19 @@
         <ion-item>
           <p>Keine vorgeschlagene Aufgaben gefunden.</p>
           <p>
-            <button ion-button block (click)="navCtrl.push('my-competences')">
-              Kompetenzen aktualisieren
+            <button ion-button block (click)="navCtrl.push('competence-add')">
+              Kompetenzen hinzufügen
             </button>
+          </p>
+        </ion-item>
+        <ion-item>
+          <p>Andere Aufgaben anschauen:</p>
+          <p>
             <button ion-button block (click)="navCtrl.push('my-history')">
-              Vergangene Aufgaben anschauen
+              Vergangene Aufgaben
             </button>
             <button ion-button block (click)="navCtrl.push('task-list')">
-              Alle Aufgaben anschauen
+              Alle Aufgaben
             </button>
           </p>
         </ion-item>

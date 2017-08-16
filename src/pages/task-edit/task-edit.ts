@@ -32,7 +32,8 @@ export class TaskEditPage {
   invitedGroups: Array<any> = [];
   restrictiveToGroups: boolean = false;
   invitedPeople: Array<any> = [];
-  competenceArea: any;
+  competenceArea: any = null;
+  competenceAreaId: number = -1;
   competenceAreaList: Array<any> = [];
   availableCompetences: Array<any> = [];
   materials: any = {
@@ -50,6 +51,8 @@ export class TaskEditPage {
   };
   competences: any = {
     newObj: {
+      id: -1,
+      mandatory: false,
       neededProficiencyLevel: 50
     },
     toAdd: [],
@@ -60,13 +63,25 @@ export class TaskEditPage {
   showDelete: boolean = false;
   showPublish: boolean = false;
   showUnpublish: boolean = false;
+  minimumDate: string;
+  maximumDate: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public toast: ToastController, public alert: AlertController, public modal: ModalController,
               public taskDataService: TaskDataService, public userDataService: UserDataService) {
     this.taskId = navParams.get("id");
     this.parentId = navParams.get("parentId");
-    console.log(this.taskId);
+
+    let now = new Date();
+    now.setHours(0);
+    now.setMinutes(0);
+    now.setSeconds(0);
+    now.setMilliseconds(0);
+    this.minimumDate = this.getDateString(now);
+
+    now.setFullYear(now.getFullYear() + 4);
+    this.maximumDate = this.getDateString(now);
+
     if(this.taskId !== undefined) {
       this.pageTitle = 'Aufgabe Bearbeiten';
       this.isNewTask = false;
@@ -78,7 +93,7 @@ export class TaskEditPage {
         taskCompetences: [],
         childTasks: [],
         materials: []
-      }
+      };
 
       if (this.parentId) {
         this.isChildTask = true;
@@ -88,13 +103,7 @@ export class TaskEditPage {
         this.isChildTask = false;
         this.pageTitle = "Aufgabe Erstellen";
 
-        let now = new Date();
-        now.setHours(0);
-        now.setMinutes(0);
-        now.setSeconds(0);
-        now.setMilliseconds(0);
-        let str = this.getDateString(now);
-        this.task.startTime = str;
+        this.task.startTime = this.minimumDate;
       }
     }
   }
@@ -103,8 +112,8 @@ export class TaskEditPage {
     console.log(this.navParams)
     if (this.navParams.data.address != null) {
       this.task.address = this.navParams.data.address;
-      this.task.lat = this.navParams.data.lat;
-      this.task.lng = this.navParams.data.lng;
+      this.task.geoLat = this.navParams.data.lat;
+      this.task.geoLng = this.navParams.data.lng;
       console.log("Import Address: " + this.navParams.data.address + " | lat: " + this.navParams.data.lat + " / lng: " + this.navParams.data.lng);
     }
   }
@@ -172,8 +181,8 @@ export class TaskEditPage {
       {
        id: this.taskId,
        address: this.task.address,
-       lat: this.task.lat,
-       lng: this.task.lng
+       lat: this.task.geoLat,
+       lng: this.task.geoLng
      });
   }
 
@@ -220,8 +229,8 @@ export class TaskEditPage {
     if(this.task.description) taskData.description = this.task.description;
     if(this.task.location) taskData.location = this.task.location;
     if(this.task.address) taskData.address = this.task.address;
-    if(this.task.lat) taskData.lat = this.task.lat;
-    if(this.task.lng) taskData.lng = this.task.lng;
+    if(this.task.geoLat) taskData.geoLat = this.task.geoLat;
+    if(this.task.geoLng) taskData.geoLng = this.task.geoLng;
     if(this.task.minAmountOfVolunteers) taskData.minAmountOfVolunteers = this.task.minAmountOfVolunteers;
     taskData.taskType = this.task.taskType;
     taskData.taskState = this.task.taskState;
@@ -525,7 +534,13 @@ export class TaskEditPage {
   }
 
   getCompetencesForArea(newValue){
-    if(newValue === -1) return;
+    if(newValue === null) return;
+    this.competences.newObj = {
+      id: -1,
+      mandatory: false,
+      neededProficiencyLevel: 50
+    };
+
     this.userDataService.getCompetencesForArea(newValue)
       .then((res) => {
         if(res.object.mappedCompetences.length === 0) {
@@ -536,6 +551,7 @@ export class TaskEditPage {
           }).present();
           return;
         } else {
+          this.competenceAreaId = newValue.id;
           this.availableCompetences = _.orderBy(res.meta.competences, [ "name" ])
         }
       }, (error) => {
@@ -573,9 +589,12 @@ export class TaskEditPage {
 
   closeAddCompetence() {
     this.competences.newObj = {
+      id: -1,
+      mandatory: false,
       neededProficiencyLevel: 50
     };
     this.competenceArea = null;
+    this.competenceAreaId = -1;
     this.addNewCompetence = false;
   }
 
