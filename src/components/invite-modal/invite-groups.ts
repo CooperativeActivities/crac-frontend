@@ -21,7 +21,7 @@ export class InviteGroups {
     this.restrictive = this.params.get('restrictive');
 
     this.userDataService.getAllGroups().then((res) => {
-      let invitedGroups = this.params.get('invites');
+      let invitedGroups = this.initState.invites;
 
       this.groups = res.object;
       if(invitedGroups.length > 0) {
@@ -36,7 +36,7 @@ export class InviteGroups {
       }
     }, (error) => {
       this.toast.create({
-        message: "Gruppen konnte nicht geladen werden: " + error.message,
+        message: "Gruppen konnten nicht geladen werden: " + error.message,
         position: 'top',
         duration: 3000
       }).present();
