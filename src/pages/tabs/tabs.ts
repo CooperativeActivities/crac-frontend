@@ -40,7 +40,7 @@ export class TabsPage {
   getNotifications() {
     this.userDataService.getNotification().then((res) => {
       let notifications = res.object.filter((n) => {
-        return n.name === 'Friend Request' || n.name === 'Evaluation';
+        return n.name === 'Friend Request' || n.name === 'Evaluation' || n.name === 'Task Invitation';
       });
       this.notificationCount = notifications.length;
     }, function(error) {

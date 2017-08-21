@@ -25,15 +25,37 @@ export class MessagesPage {
   }
 
   getVisibleNotifications(n) {
-    return n.name === 'Friend Request' || n.name === 'Evaluation';
+    return n.name === 'Friend Request' || n.name === 'Evaluation' || n.name === 'Task Invitation';
   }
 
   evaluate(notification) {
     this.navCtrl.push('evaluation-detail', {taskId: notification.taskId, evalId: notification.evaluationId});
   }
 
+  joinTask(notification) {
+    this.userDataService.acceptNotification(notification.notificationId).then(() => {
+      this.removeNotification(notification);
+      this.toast.create({
+        message: "Aufgabe teilgenommen",
+        duration: 3000,
+        position: 'top'
+      }).present();
+      this.navCtrl.push('task-detail', {id: notification.taskId});
+    }, (error) => {
+      this.toast.create({
+        message: "An der Aufgabe kann nicht teilgenommen werden: " + error.message,
+        duration: 3000,
+        position: 'top'
+      }).present();
+    });
+  }
+
   viewProfile(userId, notificationId) {
     this.navCtrl.push('profile-details', {id: userId, friendRequest: notificationId});
+  }
+
+  viewTask(taskId, notificationId) {
+    this.navCtrl.push('task-detail', {id: taskId, invite: notificationId})
   }
 
   accept(notification){

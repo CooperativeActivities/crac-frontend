@@ -44,6 +44,27 @@
               </button>
             </p>
           </div>
+
+          <div *ngIf="notification.name === 'Task Invitation'">
+            <p text-wrap>
+              Aufgabeeinladung: {{notification.taskId}}
+            </p>
+            <br>
+            <p text-wrap>
+              <button ion-button (click)="joinTask(notification)" color="secondary" icon-left>
+                <ion-icon name="checkmark"></ion-icon>
+                Ich arbeite mit
+              </button>
+              <button ion-button (click)="decline(notification)" color="danger" icon-left>
+                <ion-icon name="close"></ion-icon>
+                Ablehnen
+              </button>
+              <button ion-button (click)="viewTask(notification.taskId, notification.notificationId)" color="light" icon-left>
+                <ion-icon name=""></ion-icon>
+                Aufgabedetails anschauen
+              </button>
+            </p>
+          </div>
         </ion-item>
         <p *ngIf="notifications.filter(getVisibleNotifications).length < 1">
           Nichts hier.
