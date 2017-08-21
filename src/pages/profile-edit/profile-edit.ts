@@ -79,10 +79,11 @@ export class ProfileEditPage {
     return date
   }
 
-  takePicture(sourceType) {
+  takePicture(sourceType, destinationType) {
     let options = {
       quality: 100,
       sourceType: sourceType,
+      destinationType: destinationType,
       saveToPhotoAlbum: false,
       correctOrientation: true
     };
@@ -90,17 +91,23 @@ export class ProfileEditPage {
     // Get the data of an image
     this.camera.getPicture(options).then((imagePath) => {
       // Special handling for Android library
-      if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-        this.filePath.resolveNativePath(imagePath)
-          .then(filePath => {
-            let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-            let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-            this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
-          });
-      } else {
-        let currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-        let correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-        this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+      if(destinationType === this.camera.DestinationType.FILE_URI) {
+        if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+          this.filePath.resolveNativePath(imagePath)
+            .then(filePath => {
+              let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+              let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+              this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+            });
+        } else {
+          let currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+          let correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+          this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+        }
+      }
+      else
+      {
+        console.log(imagePath);
       }
     }, (err) => {
       console.log(err);
@@ -142,11 +149,19 @@ export class ProfileEditPage {
   }
 
   libraryPicture() {
-    this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+    if(this.platform.is('core')) {
+      this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY, this.camera.DestinationType.DATA_URL);
+    } else {
+      this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY, this.camera.DestinationType.FILE_URI);
+    }
   }
 
   cameraPicture() {
-    this.takePicture(this.camera.PictureSourceType.CAMERA);
+    if(this.platform.is('core')) {
+      this.takePicture(this.camera.PictureSourceType.CAMERA, this.camera.DestinationType.DATA_URL);
+    } else {
+      this.takePicture(this.camera.PictureSourceType.CAMERA, this.camera.DestinationType.FILE_URI);
+    }
   }
 
   uploadImage() {
