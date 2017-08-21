@@ -370,6 +370,9 @@ export class TaskEditPage {
     for(let g of this.invitedGroups) {
       promises.push(this.taskDataService.inviteGroupToTask(task.id, g.id));
     }
+    for(let p of this.invitedPeople) {
+      promises.push(this.taskDataService.inviteUserToTask(task.id, p.id));
+    }
 
     return Promise.all(promises);
   }
@@ -488,13 +491,14 @@ export class TaskEditPage {
   }
 
   openPeopleInviteForm() {
-    let inviteModal = this.modal.create(InvitePeople, this.invitedPeople);
+    let inviteModal = this.modal.create(InvitePeople, {invites: this.invitedPeople});
     inviteModal.onDidDismiss(data => {
       if(data === null) {
         console.log('empty');
       }
       else {
         console.log(data);
+        this.invitedPeople = data.invites;
       }
     });
     inviteModal.present();

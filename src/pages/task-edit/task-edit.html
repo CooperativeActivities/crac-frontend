@@ -89,7 +89,11 @@
               </ion-item>
               <ion-item class="item item-input item-stacked-label" no-padding>
                 <label>Personen</label>
-                <p text-wrap *ngIf="false">Person 1, Person 2</p>
+                <p text-wrap *ngIf="invitedPeople?.length > 0">
+                  <span *ngFor="let person of invitedPeople; let i = index">
+                    {{person.firstName}} {{person.lastName}}<span *ngIf="i < invitedPeople.length - 1">,</span>
+                  </span>
+                </p>
                 <button ion-button item-right *ngIf="true" (click)="openPeopleInviteForm()">
                   Einladen
                 </button>
