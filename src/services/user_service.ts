@@ -109,4 +109,9 @@ export class UserDataService {
   friendRequest (userId) {
     return this.helpers.ajax("user/" + userId + "/friend", "get");
   }
+
+  //attach an image
+  uploadProfileImage(formData) {
+    return this.helpers.ajax('attachmentUl/addFile','put',{payload: formData});
+  }
 }

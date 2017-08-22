@@ -108,7 +108,32 @@ export class ProfileEditPage {
       }
       else
       {
-        this.profileImg = 'data:image/jpeg;base64,' + imagePath;
+        let newImg = 'data:image/jpeg;base64,' + imagePath;
+        let form = document.getElementById('uploadForm');
+        let block = newImg.split(';');
+        let contentType = block[0].split(':')[1];
+        let realData = block[1].split(',')[1];
+        let blob = this.b64toBlob(realData, contentType);
+        let formData = new FormData(<HTMLFormElement>form);
+        formData.append('uploadFile', blob);
+        console.log(formData);
+        this.userDataService.uploadProfileImage(formData).then((res) => {
+          console.log(res);
+          this.profileImg = newImg;
+
+          this.toast.create({
+            message: "Foto hochgeladen",
+            position: 'top',
+            duration: 3000
+          }).present();
+        }, (err) => {
+          console.log(err);
+          this.toast.create({
+            message: "Foto konnte nicht hochgeladen werden: " + err.message,
+            position: 'top',
+            duration: 3000
+          }).present();
+        });
       }
     }, (err) => {
       console.log(err);
@@ -118,6 +143,30 @@ export class ProfileEditPage {
         duration: 3000
       }).present();
     });
+  }
+
+  b64toBlob(b64Data, contentType) {
+    contentType = contentType || '';
+    let sliceSize = 512;
+
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      var byteNumbers = new Array(slice.length);
+      for (var i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      var byteArray = new Uint8Array(byteNumbers);
+
+      byteArrays.push(byteArray);
+    }
+
+    var blob = new Blob(byteArrays, {type: contentType});
+    return blob;
   }
 
   // Create a new name for the image
