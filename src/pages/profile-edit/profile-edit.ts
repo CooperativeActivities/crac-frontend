@@ -108,33 +108,37 @@ export class ProfileEditPage {
       }
       else
       {
-        let newImg = 'data:image/jpeg;base64,' + imagePath;
-        let form = document.getElementById('uploadForm');
-        let block = newImg.split(';');
-        let contentType = block[0].split(':')[1];
-        let realData = block[1].split(',')[1];
-        let blob = this.b64toBlob(realData, contentType);
-        let formData = new FormData(<HTMLFormElement>form);
-        formData.append('uploadFile', blob);
-        console.log(formData);
-        this.userDataService.uploadProfileImage(formData).then((res) => {
-          console.log(res);
-          this.profileImg = newImg;
-
-          this.toast.create({
-            message: "Foto hochgeladen",
-            position: 'top',
-            duration: 3000
-          }).present();
-        }, (err) => {
-          console.log(err);
-          this.toast.create({
-            message: "Foto konnte nicht hochgeladen werden: " + err.message,
-            position: 'top',
-            duration: 3000
-          }).present();
-        });
+        this.uploadBase64(imagePath);
       }
+    }, (err) => {
+      console.log(err);
+      this.toast.create({
+        message: "Foto konnte nicht hochgeladen werden: " + err.message,
+        position: 'top',
+        duration: 3000
+      }).present();
+    });
+  }
+
+  uploadBase64(img) {
+    let b64img = 'data:image/jpeg;base64,' + img;
+    let form = document.getElementById('uploadForm');
+    let block = b64img.split(';');
+    let contentType = block[0].split(':')[1];
+    let realData = block[1].split(',')[1];
+    let blob = this.b64toBlob(realData, contentType);
+    let formData = new FormData(<HTMLFormElement>form);
+    formData.append('uploadFile', blob);
+    console.log(formData);
+    this.userDataService.uploadProfileImage(formData).then((res) => {
+      console.log(res);
+      this.profileImg = b64img;
+
+      this.toast.create({
+        message: "Foto hochgeladen",
+        position: 'top',
+        duration: 3000
+      }).present();
     }, (err) => {
       console.log(err);
       this.toast.create({
@@ -149,14 +153,14 @@ export class ProfileEditPage {
     contentType = contentType || '';
     let sliceSize = 512;
 
-    var byteCharacters = atob(b64Data);
-    var byteArrays = [];
+    let byteCharacters = atob(b64Data);
+    let byteArrays = [];
 
-    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-      var slice = byteCharacters.slice(offset, offset + sliceSize);
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      let slice = byteCharacters.slice(offset, offset + sliceSize);
 
-      var byteNumbers = new Array(slice.length);
-      for (var i = 0; i < slice.length; i++) {
+      let byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
         byteNumbers[i] = slice.charCodeAt(i);
       }
 
@@ -165,7 +169,7 @@ export class ProfileEditPage {
       byteArrays.push(byteArray);
     }
 
-    var blob = new Blob(byteArrays, {type: contentType});
+    let blob = new Blob(byteArrays, {type: contentType});
     return blob;
   }
 
