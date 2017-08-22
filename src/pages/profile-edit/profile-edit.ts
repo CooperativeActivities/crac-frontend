@@ -21,6 +21,7 @@ declare let cordova: any;
 
 export class ProfileEditPage {
   public user: any;
+  profileImg: string = 'assets/img/avatar-placeholder1.png';
   minimumDate: string;
   maximumDate: string;
 
@@ -107,7 +108,7 @@ export class ProfileEditPage {
       }
       else
       {
-        console.log(imagePath);
+        this.profileImg = 'data:image/jpeg;base64,' + imagePath;
       }
     }, (err) => {
       console.log(err);
