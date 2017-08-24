@@ -108,3 +108,13 @@ ion-card[task-list]{
 textarea.text-input {
   max-width: calc(100% - 8px);
 }
+
+.form-error {
+  color: color($colors, danger);
+  font-size: 0.9em;
+  min-height: 0;
+
+  ion-label {
+    margin: 2px 0;
+  }
+}
