@@ -188,14 +188,22 @@ export class TaskEditPage {
     return date
   }
 
+  areLawsOfTimeFollowed() {
+    let startTime = this.toTimestamp(this.task.startTime);
+    let endTime = this.toTimestamp(this.task.endTime);
+
+    if(!endTime || startTime <= endTime) {
+      return true;
+    }
+    return false;
+  }
+
   getProcessedTaskData() {
     let taskData : any = {};
-
     taskData.name = this.task.name;
 
-    let startTime = this.toTimestamp(this.task.startTime)
-    let endTime = this.toTimestamp(this.task.endTime)
-    // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
+    let startTime = this.toTimestamp(this.task.startTime);
+    let endTime = this.toTimestamp(this.task.endTime);
 
     if(!startTime){
       this.toast.create({
@@ -208,7 +216,7 @@ export class TaskEditPage {
     if(!endTime){
       endTime = startTime
     }
-    if(endTime < startTime){
+    if(!this.areLawsOfTimeFollowed()){
       this.toast.create({
         message: "Aufgabe kann nicht gespeichert werden: " + "Startdatum muss vor Enddatum liegen!",
         duration: 3000,
@@ -217,8 +225,9 @@ export class TaskEditPage {
       return;
     }
 
-    taskData.startTime = startTime
-    taskData.endTime = endTime
+
+    taskData.startTime = startTime;
+    taskData.endTime = endTime;
 
     if(this.task.description) taskData.description = this.task.description;
     if(this.task.location) taskData.location = this.task.location;

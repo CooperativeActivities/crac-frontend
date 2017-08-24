@@ -101,7 +101,7 @@
           <ion-grid no-padding>
             <ion-row>
               <ion-col no-padding>
-                <ion-item>
+                <ion-item [ngClass]="{'ng-invalid': (areLawsOfTimeFollowed() === false)}">
                   <ion-label stacked>Enddatum</ion-label>
                   <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="task.endTime" name="endTime"
                                 [min]="minimumDate" [max]="maximumDate">
@@ -121,6 +121,9 @@
               </ion-col>
             </ion-row>
           </ion-grid>
+          <ion-item *ngIf="areLawsOfTimeFollowed() === false" class="form-error">
+            Startdatum muss vor Enddatum liegen.
+          </ion-item>
           <ion-item>
             <button ion-button icon-only (click)="openMap()" item-right>
               <ion-icon name="locate"></ion-icon>
