@@ -50,7 +50,7 @@
           <ion-item>
             <ion-label stacked>Titel*</ion-label>
             <ion-input type="text" [(ngModel)]="task.name" name="name" #name="ngModel" required></ion-input>
-            <ion-icon item-end name="close" color="danger"
+            <ion-icon item-end name="alert" color="danger"
                       *ngIf="(name.touched || name.dirty) && name.invalid"></ion-icon>
           </ion-item>
           <ion-item *ngIf="(name.touched || name.dirty) && name.invalid && name.errors.required" class="form-error">
@@ -101,7 +101,7 @@
           <ion-grid no-padding>
             <ion-row>
               <ion-col no-padding>
-                <ion-item [ngClass]="{'ng-invalid': (areLawsOfTimeFollowed() === false)}">
+                <ion-item [ngClass]="{'ng-invalid': !areLawsOfTimeFollowed(), 'ng-valid': areLawsOfTimeFollowed()}">
                   <ion-label stacked>Enddatum</ion-label>
                   <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="task.endTime" name="endTime"
                                 [min]="minimumDate" [max]="maximumDate">
@@ -112,16 +112,19 @@
                 <ion-item *ngIf="!hasEndTime">
                   <a (click)="hasEndTime = true">Zeitpunkt hinzufügen</a>
                 </ion-item>
-                <ion-item *ngIf="hasEndTime">
+                <ion-item *ngIf="hasEndTime"
+                          [ngClass]="{'ng-invalid': !areLawsOfTimeFollowed(), 'ng-valid': areLawsOfTimeFollowed()}">
                   <ion-label stacked>Endzeit</ion-label>
                   <ion-datetime displayFormat="HH:mm" [(ngModel)]="task.endTime" name="endTime"
                                 [min]="minimumDate" [max]="maximumDate">
                   </ion-datetime>
+                  <ion-icon item-end name="alert" color="danger"
+                            *ngIf="!areLawsOfTimeFollowed()"></ion-icon>
                 </ion-item>
               </ion-col>
             </ion-row>
           </ion-grid>
-          <ion-item *ngIf="areLawsOfTimeFollowed() === false" class="form-error">
+          <ion-item *ngIf="!areLawsOfTimeFollowed()" class="form-error">
             Startdatum muss vor Enddatum liegen.
           </ion-item>
           <ion-item>

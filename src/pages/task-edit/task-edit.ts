@@ -189,10 +189,7 @@ export class TaskEditPage {
   }
 
   areLawsOfTimeFollowed() {
-    let startTime = this.toTimestamp(this.task.startTime);
-    let endTime = this.toTimestamp(this.task.endTime);
-
-    if(!endTime || startTime <= endTime) {
+    if(!this.task.endTime || this.task.startTime <= this.task.endTime) {
       return true;
     }
     return false;
