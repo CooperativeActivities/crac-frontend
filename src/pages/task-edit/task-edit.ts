@@ -188,8 +188,8 @@ export class TaskEditPage {
     return date
   }
 
-  areLawsOfTimeFollowed() {
-    if(!this.task.endTime || this.task.startTime <= this.task.endTime) {
+  areLawsOfTimeFollowed(start, end) {
+    if(!end || start <= end) {
       return true;
     }
     return false;
@@ -213,7 +213,7 @@ export class TaskEditPage {
     if(!endTime){
       endTime = startTime
     }
-    if(!this.areLawsOfTimeFollowed()){
+    if(!this.areLawsOfTimeFollowed(startTime, endTime)){
       this.toast.create({
         message: "Aufgabe kann nicht gespeichert werden: " + "Startdatum muss vor Enddatum liegen!",
         duration: 3000,

@@ -101,7 +101,7 @@
           <ion-grid no-padding>
             <ion-row>
               <ion-col no-padding>
-                <ion-item [ngClass]="{'ng-invalid': !areLawsOfTimeFollowed(), 'ng-valid': areLawsOfTimeFollowed()}">
+                <ion-item [ngClass]="{'ng-invalid': !areLawsOfTimeFollowed(task.startTime, task.endTime), 'ng-valid': areLawsOfTimeFollowed(task.startTime, task.endTime)}">
                   <ion-label stacked>Enddatum</ion-label>
                   <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="task.endTime" name="endTime"
                                 [min]="minimumDate" [max]="maximumDate">
@@ -113,18 +113,18 @@
                   <a (click)="hasEndTime = true">Zeitpunkt hinzufügen</a>
                 </ion-item>
                 <ion-item *ngIf="hasEndTime"
-                          [ngClass]="{'ng-invalid': !areLawsOfTimeFollowed(), 'ng-valid': areLawsOfTimeFollowed()}">
+                          [ngClass]="{'ng-invalid': !areLawsOfTimeFollowed(task.startTime, task.endTime), 'ng-valid': areLawsOfTimeFollowed(task.startTime, task.endTime)}">
                   <ion-label stacked>Endzeit</ion-label>
                   <ion-datetime displayFormat="HH:mm" [(ngModel)]="task.endTime" name="endTime"
                                 [min]="minimumDate" [max]="maximumDate">
                   </ion-datetime>
                   <ion-icon item-end name="alert" color="danger"
-                            *ngIf="!areLawsOfTimeFollowed()"></ion-icon>
+                            *ngIf="!areLawsOfTimeFollowed(task.startTime, task.endTime)"></ion-icon>
                 </ion-item>
               </ion-col>
             </ion-row>
           </ion-grid>
-          <ion-item *ngIf="!areLawsOfTimeFollowed()" class="form-error">
+          <ion-item *ngIf="!areLawsOfTimeFollowed(task.startTime, task.endTime)" class="form-error">
             Startdatum muss vor Enddatum liegen.
           </ion-item>
           <ion-item>
