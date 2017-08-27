@@ -82,11 +82,11 @@ export class MessagesPage {
           }))
         }
       });
-      return Promise.all(promises).then(() => {
+      Promise.all(promises).then(() => {
         this.notifications = notifications.filter(this.getVisibleNotifications);
         this.events.publish('notification:update', this.notifications.length);
       });
-    }, (error) => {
+    }, error => {
       this.toast.create({
         message: "Nachrichten konnte nicht geladen werden: " + error.message,
         duration: 3000,
