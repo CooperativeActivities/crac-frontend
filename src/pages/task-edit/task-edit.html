@@ -262,22 +262,29 @@
             <ion-item>
               <ion-label stacked>Beginn*</ion-label>
               <ion-datetime name="shiftStartTime" displayFormat="DD-MM-YYYY HH:mm" [(ngModel)]="shifts.newObj.startTime"
-                            [min]="minimumDate" [max]="maximumDate"
-                            [ngClass]="{'has-error' : !shifts.newObj.startTime}" >
+                            [min]="minimumDate" [max]="maximumDate" required
+                            [ngClass]="{'ng-invalid' : !shifts.newObj.startTime}" >
               </ion-datetime>
             </ion-item>
-            <ion-item>
+            <ion-item [ngClass]="{'ng-invalid': !shifts.newObj.endTime || !areLawsOfTimeFollowed(shifts.newObj.startTime, shifts.newObj.endTime), 'ng-valid': shifts.newObj.endTime && areLawsOfTimeFollowed(shifts.newObj.startTime, shifts.newObj.endTime)}">
               <ion-label stacked>Ende*</ion-label>
               <ion-datetime name="shiftEndTime" displayFormat="DD-MM-YYYY HH:mm" [(ngModel)]="shifts.newObj.endTime"
-                            [min]="minimumDate" [max]="maximumDate"
-                            [ngClass]="{'has-error' : !shifts.newObj.endTime}">
+                            [min]="minimumDate" [max]="maximumDate" required>
               </ion-datetime>
+              <ion-icon item-end name="alert" color="danger"
+                        *ngIf="!areLawsOfTimeFollowed(shifts.newObj.startTime, shifts.newObj.endTime)"></ion-icon>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="!areLawsOfTimeFollowed(shifts.newObj.startTime, shifts.newObj.endTime)" class="form-error">
+              Startdatum muss vor Enddatum liegen.
+            </ion-item>
+            <ion-item [ngClass]="{'ng-invalid' : shifts.newObj.minAmountOfVolunteers < 1, 'ng-valid': shifts.newObj.minAmountOfVolunteers >= 1}">
               <ion-label stacked>Anzahl Freiwilliger*</ion-label>
-              <ion-input type="number" name="shiftVolunteers" [(ngModel)]="shifts.newObj.minAmountOfVolunteers"
-                         [ngClass]="{'has-error' : !shifts.newObj.minAmountOfVolunteers}">
+              <ion-input type="number" required [min]="1" name="shiftVolunteers" [(ngModel)]="shifts.newObj.minAmountOfVolunteers">
               </ion-input>
+              <ion-icon item-end name="alert" color="danger" *ngIf="shifts.newObj.minAmountOfVolunteers < 1"></ion-icon>
+            </ion-item>
+            <ion-item *ngIf="shifts.newObj.minAmountOfVolunteers < 1" class="form-error">
+              Bitte geben Sie eine Anzahl ein.
             </ion-item>
             <ion-grid>
               <ion-row>

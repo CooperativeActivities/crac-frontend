@@ -590,6 +590,7 @@ export class TaskEditPage {
     let end = this.task.endTime || this.task.startTime;
     this.shifts.newObj.startTime = start;
     this.shifts.newObj.endTime = end;
+    this.shifts.newObj.minAmountOfVolunteers = 1;
     this.addNewShift = !this.addNewShift;
   }
 
