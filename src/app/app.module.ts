@@ -1,7 +1,7 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule} from "@angular/common/http";
 import { IonicStorageModule } from '@ionic/storage';
 
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -26,7 +26,7 @@ import { ErrorDisplayService } from '../services/error_service';
   imports: [
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
-    HttpModule,
+    HttpClientModule,
     BrowserModule,
   ],
   bootstrap: [IonicApp],

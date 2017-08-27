@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import 'rxjs/add/operator/toPromise';
 import { Storage } from '@ionic/storage';
 
@@ -9,50 +9,50 @@ export class AuthService {
   private _baseURL = (<any>window).crac_config.SERVER;
   public token: string;
   public user: any;
-  constructor(private http: Http, public storage: Storage) { }
+  constructor(private http: HttpClient, public storage: Storage) { }
   isAuthenticated(): boolean {
     return !!this.token
   }
 
-  public getAuthRequestOptions(): RequestOptions {
-    return new RequestOptions({ headers: new Headers({ 'Token': this.token, "Authorization": "Basic Og==" }) });
+  public getAuthRequestOptions(): any {
+    return { headers: new HttpHeaders().set('Token', this.token).set("Authorization", "Basic Og==") };
   }
 
   async login(username, password): Promise<any> {
     let authdata = Base64.encode(username + ':' + password);
-    let auth = `Basic ${authdata}`
+    let auth = `Basic ${authdata}`;
 
-    let options = new RequestOptions({ headers: new Headers({ 'Authorization': auth }) });
+    let options = { headers: new HttpHeaders().set('Authorization',auth) };
     let url = this._baseURL + '/user/login';
-    let res = await this.http.get(url, options)
-    .toPromise().then(res => res.json())
+    let res:any = await this.http.get(url, options)
+    .toPromise();
     if (!res.success) {
       throw res
     }
     console.log("Login successful", res);
     this.token = res.object.code;
-    this.setCredentials(this.token)
-    await this.loadUser()
+    this.setCredentials(this.token);
+    await this.loadUser();
     return res
   }
 
   async setCredentials(token: string){
-    await this.storage.ready()
+    await this.storage.ready();
     await this.storage.set("token", token)
   }
 
   async getCredentials(): Promise<string>{
-    await this.storage.ready()
+    await this.storage.ready();
     try{
-      let token = await this.storage.get("token")
+      let token = await this.storage.get("token");
       if(token){
-        this.token = token
-        await this.loadUser()
+        this.token = token;
+        await this.loadUser();
         return token
       }
     } catch(e) {
-      this.token = null
-      await this.storage.remove("token")
+      this.token = null;
+      await this.storage.remove("token");
       throw e
     }
   }
@@ -60,41 +60,39 @@ export class AuthService {
     if(!this.token){
       throw new Error("not authenticated")
     }
-    let options = this.getAuthRequestOptions()
+    let options = this.getAuthRequestOptions();
     let url = this._baseURL + '/user';
-    let user = await this.http.get(url, options).toPromise()
-      .then(res => res.json())
-    this.user = user.object
+    let user:any = await this.http.get(url, options).toPromise();
+    this.user = user.object;
     return this.user
   }
 
   async clearCredentials(){
-    await this.storage.ready()
+    await this.storage.ready();
     await this.storage.remove("token")
   }
   async logout(){
-    await this.clearCredentials()
+    await this.clearCredentials();
     window.location.reload()
   }
   async superLogout(){
-    let options = this.getAuthRequestOptions()
-    await this.http.get(this._baseURL + '/user/logout', options)
-    await this.clearCredentials()
+    let options = this.getAuthRequestOptions();
+    await this.http.get(this._baseURL + '/user/logout', options);
+    await this.clearCredentials();
     window.location.reload()
   }
-
-};
+}
 
 // Base64 encoding service used by AuthenticationService
-var Base64 = {
+let Base64 = {
 
   keyStr: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
 
   encode (input) {
-    var output = "";
-    var chr1, chr2, chr3;
-    var enc1, enc2, enc3, enc4;
-    var i = 0;
+    let output = "";
+    let chr1, chr2, chr3;
+    let enc1, enc2, enc3, enc4;
+    let i = 0;
 
     do {
       chr1 = input.charCodeAt(i++);
@@ -125,13 +123,13 @@ var Base64 = {
   },
 
   decode (input) {
-    var output = "";
-    var chr1, chr2, chr3;
-    var enc1, enc2, enc3, enc4;
-    var i = 0;
+    let output = "";
+    let chr1, chr2, chr3;
+    let enc1, enc2, enc3, enc4;
+    let i = 0;
 
     // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
-    var base64test = /[^A-Za-z0-9\+\/\=]/g;
+    let base64test = /[^A-Za-z0-9\+\/\=]/g;
     if (base64test.exec(input)) {
       console.error("There were invalid base64 characters in the input text.\n" +
         "Valid base64 characters are A-Z, a-z, 0-9, '+', '/',and '='\n" +
@@ -166,4 +164,3 @@ var Base64 = {
     return output;
   }
 };
-
