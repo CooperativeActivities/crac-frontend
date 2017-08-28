@@ -190,6 +190,27 @@ export class TaskEditPage {
     return date
   }
 
+  setTimeToZero(d) {
+    d.setHours(0);
+    d.setMinutes(0);
+    d.setSeconds(0);
+    d.setMilliseconds(0);
+    return d;
+  }
+
+  addStartTime() {
+    this.hasStartTime = true;
+    let d = this.setTimeToZero(new Date(this.task.startTime));
+    this.task.startTime = this.getDateString(d);
+  }
+
+  addEndTime() {
+    this.hasEndTime = true;
+    if(!this.task.endTime) return;
+    let d = this.setTimeToZero(new Date(this.task.endTime));
+    this.task.endTime = this.getDateString(d);
+  }
+
   areLawsOfTimeFollowed(start, end) {
     if(!end || start <= end) {
       return true;
@@ -722,7 +743,9 @@ export class TaskEditPage {
         this.updateFlags();
 
         this.hasStartTime = true;
-        if(this.task.startTime != this.task.endTime ){
+        if(this.task.startTime === this.task.endTime) {
+          this.task.endTime = null;
+        } else {
           this.task.endTime = this.getDateString(new Date(this.task.endTime));
           this.hasEndTime = true;
         }
