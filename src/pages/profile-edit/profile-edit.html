@@ -40,7 +40,15 @@
             </ion-item>
             <ion-item>
               <ion-label stacked>Email</ion-label>
-              <ion-input type="email" name="email" [(ngModel)]="user.email"></ion-input>
+              <!-- email validator by default marks empty email as invalid (angular 4.3.6),
+                   so not empty check needed -->
+              <ion-input type="email" name="email" [email]="user.email != ''"
+                         #email="ngModel" [(ngModel)]="user.email"></ion-input>
+              <ion-icon item-end name="alert" color="danger"
+                        *ngIf="email.touched && email.invalid"></ion-icon>
+            </ion-item>
+            <ion-item *ngIf="email.touched && email.invalid" class="form-error">
+              Bitte geben Sie eine gültige Email ein.
             </ion-item>
             <ion-item>
               <ion-label stacked>Vorname</ion-label>
