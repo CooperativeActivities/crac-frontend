@@ -87,8 +87,7 @@
                 <ion-item>
                   <ion-label stacked>Beginndatum*</ion-label>
                   <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="task.startTime" name="startDate"
-                                [min]="minimumDate" [max]="maximumDate"
-                                [ngClass]="{'has-error' : !startDate}"></ion-datetime>
+                                [min]="minimumDate" [max]="maximumDate"></ion-datetime>
                 </ion-item>
               </ion-col>
               <ion-col no-padding>
@@ -334,36 +333,51 @@
                       <ion-col col-6>{{material.description}}</ion-col>
                     </ion-row>
                     <ion-row *ngIf="material.edit">
-                      <ion-list>
-                        <ion-item>
-                          <ion-label stacked>Name*</ion-label>
-                          <ion-input type="text" [(ngModel)]="material.name" [ngModelOptions]="{standalone: true}"
-                                     required [ngClass]="{'has-error' : material.name}">
-                          </ion-input>
-                        </ion-item>
-                        <ion-item>
-                          <ion-label stacked>Menge*</ion-label>
-                          <ion-input type="number" [(ngModel)]="material.quantity" [ngModelOptions]="{standalone: true}"
-                                     [ngClass]="{'has-error' : !material.quantity}">
-                          </ion-input>
-                        </ion-item>
-                        <ion-item>
-                          <ion-label stacked>Beschreibung</ion-label>
-                          <ion-textarea [(ngModel)]="material.description" [ngModelOptions]="{standalone: true}"></ion-textarea>
-                        </ion-item>
-                        <ion-item>
-                          <label>*Pflichtfelder</label>
-                          <button ion-button (click)="material.edit = false" color="light" block icon-left>
-                            <ion-icon name="close"></ion-icon> Abbrechen
-                          </button>
-                          <button ion-button (click)="updateMaterial(material)" color="secondary" block icon-left>
-                            <ion-icon name="create"></ion-icon> Aktualisieren
-                          </button>
-                          <button ion-button (click)="removeMaterial(material)" color="danger" block icon-left>
-                            <ion-icon name="trash" float-right></ion-icon> Löschen
-                          </button>
-                        </ion-item>
-                      </ion-list>
+                      <ion-col col-12>
+                        <!-- @TODO: showing the message/icon from validation of these dynamic fields
+                                    should probably be handled in a better way, but they work
+                                     ~ PN
+                        -->
+                        <ion-list>
+                          <ion-item>
+                            <ion-label stacked>Name*</ion-label>
+                            <ion-input type="text" [(ngModel)]="material.name" [ngModelOptions]="{standalone: true}" required>
+                            </ion-input>
+                            <ion-icon item-end name="alert" color="danger"
+                                      *ngIf="!material.name"></ion-icon>
+                          </ion-item>
+                          <ion-item *ngIf="!material.name" class="form-error">
+                            Bitte geben Sie einen Namen ein.
+                          </ion-item>
+                          <ion-item>
+                            <ion-label stacked>Menge*</ion-label>
+                            <ion-input type="number" min="1" [minValue]="1" required
+                                       [(ngModel)]="material.quantity" [ngModelOptions]="{standalone: true}">
+                            </ion-input>
+                            <ion-icon item-end name="alert" color="danger"
+                                      *ngIf="!material.quantity || material.quantity < 1"></ion-icon>
+                          </ion-item>
+                          <ion-item *ngIf="!material.quantity || material.quantity < 1" class="form-error">
+                            Bitte geben Sie eine Menge ein.
+                          </ion-item>
+                          <ion-item>
+                            <ion-label stacked>Beschreibung</ion-label>
+                            <ion-textarea [(ngModel)]="material.description" [ngModelOptions]="{standalone: true}"></ion-textarea>
+                          </ion-item>
+                          <ion-item>
+                            <label>*Pflichtfelder</label>
+                            <button ion-button (click)="material.edit = false" color="light" block icon-left>
+                              <ion-icon name="close"></ion-icon> Abbrechen
+                            </button>
+                            <button ion-button (click)="updateMaterial(material)" color="secondary" block icon-left>
+                              <ion-icon name="create"></ion-icon> Aktualisieren
+                            </button>
+                            <button ion-button (click)="removeMaterial(material)" color="danger" block icon-left>
+                              <ion-icon name="trash" float-right></ion-icon> Löschen
+                            </button>
+                          </ion-item>
+                        </ion-list>
+                      </ion-col>
                     </ion-row>
                   </ion-grid>
                 </ion-row>
@@ -380,15 +394,25 @@
           <ion-list *ngIf="addNewMaterial">
             <ion-item>
               <ion-label stacked>Name*</ion-label>
-              <ion-input type="text" [(ngModel)]="materials.newObj.name" name="materialName"
-                         required [ngClass]="{'has-error' : !materials.newObj.name}">
+              <ion-input type="text" name="materialName" required
+                         #materialName="ngModel" [(ngModel)]="materials.newObj.name">
               </ion-input>
+              <ion-icon item-end name="alert" color="danger"
+                        *ngIf="(materialName.touched || materialName.dirty) && !materialName.valid"></ion-icon>
+            </ion-item>
+            <ion-item *ngIf="(materialName.touched || materialName.dirty) && !materialName.valid" class="form-error">
+              Bitte geben Sie einen Namen ein.
             </ion-item>
             <ion-item>
               <ion-label stacked>Menge*</ion-label>
-              <ion-input type="number" [(ngModel)]="materials.newObj.quantity" name="materialQuantity"
-                         [ngClass]="{'has-error' : !materials.newObj.quantity}">
+              <ion-input type="number" min="1" [minValue]="1" required name="materialQuantity"
+                         #materialQuantity="ngModel" [(ngModel)]="materials.newObj.quantity">
               </ion-input>
+              <ion-icon item-end name="alert" color="danger"
+                        *ngIf="(materialQuantity.touched || materialQuantity.dirty) && !materialQuantity.valid"></ion-icon>
+            </ion-item>
+            <ion-item *ngIf="(materialQuantity.touched || materialQuantity.dirty) && !materialQuantity.valid" class="form-error">
+              Bitte geben Sie eine Menge ein.
             </ion-item>
             <ion-item>
               <ion-label stacked>Beschreibung</ion-label>

@@ -32,7 +32,9 @@ export class TaskEditPage {
   competenceAreaList: Array<any> = [];
   availableCompetences: Array<any> = [];
   materials: any = {
-    newObj: {},
+    newObj: {
+      quantity: 1,
+    },
     toAdd: [],
     toRemove: [],
     toUpdate: [],
@@ -681,7 +683,9 @@ export class TaskEditPage {
   };
 
   closeAddMaterial() {
-    this.materials.newObj = {};
+    this.materials.newObj = {
+      quantity: 1,
+    };
     this.addNewMaterial = false;
   }
 
