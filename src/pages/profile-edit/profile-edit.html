@@ -30,11 +30,17 @@
           <ion-list>
             <ion-item>
               <ion-label stacked>Username</ion-label>
-              <ion-input type="text" [(ngModel)]="user.name" name="name"></ion-input>
+              <ion-input type="text" name="name" required
+                         [(ngModel)]="user.name" #name="ngModel"></ion-input>
+              <ion-icon item-end name="alert" color="danger"
+                        *ngIf="(name.touched || name.dirty) && name.invalid"></ion-icon>
+            </ion-item>
+            <ion-item *ngIf="(name.touched || name.dirty) && name.invalid && name.errors.required" class="form-error">
+              Bitte geben Sie einen Usernamen ein.
             </ion-item>
             <ion-item>
               <ion-label stacked>Email</ion-label>
-              <ion-input type="email" [(ngModel)]="user.email" name="email"></ion-input>
+              <ion-input type="email" name="email" [(ngModel)]="user.email"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label stacked>Vorname</ion-label>
@@ -50,7 +56,13 @@
             </ion-item>
             <ion-item>
               <ion-label stacked>Telefonnummer</ion-label>
-              <ion-input type="text" [(ngModel)]="user.phone" name="phone"></ion-input>
+              <ion-input type="text" name="phone" phoneNumber
+                         #phone="ngModel" [(ngModel)]="user.phone"></ion-input>
+              <ion-icon item-end name="alert" color="danger"
+                        *ngIf="phone.touched && phone.invalid"></ion-icon>
+            </ion-item>
+            <ion-item *ngIf="phone.touched && phone.invalid" class="form-error">
+              Bitte geben Sie eine gültige Telefonnumber ein.
             </ion-item>
             <ion-item>
               <ion-label stacked>Geburtstag</ion-label>
