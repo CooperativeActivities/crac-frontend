@@ -24,7 +24,9 @@ import { ErrorDisplayService } from '../services/error_service';
     LogoutModal,
   ],
   imports: [
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      backButtonText: "",
+    }),
     IonicStorageModule.forRoot(),
     HttpClientModule,
     BrowserModule,
