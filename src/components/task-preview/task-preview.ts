@@ -15,7 +15,10 @@ export class TaskPreviewComponent implements OnInit {
   @Input() headerClick: Function;
   showFollow : Boolean = false;
   showUnfollow : Boolean = false;
-  isSingleDate : Boolean;
+  isnotSameYear  : Boolean;
+  isSameYear  : Boolean;
+  isSameMonth : Boolean;
+  isSameDate  : Boolean;
   isSingleTime : Boolean;
 
   constructor(public navCtrl: NavController, public taskDataService: TaskDataService) { }
@@ -28,10 +31,14 @@ export class TaskPreviewComponent implements OnInit {
     }
     let startDate = new Date(this.task.startTime)
     let endDate = new Date(this.task.endTime)
-    this.isSingleDate = (startDate.getDate() == endDate.getDate()) &&
-      (startDate.getFullYear() == endDate.getFullYear()) &&
-      (startDate.getMonth() == endDate.getMonth())
+    let isSameYear = (startDate.getFullYear() == endDate.getFullYear())
+    let isSameMonth = isSameYear && (startDate.getMonth() == endDate.getMonth())
+    let isSameDate = isSameMonth && (startDate.getDate() == endDate.getDate())
     this.isSingleTime = this.task.startTime === this.task.endTime
+    this.isSameDate = isSameDate && !this.isSingleTime
+    this.isSameMonth = isSameMonth && !isSameDate
+    this.isSameYear = isSameYear && !isSameMonth
+    this.isnotSameYear = !isSameYear
     /*
     TaskDataService.getTaskRelatById(scope.task.id).then(function(res){
       return res.meta.relationship.participationType;

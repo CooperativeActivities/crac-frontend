@@ -49,13 +49,16 @@
         <ion-segment-button value="closed">
           Beendet
         </ion-segment-button>
+        -->
         <ion-segment-button value="unpublished">
           Geplant
         </ion-segment-button>
-        -->
       </ion-segment>
       <ion-list>
         <task-preview item-block *ngFor="let task of leadingTasks" [task]="task"></task-preview>
+        <ion-item *ngIf="leadingTasks.length < 1">
+          <p>Keine offenen Aufgaben gefunden.</p>
+        </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
@@ -76,7 +79,7 @@
       <ion-list>
         <task-preview item-block *ngFor="let task of participatingTasks" [task]="task"></task-preview>
         <ion-item *ngIf="participatingTasks.length < 1">
-          <p>Keine offene Aufgaben gefunden.</p>
+          <p>Keine offenen Aufgaben gefunden.</p>
         </ion-item>
       </ion-list>
     </ion-card-content>
@@ -97,6 +100,9 @@
       </ion-segment>
       <ion-list>
         <task-preview item-block *ngFor="let task of followingTasks" [task]="task" [action]="'unfollow'"></task-preview>
+        <ion-item *ngIf="followingTasks.length < 1">
+          <p>Keine offenen Aufgaben gefunden.</p>
+        </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>

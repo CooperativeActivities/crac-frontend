@@ -1,10 +1,10 @@
 
 task-preview-recursive > div > task-preview-recursive  {
   &> div{
-    margin-left: 16px;
+    padding-left: 16px;
   }
   &:last-child>div{
-    margin-bottom: 8px;
+    padding-bottom: 8px;
   }
 }
 task-preview-recursive {

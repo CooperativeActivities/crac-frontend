@@ -35,7 +35,6 @@
         Details
       </div>
       <div card-content>
-        <ion-icon name="calendar"></ion-icon>
         <span class="task-detail__content__headline"> Zeit: </span>
         <div *ngIf="timeChoice == 'slot'">
           <div> Von: {{ task?.startTime | date: 'dd.MM.yyyy H:mm' }}</div>
@@ -45,11 +44,12 @@
           <div class="row"> {{ task?.endTime | date: 'dd.MM.yyyy -- H:mm' }}</div>
         </div>
         <div *ngIf="task?.address">
-          <ion-icon name="locate"></ion-icon>
           <span class="task-detail__content__headline"> Adresse: </span>
           <div>{{task?.address}}</div>
-          <ion-icon name="open" (click)="openMapView()" tappable="tappable"></ion-icon>
-          Auf Karte anzeigen
+          <span (click)="openMapView()">
+            <ion-icon name="open" tappable="tappable"></ion-icon>
+            Auf Karte anzeigen
+          </span>
         </div>
       </div>
     </collapsible-card>
@@ -100,7 +100,6 @@
           </div>
           <ion-item>
             <button ion-button (click)="makeNewSubTask()" *ngIf="task?.permissions" block>
-              <ion-icon name="add"></ion-icon>
               Unteraufgaben hinzufügen
             </button>
           </ion-item>
@@ -240,47 +239,37 @@
 <ion-footer>
   <ion-toolbar *ngIf="showPublish || showEnroll || showCancel || showFollow || showUnfollow || (participationType == 'PARTICIPATING' || participationType == 'LEADING') && task?.taskState == 'STARTED' || showEvaluate || showTriggerEval">
     <div class="toolbar-buttons">
-      <button ion-button icon-left full color="light" (click)="publish()" *ngIf="showPublish">
-        <ion-icon name="eye"></ion-icon>
+      <button ion-button full color="light" (click)="publish()" *ngIf="showPublish">
         Veröffentlichen
       </button>
-      <button ion-button icon-left full color="secondary" (click)="enroll()" *ngIf="showEnroll">
-        <ion-icon name="checkmark"></ion-icon>
+      <button ion-button full color="secondary" (click)="enroll()" *ngIf="showEnroll">
         Ich arbeite mit!
       </button>
-      <button ion-button icon-left full color="danger" (click)="cancel()" *ngIf="showCancel">
-        <ion-icon name="close"></ion-icon>
+      <button ion-button full color="danger" (click)="cancel()" *ngIf="showCancel">
         Absagen
       </button>
-      <button ion-button icon-left full color="light" (click)="follow()" *ngIf="showFollow">
-        <ion-icon name="eye"></ion-icon>
+      <button ion-button full color="light" (click)="follow()" *ngIf="showFollow">
         Folgen
       </button>
-      <button ion-button icon-left full color="danger" (click)="unfollow()" *ngIf="showUnfollow">
-        <ion-icon name="eye-off"></ion-icon>
+      <button ion-button full color="danger" (click)="unfollow()" *ngIf="showUnfollow">
         Nicht mehr folgen
       </button>
-      <button ion-button icon-left full color="light" (click)="evaluate()" *ngIf="showEvaluate">
-        <ion-icon name="checkmark"></ion-icon>
+      <button ion-button full color="light" (click)="evaluate()" *ngIf="showEvaluate">
         Aufgabe bewerten
       </button>
-      <button ion-button icon-left full color="light" (click)="triggerEval()" *ngIf="showTriggerEval">
-        <ion-icon name="send"></ion-icon>
+      <button ion-button full color="light" (click)="triggerEval()" *ngIf="showTriggerEval">
         Bewertungnachrichten senden
       </button>
       <ng-container *ngIf="task?.taskState == 'STARTED'">
         <ng-container *ngIf="participationType == 'PARTICIPATING'">
-          <button ion-button icon-left full color="secondary" (click)="done()" *ngIf="!userIsDone">
-            <ion-icon name="ion-checkmark"></ion-icon>
+          <button ion-button full color="secondary" (click)="done()" *ngIf="!userIsDone">
             Ich bin fertig
           </button>
-          <button ion-button icon-left full color="danger" (click)="notDone()" *ngIf="userIsDone">
-            <ion-icon name="ion-close"></ion-icon>
+          <button ion-button full color="danger" (click)="notDone()" *ngIf="userIsDone">
             Ich bin nicht fertig
           </button>
         </ng-container>
-        <button ion-button icon-left full color="secondary" (click)="complete()" *ngIf="participationType == 'LEADING'">
-          <ion-icon name="ion-checkmark"></ion-icon>
+        <button ion-button full color="secondary" (click)="complete()" *ngIf="participationType == 'LEADING'">
           Aufgabe ist fertig
         </button>
       </ng-container>

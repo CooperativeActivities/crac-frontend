@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { HelperService } from '../../services/helpers';
 
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
 import * as Leaflet from 'leaflet';
 
@@ -26,7 +26,7 @@ export class MapViewPage implements OnInit {
   taskId : number;
   map: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public helpers: HelperService, public http: Http) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public helpers: HelperService, public http: HttpClient) {
     console.log(navParams);
     this.impAddr = navParams.data.address;
     this.lat = navParams.data.lat;
@@ -158,23 +158,15 @@ export class MapViewPage implements OnInit {
   }
 
   async locateAddr (adr) {
-    let params = {
-      "text": adr,
-      //"boundary.country": "AT", // Search only in Austria
-      "size": 1,
-      "api_key": mapzenKey,
-    }
-    let options = new RequestOptions({
-      headers: new Headers({
-        'Accept': 'application/json',
-      }),
-      params,
-    })
+    let params = new HttpParams()
+    .set("text", adr)
+    .set("size", "1")
+    .set("api_key", mapzenKey)
+    //params.set("boundary.country", "AT") // Search only in Austria
     let data
     try {
-      data = await this.http.get("http://search.mapzen.com/v1/search", options)
+      data = await this.http.get("http://search.mapzen.com/v1/search", { params })
         .toPromise()
-        .then(res => res.json())
     } catch(e) {
       console.log( "Something went wrong!" );
       return
