@@ -50,12 +50,7 @@ export class TaskDetailPage {
   }
 
   ngOnInit(): void {
-    this.userDataService.getCurrentUser().then((res) => {
-      this.user = res.object;
-    }).catch((error)=>{
-      console.log(error);
-      this.presentToast("Benutzerinformation kann nicht gefolgt werden: " + error.message, 'top', false, 5000);
-    })
+    this.loadUser()
   }
 
 
@@ -66,12 +61,22 @@ export class TaskDetailPage {
   edit() {
     this.navCtrl.push('task-edit', {id: this.taskId});
   }
+  async loadUser(){
+    try {
+      const res = await this.userDataService.getCurrentUser()
+      this.user = res.object;
+    } catch(error){
+      console.log(error);
+      this.presentToast("Benutzerinformation kann nicht gefolgt werden: " + error.message, 'top', false, 5000);
+    }
+  }
 
   async doRefresh(refresher = null) {
     let task = await this.taskDataService.getTaskById(this.taskId)
       .catch(e => {
         console.warn("Task could not be retrieved", e)
       });
+    if(!this.user){ await this.loadUser() }
     if (task) {
       this.task = task.object;
       this.task.childTasks = _.orderBy(this.task.childTasks, ["startTime"]);
@@ -91,7 +96,8 @@ export class TaskDetailPage {
           newMember.isParticipant = newMember.isParticipant || member.participationType === 'PARTICIPATING';
           newMember.isFriend = newMember.isFriend || member.friend;
 
-          if(newMember.isLeading && newMember.id === this.user.id) {
+          let userId = this.user && this.user.id
+          if(newMember.isLeading && newMember.id === userId) {
             this.participationType = 'LEADING';
           }
         }

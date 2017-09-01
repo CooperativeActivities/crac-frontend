@@ -272,7 +272,16 @@ export class TaskEditPage {
           position: 'top'
         }).present();
 
-        this.navCtrl.push('task-detail', {id: this.task.id});
+        const id = this.task.id
+        this.navCtrl.setPages(
+          this.navCtrl.getViews()
+          // remove last element
+          .slice(0, -1)
+          .map(view => ({ page: view.id, params: view.data }))
+          .concat({ page: "task-detail", params: { id } })
+
+        )
+        //this.navCtrl.push('task-detail', {id: this.task.id});
       } else {
         this.toast.create({
           message: "Aufgabe gespeichert",
@@ -280,7 +289,7 @@ export class TaskEditPage {
           position: 'top'
         }).present();
 
-        this.navCtrl.push('task-detail', {id: this.task.id});
+        this.navCtrl.pop()
       }
     })
   };
@@ -419,9 +428,14 @@ export class TaskEditPage {
                 duration: 3000
               }).present();
               if (this.task.superTask) {
-                this.navCtrl.push('task-detail', {id: this.task.superTask.id});
+                const id = this.task.id
+                this.navCtrl.setPages(
+                  this.navCtrl.getViews()
+                  .filter(view => view && ((view.id !== "task-detail" && view.id !== "task-edit") || (view.data && view.data.id !== id)))
+                  .map(view => ({ page: view.id, params: view.data }))
+                )
               } else {
-                this.navCtrl.push('my-tasks');
+                this.navCtrl.popToRoot();
               }
             }, (error) => {
               this.toast.create({
@@ -478,7 +492,7 @@ export class TaskEditPage {
         position: 'top',
         duration: 3000
       }).present();
-      this.navCtrl.push('task-detail', {id: this.task.id});
+      this.navCtrl.pop()
     }, (error) => {
       this.toast.create({
         message: "Aufgabe kann nicht zurückgezogen werden: " + error.message,
