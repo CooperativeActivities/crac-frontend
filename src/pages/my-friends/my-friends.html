@@ -12,7 +12,8 @@
     <div card-content>
       <ion-list>
         <ion-item *ngFor="let friend of friends" (click)="viewProfile(friend.id)">
-          {{ friend.firstName }} {{ friend.lastName }}</ion-item>
+          {{ friend.firstName }} {{ friend.lastName }} ({{ friend.name }})
+        </ion-item>
         <ion-item *ngIf="friends.length < 1">
           Du hast noch keine Freunde.
         </ion-item>
@@ -30,16 +31,18 @@
           <ion-searchbar (ionInput)="filterUsers($event)"></ion-searchbar>
         </ion-item>
         <ion-item *ngFor="let u of userList">
-          <ion-checkbox [(ngModel)]="u.checked"></ion-checkbox>
-          <ion-label>{{u.firstName}} {{u.lastName}}</ion-label>
-          <button ion-button item-end clear icon-only (click)="viewProfile(u.id)">
-            <ion-icon name="person" color="dark"></ion-icon>
+          <div (click)="viewProfile(u.id)">
+            <button ion-button item-start clear icon-only>
+              <ion-icon name="person" color="dark"></ion-icon>
+            </button>
+            {{u.firstName}} {{u.lastName}} ({{ u.name }})
+          </div>
+          <button ion-button item-end clear icon-only (click)="befriend(u)" [disabled]="!getAvailable(u.id)">
+            <ion-icon name="send" [color]="getAvailable(u.id) ? 'secondary' : 'dark'"></ion-icon>
           </button>
-          </ion-item>
-        <ion-item>
-          <button ion-button block color="secondary" (click)="sendRequests()" [disabled]="allUsers.filter(getSelected).length < 1">
-            Versenden
-          </button>
+        </ion-item>
+        <ion-item *ngIf="userList.length == 0">
+          Keine User gefunden.
         </ion-item>
       </ion-list>
     </div>
