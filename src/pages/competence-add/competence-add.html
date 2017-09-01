@@ -1,20 +1,33 @@
 <ion-header>
-    <ion-navbar>
-      <ion-title>Kompetenz Hinzufügen</ion-title>
-    </ion-navbar>
+  <!-- navbar intentionally left out -->
+  <ion-toolbar>
+    <ion-title>Kompetenz Hinzufügen</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <div class="toolbar-buttons">
+      <button ion-button (click)="cancel()" color="light" block>
+        Abbrechen
+      </button>
+      <button ion-button (click)="add()" color="secondary" block
+              [disabled]="newComp.id === -1">
+        Speichern
+      </button>
+    </div>
+  </ion-toolbar>
 
-    <ion-toolbar>
-      <div class="toolbar-buttons">
-        <button ion-button (click)="add()" color="secondary" block icon-left
-                [disabled]="newComp.id === -1">
-          <ion-icon name="checkmark"></ion-icon>
-          Speichern
-        </button>
-      </div>
-    </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-card *ngIf="competenceAreaList.length > 0">
+  <ion-card *ngIf="loading">
+    <ion-card-content>
+      Kompetenzen werden geladen...
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngIf="!loading && allCompetenceAreas?.length == 0">
+    <ion-card-content>
+      Kompetenzbereiche konnten nicht geladen werden.
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngIf="!loading && allCompetenceAreas.length > -1">
     <ion-card-content>
       <ion-list>
         <ion-item>
@@ -36,12 +49,19 @@
               {{area.name}}
             </button>
           </ng-container>
+          <ion-item *ngIf="competenceAreaList.length == 0">
+            Keine Kompetenzbereiche gefunden.
+          </ion-item>
         </ion-list>
       </ion-list>
     </ion-card-content>
   </ion-card>
 
   <ion-card *ngIf="competenceArea && newComp.id == -1">
+    <ion-card-header icon-right ion-item (click)="resetCompetenceArea()">
+      <ion-icon name="arrow-dropup" item-right></ion-icon>
+      Bereich: {{ competenceArea.name }}
+    </ion-card-header>
     <ion-card-content>
       <ion-list>
         <button ion-item *ngFor="let item of competences" (click)="setCompetenceSelect(item)">

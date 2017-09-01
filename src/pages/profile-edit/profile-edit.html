@@ -1,18 +1,14 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
+  <!-- navbar intentionally left out -->
+  <ion-toolbar>
     <ion-title>Profil bearbeiten</ion-title>
-  </ion-navbar>
+  </ion-toolbar>
   <ion-toolbar>
     <div class="toolbar-buttons">
-      <button ion-button (click)="cancel()" color="light" block icon-left>
-        <ion-icon name="close"></ion-icon>
+      <button ion-button (click)="cancel()" color="light" block>
         Abbrechen
       </button>
-      <button ion-button (click)="save_changes()" color="secondary" block icon-left>
-        <ion-icon name="checkmark"></ion-icon>
+      <button ion-button (click)="save_changes()" color="secondary" block>
         Speichern
       </button>
     </div>
@@ -91,11 +87,11 @@
               <img item-left src="assets/img/avatar-placeholder1.png">
               <ion-label><!--
                 <h2>Foto aktualisieren</h2>
-                <button ion-button block icon-left>
+                <button ion-button block icon-left color="light">
                   <ion-icon name="image"></ion-icon>
                   Foto hochladen
                 </button>
-                <button ion-button block icon-left>
+                <button ion-button block icon-left color="light">
                   <ion-icon name="camera"></ion-icon>
                   Foto machen
                 </button>-->

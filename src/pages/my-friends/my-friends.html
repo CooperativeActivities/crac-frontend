@@ -37,9 +37,7 @@
           </button>
           </ion-item>
         <ion-item>
-          <button ion-button block icon-left
-                  (click)="sendRequests()" [disabled]="allUsers.filter(getSelected).length < 1">
-            <ion-icon name="add"></ion-icon>
+          <button ion-button block color="secondary" (click)="sendRequests()" [disabled]="allUsers.filter(getSelected).length < 1">
             Versenden
           </button>
         </ion-item>

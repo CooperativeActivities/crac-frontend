@@ -19,16 +19,13 @@
       <ion-list>
         <ion-item>
           <p>Keine offene Aufgaben gefunden.</p>
-          <p>
-            <button ion-button block icon-left (click)="makeNewTask()" *ngIf="userHasPermissions">
-              <ion-icon name="md-add-circle"></ion-icon>
-              Neue Aufgabe erstellen
-            </button>
-            <button ion-button block (click)="navCtrl.push('my-history')">
-              Vergangene Aufgaben anschauen
-            </button>
-          </p>
         </ion-item>
+        <button ion-item class="item-ios" (click)="makeNewTask()" *ngIf="userHasPermissions">
+          Neue Aufgabe erstellen
+        </button>
+        <button ion-item class="item-ios" block (click)="navCtrl.push('my-history')">
+          Vergangene Aufgaben anschauen
+        </button>
       </ion-list>
     </ion-card-content>
   </ion-card>

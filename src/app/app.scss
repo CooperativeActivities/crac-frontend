@@ -48,7 +48,8 @@
   /*padding: 6px 8px 6px 8px;*/
   padding: $global-card-padding;
 }
-.card-header{
+.card-header,
+.card-header.item{
   padding-left: $global-card-padding;
   padding-right: $global-card-padding;
 }

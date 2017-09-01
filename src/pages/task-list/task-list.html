@@ -1,8 +1,5 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
     <ion-title>Aufgabenliste</ion-title>
   </ion-navbar>
 </ion-header>
@@ -16,12 +13,10 @@
       <ion-list>
         <ion-item>
           <p>Keine offene Aufgaben gefunden.</p>
-          <p>
-            <button ion-button block (click)="navCtrl.push('my-history')">
-              Vergangene Aufgaben anschauen
-            </button>
-          </p>
         </ion-item>
+        <button ion-item class="item-ios" block (click)="navCtrl.push('my-history')">
+          Vergangene Aufgaben anschauen
+        </button>
       </ion-list>
     </ion-card-content>
   </ion-card>

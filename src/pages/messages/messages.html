@@ -13,16 +13,13 @@
               Freundschaftsanfrage von {{ notification.user.name }}
             </p>
             <p text-wrap>
-              <button ion-button (click)="accept(notification)" color="secondary" icon-left>
-                <ion-icon name="checkmark"></ion-icon>
+              <button ion-button (click)="accept(notification)" color="secondary">
                 Zustimmen
               </button>
-              <button ion-button (click)="decline(notification)" color="danger" icon-left>
-                <ion-icon name="close"></ion-icon>
+              <button ion-button (click)="decline(notification)" color="danger">
                 Ablehnen
               </button>
-              <button ion-button (click)="viewProfile(notification.senderId, notification.notificationId)" color="light" icon-left>
-                <ion-icon name="person"></ion-icon>
+              <button ion-button (click)="viewProfile(notification.senderId, notification.notificationId)" color="light">
                 Profil anschauen
               </button>
             </p>
@@ -34,12 +31,10 @@
             </p>
             <br>
             <p text-wrap>
-              <button ion-button (click)="evaluate(notification)" color="secondary" icon-left>
-                <ion-icon name="checkmark"></ion-icon>
+              <button ion-button (click)="evaluate(notification)" color="secondary">
                 Bewerten
               </button>
-              <button ion-button (click)="decline(notification)" color="danger" icon-left>
-                <ion-icon name="close"></ion-icon>
+              <button ion-button (click)="decline(notification)" color="danger">
                 Ablehnen
               </button>
             </p>
