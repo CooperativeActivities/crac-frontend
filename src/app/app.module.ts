@@ -25,7 +25,10 @@ import { ErrorDisplayService } from '../services/error_service';
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
+      // @TODO: is this a good idea?
+      mode: "md",
       backButtonText: "",
+      iconMode: "md",
     }),
     IonicStorageModule.forRoot(),
     HttpClientModule,
