@@ -71,7 +71,9 @@ $card-wp-margin-left: $global-card-margin; $card-wp-margin-right: $global-card-m
 // Windows only Sass variables can go here
 
 
-
+// Custom icons
+// ------------------
+@import "src/theme/icons.scss";
 
 // App Theme
 // --------------------------------------------------
