@@ -115,7 +115,7 @@
       </div>
     </collapsible-card>
 
-    <collapsible-card (click)="loadShifts()" *ngIf="task.taskType == 'WORKABLE' && task.childTasks.length > 0">
+    <collapsible-card-toggleable (click)="loadShifts()" *ngIf="showShifts" [visible]="shiftsCardShown" (onToggle)="shiftsCardShown = !shiftsCardShown" class="shiftsCard">
       <div card-header>
         Schichten ({{task.childTasks.length}})
       </div>
@@ -153,7 +153,7 @@
           </p>
         </ion-item>
       </div>
-    </collapsible-card>
+    </collapsible-card-toggleable>
 
     <collapsible-card *ngIf="task.materials.length > 0">
       <div card-header>
@@ -232,13 +232,16 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar *ngIf="showPublish || showEnroll || showCancel || showFollow || showUnfollow || (participationType == 'PARTICIPATING' || participationType == 'LEADING') && task.taskState == 'STARTED' || showEvaluate || showTriggerEval">
+  <ion-toolbar *ngIf="showPublish || showEnroll || showShifts || showCancel || showFollow || showUnfollow || (participationType == 'PARTICIPATING' || participationType == 'LEADING') && task.taskState == 'STARTED' || showEvaluate || showTriggerEval">
     <div class="toolbar-buttons">
       <button ion-button block color="light" (click)="publish()" *ngIf="showPublish">
         Veröffentlichen
       </button>
       <button ion-button block color="secondary" (click)="enroll()" *ngIf="showEnroll">
         Ich arbeite mit!
+      </button>
+      <button ion-button block color="secondary" (click)="openShifts()" *ngIf="showShifts">
+        Schicht auswählen
       </button>
       <button ion-button block color="danger" (click)="cancel()" *ngIf="showCancel">
         Absagen

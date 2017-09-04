@@ -118,6 +118,20 @@ textarea.text-input {
   max-width: calc(100% - 8px);
 }
 
+ion-item.item-md{
+  &.item-input, &.item-datetime{
+    border-bottom: none !important;
+    box-shadow: none !important;
+    & .input, & .datetime{
+      border-bottom: 1px solid #dedede;
+    }
+    &>div.item-inner{
+      border-bottom: none !important;
+      box-shadow: none !important;
+    }
+  }
+}
+
 .item-md.item-datetime.ng-valid.input-has-value:not(.input-has-focus) .item-inner {
   border-bottom: #32db64;
   box-shadow: inset 0 -1px 0 0 #32db64;

@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, ElementRef} from '@angular/core';
 import {IonicPage, Content, NavController, NavParams, ToastController, AlertController} from 'ionic-angular';
 import * as _ from 'lodash';
 
@@ -25,6 +25,7 @@ export class TaskDetailPage {
   loaded: any;
   showPublish: boolean = false;
   showEnroll: boolean = false;
+  showShifts: boolean = false;
   showCancel: boolean = false;
   showFollow: boolean = false;
   showUnfollow: boolean = false;
@@ -39,9 +40,11 @@ export class TaskDetailPage {
   participationType: any;
   team: Array<any>;
 
+  shiftsCardShown: boolean = false;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public taskDataService: TaskDataService,
               public userDataService: UserDataService, public toastCtrl: ToastController, public alert: AlertController,
-              private authCtrl: AuthService) {
+              private authCtrl: AuthService, private elRef: ElementRef) {
     this.taskId = navParams.data.id;
     this.team = [];
     this.SUBTASKS_LIMITED_TO_SHALLOW = false;
@@ -145,6 +148,14 @@ export class TaskDetailPage {
     }
   }
 
+  openShifts() {
+    this.shiftsCardShown = true
+    setTimeout(()=>{
+      const elm = this.elRef.nativeElement.querySelector(".shiftsCard")
+      if(elm) elm.scrollIntoView()
+    })
+  }
+
   openMapView() {
     // Open Leaflet Map View //
     this.navCtrl.push('map-view', {
@@ -219,6 +230,7 @@ export class TaskDetailPage {
     this.showUnfollow = false;
     this.editableFlag = false;
     this.showShiftsMaterialsEnroll = false;
+    this.showShifts = false;
     this.addSubTaskFlag = false;
 
     switch (task.taskState) {
@@ -236,10 +248,13 @@ export class TaskDetailPage {
         }
         if (relation === "LEADING") {
           // @TODO allow leaders to also participate/follow?
+          this.showShiftsMaterialsEnroll = true;
+          this.showShifts = taskHasShifts;
         } else {
           // @DISCUSS: cannot unfollow/cancel started task?
           this.showShiftsMaterialsEnroll = true;
           this.showEnroll = relation !== "PARTICIPATING" && !taskHasShifts && taskIsWorkable;
+          this.showShifts = taskHasShifts;
           this.showFollow = relation !== "FOLLOWING" && relation !== "PARTICIPATING";
         }
         break;
@@ -251,9 +266,11 @@ export class TaskDetailPage {
         if (relation === "LEADING") {
           // @TODO allow leaders to also participate/follow
           this.showShiftsMaterialsEnroll = true;
+          this.showShifts = taskHasShifts;
         } else {
           this.showShiftsMaterialsEnroll = true;
           this.showEnroll = relation !== "PARTICIPATING" && !taskHasShifts && taskIsWorkable;
+          this.showShifts = taskHasShifts;
           this.showFollow = relation !== "FOLLOWING" && relation !== "PARTICIPATING";
           this.showCancel = relation === "PARTICIPATING";
           this.showUnfollow = relation === "FOLLOWING";
@@ -326,7 +343,7 @@ export class TaskDetailPage {
       }
       this.updateFlags();
     }, (error) => {
-      this.presentToast("An der Aufgabe kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
+      this.presentToast("Aufgabe kann nicht übernommen werden: " + error.message, 'top', false, 5000);
     });
   };
 
@@ -409,7 +426,7 @@ export class TaskDetailPage {
         }
       }
     }, (error) => {
-      this.presentToast("An der Schicht kann nicht teilgenommen werden: " + error.message, 'top', false, 5000);
+      this.presentToast("Schicht kann nicht übernommen werden: " + error.message, 'top', false, 5000);
     });
 
 
@@ -426,7 +443,7 @@ export class TaskDetailPage {
         shift.userRelationships.splice(shiftIdx, 1);
       }
 
-      let alreadyInShift = _.find(this.task.childTasks, function (task) {
+      let alreadyInShift = _.find(this.task.childTasks, (task) => {
         return (shift.id !== task.id) && task.assigned;
       });
       if (!alreadyInShift) {
