@@ -11,9 +11,12 @@
     </div>
     <div card-content>
       <ion-list>
-        <ion-item *ngFor="let friend of friends" (click)="viewProfile(friend.id)">
-          {{ friend.firstName }} {{ friend.lastName }} ({{ friend.name }})
-        </ion-item>
+        <button ion-item class="item-ios" *ngFor="let friend of friends" (click)="viewProfile(friend.id)">
+          <ion-avatar item-start>
+            <img src="assets/img/avatar-placeholder1.png">
+          </ion-avatar>
+          {{ friend.firstName }} {{ friend.lastName }}
+        </button>
         <ion-item *ngIf="friends.length < 1">
           Du hast noch keine Freunde.
         </ion-item>
@@ -30,14 +33,12 @@
         <ion-item>
           <ion-searchbar (ionInput)="filterUsers($event)"></ion-searchbar>
         </ion-item>
-        <ion-item *ngFor="let u of userList">
-          <div (click)="viewProfile(u.id)">
-            <button ion-button item-start clear icon-only>
-              <ion-icon name="person" color="dark"></ion-icon>
-            </button>
-            {{u.firstName}} {{u.lastName}} ({{ u.name }})
-          </div>
-          <button ion-button item-end clear icon-only (click)="befriend(u)" [disabled]="!getAvailable(u.id)">
+        <ion-item *ngFor="let u of userList" (click)="viewProfile(u.id)">
+          <ion-avatar item-start>
+            <img src="assets/img/avatar-placeholder1.png">
+          </ion-avatar>
+            {{u.firstName}} {{u.lastName}}
+          <button ion-button item-end clear icon-only (click)="$event.stopPropagation(); befriend(u)" [disabled]="!getAvailable(u.id)">
             <ion-icon name="send" [color]="getAvailable(u.id) ? 'secondary' : 'dark'"></ion-icon>
           </button>
         </ion-item>

@@ -5,7 +5,8 @@
 .ion-md-aufgabenliste, .ion-ios-aufgabenliste,
 .ion-md-meine-aufgaben, .ion-ios-meine-aufgaben,
 .ion-md-nachrichten, .ion-ios-nachrichten,
-.ion-md-crac-profil, .ion-ios-crac-profil
+.ion-md-crac-profil, .ion-ios-crac-profil,
+.ion-md-crac-edit, .ion-ios-crac-edit
 {
   &::before{
     height: 1em;
@@ -55,5 +56,10 @@
   }
   &[ng-reflect-is-active=true]::before{
     background-image: url("../assets/icon/profil-aktiv.svg");
+  }
+}
+.ion-md-crac-edit, .ion-ios-crac-edit{
+  &::before{
+    background-image: url("../assets/icon/bearbeiten-aufgabe.svg");
   }
 }

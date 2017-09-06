@@ -18,8 +18,8 @@ export class ProfilePage {
     private modalCtrl: ModalController,
   ) {
     this.pages = [
+      { title: 'Meine Grunddaten', component: "profile-details" },
       { title: 'Meine Kompetenzen', component: "my-competences" },
-      { title: 'Mein Profil', component: "profile-details" },
       { title: 'Meine Freunde', component: "my-friends" },
       { title: 'Meine bisherigen Aufgaben', component: "my-history" }
     ];

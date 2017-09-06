@@ -10,19 +10,29 @@
         <ion-item *ngFor="let notification of notifications">
           <div *ngIf="notification.name === 'Friend Request'">
             <p text-wrap>
-              Freundschaftsanfrage von {{ notification.user.name }}
+              Freundschaftsanfrage von
             </p>
-            <p text-wrap>
-              <button ion-button (click)="accept(notification)" color="secondary">
-                Zustimmen
-              </button>
-              <button ion-button (click)="decline(notification)" color="danger">
-                Ablehnen
-              </button>
-              <button ion-button (click)="viewProfile(notification.senderId, notification.notificationId)" color="light">
-                Profil anschauen
-              </button>
-            </p>
+            <ion-grid class="inner-padding">
+              <ion-row>
+                <ion-col>
+                  <button ion-button (click)="viewProfile(notification.senderId, notification.notificationId)" color="light" block>
+                    {{ notification.user.firstName }} {{ notification.user.lastName }}
+                  </button>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <button ion-button (click)="accept(notification)" color="secondary" block>
+                    Zustimmen
+                  </button>
+                </ion-col>
+                <ion-col>
+                  <button ion-button (click)="decline(notification)" color="danger" block>
+                    Ablehnen
+                  </button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           </div>
 
           <div *ngIf="notification.name === 'Evaluation'">

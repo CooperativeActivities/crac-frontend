@@ -404,7 +404,7 @@ export class TaskEditPage {
   }
 
   task_delete(){
-    let template = 'Wollen sie diese Aufgabe wirklich löschen? Es wird die Aufgabe mit ALLEN darunterliegenden Aufgabes permanent gelöscht.';
+    let template = 'Wollen sie diese Aufgabe wirklich löschen? Es wird die Aufgabe mit ALLEN darunterliegenden Aufgaben permanent gelöscht.';
     if( this.task.taskState === 'PUBLISHED' )
       template += "<p><strong>Aufgabe ist schon veröffentlicht. Aufgabe trotzdem löschen?</strong></p>";
     if( this.task.taskState === 'STARTED' )

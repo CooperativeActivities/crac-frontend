@@ -1,17 +1,21 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Aufgabe</ion-title>
+    <ion-title>
+      <span *ngIf="task" text-wrap> {{ task.name }} </span>
+    </ion-title>
     <ion-buttons end>
       <button *ngIf="task?.permissions" ion-button icon-only (click)="edit()">
         <ion-icon name="md-create"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
+  <!--
   <ion-toolbar>
     <ion-title class="full">
-      <span *ngIf="task"> {{ task.name }} </span>
+      <span *ngIf="task" text-wrap> {{ task.name }} </span>
     </ion-title>
   </ion-toolbar>
+  -->
 </ion-header>
 <ion-content>
   <ion-refresher (ionRefresh)="doRefresh($event)">
@@ -241,7 +245,7 @@
         Ich arbeite mit!
       </button>
       <button ion-button block color="secondary" (click)="openShifts()" *ngIf="showShifts">
-        Schicht auswählen
+        Schicht wählen
       </button>
       <button ion-button block color="danger" (click)="cancel()" *ngIf="showCancel">
         Absagen
@@ -256,7 +260,7 @@
         Aufgabe bewerten
       </button>
       <button ion-button block color="light" (click)="triggerEval()" *ngIf="showTriggerEval">
-        Bewertungnachrichten senden
+        Bewertunsgnachrichten senden
       </button>
       <ng-container *ngIf="task?.taskState == 'STARTED'">
         <ng-container *ngIf="participationType == 'PARTICIPATING'">

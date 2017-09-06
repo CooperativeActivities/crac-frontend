@@ -27,7 +27,7 @@ export class MyCompetencesPage {
 
   onRefresh() {
     this.userDataService.userCompetences().then((res) => {
-      this.competences = res.object;
+      this.competences = _.sortBy(res.object, "competence.name");
       console.log(this.competences);
     }, (error) => {
       //@TODO error shows when user has no competences, should come as success

@@ -19,14 +19,16 @@
       </ion-item>
       <ion-list *ngIf="competences?.length > 0">
         <ng-container *ngFor="let comp of competences">
-          <ion-item icon-right (click)="comp.editing = !comp.editing">
-            <span>{{comp.competence.name}}</span>
+          <ion-item class="competence" icon-right (click)="comp.editing = !comp.editing">
+            <span [class]="comp.editing ? 'editing': ''">{{comp.competence.name}}</span>
             <ion-icon *ngIf="comp.editing" name="arrow-dropup" item-right></ion-icon>
             <ion-icon *ngIf="!comp.editing" name="arrow-dropdown" item-right></ion-icon>
           </ion-item>
           <ion-list *ngIf="comp.editing">
             <ion-item>
-              {{comp.competence.description}}
+              <p text-wrap>
+                {{comp.competence.description}}
+              </p>
             </ion-item>
             <ion-item>
               <ion-label stacked>Gefällt mir<span float-right>{{comp.likeValue}}</span></ion-label>
