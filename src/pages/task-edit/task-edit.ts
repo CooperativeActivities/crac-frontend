@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController, ModalController } from 'ionic-angular';
 import * as _ from 'lodash';
 
 import { TaskDataService } from '../../services/task_service';
@@ -30,7 +30,6 @@ export class TaskEditPage {
   competenceArea: any = null;
   competenceAreaId: number = -1;
   competenceAreaList: Array<any> = [];
-  availableCompetences: Array<any> = [];
   materials: any = {
     newObj: {
       quantity: 1,
@@ -47,11 +46,6 @@ export class TaskEditPage {
     all: []
   };
   competences: any = {
-    newObj: {
-      id: -1,
-      mandatory: false,
-      neededProficiencyLevel: 50
-    },
     toAdd: [],
     toRemove: [],
     toUpdate: [],
@@ -64,7 +58,7 @@ export class TaskEditPage {
   maximumDate: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastController, public alert: AlertController,
-              public taskDataService: TaskDataService, public userDataService: UserDataService) {
+              public taskDataService: TaskDataService, public userDataService: UserDataService, public modalCtrl: ModalController) {
     this.taskId = navParams.get("id");
     this.parentId = navParams.get("parentId");
 
@@ -502,103 +496,19 @@ export class TaskEditPage {
     });
   };
 
-  openNewCompetenceForm(){
-    if(this.competenceAreaList.length === 0) {
-      this.getCompetenceAreas().then(()=> {
-        this.addNewCompetence = !this.addNewCompetence;
-      });
-    } else {
-      this.addNewCompetence = true;
-    }
-  }
-
-  getCompetenceAreas() {
-    return this.userDataService.getCompetenceAreas()
-      .then((res) => {
-        if (res.object.length === 0) {
-          this.toast.create({
-            message: "Keine Kompetenzbereiche gefunden: " + res.message,
-            position: 'top',
-            duration: 3000
-          }).present();
-          return;
-        }
-
-        let compAreas = _.orderBy(res.object, [ "name" ])
-        this.competenceAreaList = compAreas;
-      }, (error) => {
-        this.toast.create({
-          message: "Kompetenzbereiche können nicht geladen werden: " + error.message,
-          position: 'top',
-          duration: 3000
-        }).present();
-      });
-  }
-
-  getCompetencesForArea(newValue){
-    if(newValue === null) return;
-    this.competences.newObj = {
-      id: -1,
-      mandatory: false,
-      neededProficiencyLevel: 50
-    };
-
-    this.userDataService.getCompetencesForArea(newValue)
-      .then((res) => {
-        if(res.object.mappedCompetences.length === 0) {
-          this.toast.create({
-            message: "Keine Kompetenzen in diesem Bereich gefunden",
-            position: 'top',
-            duration: 3000
-          }).present();
-          return;
-        } else {
-          this.competenceAreaId = newValue.id;
-          this.availableCompetences = _.orderBy(res.meta.competences, [ "name" ])
-        }
-      }, (error) => {
-        this.toast.create({
-          message: "Kompetenzen dieses Bereichs können nicht geladen werden: " + error.message,
-          position: 'top',
-          duration: 3000
-        }).present();
-      });
-  }
-
   addCompetence(){
-    let competenceId = this.competences.newObj.id;
-    if(!competenceId) return;
-    //save later
-    let index = _.findIndex(this.availableCompetences, { id: parseInt(competenceId) });
-    if(index === -1){
-      console.error("this shouldn't happen");
-      return;
-    }
-    let competence = this.availableCompetences.splice(index, 1)[0];
-    let newComp = {
-      id: competenceId,
-      name: competence.name,
-      importanceLevel: this.competences.newObj.neededProficiencyLevel,
-      neededProficiencyLevel: this.competences.newObj.neededProficiencyLevel,
-      mandatory: this.competences.newObj.mandatory
-    };
+    const modal = this.modalCtrl.create("competence-select-modal", { usedCompetences: this.competences.all, select_for: "task" })
 
-    this.competences.toAdd.push(newComp);
-    this.competences.all.push(newComp);
-
-    this.closeAddCompetence();
-  };
-
-  closeAddCompetence() {
-    this.competences.newObj = {
-      id: -1,
-      mandatory: false,
-      neededProficiencyLevel: 50
-    };
-    this.competenceArea = null;
-    this.competenceAreaId = -1;
-    this.addNewCompetence = false;
+    modal.onDidDismiss((newComp: any) => {
+      if(newComp){
+        this.competences.toAdd.push(newComp);
+        this.competences.all.push(newComp);
+      }
+    })
+    modal.present()
   }
+
+
 
   updateCompetence(competence){
     if(!competence) return;
@@ -613,8 +523,8 @@ export class TaskEditPage {
   removeCompetence(competence){
     if(!competence) return;
     let index = _.findIndex(this.competences.all, competence);
-    let newIndex = _.findIndex(this.competences.toAdd, competence);
     this.competences.all.splice(index, 1)[0];
+    let newIndex = _.findIndex(this.competences.toAdd, competence);
     if(newIndex < 0) {
       this.competences.toRemove.push(competence.id);
     } else {

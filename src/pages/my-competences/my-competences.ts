@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, NavController, ToastController} from 'ionic-angular';
+import {AlertController, IonicPage, ModalController, ToastController} from 'ionic-angular';
 import * as _ from 'lodash';
 
 import {UserDataService} from "../../services/user_service";
@@ -17,7 +17,7 @@ export class MyCompetencesPage {
 
   competences : Array<any> = [];
 
-  constructor(public navCtrl: NavController, public userDataService: UserDataService,
+  constructor(public modalCtrl: ModalController, public userDataService: UserDataService,
               public toast: ToastController, public alert: AlertController) {
   }
 
@@ -88,7 +88,27 @@ export class MyCompetencesPage {
   }
 
   addCompetence() {
-    this.navCtrl.push('competence-add');
+    const modal = this.modalCtrl.create("competence-select-modal", { select_for: "user" })
+
+    modal.onDidDismiss((newComp: any) => {
+      if(newComp){
+        this.userDataService.addLikeProfValue(newComp.id, newComp.likeValue, newComp.proficiencyValue).then((res) => {
+          this.toast.create({
+            message: "Kompetenz hinzufügt",
+            position: 'top',
+            duration: 3000
+          }).present();
+          this.onRefresh()
+        }, (error) => {
+          this.toast.create({
+            message: "Kompetenz kann nicht hinzufügt werden: " + error.message,
+            position: 'top',
+            duration: 3000
+          }).present();
+        });
+      }
+    })
+    modal.present()
   }
 
 }

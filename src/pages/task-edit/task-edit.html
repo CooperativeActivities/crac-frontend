@@ -184,68 +184,11 @@
             </ng-container>
           </ion-list>
 
-          <ion-item *ngIf="!addNewCompetence">
-            <button ion-button color="light" block (click)="openNewCompetenceForm()">
+          <ion-item>
+            <button ion-button color="light" block (click)="addCompetence()">
               Kompetenz hinzufügen
             </button>
           </ion-item>
-
-          <ion-list *ngIf="addNewCompetence">
-            <ion-item>
-              <ion-label stacked>Kompetenzbereich*</ion-label>
-              <ion-select [(ngModel)]="competenceArea" name="competenceArea" (ionChange)="getCompetencesForArea(competenceArea)">
-                <ng-container *ngFor="let area of competenceAreaList">
-                  <ion-option *ngIf="area.mappedCompetences.length != 0" value="{{area.id}}">
-                    {{area.name}}
-                  </ion-option>
-                </ng-container>
-              </ion-select>
-            </ion-item>
-            <ion-item *ngIf="competenceAreaId != -1">
-              <ion-label stacked>Kompetenz*</ion-label>
-              <ion-select [(ngModel)]="competences.newObj.id" name="competence">
-                <ion-option *ngFor="let competence of availableCompetences" value="{{competence.id}}">
-                  {{ competence.name }}
-                </ion-option>
-              </ion-select>
-            </ion-item>
-            <ion-item *ngIf="competences.newObj.id != -1">
-              <ion-label stacked>Können* <span float-right>{{competences.newObj.neededProficiencyLevel}}</span></ion-label>
-              <ion-range min="0" max="100" name="neededProficiencyLevel"
-                     [(ngModel)]="competences.newObj.neededProficiencyLevel">
-              </ion-range>
-            </ion-item>
-            <ion-item *ngIf="competences.newObj.id != -1">
-              <ion-label>Zwingend</ion-label>
-              <ion-toggle name="mandatory" [(ngModel)]="competences.newObj.mandatory">
-              </ion-toggle>
-            </ion-item>
-                    <!--<span>-->
-                    <!--<i class="ion-information-circled"></i>-->
-                    <!--<span>-->
-                    <!--Die Kategorie &bdquo;Wichtigkeit&ldquo; bezieht sich auf die Aufgabe, wie wichtig diese für mich ist-->
-                    <!--bzw. für das Gelingen des Projekts.-->
-                    <!--</span>-->
-                    <!--</span>-->
-
-            <ion-grid>
-              <ion-row>
-                <label>*Pflichtfelder</label>
-              </ion-row>
-              <ion-row>
-                <ion-col>
-                  <button ion-button color="light" (click)="closeAddCompetence()" block>
-                    Abbrechen
-                  </button>
-                </ion-col>
-                <ion-col>
-                  <button ion-button color="secondary" (click)="addCompetence()" block [disabled]="competences.newObj.id == -1">
-                    Hinzufügen
-                  </button>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-list>
         </div>
       </collapsible-card>
       <collapsible-card>
@@ -297,9 +240,6 @@
               Bitte geben Sie eine Anzahl ein.
             </ion-item>
             <ion-grid>
-              <ion-row>
-                <label>*Pflichtfelder</label>
-              </ion-row>
               <ion-row>
                 <ion-col>
                   <button ion-button color="light" (click)="closeAddShift()" block>
@@ -369,7 +309,6 @@
                             <ion-textarea [(ngModel)]="material.description" [ngModelOptions]="{standalone: true}"></ion-textarea>
                           </ion-item>
                           <ion-item>
-                            <label>*Pflichtfelder</label>
                             <button ion-button (click)="material.edit = false" color="light" block>
                               Abbrechen
                             </button>

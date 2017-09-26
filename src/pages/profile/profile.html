@@ -10,11 +10,11 @@
 <ion-content>
   <ion-card>
     <ion-card-content>
-      <ion-list>
-        <button ion-item class="item-ios" *ngFor="let p of pages" (click)="openPage(p)">
+      <ion-list class="list-border">
+        <button ion-item *ngFor="let p of pages" (click)="openPage(p)">
           {{p.title}}
         </button>
-        <button ion-item class="item-ios" (click)="logoutModal()">
+        <button ion-item (click)="logoutModal()">
           Logout
         </button>
       </ion-list>

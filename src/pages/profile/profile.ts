@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
-
-import { LogoutModal } from '../../components/logoutModal/logoutModal';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { AuthService } from '../../services/auth_service';
 
 @IonicPage({
   name: "profile",
@@ -15,7 +14,7 @@ export class ProfilePage {
   pages: Array<any>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private modalCtrl: ModalController,
+    private authService: AuthService, private alert: AlertController,
   ) {
     this.pages = [
       { title: 'Meine Grunddaten', component: "profile-details" },
@@ -30,11 +29,21 @@ export class ProfilePage {
   }
 
   logoutModal(){
-    this.modalCtrl.create(LogoutModal).present()
+    this.alert.create({
+      title: 'Wirklich Ausloggen?',
+      buttons: [
+        {
+          text: 'Eingeloggt Bleiben',
+          role: 'cancel'
+        },
+        {
+          text: 'Ausloggen',
+          handler: () => {
+            console.log("logout");
+            this.authService.logout();
+          }
+        }
+      ]
+    }).present();
   }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ProfilePage');
-  }
-
 }

@@ -63,7 +63,7 @@
 .list-ios > .item-block:first-child{
   border-top: 0;
 }
-ion-navbar .back-button ~ .toolbar-content .toolbar-title{
+ion-navbar .back-button.show-back-button ~ .toolbar-content .toolbar-title{
   padding-left: 0;
 }
 .toolbar-title{
@@ -74,6 +74,12 @@ ion-navbar .back-button ~ .toolbar-content .toolbar-title{
 }
 .card p {
   color: color($colors, dark);
+}
+ion-list.list-border > .item:not(:last-child){
+  border-bottom: 1px solid #dedede;
+}
+ion-item.not-found{
+  padding-left: $global-card-padding;
 }
 
 ion-header{

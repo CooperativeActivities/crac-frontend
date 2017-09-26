@@ -1,37 +1,43 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController, ToastController} from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ToastController, ViewController} from 'ionic-angular';
 
 import {UserDataService} from "../../services/user_service";
 
 @IonicPage({
-  name: "competence-add",
-  segment: "competence-add",
+  name: "competence-select-modal",
+  segment: "competence-select-modal",
 })
 @Component({
-  selector: 'page-competence-add',
-  templateUrl: 'competence-add.html',
+  selector: 'modal-competence-select-modal',
+  templateUrl: 'competence-select-modal.html',
   providers: [ UserDataService ],
 })
-export class CompetenceAddPage {
+export class CompetenceSelectModal {
 
+  usedCompetences: Array<any> = [];
   allCompetenceAreas: Array<any> = [];
   competenceAreaList: Array<any> = [];
   competenceArea: any;
   competences : Array<any> = [];
   newComp: any;
   loading: Boolean = false;
+  select_for: any;
 
   constructor(public navCtrl: NavController, public userDataService: UserDataService,
-    public toast: ToastController) {
+    public toast: ToastController, private viewCtrl: ViewController, public navParams: NavParams) {
+    this.usedCompetences = navParams.get("usedCompetences") || [];
+    this.select_for = navParams.get("select_for");
+    if(!(this.select_for === "user" || this.select_for === "task")){
+      console.error(`invalid parameter select_for: ${this.select_for}`)
+      viewCtrl.dismiss()
+      return
+    }
+
     this.onRefresh();
   }
 
   async onRefresh() {
-    this.newComp = {
-      id: -1,
-      likeValue: 50,
-      proficiencyValue: 50
-    };
+    this.resetCompetence()
     this.competenceArea = null;
     this.competences = [];
 
@@ -54,7 +60,7 @@ export class CompetenceAddPage {
         return 0;
       });
       this.allCompetenceAreas = compAreas;
-      this.competenceAreaList = compAreas;
+      this.filterAreas(null)
     } catch(error) {
       this.toast.create({
         message: "Kompetenzbereiche können nicht geladen werden: " + error.message,
@@ -66,21 +72,58 @@ export class CompetenceAddPage {
   }
 
   filterAreas(ev: any) {
+    const val = ev && ev.target.value;
+    let list = this.allCompetenceAreas
 
     // Reset items back to all of the items
-    this.competenceAreaList = this.allCompetenceAreas;
+
+   *ngIf="area.mappedCompetences.length != 0"
 
     // set val to the value of the searchbar
-    let val = ev.target.value;
 
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
-      this.competenceAreaList = this.competenceAreaList.filter((item) => {
+      list = list.filter((item) => {
         return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
     }
+
+    // @TODO: filter by mappedCompetences by usedCompetences here too!
+    this.competenceAreaList = list.filter(area => area.mappedCompetences.length > 0)
   }
 
+  /*
+  getCompetencesForArea(newValue){
+    if(newValue === null) return;
+    this.competences.newObj = {
+      id: -1,
+      mandatory: false,
+      neededProficiencyLevel: 50
+    };
+
+    this.userDataService.getCompetencesForArea(newValue)
+      .then((res) => {
+        if(res.object.mappedCompetences.length === 0) {
+          this.toast.create({
+            message: "Keine Kompetenzen in diesem Bereich gefunden",
+            position: 'top',
+            duration: 3000
+          }).present();
+          return;
+        } else {
+          this.competenceAreaId = newValue.id;
+          // @TODO: filter meta.competences by usedCompetences!!!
+          this.availableCompetences = _.orderBy(res.meta.competences, [ "name" ])
+        }
+      }, (error) => {
+        this.toast.create({
+          message: "Kompetenzen dieses Bereichs können nicht geladen werden: " + error.message,
+          position: 'top',
+          duration: 3000
+        }).present();
+      });
+  }
+  */
   getCompetencesForArea(newValue){
     if(newValue.id === -1) return;
     this.userDataService.getCompetencesForArea(newValue.id)
@@ -120,40 +163,18 @@ export class CompetenceAddPage {
     this.newComp = {
       id: -1,
       likeValue: 50,
-      proficiencyValue: 50
+      proficiencyValue: 50,
+      mandatory: false,
+      neededProficiencyLevel: 50
     };
   }
 
 
   add(){
-    this.userDataService.addLikeProfValue(this.newComp.id, this.newComp.likeValue, this.newComp.proficiencyValue).then((res) => {
-      this.toast.create({
-        message: "Kompetenz hinzufügt",
-        position: 'top',
-        duration: 3000
-      }).present();
-      this.newComp = {
-        id: -1,
-        likeValue: 50,
-        proficiencyValue: 50
-      };
-      this.navCtrl.pop()
-
-      this.competenceArea = null;
-    }, (error) => {
-      this.toast.create({
-        message: "Kompetenz kann nicht hinzufügt werden: " + error.message,
-        position: 'top',
-        duration: 3000
-      }).present();
-    });
+    this.viewCtrl.dismiss({ ...this.newComp })
   }
 
   cancel(){
-    this.navCtrl.pop()
-  }
-
-  addCompetence() {
-    this.navCtrl.push('competence-add');
+    this.viewCtrl.dismiss()
   }
 }

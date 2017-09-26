@@ -6,62 +6,60 @@
         <ion-icon name="add"></ion-icon>
       </button>-->
       <button ion-button icon-only (click)="addCompetence()">
-        <ion-icon name="add-circle"></ion-icon>
+        <ion-icon name="crac-add"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-card>
+  <ion-card *ngIf="competences?.length == 0">
     <ion-card-content>
-      <ion-item *ngIf="competences?.length == 0">
+      <ion-item>
         Keine Kompetenzen gefunden.
       </ion-item>
-      <ion-list *ngIf="competences?.length > 0">
-        <ng-container *ngFor="let comp of competences">
-          <ion-item class="competence" icon-right (click)="comp.editing = !comp.editing">
-            <span [class]="comp.editing ? 'editing': ''">{{comp.competence.name}}</span>
-            <ion-icon *ngIf="comp.editing" name="arrow-dropup" item-right></ion-icon>
-            <ion-icon *ngIf="!comp.editing" name="arrow-dropdown" item-right></ion-icon>
-          </ion-item>
-          <ion-list *ngIf="comp.editing">
-            <ion-item>
-              <p text-wrap>
-                {{comp.competence.description}}
-              </p>
-            </ion-item>
-            <ion-item>
-              <ion-label stacked>Gefällt mir<span float-right>{{comp.likeValue}}</span></ion-label>
-              <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
-                [(ngModel)]="comp.likeValue">
-              </ion-range>
-            </ion-item>
-            <ion-item>
-              <ion-label stacked>Kann ich<span float-right>{{comp.proficiencyValue}}</span></ion-label>
-              <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
-                [(ngModel)]="comp.proficiencyValue">
-              </ion-range>
-            </ion-item>
-
-            <ion-item>
-              <ion-grid no-padding>
-                <ion-row>
-                  <ion-col>
-                    <button ion-button (click)="remove(comp.competence.id)" block color="danger">
-                      Löschen
-                    </button>
-                  </ion-col>
-                  <ion-col>
-                    <button ion-button color="secondary" (click)="update(comp)" block>
-                      Speichern
-                    </button>
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-            </ion-item>
-          </ion-list>
-        </ng-container>
-      </ion-list>
     </ion-card-content>
   </ion-card>
+  <collapsible-card *ngFor="let comp of competences">
+    <span card-header>
+      {{comp.competence.name}}
+    </span>
+    <div card-content>
+      <ion-list>
+        <ion-item>
+          <p text-wrap>
+            {{comp.competence.description}}
+          </p>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Gefällt mir<span float-right>{{comp.likeValue}}</span></ion-label>
+          <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
+            [(ngModel)]="comp.likeValue">
+          </ion-range>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Kann ich<span float-right>{{comp.proficiencyValue}}</span></ion-label>
+          <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
+            [(ngModel)]="comp.proficiencyValue">
+          </ion-range>
+        </ion-item>
+
+        <ion-item>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <button ion-button (click)="remove(comp.competence.id)" block color="danger">
+                  Löschen
+                </button>
+              </ion-col>
+              <ion-col>
+                <button ion-button color="secondary" (click)="update(comp)" block>
+                  Speichern
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+    </div>
+  </collapsible-card>
 </ion-content>

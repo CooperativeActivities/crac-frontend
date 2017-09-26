@@ -6,7 +6,8 @@
 .ion-md-meine-aufgaben, .ion-ios-meine-aufgaben,
 .ion-md-nachrichten, .ion-ios-nachrichten,
 .ion-md-crac-profil, .ion-ios-crac-profil,
-.ion-md-crac-edit, .ion-ios-crac-edit
+.ion-md-crac-edit, .ion-ios-crac-edit,
+.ion-md-crac-add, .ion-ios-crac-add
 {
   &::before{
     height: 1em;
@@ -60,6 +61,11 @@
 }
 .ion-md-crac-edit, .ion-ios-crac-edit{
   &::before{
-    background-image: url("../assets/icon/bearbeiten-aufgabe.svg");
+    background-image: url("../assets/icon/edit.svg");
+  }
+}
+.ion-md-crac-add, .ion-ios-crac-add{
+  &::before{
+    background-image: url("../assets/icon/add.svg");
   }
 }
