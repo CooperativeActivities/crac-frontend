@@ -5,8 +5,12 @@
   </ion-toolbar>
   <ion-toolbar>
     <div class="toolbar-buttons">
-      <button ion-button (click)="cancel()" color="light" block> Abbrechen </button>
-      <button ion-button (click)="save_changes()" color="secondary" block> Speichern </button>
+      <button ion-button (click)="cancel()" color="light" block>
+        Abbrechen
+      </button>
+      <button ion-button (click)="save_changes()" color="secondary" block>
+        Speichern
+      </button>
     </div>
   </ion-toolbar>
 </ion-header>
@@ -43,27 +47,28 @@
         <ion-list>
           <ion-item>
             <ion-label stacked>Titel*</ion-label>
-            <ion-input type="text" [(ngModel)]="task.name" name="name" style="background-color:white;"
-                       aria-describedby="inputError2Status" class="form-control" required></ion-input>
-            <!-- @TODO reimplement validation
-            <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"
-                  *ngIf="taskForm.name.$dirty && taskForm.name.$invalid"></span>
-            <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"
-                  *ngIf="taskForm.name.$dirty && taskForm.name.$valid"></span>
-            <span id="inputError2Status" class="help-block"><!-- *ngIf="taskForm.name.$dirty && taskForm.name.$invalid">
-              Bitte geben Sie einen Tasktitel ein.
-            </span>
-            -->
+            <ion-input type="text" [(ngModel)]="task.name" name="name" #name="ngModel" required></ion-input>
+            <ion-icon item-end name="alert" color="danger"
+                      *ngIf="(name.touched || name.dirty) && name.invalid"></ion-icon>
           </ion-item>
-          <ion-item class="item item-input item-stacked-label">
+          <ion-item *ngIf="(name.touched || name.dirty) && name.invalid && name.errors.required" class="form-error">
+            Bitte geben Sie einen Tasktitel ein.
+          </ion-item>
+          <ion-item>
             <ion-label stacked>Beschreibung</ion-label>
             <ion-textarea [(ngModel)]="task.description" name="description" ></ion-textarea>
           </ion-item>
-          <ion-item class="item item-input item-stacked-label" *ngIf="task.taskType == 'WORKABLE'">
-            <ion-label stacked>Zahl der Freiwilligen</ion-label>
-            <ion-input type="number" min="0"
-                       [(ngModel)]="task.minAmountOfVolunteers" name="minAmountOfVolunteers"></ion-input>
-          </ion-item>
+          <ng-template [ngIf]="task.taskType === 'WORKABLE'">
+            <ion-item>
+              <ion-label stacked>Zahl der Freiwilligen</ion-label>
+              <ion-input type="number" min="0" [minValue]="0" name="minAmountOfVolunteers"
+                         #minAmountOfVolunteers="ngModel" [(ngModel)]="task.minAmountOfVolunteers"></ion-input>
+              <ion-icon item-end name="alert" color="danger" *ngIf="!minAmountOfVolunteers.valid"></ion-icon>
+            </ion-item>
+            <ion-item *ngIf="!minAmountOfVolunteers.valid" class="form-error">
+              Anzahl kann nicht negativ sein.
+            </ion-item>
+          </ng-template>
         </ion-list>
       </ion-card-content>
     </ion-card>
@@ -80,16 +85,18 @@
                 <ion-item>
                   <ion-label stacked>Beginndatum*</ion-label>
                   <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="task.startTime" name="startDate"
-                                [ngClass]="{'has-error' : !startDate}"></ion-datetime>
+                                [min]="minimumDate" [max]="maximumDate"></ion-datetime>
                 </ion-item>
               </ion-col>
               <ion-col no-padding>
                 <ion-item *ngIf="!hasStartTime">
-                  <a (click)="hasStartTime = true">Zeitpunkt hinzufügen</a>
+                  <a (click)="addStartTime()">Zeitpunkt hinzufügen</a>
                 </ion-item>
                 <ion-item *ngIf="hasStartTime">
                   <ion-label stacked>Beginnzeit</ion-label>
-                  <ion-datetime displayFormat="HH:mm" [(ngModel)]="task.startTime" name="startTime"></ion-datetime>
+                  <ion-datetime displayFormat="HH:mm" [(ngModel)]="task.startTime" name="startTime"
+                                [min]="minimumDate" [max]="maximumDate">
+                  </ion-datetime>
                 </ion-item>
               </ion-col>
             </ion-row>
@@ -97,22 +104,34 @@
           <ion-grid no-padding>
             <ion-row>
               <ion-col no-padding>
-                <ion-item>
+                <ion-item [ngClass]="{'ng-invalid': !areLawsOfTimeFollowed(task.startTime, task.endTime), 'ng-valid': areLawsOfTimeFollowed(task.startTime, task.endTime)}">
                   <ion-label stacked>Enddatum</ion-label>
-                  <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="task.endTime" name="endTime"></ion-datetime>
+                  <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="task.endTime" name="endTime"
+                                [min]="minimumDate" [max]="maximumDate">
+                  </ion-datetime>
+                  <ion-icon item-end name="alert" color="danger"
+                            *ngIf="!hasEndTime && !areLawsOfTimeFollowed(task.startTime, task.endTime)"></ion-icon>
                 </ion-item>
               </ion-col>
               <ion-col no-padding>
                 <ion-item *ngIf="!hasEndTime">
-                  <a (click)="hasEndTime = true">Zeitpunkt hinzufügen</a>
+                  <a (click)="addEndTime()">Zeitpunkt hinzufügen</a>
                 </ion-item>
-                <ion-item *ngIf="hasEndTime">
+                <ion-item *ngIf="hasEndTime"
+                          [ngClass]="{'ng-invalid': !areLawsOfTimeFollowed(task.startTime, task.endTime), 'ng-valid': areLawsOfTimeFollowed(task.startTime, task.endTime)}">
                   <ion-label stacked>Endzeit</ion-label>
-                  <ion-datetime displayFormat="HH:mm" [(ngModel)]="task.endTime" name="endTime"></ion-datetime>
+                  <ion-datetime displayFormat="HH:mm" [(ngModel)]="task.endTime" name="endTime"
+                                [min]="minimumDate" [max]="maximumDate">
+                  </ion-datetime>
+                  <ion-icon item-end name="alert" color="danger"
+                            *ngIf="!areLawsOfTimeFollowed(task.startTime, task.endTime)"></ion-icon>
                 </ion-item>
               </ion-col>
             </ion-row>
           </ion-grid>
+          <ion-item *ngIf="!areLawsOfTimeFollowed(task.startTime, task.endTime)" class="form-error">
+            Startdatum muss vor Enddatum liegen.
+          </ion-item>
           <ion-item>
             <button ion-button icon-only (click)="openMap()" item-right>
               <ion-icon name="locate"></ion-icon>
@@ -136,8 +155,12 @@
         </span>
         <div card-content>
           <ion-list *ngIf="competences.all.length > 0">
-            <ion-item *ngFor="let competence of competences.all">
-              <span (click)="competence.editing = !competence.editing">{{competence.name}}</span>
+            <ng-container *ngFor="let competence of competences.all">
+              <ion-item (click)="competence.editing = !competence.editing" icon-right>
+                <span>{{competence.name}}</span>
+                <ion-icon *ngIf="competence.editing" name="arrow-dropup" item-right></ion-icon>
+                <ion-icon *ngIf="!competence.editing" name="arrow-dropdown" item-right></ion-icon>
+              </ion-item>
               <ion-list *ngIf="competence.editing">
                 <ion-item>
                   <ion-label stacked>Können<span float-right>{{competence.neededProficiencyLevel}}</span></ion-label>
@@ -154,16 +177,16 @@
 
                 <ion-item>
                   <button ion-button (click)="removeCompetence(competence)" block color="danger">
-                    <ion-icon name="trash-outline"></ion-icon> Löschen
+                    Löschen
                   </button>
                 </ion-item>
               </ion-list>
-            </ion-item>
+            </ng-container>
           </ion-list>
 
           <ion-item *ngIf="!addNewCompetence">
-            <button ion-button block (click)="openNewCompetenceForm()">
-              <ion-icon name="add"></ion-icon> Kompetenz hinzufügen
+            <button ion-button color="light" block (click)="openNewCompetenceForm()">
+              Kompetenz hinzufügen
             </button>
           </ion-item>
 
@@ -178,21 +201,21 @@
                 </ng-container>
               </ion-select>
             </ion-item>
-            <ion-item>
-              <ion-label *ngIf="competenceArea != -1" stacked>Kompetenz*</ion-label>
+            <ion-item *ngIf="competenceAreaId != -1">
+              <ion-label stacked>Kompetenz*</ion-label>
               <ion-select [(ngModel)]="competences.newObj.id" name="competence">
                 <ion-option *ngFor="let competence of availableCompetences" value="{{competence.id}}">
                   {{ competence.name }}
                 </ion-option>
               </ion-select>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="competences.newObj.id != -1">
               <ion-label stacked>Können* <span float-right>{{competences.newObj.neededProficiencyLevel}}</span></ion-label>
               <ion-range min="0" max="100" name="neededProficiencyLevel"
                      [(ngModel)]="competences.newObj.neededProficiencyLevel">
               </ion-range>
             </ion-item>
-            <ion-item>
+            <ion-item *ngIf="competences.newObj.id != -1">
               <ion-label>Zwingend</ion-label>
               <ion-toggle name="mandatory" [(ngModel)]="competences.newObj.mandatory">
               </ion-toggle>
@@ -211,13 +234,13 @@
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <button ion-button  (click)="closeAddCompetence()" color="light" block>
-                    <ion-icon name="close"></ion-icon> Abbrechen
+                  <button ion-button color="light" (click)="closeAddCompetence()" block>
+                    Abbrechen
                   </button>
                 </ion-col>
                 <ion-col>
-                  <button ion-button  (click)="addCompetence()" block>
-                    <ion-icon name="add"></ion-icon> Hinzufügen
+                  <button ion-button color="secondary" (click)="addCompetence()" block [disabled]="competences.newObj.id == -1">
+                    Hinzufügen
                   </button>
                 </ion-col>
               </ion-row>
@@ -234,13 +257,13 @@
             <ion-item *ngFor="let shift of shifts.all">
               {{shift.startTime | date: "dd.MM.yyyy HH:mm"}} -
               {{shift.endTime | date: "dd.MM.yyyy HH:mm"}}
-              <ion-icon name="trash" (click)="removeShift(shift)" float-right></ion-icon>
+              <ion-icon name="close-circle" (click)="removeShift(shift)" float-right></ion-icon>
             </ion-item>
           </ion-list>
 
           <ion-item *ngIf="!addNewShift">
-            <button ion-button block (click)="openNewShiftForm()">
-              <ion-icon name="add"></ion-icon> Schicht hinzufügen
+            <button ion-button color="light" block (click)="openNewShiftForm()">
+              Schicht hinzufügen
             </button>
           </ion-item>
 
@@ -248,20 +271,30 @@
             <ion-item>
               <ion-label stacked>Beginn*</ion-label>
               <ion-datetime name="shiftStartTime" displayFormat="DD-MM-YYYY HH:mm" [(ngModel)]="shifts.newObj.startTime"
-                         [ngClass]="{'has-error' : !shifts.newObj.startTime}" >
+                            [min]="minimumDate" [max]="maximumDate" required
+                            [ngClass]="{'ng-invalid' : !shifts.newObj.startTime}" >
               </ion-datetime>
             </ion-item>
-            <ion-item>
+            <ion-item [ngClass]="{'ng-invalid': !shifts.newObj.endTime || !areLawsOfTimeFollowed(shifts.newObj.startTime, shifts.newObj.endTime), 'ng-valid': shifts.newObj.endTime && areLawsOfTimeFollowed(shifts.newObj.startTime, shifts.newObj.endTime)}">
               <ion-label stacked>Ende*</ion-label>
               <ion-datetime name="shiftEndTime" displayFormat="DD-MM-YYYY HH:mm" [(ngModel)]="shifts.newObj.endTime"
-                         [ngClass]="{'has-error' : !shifts.newObj.endTime}">
+                            [min]="minimumDate" [max]="maximumDate" required>
               </ion-datetime>
+              <ion-icon item-end name="alert" color="danger"
+                        *ngIf="!areLawsOfTimeFollowed(shifts.newObj.startTime, shifts.newObj.endTime)"></ion-icon>
+            </ion-item>
+            <ion-item *ngIf="!areLawsOfTimeFollowed(shifts.newObj.startTime, shifts.newObj.endTime)" class="form-error">
+              Startdatum muss vor Enddatum liegen.
             </ion-item>
             <ion-item>
               <ion-label stacked>Anzahl Freiwilliger*</ion-label>
-              <ion-input type="number" name="shiftVolunteers" [(ngModel)]="shifts.newObj.minAmountOfVolunteers"
-                         [ngClass]="{'has-error' : !shifts.newObj.minAmountOfVolunteers}">
+              <ion-input type="number" required [minValue]="1" min="1" name="shiftVolunteers"
+                         #shiftVolunteers="ngModel" [(ngModel)]="shifts.newObj.minAmountOfVolunteers">
               </ion-input>
+              <ion-icon item-end name="alert" color="danger" *ngIf="!shiftVolunteers.valid"></ion-icon>
+            </ion-item>
+            <ion-item *ngIf="!shiftVolunteers.valid" class="form-error">
+              Bitte geben Sie eine Anzahl ein.
             </ion-item>
             <ion-grid>
               <ion-row>
@@ -269,13 +302,13 @@
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <button ion-button  (click)="closeAddShift()" color="light" block>
-                    <ion-icon name="close"></ion-icon> Abbrechen
+                  <button ion-button color="light" (click)="closeAddShift()" block>
+                    Abbrechen
                   </button>
                 </ion-col>
                 <ion-col>
-                  <button ion-button (click)="addShift()" block>
-                    <ion-icon name="add"></ion-icon> Hinzufügen
+                  <button ion-button color="secondary" (click)="addShift()" block>
+                    Hinzufügen
                   </button>
                 </ion-col>
               </ion-row>
@@ -304,36 +337,51 @@
                       <ion-col col-6>{{material.description}}</ion-col>
                     </ion-row>
                     <ion-row *ngIf="material.edit">
-                      <ion-list>
-                        <ion-item>
-                          <ion-label stacked>Name*</ion-label>
-                          <ion-input type="text" [(ngModel)]="material.name" [ngModelOptions]="{standalone: true}"
-                                     required [ngClass]="{'has-error' : material.name}">
-                          </ion-input>
-                        </ion-item>
-                        <ion-item>
-                          <ion-label stacked>Menge*</ion-label>
-                          <ion-input type="number" [(ngModel)]="material.quantity" [ngModelOptions]="{standalone: true}"
-                                     [ngClass]="{'has-error' : !material.quantity}">
-                          </ion-input>
-                        </ion-item>
-                        <ion-item>
-                          <ion-label stacked>Beschreibung</ion-label>
-                          <ion-textarea [(ngModel)]="material.description" [ngModelOptions]="{standalone: true}"></ion-textarea>
-                        </ion-item>
-                        <ion-item>
-                          <label>*Pflichtfelder</label>
-                          <button ion-button (click)="material.edit = false" color="light" block>
-                            <ion-icon name="close"></ion-icon> Abbrechen
-                          </button>
-                          <button ion-button (click)="updateMaterial(material)" color="secondary" block>
-                            <ion-icon name="create"></ion-icon> Aktualisieren
-                          </button>
-                          <button ion-button (click)="removeMaterial(material)" color="danger" block>
-                            <ion-icon name="trash" float-right></ion-icon> Löschen
-                          </button>
-                        </ion-item>
-                      </ion-list>
+                      <ion-col col-12>
+                        <!-- @TODO: showing the message/icon from validation of these dynamic fields
+                                    should probably be handled in a better way, but they work
+                                     ~ PN
+                        -->
+                        <ion-list>
+                          <ion-item>
+                            <ion-label stacked>Name*</ion-label>
+                            <ion-input type="text" [(ngModel)]="material.name" [ngModelOptions]="{standalone: true}" required>
+                            </ion-input>
+                            <ion-icon item-end name="alert" color="danger"
+                                      *ngIf="!material.name"></ion-icon>
+                          </ion-item>
+                          <ion-item *ngIf="!material.name" class="form-error">
+                            Bitte geben Sie einen Namen ein.
+                          </ion-item>
+                          <ion-item>
+                            <ion-label stacked>Menge*</ion-label>
+                            <ion-input type="number" min="1" [minValue]="1" required
+                                       [(ngModel)]="material.quantity" [ngModelOptions]="{standalone: true}">
+                            </ion-input>
+                            <ion-icon item-end name="alert" color="danger"
+                                      *ngIf="!material.quantity || material.quantity < 1"></ion-icon>
+                          </ion-item>
+                          <ion-item *ngIf="!material.quantity || material.quantity < 1" class="form-error">
+                            Bitte geben Sie eine Menge ein.
+                          </ion-item>
+                          <ion-item>
+                            <ion-label stacked>Beschreibung</ion-label>
+                            <ion-textarea [(ngModel)]="material.description" [ngModelOptions]="{standalone: true}"></ion-textarea>
+                          </ion-item>
+                          <ion-item>
+                            <label>*Pflichtfelder</label>
+                            <button ion-button (click)="material.edit = false" color="light" block>
+                              Abbrechen
+                            </button>
+                            <button ion-button (click)="updateMaterial(material)" color="secondary" block>
+                              Aktualisieren
+                            </button>
+                            <button ion-button (click)="removeMaterial(material)" color="danger" block>
+                              Löschen
+                            </button>
+                          </ion-item>
+                        </ion-list>
+                      </ion-col>
                     </ion-row>
                   </ion-grid>
                 </ion-row>
@@ -342,23 +390,33 @@
           </ion-list>
 
           <ion-item *ngIf="!addNewMaterial">
-            <button ion-button block (click)="addNewMaterial = !addNewMaterial">
-              <ion-icon name="add"></ion-icon> Material hinzufügen
+            <button ion-button color="light" block (click)="addNewMaterial = !addNewMaterial">
+              Material hinzufügen
             </button>
           </ion-item>
 
           <ion-list *ngIf="addNewMaterial">
             <ion-item>
               <ion-label stacked>Name*</ion-label>
-              <ion-input type="text" [(ngModel)]="materials.newObj.name" name="materialName"
-                         required [ngClass]="{'has-error' : !materials.newObj.name}">
+              <ion-input type="text" name="materialName" required
+                         #materialName="ngModel" [(ngModel)]="materials.newObj.name">
               </ion-input>
+              <ion-icon item-end name="alert" color="danger"
+                        *ngIf="(materialName.touched || materialName.dirty) && !materialName.valid"></ion-icon>
+            </ion-item>
+            <ion-item *ngIf="(materialName.touched || materialName.dirty) && !materialName.valid" class="form-error">
+              Bitte geben Sie einen Namen ein.
             </ion-item>
             <ion-item>
               <ion-label stacked>Menge*</ion-label>
-              <ion-input type="number" [(ngModel)]="materials.newObj.quantity" name="materialQuantity"
-                         [ngClass]="{'has-error' : !materials.newObj.quantity}">
+              <ion-input type="number" min="1" [minValue]="1" required name="materialQuantity"
+                         #materialQuantity="ngModel" [(ngModel)]="materials.newObj.quantity">
               </ion-input>
+              <ion-icon item-end name="alert" color="danger"
+                        *ngIf="(materialQuantity.touched || materialQuantity.dirty) && !materialQuantity.valid"></ion-icon>
+            </ion-item>
+            <ion-item *ngIf="(materialQuantity.touched || materialQuantity.dirty) && !materialQuantity.valid" class="form-error">
+              Bitte geben Sie eine Menge ein.
             </ion-item>
             <ion-item>
               <ion-label stacked>Beschreibung</ion-label>
@@ -370,13 +428,13 @@
               </ion-row>
               <ion-row>
                 <ion-col>
-                  <button ion-button  (click)="closeAddMaterial()" color="light" block>
-                    <ion-icon name="close"></ion-icon> Abbrechen
+                  <button ion-button color="light" (click)="closeAddMaterial()" block>
+                    Abbrechen
                   </button>
                 </ion-col>
                 <ion-col>
-                  <button ion-button (click)="addMaterial()" block>
-                    <ion-icon name="add"></ion-icon> Hinzufügen
+                  <button ion-button color="secondary" (click)="addMaterial()" block>
+                    Hinzufügen
                   </button>
                 </ion-col>
               </ion-row>
@@ -390,8 +448,13 @@
 <ion-footer>
   <ion-toolbar *ngIf="!isNewTask">
     <div class="toolbar-buttons">
-      <button ion-button (click)="task_delete()" color="danger" block> Löschen </button>
-      <button ion-button (click)="unpublish()" color="light" block *ngIf="task.taskState == 'PUBLISHED'"> Zurückziehen </button>
+      <button ion-button (click)="task_delete()" color="danger" block>
+        Löschen
+      </button>
+      <button ion-button (click)="unpublish()" color="light" block
+              *ngIf="task.taskState == 'PUBLISHED'">
+        Zurückziehen
+      </button>
     </div>
   </ion-toolbar>
 </ion-footer>

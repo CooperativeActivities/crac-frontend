@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import 'rxjs/add/operator/toPromise';
 
 import Leaflet from 'leaflet';
@@ -30,7 +30,7 @@ export class MapSelectPage implements OnInit {
   geocoder: any;
   result: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http, public geolocation: Geolocation) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public http: HttpClient, public geolocation: Geolocation) {
     console.log(navParams);
     if (navParams.data.address != null) {this.impAddr = navParams.data.address;}
     if (navParams.data.lat != null) {this.adrLat = navParams.data.lat;}
@@ -120,12 +120,12 @@ export class MapSelectPage implements OnInit {
 
   }
 
-  mapzenRequest (url, params) : Promise<any> {
-    let options = new RequestOptions({
-      headers: new Headers({ 'Accept': 'application/json', }),
-      params,
-    })
-    return this.http.get(url, options).toPromise().then(res => res.json())
+  mapzenRequest (url, paramsObj) : Promise<any> {
+    let params = new HttpParams()
+    for(let key in paramsObj){
+      params = params.set(key, paramsObj[key])
+    }
+    return this.http.get(url, { params }).toPromise()
   }
 
   /**

@@ -15,4 +15,3 @@ export class CollapsibleCardComponent implements OnInit {
     this.visible = !this.visible
   }
 }
-

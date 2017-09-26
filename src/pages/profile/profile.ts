@@ -19,9 +19,9 @@ export class ProfilePage {
   ) {
     this.pages = [
       { title: 'Meine Kompetenzen', component: "my-competences" },
-      { title: 'Mein Profil', component: "my-profile" },
+      { title: 'Mein Profil', component: "profile-details" },
       { title: 'Meine Freunde', component: "my-friends" },
-      { title: 'Meine Geschichte', component: "my-history" }
+      { title: 'Meine bisherigen Aufgaben', component: "my-history" }
     ];
   }
 

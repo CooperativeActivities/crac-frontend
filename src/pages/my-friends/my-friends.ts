@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import {IonicPage, ToastController} from 'ionic-angular';
+import {IonicPage, NavController, ToastController} from 'ionic-angular';
 import {UserDataService} from "../../services/user_service";
+import _ from "lodash"
 
 @IonicPage({
   name: "my-friends",
@@ -11,61 +12,103 @@ import {UserDataService} from "../../services/user_service";
   providers: [UserDataService]
 })
 export class MyFriendsPage {
+  friends: Array<any> = [];
+  allUsers: Array<any> = [];
+  userList: Array<any> = [];
+  befriendedUsers: any = {};
+  currentUser: any;
 
-  friends : Array<any> = [];
-  allUsers : Array<any> = [];
-  userToSendRequestTo : any = null;
-
-  constructor(public userDataService: UserDataService, public toast: ToastController) {
+  constructor(public userDataService: UserDataService, public navCtrl: NavController, public toast: ToastController) {
     this.doRefresh();
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad MyFriendsPage');
+
+  getAvailable(userId) {
+    return userId && (!this.befriendedUsers[userId]) && userId !== this.currentUser.id;
   }
 
-  sendRequest() {
-    let self = this;
-    if (!self.userToSendRequestTo) return;
+  filterUsers(ev:any) {
+    // Reset items back to all of the items
+    this.userList = this.allUsers;
 
-    self.userDataService.friendRequest(self.userToSendRequestTo)
-    .then(function (res) {
-      self.toast.create({
-        message: "Freundschaftsanfrage versandt",
+    // set val to the value of the searchbar
+    let val = ev.target.value;
+
+    // if the value is an empty string don't filter the items
+    if (val && val.trim() != '') {
+      this.userList = this.allUsers.filter((item) => {
+        let name = item.firstName + " " + item.lastName;
+        return (name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      })
+    }
+  }
+
+  befriend(user){
+    if(!this.getAvailable(user.id)){
+      this.toast.create({
+        message: `Bereits befreundet mit ${user.firstName} ${user.lastName} bzw. Freundschaftsanfrage bereits versandt.`,
+        position: 'top',
+        duration: 2000
+      }).present();
+      return
+    }
+
+    this.befriendedUsers[user.id] = true
+
+    this.userDataService.friendRequest(user.id).then(res => {
+      this.toast.create({
+        message: `Freundschaftsanfrage versandt an ${user.firstName} ${user.lastName}.`,
         position: 'top',
         duration: 3000
       }).present();
-      self.userToSendRequestTo = null;
-    }, function (error) {
-      self.toast.create({
+    }, error => {
+
+      this.befriendedUsers[user.id] = false
+
+      this.toast.create({
         message: "Freundschaftsanfrage fehlgeschlagen: " + error.message,
         position: 'top',
         duration: 3000
       }).present();
-    });
+    })
   }
 
-  doRefresh(){
-    let self = this;
+  async doRefresh(){
+    let [ currentUserRes, friendsRes, allUsersRes ] = await Promise.all([
+      this.userDataService.getCurrentUser().catch((error) => {
+        this.toast.create({
+          message: "Benutzerinfo können nicht geladen werden: " + error.message,
+          position: 'top',
+          duration: 3000
+        }).present();
+      }),
+      this.userDataService.getFriends().catch((error) => {
+        this.toast.create({
+          message: "Freunde können nicht geladen werden: " + error.message,
+          position: 'top',
+          duration: 3000
+        }).present();
+      }),
+      this.userDataService.getAllUsers().catch((error) => {
+        this.toast.create({
+          message: "Benutzer können nicht geladen werden: " + error.message,
+          position: 'top',
+          duration: 3000
+        }).present();
+      }),
+    ])
+    this.currentUser = currentUserRes.object;
+    this.friends = friendsRes.object;
+    this.befriendedUsers = {}
+    for(let friend of this.friends){
+      this.befriendedUsers[friend.id] = true
+    }
+    this.allUsers = _.sortBy(allUsersRes.object, ["firstName", "lastName"])
 
-    self.userDataService.getFriends().then(function(res){
-      self.friends = res.object
-    }, function(error){
-      self.toast.create({
-        message: "Freunde können nicht geladen werden: " + error.message,
-        position: 'top',
-        duration: 3000
-      }).present();
-    });
+    this.userList = this.allUsers;
+  }
 
-    self.userDataService.getAllUsers().then(function(res){
-      self.allUsers = res.object
-    }, function(error){
-      self.toast.create({
-        message: "Benutzer können nicht geladen werden: " + error.message,
-        position: 'top',
-        duration: 3000
-      }).present();
-    })
+  viewProfile(friendId) {
+    this.navCtrl.push('profile-details', {id: friendId});
   }
 }

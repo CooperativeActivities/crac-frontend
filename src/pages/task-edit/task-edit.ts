@@ -27,11 +27,14 @@ export class TaskEditPage {
   addNewShift: boolean = false;
   addNewMaterial: boolean = false;
   pageTitle: string;
-  competenceArea: any;
+  competenceArea: any = null;
+  competenceAreaId: number = -1;
   competenceAreaList: Array<any> = [];
   availableCompetences: Array<any> = [];
   materials: any = {
-    newObj: {},
+    newObj: {
+      quantity: 1,
+    },
     toAdd: [],
     toRemove: [],
     toUpdate: [],
@@ -45,6 +48,8 @@ export class TaskEditPage {
   };
   competences: any = {
     newObj: {
+      id: -1,
+      mandatory: false,
       neededProficiencyLevel: 50
     },
     toAdd: [],
@@ -55,12 +60,24 @@ export class TaskEditPage {
   showDelete: boolean = false;
   showPublish: boolean = false;
   showUnpublish: boolean = false;
+  minimumDate: string;
+  maximumDate: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastController, public alert: AlertController,
               public taskDataService: TaskDataService, public userDataService: UserDataService) {
     this.taskId = navParams.get("id");
     this.parentId = navParams.get("parentId");
-    console.log(this.taskId);
+
+    let now = new Date();
+    now.setHours(0);
+    now.setMinutes(0);
+    now.setSeconds(0);
+    now.setMilliseconds(0);
+    this.minimumDate = this.getDateString(now);
+
+    now.setFullYear(now.getFullYear() + 4);
+    this.maximumDate = this.getDateString(now);
+
     if(this.taskId !== undefined) {
       this.pageTitle = 'Aufgabe Bearbeiten';
       this.isNewTask = false;
@@ -72,7 +89,7 @@ export class TaskEditPage {
         taskCompetences: [],
         childTasks: [],
         materials: []
-      }
+      };
 
       if (this.parentId) {
         this.isChildTask = true;
@@ -82,13 +99,7 @@ export class TaskEditPage {
         this.isChildTask = false;
         this.pageTitle = "Aufgabe Erstellen";
 
-        let now = new Date();
-        now.setHours(0);
-        now.setMinutes(0);
-        now.setSeconds(0);
-        now.setMilliseconds(0);
-        let str = this.getDateString(now);
-        this.task.startTime = str;
+        this.task.startTime = this.minimumDate;
       }
     }
   }
@@ -97,8 +108,8 @@ export class TaskEditPage {
     console.log(this.navParams)
     if (this.navParams.data.address != null) {
       this.task.address = this.navParams.data.address;
-      this.task.lat = this.navParams.data.lat;
-      this.task.lng = this.navParams.data.lng;
+      this.task.geoLat = this.navParams.data.lat;
+      this.task.geoLng = this.navParams.data.lng;
       console.log("Import Address: " + this.navParams.data.address + " | lat: " + this.navParams.data.lat + " / lng: " + this.navParams.data.lng);
     }
   }
@@ -166,8 +177,8 @@ export class TaskEditPage {
       {
        id: this.taskId,
        address: this.task.address,
-       lat: this.task.lat,
-       lng: this.task.lng
+       lat: this.task.geoLat,
+       lng: this.task.geoLng
      });
   }
 
@@ -179,14 +190,40 @@ export class TaskEditPage {
     return date
   }
 
+  setTimeToZero(d) {
+    d.setHours(0);
+    d.setMinutes(0);
+    d.setSeconds(0);
+    d.setMilliseconds(0);
+    return d;
+  }
+
+  addStartTime() {
+    this.hasStartTime = true;
+    let d = this.setTimeToZero(new Date(this.task.startTime));
+    this.task.startTime = this.getDateString(d);
+  }
+
+  addEndTime() {
+    this.hasEndTime = true;
+    if(!this.task.endTime) return;
+    let d = this.setTimeToZero(new Date(this.task.endTime));
+    this.task.endTime = this.getDateString(d);
+  }
+
+  areLawsOfTimeFollowed(start, end) {
+    if(!end || start <= end) {
+      return true;
+    }
+    return false;
+  }
+
   getProcessedTaskData() {
     let taskData : any = {};
-
     taskData.name = this.task.name;
 
-    let startTime = this.toTimestamp(this.task.startTime)
-    let endTime = this.toTimestamp(this.task.endTime)
-    // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
+    let startTime = this.toTimestamp(this.task.startTime);
+    let endTime = this.toTimestamp(this.task.endTime);
 
     if(!startTime){
       this.toast.create({
@@ -199,7 +236,7 @@ export class TaskEditPage {
     if(!endTime){
       endTime = startTime
     }
-    if(endTime < startTime){
+    if(!this.areLawsOfTimeFollowed(startTime, endTime)){
       this.toast.create({
         message: "Aufgabe kann nicht gespeichert werden: " + "Startdatum muss vor Enddatum liegen!",
         duration: 3000,
@@ -208,14 +245,15 @@ export class TaskEditPage {
       return;
     }
 
-    taskData.startTime = startTime
-    taskData.endTime = endTime
+
+    taskData.startTime = startTime;
+    taskData.endTime = endTime;
 
     if(this.task.description) taskData.description = this.task.description;
     if(this.task.location) taskData.location = this.task.location;
     if(this.task.address) taskData.address = this.task.address;
-    if(this.task.lat) taskData.lat = this.task.lat;
-    if(this.task.lng) taskData.lng = this.task.lng;
+    if(this.task.geoLat) taskData.geoLat = this.task.geoLat;
+    if(this.task.geoLng) taskData.geoLng = this.task.geoLng;
     if(this.task.minAmountOfVolunteers) taskData.minAmountOfVolunteers = this.task.minAmountOfVolunteers;
     taskData.taskType = this.task.taskType;
     taskData.taskState = this.task.taskState;
@@ -234,7 +272,16 @@ export class TaskEditPage {
           position: 'top'
         }).present();
 
-        this.navCtrl.push('task-detail', {id: this.task.id});
+        const id = this.task.id
+        this.navCtrl.setPages(
+          this.navCtrl.getViews()
+          // remove last element
+          .slice(0, -1)
+          .map(view => ({ page: view.id, params: view.data }))
+          .concat({ page: "task-detail", params: { id } })
+
+        )
+        //this.navCtrl.push('task-detail', {id: this.task.id});
       } else {
         this.toast.create({
           message: "Aufgabe gespeichert",
@@ -242,7 +289,7 @@ export class TaskEditPage {
           position: 'top'
         }).present();
 
-        this.navCtrl.push('task-detail', {id: this.task.id});
+        this.navCtrl.pop()
       }
     })
   };
@@ -381,9 +428,14 @@ export class TaskEditPage {
                 duration: 3000
               }).present();
               if (this.task.superTask) {
-                this.navCtrl.push('task-detail', {id: this.task.superTask.id});
+                const id = this.task.id
+                this.navCtrl.setPages(
+                  this.navCtrl.getViews()
+                  .filter(view => view && ((view.id !== "task-detail" && view.id !== "task-edit") || (view.data && view.data.id !== id)))
+                  .map(view => ({ page: view.id, params: view.data }))
+                )
               } else {
-                this.navCtrl.push('my-tasks');
+                this.navCtrl.popToRoot();
               }
             }, (error) => {
               this.toast.create({
@@ -440,7 +492,7 @@ export class TaskEditPage {
         position: 'top',
         duration: 3000
       }).present();
-      this.navCtrl.push('task-detail', {id: this.task.id});
+      this.navCtrl.pop()
     }, (error) => {
       this.toast.create({
         message: "Aufgabe kann nicht zurückgezogen werden: " + error.message,
@@ -484,7 +536,13 @@ export class TaskEditPage {
   }
 
   getCompetencesForArea(newValue){
-    if(newValue === -1) return;
+    if(newValue === null) return;
+    this.competences.newObj = {
+      id: -1,
+      mandatory: false,
+      neededProficiencyLevel: 50
+    };
+
     this.userDataService.getCompetencesForArea(newValue)
       .then((res) => {
         if(res.object.mappedCompetences.length === 0) {
@@ -495,6 +553,7 @@ export class TaskEditPage {
           }).present();
           return;
         } else {
+          this.competenceAreaId = newValue.id;
           this.availableCompetences = _.orderBy(res.meta.competences, [ "name" ])
         }
       }, (error) => {
@@ -532,9 +591,12 @@ export class TaskEditPage {
 
   closeAddCompetence() {
     this.competences.newObj = {
+      id: -1,
+      mandatory: false,
       neededProficiencyLevel: 50
     };
     this.competenceArea = null;
+    this.competenceAreaId = -1;
     this.addNewCompetence = false;
   }
 
@@ -565,6 +627,7 @@ export class TaskEditPage {
     let end = this.task.endTime || this.task.startTime;
     this.shifts.newObj.startTime = start;
     this.shifts.newObj.endTime = end;
+    this.shifts.newObj.minAmountOfVolunteers = 1;
     this.addNewShift = !this.addNewShift;
   }
 
@@ -655,7 +718,9 @@ export class TaskEditPage {
   };
 
   closeAddMaterial() {
-    this.materials.newObj = {};
+    this.materials.newObj = {
+      quantity: 1,
+    };
     this.addNewMaterial = false;
   }
 
@@ -692,7 +757,9 @@ export class TaskEditPage {
         this.updateFlags();
 
         this.hasStartTime = true;
-        if(this.task.startTime != this.task.endTime ){
+        if(this.task.startTime === this.task.endTime) {
+          this.task.endTime = null;
+        } else {
           this.task.endTime = this.getDateString(new Date(this.task.endTime));
           this.hasEndTime = true;
         }

@@ -1,29 +1,26 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Home</ion-title>
+    <ion-title>
+      <img src="assets/img/crac-home.png" style="height: 80%;">
+    </ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-card *ngIf="tasks?.length === 0">
+  <ion-card *ngIf="tasks?.length == 0">
     <ion-card-content>
       <ion-list>
         <ion-item>
-          <p>Keine vorgeschlagene Aufgaben gefunden.</p>
-          <p>
-            <button ion-button block (click)="navCtrl.push('my-competences')">
-              Kompetenzen aktualisieren
-            </button>
-            <button ion-button block (click)="navCtrl.push('my-history')">
-              Vergangene Aufgaben anschauen
-            </button>
-            <button ion-button block (click)="navCtrl.push('task-list')">
-              Alle Aufgaben anschauen
-            </button>
-          </p>
+          <h2>Keine vorgeschlagene Aufgaben gefunden.</h2>
         </ion-item>
+        <button ion-item class="item-ios" (click)="navCtrl.push('competence-add')">
+          Kompetenzen hinzufügen
+        </button>
+        <button ion-item class="item-ios" block (click)="navCtrl.push('my-history')">
+          Vergangene Aufgaben anschauen
+        </button>
+        <button ion-item class="item-ios" block (click)="navCtrl.push('task-list')">
+          Alle Aufgaben
+        </button>
       </ion-list>
     </ion-card-content>
   </ion-card>

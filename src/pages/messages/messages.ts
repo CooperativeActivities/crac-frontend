@@ -32,6 +32,10 @@ export class MessagesPage {
     this.navCtrl.push('evaluation-detail', {taskId: notification.taskId, evalId: notification.evaluationId});
   }
 
+  viewProfile(userId, notificationId) {
+    this.navCtrl.push('profile-details', {id: userId, friendRequest: notificationId});
+  }
+
   accept(notification){
     this.userDataService.acceptNotification(notification.notificationId).then(() => {
       this.removeNotification(notification);
@@ -59,13 +63,15 @@ export class MessagesPage {
   removeNotification(n) {
     let index = _.findIndex(this.notifications, {id: n.notificationId});
     this.notifications.splice(index, 1)[0];
-    this.events.publish('notification:update', this.notifications.length);
+    this.events.publish('notification:remove');
   }
 
   onReload() {
     this.userDataService.getNotification().then((res) => {
       let notifications = res.object;
       if(notifications.length === 0) {
+        this.notifications = notifications.filter(this.getVisibleNotifications);
+        this.events.publish('notification:update', this.notifications.length);
         return [new Promise((resolve) => {resolve(false)})];
       }
       let promises = [];
@@ -76,11 +82,11 @@ export class MessagesPage {
           }))
         }
       });
-      return Promise.all(promises).then(() => {
+      Promise.all(promises).then(() => {
         this.notifications = notifications.filter(this.getVisibleNotifications);
         this.events.publish('notification:update', this.notifications.length);
       });
-    }, (error) => {
+    }, error => {
       this.toast.create({
         message: "Nachrichten konnte nicht geladen werden: " + error.message,
         duration: 3000,

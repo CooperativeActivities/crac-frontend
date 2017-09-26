@@ -5,40 +5,46 @@
 </ion-header>
 
 <ion-content>
-  <ion-card>
-    <ion-card-header>
+  <collapsible-card [shown]="true">
+    <div card-header>
       Freunde
-    </ion-card-header>
-    <ion-card-content>
+    </div>
+    <div card-content>
       <ion-list>
-        <ion-item *ngFor="let friend of friends">
-          {{ friend.name }}</ion-item>
+        <ion-item *ngFor="let friend of friends" (click)="viewProfile(friend.id)">
+          {{ friend.firstName }} {{ friend.lastName }} ({{ friend.name }})
+        </ion-item>
         <ion-item *ngIf="friends.length < 1">
           Du hast noch keine Freunde.
         </ion-item>
       </ion-list>
-    </ion-card-content>
-  </ion-card>
+    </div>
+  </collapsible-card>
 
-  <ion-card>
-    <ion-card-header>
+  <collapsible-card>
+    <div card-header>
       Neue Freundschaftsanfrage
-    </ion-card-header>
-    <ion-card-content>
+    </div>
+    <div card-content>
       <ion-list>
         <ion-item>
-          <ion-label stacked>User</ion-label>
-          <ion-select [(ngModel)]="userToSendRequestTo" name="userToSendRequestTo">
-            <ion-option *ngFor="let user of allUsers" value="{{user.id}}"> {{ user.name }} </ion-option>
-          </ion-select>
+          <ion-searchbar (ionInput)="filterUsers($event)"></ion-searchbar>
         </ion-item>
-        <ion-item>
-          <button ion-button (click)="sendRequest()" block color="light" icon-left>
-            <ion-icon name="add"></ion-icon>
-            Versenden
+        <ion-item *ngFor="let u of userList">
+          <div (click)="viewProfile(u.id)">
+            <button ion-button item-start clear icon-only>
+              <ion-icon name="person" color="dark"></ion-icon>
+            </button>
+            {{u.firstName}} {{u.lastName}} ({{ u.name }})
+          </div>
+          <button ion-button item-end clear icon-only (click)="befriend(u)" [disabled]="!getAvailable(u.id)">
+            <ion-icon name="send" [color]="getAvailable(u.id) ? 'secondary' : 'dark'"></ion-icon>
           </button>
         </ion-item>
+        <ion-item *ngIf="userList.length == 0">
+          Keine User gefunden.
+        </ion-item>
       </ion-list>
-    </ion-card-content>
-  </ion-card>
+    </div>
+  </collapsible-card>
 </ion-content>

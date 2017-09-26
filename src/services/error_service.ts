@@ -14,7 +14,7 @@ export class ErrorDisplayService {
     USER_NOT_PARTICIPATING: "",
     TASK_NOT_STARTED: "",
     TASK_NOT_READY: "Aufgabe ist nicht bereit veröffentlicht zu werden.",
-    TASK_NOT_JOINABLE: "An dieser Aufgabe kann nicht teilgenommen werden",
+    TASK_NOT_JOINABLE: "Aufgabe kann nicht übernommen werden",
     TASK_ALREADY_IN_PROCESS: "Aufgabe bereits gestartet",
     CHILDREN_NOT_READY: "Unteraufgaben sind noch nicht bereit.",
     UNDEFINED_ERROR: "",

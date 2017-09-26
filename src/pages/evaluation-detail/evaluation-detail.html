@@ -59,7 +59,7 @@
           <ion-item *ngIf="task?.signedUsers > 1">
             <label>Zufriedenheit mit Partner</label>
             <br>
-            <button ion-button icon-start clear default no-padding (click)="changeOthersVal()">
+            <button ion-button icon-start color="light" clear default no-padding (click)="changeOthersVal()" >
               <ion-icon *ngIf="othersVal === 0" name="ios-thumbs-up-outline" padding-right></ion-icon>
               <ion-icon *ngIf="othersVal === 1" name="thumbs-up" padding-right></ion-icon>
               Gefällt mir
