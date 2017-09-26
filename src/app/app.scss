@@ -1,6 +1,5 @@
 // http://ionicframework.com/docs/v2/theming/
 
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -15,11 +14,11 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
-.app-root{
+.app-root {
   background-color: $content-background;
 }
 
-.rootWrapper{
+.rootWrapper {
   position: relative;
   max-width: 100rem;
   width: 100%;
@@ -27,10 +26,11 @@
   margin: 0 auto;
 }
 
-.content{
+.content {
   background-color: $content-background;
 }
-.card-header{
+
+.card-header {
   border: none;
   background-color: color($colors, primary);
   color: white;
@@ -38,43 +38,61 @@
   font-size: 1.8rem;
   margin-bottom: 1px;
 }
-.card-header-ios{ border-radius: $card-ios-border-radius $card-ios-border-radius 0 0; }
-.card-header-md{ border-radius: $card-md-border-radius $card-md-border-radius 0 0; }
-.card-header-wp{ border-radius: $card-wp-border-radius $card-wp-border-radius 0 0; }
+
+.card-header-ios {
+  border-radius: $card-ios-border-radius $card-ios-border-radius 0 0;
+}
+
+.card-header-md {
+  border-radius: $card-md-border-radius $card-md-border-radius 0 0;
+}
+
+.card-header-wp {
+  border-radius: $card-wp-border-radius $card-wp-border-radius 0 0;
+}
+
 .card-header + .card-content, .card .item + .card-content {
   padding-top: 0;
 }
+
 .card-content {
   /*padding: 6px 8px 6px 8px;*/
   padding: $global-card-padding;
 }
-.card-header{
+
+.card-header {
   padding-left: $global-card-padding;
   padding-right: $global-card-padding;
 }
-.item{
+
+.item {
   padding-left: 0px;
 }
-.list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block{
+
+.list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
   border-bottom: 0;
 }
-.list-ios > .item-block:first-child{
+
+.list-ios > .item-block:first-child {
   border-top: 0;
 }
-.toolbar ion-title.full{
+
+.toolbar ion-title.full {
   padding: 0 12px;
 }
+
 .card p {
   color: color($colors, dark);
 }
 
-ion-header{
+ion-header {
   background-color: color($colors, primary);
-  > .toolbar:not(:last-child){
+  > .toolbar:not(:last-child) {
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
     margin-bottom: 5px;
   }
 }
+
 .toolbar:not(ion-navbar) {
   padding: 0;
 }
@@ -84,23 +102,36 @@ ion-toolbar {
     background-color: transparent;
     border-color: transparent;
   }
-  div.toolbar-buttons{
+  div.toolbar-buttons {
     padding: 0 $global-card-margin;
     display: flex;
-    > button:not(:first-child){
+    > button:not(:first-child) {
       margin-left: $global-card-margin / 2;
     }
-    > button:not(:last-child){
+    > button:not(:last-child) {
       margin-right: $global-card-margin / 2;
     }
   }
 }
 
-ion-card[task-list]{
-  ion-card-content{
+.button-right {
+  display: block !important;
+  width: 100% !important;
+  text-align: right !important;
+  padding-right: 8px;
+}
+
+.button-middle{
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+}
+
+ion-card[task-list] {
+  ion-card-content {
     padding: 0;
   }
-  .list{
+  .list {
     background-color: color($colors, light);
   }
 }
