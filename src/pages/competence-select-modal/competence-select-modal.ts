@@ -13,7 +13,6 @@ import {UserDataService} from "../../services/user_service";
   providers: [ UserDataService ],
 })
 export class CompetenceSelectModal {
-
   usedCompetences: Array<any> = [];
   allCompetenceAreas: Array<any> = [];
   competenceAreaList: Array<any> = [];
@@ -26,6 +25,7 @@ export class CompetenceSelectModal {
   constructor(public navCtrl: NavController, public userDataService: UserDataService,
     public toast: ToastController, private viewCtrl: ViewController, public navParams: NavParams) {
     this.usedCompetences = navParams.get("usedCompetences") || [];
+    console.log(this.usedCompetences)
     this.select_for = navParams.get("select_for");
     if(!(this.select_for === "user" || this.select_for === "task")){
       console.error(`invalid parameter select_for: ${this.select_for}`)
@@ -75,77 +75,29 @@ export class CompetenceSelectModal {
     const val = ev && ev.target.value;
     let list = this.allCompetenceAreas
 
-    // Reset items back to all of the items
-
-   *ngIf="area.mappedCompetences.length != 0"
-
-    // set val to the value of the searchbar
-
-    // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
-      list = list.filter((item) => {
-        return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
-      })
+      list = list.filter(item => (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1) )
     }
 
-    // @TODO: filter by mappedCompetences by usedCompetences here too!
-    this.competenceAreaList = list.filter(area => area.mappedCompetences.length > 0)
+    // only include areas that contain unused competences
+    this.competenceAreaList = list.filter(area =>
+      area.mappedCompetences.filter(compId => this.usedCompetences.indexOf(compId) < 0).length > 0
+    )
   }
 
-  /*
-  getCompetencesForArea(newValue){
-    if(newValue === null) return;
-    this.competences.newObj = {
-      id: -1,
-      mandatory: false,
-      neededProficiencyLevel: 50
-    };
+  async getCompetencesForArea(newValue){
+    if(!(newValue && newValue.id >= 0)) return;
+    let res
+    try {
+      res = await this.userDataService.getCompetencesForArea(newValue.id)
+    } catch (error){
+      this.showToast({ message: "Kompetenzen dieses Bereichs können nicht geladen werden: " + error.message, })
+      return
+    }
 
-    this.userDataService.getCompetencesForArea(newValue)
-      .then((res) => {
-        if(res.object.mappedCompetences.length === 0) {
-          this.toast.create({
-            message: "Keine Kompetenzen in diesem Bereich gefunden",
-            position: 'top',
-            duration: 3000
-          }).present();
-          return;
-        } else {
-          this.competenceAreaId = newValue.id;
-          // @TODO: filter meta.competences by usedCompetences!!!
-          this.availableCompetences = _.orderBy(res.meta.competences, [ "name" ])
-        }
-      }, (error) => {
-        this.toast.create({
-          message: "Kompetenzen dieses Bereichs können nicht geladen werden: " + error.message,
-          position: 'top',
-          duration: 3000
-        }).present();
-      });
-  }
-  */
-  getCompetencesForArea(newValue){
-    if(newValue.id === -1) return;
-    this.userDataService.getCompetencesForArea(newValue.id)
-      .then((res) => {
-        if(res.object.mappedCompetences.length === 0) {
-          this.toast.create({
-            message: "Keine Kompetenzen in diesem Bereich gefunden",
-            position: 'top',
-            duration: 3000
-          }).present();
-          return;
-        } else {
-          this.competenceArea = newValue;
-          this.competences = res.meta.competences;
-        }
-      }, (error) => {
-        this.toast.create({
-          message: "Kompetenzen dieses Bereichs können nicht geladen werden: " + error.message,
-          position: 'top',
-          duration: 3000
-        }).present();
-      });
+    // only show unused competences
+    this.competences = res.meta.competences.filter(comp => this.usedCompetences.indexOf(comp.id) < 0)
+    this.competenceArea = newValue;
   }
 
   setCompetenceSelect(comp) {
@@ -162,6 +114,8 @@ export class CompetenceSelectModal {
   resetCompetence() {
     this.newComp = {
       id: -1,
+      name: "",
+      description: "",
       likeValue: 50,
       proficiencyValue: 50,
       mandatory: false,
@@ -169,6 +123,10 @@ export class CompetenceSelectModal {
     };
   }
 
+  showToast({ message, position="top", duration=3000 }){
+    this.toast.create({ message, position, duration, })
+      .present();
+  }
 
   add(){
     this.viewCtrl.dismiss({ ...this.newComp })

@@ -23,13 +23,9 @@ export class TaskEditPage {
   hasEndTime: boolean = false;
   isNewTask: boolean = true;
   isChildTask: boolean = false;
-  addNewCompetence: boolean = false;
   addNewShift: boolean = false;
   addNewMaterial: boolean = false;
   pageTitle: string;
-  competenceArea: any = null;
-  competenceAreaId: number = -1;
-  competenceAreaList: Array<any> = [];
   materials: any = {
     newObj: {
       quantity: 1,
@@ -497,7 +493,7 @@ export class TaskEditPage {
   };
 
   addCompetence(){
-    const modal = this.modalCtrl.create("competence-select-modal", { usedCompetences: this.competences.all, select_for: "task" })
+    const modal = this.modalCtrl.create("competence-select-modal", { usedCompetences: this.competences.all.map(c => c.id), select_for: "task" })
 
     modal.onDidDismiss((newComp: any) => {
       if(newComp){
@@ -507,8 +503,6 @@ export class TaskEditPage {
     })
     modal.present()
   }
-
-
 
   updateCompetence(competence){
     if(!competence) return;
@@ -659,42 +653,42 @@ export class TaskEditPage {
 
 
   async doRefresh (refresher=null) {
-    await Promise.all([
-      this.taskDataService.getTaskById(this.taskId).then((res) => {
-        this.task = res.object;
-        console.log(this.task);
+    await this.taskDataService.getTaskById(this.taskId).then((res) => {
+      this.task = res.object;
+      console.log(this.task);
 
-        this.updateFlags();
+      this.updateFlags();
 
-        this.hasStartTime = true;
-        if(this.task.startTime === this.task.endTime) {
-          this.task.endTime = null;
-        } else {
-          this.task.endTime = this.getDateString(new Date(this.task.endTime));
-          this.hasEndTime = true;
-        }
-        this.task.startTime = this.getDateString(new Date(this.task.startTime));
+      this.hasStartTime = true;
+      if(this.task.startTime === this.task.endTime) {
+        this.task.endTime = null;
+      } else {
+        this.task.endTime = this.getDateString(new Date(this.task.endTime));
+        this.hasEndTime = true;
+      }
+      this.task.startTime = this.getDateString(new Date(this.task.startTime));
 
-        this.competences.all = _.orderBy(_.clone(this.task.taskCompetences), [ "name" ])
-        this.materials.all = _.orderBy(_.clone(this.task.materials), [ "name" ])
-        this.shifts.all = _.orderBy(_.clone(this.task.childTasks), [ "startTime" ])
+      this.competences.all = _.orderBy(_.clone(this.task.taskCompetences), [ "name" ])
+      this.materials.all = _.orderBy(_.clone(this.task.materials), [ "name" ])
+      this.shifts.all = _.orderBy(_.clone(this.task.childTasks), [ "startTime" ])
 
-        for(let shift of this.shifts.all) {
-          shift.startTime = this.getDateString(new Date(shift.startTime));
-          shift.endTime = this.getDateString(new Date(shift.endTime));
-        }
-      }, (error) => {
-        this.toast.create({
-          message:"Aufgabe kann nicht geladen werden: " + error.message,
-          position: 'top',
-          duration: 3000
-        }).present();
-      })
-    ]);
+      for(let shift of this.shifts.all) {
+        shift.startTime = this.getDateString(new Date(shift.startTime));
+        shift.endTime = this.getDateString(new Date(shift.endTime));
+      }
+    }, (error) => {
+      this.showToast({ message:"Aufgabe kann nicht geladen werden: " + error.message, })
+    })
     //Stop the ion-refresher from spinning
     if(refresher){
       refresher.complete();
     }
   }
+
+  showToast({ message, position="top", duration=3000 }){
+    this.toast.create({ message, position, duration, })
+      .present();
+  }
+
 
 }

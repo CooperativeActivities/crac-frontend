@@ -67,6 +67,9 @@
         <button ion-item *ngFor="let item of competences" (click)="setCompetenceSelect(item)">
           {{item.name}}
         </button>
+        <ion-item *ngIf="competences.length == 0">
+          Keine unbenutzten Kompetenzen gefunden.
+        </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>

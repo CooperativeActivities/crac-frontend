@@ -28,16 +28,13 @@ export class MyCompetencesPage {
   onRefresh() {
     this.userDataService.userCompetences().then((res) => {
       this.competences = _.sortBy(res.object, "competence.name");
-      console.log(this.competences);
     }, (error) => {
       //@TODO error shows when user has no competences, should come as success
     });
   }
 
   remove(id){
-    let self = this;
-
-    self.alert.create({
+    this.alert.create({
       title: 'Löschen',
       message: 'Wollen Sie diese Kompetenz wirklich löschen?',
       buttons: [
@@ -48,16 +45,16 @@ export class MyCompetencesPage {
         {
           text: 'Löschen',
           handler: () => {
-            self.userDataService.removeCompetence(id).then(function(res){
-              let index = _.findIndex(self.competences, {competence: {id: id}});
-              self.competences.splice(index, 1)[0];
-              self.toast.create({
+            this.userDataService.removeCompetence(id).then((res) => {
+              let index = _.findIndex(this.competences, {competence: {id: id}});
+              this.competences.splice(index, 1)[0];
+              this.toast.create({
                 message: "Kompetenz gelöscht",
                 position: 'top',
                 duration: 3000
               }).present();
-            }, function(error) {
-              self.toast.create({
+            }, (error) => {
+              this.toast.create({
                 message: "Kompetenz kann nicht gelöscht werden: " + error.message,
                 position: 'top',
                 duration: 3000
@@ -70,16 +67,14 @@ export class MyCompetencesPage {
   }
 
   update(c){
-    let self = this;
-
-    self.userDataService.updateCompetence(c.competence.id, c.likeValue, c.proficiencyValue).then(function(res){
-      self.toast.create({
+    this.userDataService.updateCompetence(c.competence.id, c.likeValue, c.proficiencyValue).then(res => {
+      this.toast.create({
         message: "Kompetenz gespeichert",
         position: 'top',
         duration: 3000
       }).present();
-    }, function(error) {
-      self.toast.create({
+    }, (error) => {
+      this.toast.create({
         message: "Kompetenz kann nicht gespeichert werden: " + error.message,
         position: 'top',
         duration: 3000
@@ -88,7 +83,8 @@ export class MyCompetencesPage {
   }
 
   addCompetence() {
-    const modal = this.modalCtrl.create("competence-select-modal", { select_for: "user" })
+    const competences = this.competences.map(c => c.competence.id)
+    const modal = this.modalCtrl.create("competence-select-modal", { select_for: "user", usedCompetences: competences })
 
     modal.onDidDismiss((newComp: any) => {
       if(newComp){
