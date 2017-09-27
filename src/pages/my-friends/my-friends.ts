@@ -28,19 +28,20 @@ export class MyFriendsPage {
   }
 
   filterUsers(ev:any) {
-    // Reset items back to all of the items
-    this.userList = this.allUsers;
-
     // set val to the value of the searchbar
-    let val = ev.target.value;
+    const val = ev ? ev.target.value: null;
+    let list = this.allUsers
 
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
-      this.userList = this.allUsers.filter((item) => {
-        let name = item.firstName + " " + item.lastName;
+      list = list.filter((item) => {
+        const name = item.firstName + " " + item.lastName;
         return (name.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
     }
+    this.userList = list.filter(item => {
+      return this.getAvailable(item.id)
+    })
   }
 
   befriend(user){
@@ -105,7 +106,7 @@ export class MyFriendsPage {
     }
     this.allUsers = _.sortBy(allUsersRes.object, ["firstName", "lastName"])
 
-    this.userList = this.allUsers;
+    this.filterUsers(null)
   }
 
   viewProfile(friendId) {

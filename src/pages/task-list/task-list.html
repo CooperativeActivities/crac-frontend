@@ -10,11 +10,11 @@
 
   <ion-card *ngIf="matchingTasks?.length === 0 && parentTasks?.length === 0">
     <ion-card-content>
-      <ion-list>
-        <ion-item>
+      <ion-list class="list-border">
+        <ion-item class="not-found">
           <p>Keine offene Aufgaben gefunden.</p>
         </ion-item>
-        <button ion-item class="item-ios" block (click)="navCtrl.push('my-history')">
+        <button ion-item block (click)="navCtrl.push('my-history')">
           Vergangene Aufgaben anschauen
         </button>
       </ion-list>

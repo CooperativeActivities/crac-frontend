@@ -8,17 +8,17 @@
 <ion-content>
   <ion-card *ngIf="tasks?.length == 0">
     <ion-card-content>
-      <ion-list>
+      <ion-list class="list-border">
         <ion-item>
           <h2>Keine vorgeschlagene Aufgaben gefunden.</h2>
         </ion-item>
-        <button ion-item class="item-ios" (click)="navCtrl.push('competence-add')">
+        <button ion-item (click)="navCtrl.push('competence-add')">
           Kompetenzen hinzufügen
         </button>
-        <button ion-item class="item-ios" block (click)="navCtrl.push('my-history')">
+        <button ion-item (click)="navCtrl.push('my-history')">
           Vergangene Aufgaben anschauen
         </button>
-        <button ion-item class="item-ios" block (click)="navCtrl.push('task-list')">
+        <button ion-item (click)="navCtrl.push('task-list')">
           Alle Aufgaben
         </button>
       </ion-list>

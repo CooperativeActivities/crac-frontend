@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController, ModalController } from 'ionic-angular';
 import * as _ from 'lodash';
 
 import { TaskDataService } from '../../services/task_service';
@@ -23,14 +23,9 @@ export class TaskEditPage {
   hasEndTime: boolean = false;
   isNewTask: boolean = true;
   isChildTask: boolean = false;
-  addNewCompetence: boolean = false;
   addNewShift: boolean = false;
   addNewMaterial: boolean = false;
   pageTitle: string;
-  competenceArea: any = null;
-  competenceAreaId: number = -1;
-  competenceAreaList: Array<any> = [];
-  availableCompetences: Array<any> = [];
   materials: any = {
     newObj: {
       quantity: 1,
@@ -47,11 +42,6 @@ export class TaskEditPage {
     all: []
   };
   competences: any = {
-    newObj: {
-      id: -1,
-      mandatory: false,
-      neededProficiencyLevel: 50
-    },
     toAdd: [],
     toRemove: [],
     toUpdate: [],
@@ -64,7 +54,7 @@ export class TaskEditPage {
   maximumDate: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastController, public alert: AlertController,
-              public taskDataService: TaskDataService, public userDataService: UserDataService) {
+              public taskDataService: TaskDataService, public userDataService: UserDataService, public modalCtrl: ModalController) {
     this.taskId = navParams.get("id");
     this.parentId = navParams.get("parentId");
 
@@ -404,7 +394,7 @@ export class TaskEditPage {
   }
 
   task_delete(){
-    let template = 'Wollen sie diese Aufgabe wirklich löschen? Es wird die Aufgabe mit ALLEN darunterliegenden Aufgabes permanent gelöscht.';
+    let template = 'Wollen sie diese Aufgabe wirklich löschen? Es wird die Aufgabe mit ALLEN darunterliegenden Aufgaben permanent gelöscht.';
     if( this.task.taskState === 'PUBLISHED' )
       template += "<p><strong>Aufgabe ist schon veröffentlicht. Aufgabe trotzdem löschen?</strong></p>";
     if( this.task.taskState === 'STARTED' )
@@ -502,102 +492,16 @@ export class TaskEditPage {
     });
   };
 
-  openNewCompetenceForm(){
-    if(this.competenceAreaList.length === 0) {
-      this.getCompetenceAreas().then(()=> {
-        this.addNewCompetence = !this.addNewCompetence;
-      });
-    } else {
-      this.addNewCompetence = true;
-    }
-  }
-
-  getCompetenceAreas() {
-    return this.userDataService.getCompetenceAreas()
-      .then((res) => {
-        if (res.object.length === 0) {
-          this.toast.create({
-            message: "Keine Kompetenzbereiche gefunden: " + res.message,
-            position: 'top',
-            duration: 3000
-          }).present();
-          return;
-        }
-
-        let compAreas = _.orderBy(res.object, [ "name" ])
-        this.competenceAreaList = compAreas;
-      }, (error) => {
-        this.toast.create({
-          message: "Kompetenzbereiche können nicht geladen werden: " + error.message,
-          position: 'top',
-          duration: 3000
-        }).present();
-      });
-  }
-
-  getCompetencesForArea(newValue){
-    if(newValue === null) return;
-    this.competences.newObj = {
-      id: -1,
-      mandatory: false,
-      neededProficiencyLevel: 50
-    };
-
-    this.userDataService.getCompetencesForArea(newValue)
-      .then((res) => {
-        if(res.object.mappedCompetences.length === 0) {
-          this.toast.create({
-            message: "Keine Kompetenzen in diesem Bereich gefunden",
-            position: 'top',
-            duration: 3000
-          }).present();
-          return;
-        } else {
-          this.competenceAreaId = newValue.id;
-          this.availableCompetences = _.orderBy(res.meta.competences, [ "name" ])
-        }
-      }, (error) => {
-        this.toast.create({
-          message: "Kompetenzen dieses Bereichs können nicht geladen werden: " + error.message,
-          position: 'top',
-          duration: 3000
-        }).present();
-      });
-  }
-
   addCompetence(){
-    let competenceId = this.competences.newObj.id;
-    if(!competenceId) return;
-    //save later
-    let index = _.findIndex(this.availableCompetences, { id: parseInt(competenceId) });
-    if(index === -1){
-      console.error("this shouldn't happen");
-      return;
-    }
-    let competence = this.availableCompetences.splice(index, 1)[0];
-    let newComp = {
-      id: competenceId,
-      name: competence.name,
-      importanceLevel: this.competences.newObj.neededProficiencyLevel,
-      neededProficiencyLevel: this.competences.newObj.neededProficiencyLevel,
-      mandatory: this.competences.newObj.mandatory
-    };
+    const modal = this.modalCtrl.create("competence-select-modal", { usedCompetences: this.competences.all.map(c => c.id), select_for: "task" })
 
-    this.competences.toAdd.push(newComp);
-    this.competences.all.push(newComp);
-
-    this.closeAddCompetence();
-  };
-
-  closeAddCompetence() {
-    this.competences.newObj = {
-      id: -1,
-      mandatory: false,
-      neededProficiencyLevel: 50
-    };
-    this.competenceArea = null;
-    this.competenceAreaId = -1;
-    this.addNewCompetence = false;
+    modal.onDidDismiss((newComp: any) => {
+      if(newComp){
+        this.competences.toAdd.push(newComp);
+        this.competences.all.push(newComp);
+      }
+    })
+    modal.present()
   }
 
   updateCompetence(competence){
@@ -613,8 +517,8 @@ export class TaskEditPage {
   removeCompetence(competence){
     if(!competence) return;
     let index = _.findIndex(this.competences.all, competence);
-    let newIndex = _.findIndex(this.competences.toAdd, competence);
     this.competences.all.splice(index, 1)[0];
+    let newIndex = _.findIndex(this.competences.toAdd, competence);
     if(newIndex < 0) {
       this.competences.toRemove.push(competence.id);
     } else {
@@ -729,8 +633,6 @@ export class TaskEditPage {
       return false;
     }
 
-    material.edit = false;
-
     //save later
     this.materials.toUpdate.push(material);
   };
@@ -749,42 +651,45 @@ export class TaskEditPage {
 
 
   async doRefresh (refresher=null) {
-    await Promise.all([
-      this.taskDataService.getTaskById(this.taskId).then((res) => {
-        this.task = res.object;
-        console.log(this.task);
+    await this.taskDataService.getTaskById(this.taskId).then(async (res) => {
+      this.task = res.object;
 
-        this.updateFlags();
+      this.updateFlags();
 
-        this.hasStartTime = true;
-        if(this.task.startTime === this.task.endTime) {
-          this.task.endTime = null;
-        } else {
-          this.task.endTime = this.getDateString(new Date(this.task.endTime));
-          this.hasEndTime = true;
-        }
-        this.task.startTime = this.getDateString(new Date(this.task.startTime));
+      this.hasStartTime = true;
+      if(this.task.startTime === this.task.endTime) {
+        this.task.endTime = null;
+      } else {
+        this.task.endTime = this.getDateString(new Date(this.task.endTime));
+        this.hasEndTime = true;
+      }
+      this.task.startTime = this.getDateString(new Date(this.task.startTime));
 
+      if(this.task.taskType === "WORKABLE"){
+        const shifts = (await Promise.all(this.task.childTasks.map(({ id }) => this.taskDataService.getTaskById(id)))).map((res: any) => res.object)
+        this.shifts.all = _.orderBy(shifts, [ "startTime" ])
         this.competences.all = _.orderBy(_.clone(this.task.taskCompetences), [ "name" ])
         this.materials.all = _.orderBy(_.clone(this.task.materials), [ "name" ])
-        this.shifts.all = _.orderBy(_.clone(this.task.childTasks), [ "startTime" ])
 
-        for(let shift of this.shifts.all) {
+        for(const shift of this.shifts.all) {
           shift.startTime = this.getDateString(new Date(shift.startTime));
           shift.endTime = this.getDateString(new Date(shift.endTime));
         }
-      }, (error) => {
-        this.toast.create({
-          message:"Aufgabe kann nicht geladen werden: " + error.message,
-          position: 'top',
-          duration: 3000
-        }).present();
-      })
-    ]);
+      }
+
+    }, (error) => {
+      this.showToast({ message:"Aufgabe kann nicht geladen werden: " + error.message, })
+    })
     //Stop the ion-refresher from spinning
     if(refresher){
       refresher.complete();
     }
   }
+
+  showToast({ message, position="top", duration=3000 }){
+    this.toast.create({ message, position, duration, })
+      .present();
+  }
+
 
 }

@@ -14,13 +14,14 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
-.app-root {
-  background-color: $content-background;
+.app-root{
+  background-color: #ededed;
 }
 
-.rootWrapper {
+.rootWrapper{
+  background-color: $content-background;
   position: relative;
-  max-width: 100rem;
+  max-width: 80rem;
   width: 100%;
   height: 100%;
   margin: 0 auto;
@@ -77,13 +78,24 @@
 .list-ios > .item-block:first-child {
   border-top: 0;
 }
-
-.toolbar ion-title.full {
+ion-navbar .back-button.show-back-button ~ .toolbar-content .toolbar-title{
+  padding-left: 0;
+}
+.toolbar-title{
+  font-size: 1.8rem
+}
+.toolbar ion-title.full{
   padding: 0 12px;
 }
 
 .card p {
   color: color($colors, dark);
+}
+ion-list.list-border > .item:not(:last-child){
+  border-bottom: 1px solid #dedede;
+}
+ion-item.not-found{
+  padding-left: $global-card-padding;
 }
 
 ion-header {

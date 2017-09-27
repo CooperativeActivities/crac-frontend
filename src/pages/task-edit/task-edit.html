@@ -154,118 +154,64 @@
           Kompetenzen <span float-right>{{competences.all.length}}</span>
         </span>
         <div card-content>
-          <ion-list *ngIf="competences.all.length > 0">
-            <ng-container *ngFor="let competence of competences.all">
-              <ion-item (click)="competence.editing = !competence.editing" icon-right>
-                <span>{{competence.name}}</span>
-                <ion-icon *ngIf="competence.editing" name="arrow-dropup" item-right></ion-icon>
-                <ion-icon *ngIf="!competence.editing" name="arrow-dropdown" item-right></ion-icon>
+          <collapsible-card *ngFor="let competence of competences.all">
+            <span card-header>
+              <span>{{competence.name}}</span>
+            </span>
+            <ion-list card-content>
+              <ion-item>
+                <ion-label stacked>Können<span float-right>{{competence.neededProficiencyLevel}}</span></ion-label>
+                <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
+                  [(ngModel)]="competence.neededProficiencyLevel" (ionChange)="updateCompetence(competence)">
+                </ion-range>
               </ion-item>
-              <ion-list *ngIf="competence.editing">
-                <ion-item>
-                  <ion-label stacked>Können<span float-right>{{competence.neededProficiencyLevel}}</span></ion-label>
-                  <ion-range min="0" max="100" [ngModelOptions]="{standalone: true}"
-                             [(ngModel)]="competence.neededProficiencyLevel" (ionChange)="updateCompetence(competence)">
-                  </ion-range>
-                </ion-item>
 
-                <ion-item>
-                  <ion-label>Zwingend</ion-label>
-                  <ion-toggle [(ngModel)]="competence.mandatory" [ngModelOptions]="{standalone: true}">
-                  </ion-toggle>
-                </ion-item>
+              <ion-item>
+                <ion-label>Zwingend</ion-label>
+                <ion-toggle [(ngModel)]="competence.mandatory" [ngModelOptions]="{standalone: true}">
+                </ion-toggle>
+              </ion-item>
 
-                <ion-item>
-                  <button ion-button (click)="removeCompetence(competence)" block color="danger">
-                    Löschen
-                  </button>
-                </ion-item>
-              </ion-list>
-            </ng-container>
-          </ion-list>
-
-          <ion-item *ngIf="!addNewCompetence">
-            <button ion-button color="light" block (click)="openNewCompetenceForm()">
-              Kompetenz hinzufügen
-            </button>
-          </ion-item>
-
-          <ion-list *ngIf="addNewCompetence">
-            <ion-item>
-              <ion-label stacked>Kompetenzbereich*</ion-label>
-              <ion-select [(ngModel)]="competenceArea" name="competenceArea" (ionChange)="getCompetencesForArea(competenceArea)">
-                <ng-container *ngFor="let area of competenceAreaList">
-                  <ion-option *ngIf="area.mappedCompetences.length != 0" value="{{area.id}}">
-                    {{area.name}}
-                  </ion-option>
-                </ng-container>
-              </ion-select>
-            </ion-item>
-            <ion-item *ngIf="competenceAreaId != -1">
-              <ion-label stacked>Kompetenz*</ion-label>
-              <ion-select [(ngModel)]="competences.newObj.id" name="competence">
-                <ion-option *ngFor="let competence of availableCompetences" value="{{competence.id}}">
-                  {{ competence.name }}
-                </ion-option>
-              </ion-select>
-            </ion-item>
-            <ion-item *ngIf="competences.newObj.id != -1">
-              <ion-label stacked>Können* <span float-right>{{competences.newObj.neededProficiencyLevel}}</span></ion-label>
-              <ion-range min="0" max="100" name="neededProficiencyLevel"
-                     [(ngModel)]="competences.newObj.neededProficiencyLevel">
-              </ion-range>
-            </ion-item>
-            <ion-item *ngIf="competences.newObj.id != -1">
-              <ion-label>Zwingend</ion-label>
-              <ion-toggle name="mandatory" [(ngModel)]="competences.newObj.mandatory">
-              </ion-toggle>
-            </ion-item>
-                    <!--<span>-->
-                    <!--<i class="ion-information-circled"></i>-->
-                    <!--<span>-->
-                    <!--Die Kategorie &bdquo;Wichtigkeit&ldquo; bezieht sich auf die Aufgabe, wie wichtig diese für mich ist-->
-                    <!--bzw. für das Gelingen des Projekts.-->
-                    <!--</span>-->
-                    <!--</span>-->
-
-            <ion-grid>
-              <ion-row>
-                <label>*Pflichtfelder</label>
-              </ion-row>
-              <ion-row>
-                <ion-col>
-                  <button ion-button color="light" (click)="closeAddCompetence()" block>
-                    Abbrechen
-                  </button>
-                </ion-col>
-                <ion-col>
-                  <button ion-button color="secondary" (click)="addCompetence()" block [disabled]="competences.newObj.id == -1">
-                    Hinzufügen
-                  </button>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-list>
+              <ion-item>
+                <button ion-button (click)="removeCompetence(competence)" block color="danger">
+                  Löschen
+                </button>
+              </ion-item>
+            </ion-list>
+          </collapsible-card>
+          <button ion-button small block color="light" (click)="addCompetence()">
+            Kompetenz hinzufügen
+          </button>
         </div>
       </collapsible-card>
+
       <collapsible-card>
         <span card-header>
           Schichten <span float-right>{{shifts.all.length}}</span>
         </span>
         <div card-content>
-          <ion-list>
-            <ion-item *ngFor="let shift of shifts.all">
-              {{shift.startTime | date: "dd.MM.yyyy HH:mm"}} -
-              {{shift.endTime | date: "dd.MM.yyyy HH:mm"}}
-              <ion-icon name="close-circle" (click)="removeShift(shift)" float-right></ion-icon>
-            </ion-item>
-          </ion-list>
+          <collapsible-card *ngFor="let shift of shifts.all">
+            <span card-header>
+              Start: {{shift.startTime | date: "dd.MM.yyyy HH:mm"}}
+              <br>
+              Ende: {{shift.endTime | date: "dd.MM.yyyy HH:mm"}}
+            </span>
+            <ion-list card-content>
+              <ion-item>
+                <ion-label stacked>Anzahl Freiwilliger*</ion-label>
+                <ion-input type="number" required [minValue]="1" min="1"
+                  [value]="shift.minAmountOfVolunteers" disabled>
+                </ion-input>
+              </ion-item>
+              <button ion-button small block color="danger" (click)="removeShift(shift)">
+                Löschen
+              </button>
+            </ion-list>
+          </collapsible-card>
 
-          <ion-item *ngIf="!addNewShift">
-            <button ion-button color="light" block (click)="openNewShiftForm()">
-              Schicht hinzufügen
-            </button>
-          </ion-item>
+          <button ion-button small block color="light" *ngIf="!addNewShift" (click)="openNewShiftForm()">
+            Schicht hinzufügen
+          </button>
 
           <ion-list *ngIf="addNewShift">
             <ion-item>
@@ -298,9 +244,6 @@
             </ion-item>
             <ion-grid>
               <ion-row>
-                <label>*Pflichtfelder</label>
-              </ion-row>
-              <ion-row>
                 <ion-col>
                   <button ion-button color="light" (click)="closeAddShift()" block>
                     Abbrechen
@@ -316,84 +259,60 @@
           </ion-list>
         </div>
       </collapsible-card>
+
       <collapsible-card>
         <span card-header>
           Materialien <span float-right>{{materials.all.length}}</span>
         </span>
         <div card-content>
-          <ion-list *ngIf="materials.all.length > 0">
-            <ion-item>
-              <ion-grid no-padding>
-                <ion-row class="row row-header">
-                  <ion-col col-4 class="material-header-name">Name</ion-col>
-                  <ion-col col-2 class="material-header-amount">Menge</ion-col>
-                  <ion-col col-5 class="material-header-description">Beschreibung</ion-col>
-                </ion-row>
-                <ion-row class="row row-content" *ngFor="let material of materials.all" padding-top>
-                  <ion-grid no-padding>
-                    <ion-row (click)="material.edit = !material.edit">
-                      <ion-col col-4 class="material-content-name">{{material.name}}</ion-col>
-                      <ion-col col-2>{{material.quantity}}</ion-col>
-                      <ion-col col-6>{{material.description}}</ion-col>
-                    </ion-row>
-                    <ion-row *ngIf="material.edit">
-                      <ion-col col-12>
-                        <!-- @TODO: showing the message/icon from validation of these dynamic fields
-                                    should probably be handled in a better way, but they work
-                                     ~ PN
-                        -->
-                        <ion-list>
-                          <ion-item>
-                            <ion-label stacked>Name*</ion-label>
-                            <ion-input type="text" [(ngModel)]="material.name" [ngModelOptions]="{standalone: true}" required>
-                            </ion-input>
-                            <ion-icon item-end name="alert" color="danger"
-                                      *ngIf="!material.name"></ion-icon>
-                          </ion-item>
-                          <ion-item *ngIf="!material.name" class="form-error">
-                            Bitte geben Sie einen Namen ein.
-                          </ion-item>
-                          <ion-item>
-                            <ion-label stacked>Menge*</ion-label>
-                            <ion-input type="number" min="1" [minValue]="1" required
-                                       [(ngModel)]="material.quantity" [ngModelOptions]="{standalone: true}">
-                            </ion-input>
-                            <ion-icon item-end name="alert" color="danger"
-                                      *ngIf="!material.quantity || material.quantity < 1"></ion-icon>
-                          </ion-item>
-                          <ion-item *ngIf="!material.quantity || material.quantity < 1" class="form-error">
-                            Bitte geben Sie eine Menge ein.
-                          </ion-item>
-                          <ion-item>
-                            <ion-label stacked>Beschreibung</ion-label>
-                            <ion-textarea [(ngModel)]="material.description" [ngModelOptions]="{standalone: true}"></ion-textarea>
-                          </ion-item>
-                          <ion-item>
-                            <label>*Pflichtfelder</label>
-                            <button ion-button (click)="material.edit = false" color="light" block>
-                              Abbrechen
-                            </button>
-                            <button ion-button (click)="updateMaterial(material)" color="secondary" block>
-                              Aktualisieren
-                            </button>
-                            <button ion-button (click)="removeMaterial(material)" color="danger" block>
-                              Löschen
-                            </button>
-                          </ion-item>
-                        </ion-list>
-                      </ion-col>
-                    </ion-row>
-                  </ion-grid>
-                </ion-row>
-              </ion-grid>
-            </ion-item>
-          </ion-list>
+          <collapsible-card *ngFor="let material of materials.all">
+            <span card-header>
+              {{ material.name }}: {{material.quantity}}
+            </span>
+            <!-- @TODO: showing the message/icon from validation of these dynamic fields
+            should probably be handled in a better way, but they work
+            ~ PN
+            -->
+            <ion-list card-content>
+              <ion-item>
+                <ion-label stacked>Name*</ion-label>
+                <ion-input type="text" [(ngModel)]="material.name" [ngModelOptions]="{standalone: true}" required
+                  (ionChange)="updateMaterial(material)">
+                </ion-input>
+                <ion-icon item-end name="alert" color="danger"
+                  *ngIf="!material.name"></ion-icon>
+              </ion-item>
+              <ion-item *ngIf="!material.name" class="form-error">
+                Bitte geben Sie einen Namen ein.
+              </ion-item>
+              <ion-item>
+                <ion-label stacked>Menge*</ion-label>
+                <ion-input type="number" min="1" [minValue]="1" required
+                  [(ngModel)]="material.quantity" [ngModelOptions]="{standalone: true}"
+                  (ionChange)="updateMaterial(material)">
+                </ion-input>
+                <ion-icon item-end name="alert" color="danger"
+                  *ngIf="!material.quantity || material.quantity < 1"></ion-icon>
+              </ion-item>
+              <ion-item *ngIf="!material.quantity || material.quantity < 1" class="form-error">
+                Bitte geben Sie eine Menge ein.
+              </ion-item>
+              <ion-item>
+                <ion-label stacked>Beschreibung</ion-label>
+                <ion-textarea [(ngModel)]="material.description" [ngModelOptions]="{standalone: true}"
+                  (ionChange)="updateMaterial(material)"></ion-textarea>
+              </ion-item>
+              <ion-item>
+                <button ion-button (click)="removeMaterial(material)" color="danger" block>
+                  Löschen
+                </button>
+              </ion-item>
+            </ion-list>
+          </collapsible-card>
 
-          <ion-item *ngIf="!addNewMaterial">
-            <button ion-button color="light" block (click)="addNewMaterial = !addNewMaterial">
-              Material hinzufügen
-            </button>
-          </ion-item>
+          <button ion-button small block color="light" *ngIf="!addNewMaterial" (click)="addNewMaterial = !addNewMaterial">
+            Material hinzufügen
+          </button>
 
           <ion-list *ngIf="addNewMaterial">
             <ion-item>
@@ -424,9 +343,6 @@
             </ion-item>
             <ion-grid>
               <ion-row>
-                <label>*Pflichtfelder</label>
-              </ion-row>
-              <ion-row>
                 <ion-col>
                   <button ion-button color="light" (click)="closeAddMaterial()" block>
                     Abbrechen
@@ -449,7 +365,7 @@
   <ion-toolbar *ngIf="!isNewTask">
     <div class="toolbar-buttons">
       <button ion-button (click)="task_delete()" color="danger" block>
-        Löschen
+        Aufgabe Löschen
       </button>
       <button ion-button (click)="unpublish()" color="light" block
               *ngIf="task.taskState == 'PUBLISHED'">

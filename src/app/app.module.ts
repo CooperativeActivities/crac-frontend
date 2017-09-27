@@ -11,8 +11,6 @@ import { Geolocation } from '@ionic-native/geolocation';
 
 import { MyApp } from './app.component';
 
-import { LogoutModal } from '../components/logoutModal/logoutModal';
-
 import { HelperService } from "../services/helpers";
 import { AuthService } from "../services/auth_service";
 import { ErrorDisplayService } from '../services/error_service';
@@ -21,7 +19,6 @@ import { ErrorDisplayService } from '../services/error_service';
 @NgModule({
   declarations: [
     MyApp,
-    LogoutModal,
   ],
   imports: [
     IonicModule.forRoot(MyApp, {
@@ -37,7 +34,6 @@ import { ErrorDisplayService } from '../services/error_service';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    LogoutModal,
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},

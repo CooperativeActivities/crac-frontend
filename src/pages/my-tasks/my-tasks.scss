@@ -3,6 +3,7 @@ page-my-tasks {
   .segment-ios,
   .segment-md{
     border-top: 4px solid color($colors, light);
+    margin-bottom: 1px;
     .segment-button:first-of-type,
     .segment-button:last-of-type {
       border-radius: 0;
@@ -20,6 +21,12 @@ page-my-tasks {
       border-top-style: solid;
       border-left-style: solid;
       border-right-style: solid;
+      &:last-of-type {
+        border-right-style: none;
+      }
+      &:first-of-type {
+        border-left-style: none;
+      }
     }
   }
 }
