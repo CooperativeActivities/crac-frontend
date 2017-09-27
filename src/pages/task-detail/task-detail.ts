@@ -465,6 +465,21 @@ export class TaskDetailPage {
       this.presentToast("Die Zusage kann nicht nicht zurückgezogen werden: " + error.message, 'top', false, 5000);
     })
   };
+
+  getSubscribers(material){
+    const subs = [ ...material.subscribedUsers ]
+    _.remove(subs, { userId: this.user.id })
+    const mySavedSubscribedQuantity = material.subscribedQuantity - material.subscribedQuantityOtherUsers
+    if(mySavedSubscribedQuantity > 0){
+      subs.push({
+        userId: this.user.id,
+        quantity: mySavedSubscribedQuantity,
+        userName: this.user.name,
+      })
+    }
+    return _.sortBy(subs, [ "userName" ])
+  };
+
   subscribeToMaterial(material){
     //save material subscription for any quantity. If zero, call unsubscribe, otherwise continue.
     if( material.mySubscribedQuantity === 0 ) {
@@ -503,16 +518,12 @@ export class TaskDetailPage {
     });
   };
 
-  getLeaders() {
-    return this.task.userRelationships.filter((u) => {
-      return u.participationType === 'LEADING';
-    });
+  getLeading(team) {
+    return team.filter(member => member.isLeading)
   }
 
-  getParticipants() {
-    return this.task.userRelationships.filter((u) => {
-      return u.participationType === 'PARTICIPATING';
-    });
+  getParticipants(team) {
+    return team.filter(member => member.isParticipant)
   }
 
   areAllParticipantsDone() {

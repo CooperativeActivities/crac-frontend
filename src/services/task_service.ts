@@ -12,7 +12,7 @@ export class TaskDataService {
     }});
   };
   //Get a TAsk by ID
-  getTaskById(id){
+  getTaskById(id): Promise<any>{
     return this.helpers.ajax("task/" + id, "get");
   };
   //Update the Task data if there are changes

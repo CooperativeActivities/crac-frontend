@@ -633,8 +633,6 @@ export class TaskEditPage {
       return false;
     }
 
-    material.edit = false;
-
     //save later
     this.materials.toUpdate.push(material);
   };
@@ -653,9 +651,8 @@ export class TaskEditPage {
 
 
   async doRefresh (refresher=null) {
-    await this.taskDataService.getTaskById(this.taskId).then((res) => {
+    await this.taskDataService.getTaskById(this.taskId).then(async (res) => {
       this.task = res.object;
-      console.log(this.task);
 
       this.updateFlags();
 
@@ -668,14 +665,18 @@ export class TaskEditPage {
       }
       this.task.startTime = this.getDateString(new Date(this.task.startTime));
 
-      this.competences.all = _.orderBy(_.clone(this.task.taskCompetences), [ "name" ])
-      this.materials.all = _.orderBy(_.clone(this.task.materials), [ "name" ])
-      this.shifts.all = _.orderBy(_.clone(this.task.childTasks), [ "startTime" ])
+      if(this.task.taskType === "WORKABLE"){
+        const shifts = (await Promise.all(this.task.childTasks.map(({ id }) => this.taskDataService.getTaskById(id)))).map((res: any) => res.object)
+        this.shifts.all = _.orderBy(shifts, [ "startTime" ])
+        this.competences.all = _.orderBy(_.clone(this.task.taskCompetences), [ "name" ])
+        this.materials.all = _.orderBy(_.clone(this.task.materials), [ "name" ])
 
-      for(let shift of this.shifts.all) {
-        shift.startTime = this.getDateString(new Date(shift.startTime));
-        shift.endTime = this.getDateString(new Date(shift.endTime));
+        for(const shift of this.shifts.all) {
+          shift.startTime = this.getDateString(new Date(shift.startTime));
+          shift.endTime = this.getDateString(new Date(shift.endTime));
+        }
       }
+
     }, (error) => {
       this.showToast({ message:"Aufgabe kann nicht geladen werden: " + error.message, })
     })

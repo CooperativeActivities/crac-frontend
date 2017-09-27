@@ -57,8 +57,20 @@
         Team ({{task.signedUsers}}{{(task.taskType == 'WORKABLE' && task.childTasks?.length == 0) ? ' / ' + task.minAmountOfVolunteers : ''}})
       </div>
       <div card-content>
-        <ion-list>
-          <ion-item *ngFor="let member of team">
+        <ion-list class="team-list">
+          <ion-label stacked> Organisatoren </ion-label>
+          <ion-item *ngFor="let member of getLeading(team)">
+            <ion-icon name="star" color="primary" class="icon-role icon-role-leader"></ion-icon>
+            <ion-avatar item-left>
+              <img src="../../assets/img/avatar-placeholder1.png">
+            </ion-avatar>
+            <h2>
+              <strong *ngIf="member?.self">Ich</strong>
+              <span *ngIf="!member?.self">{{member?.name}}</span>
+            </h2>
+          </ion-item>
+          <ion-label stacked> Teilnehmer </ion-label>
+          <ion-item *ngFor="let member of getParticipants(team)">
             <ion-icon *ngIf="member.isLeading" name="star" color="primary" class="icon-role icon-role-leader"></ion-icon>
             <ion-icon *ngIf="member.isParticipant" name="person" class="icon-role"></ion-icon>
             <ion-avatar item-left>
@@ -68,9 +80,9 @@
               <strong *ngIf="member?.self">Ich</strong>
               <span *ngIf="!member?.self">{{member?.name}}</span>
             </h2>
-            <ng-container item-right *ngIf="member?.isParticipant && participationType === 'LEADING' && task.taskType === 'WORKABLE'">
-              <ion-icon name="checkmark-circle" color="secondary" *ngIf="member?.completed"></ion-icon>
-              <ion-icon name="checkmark-circle-outline" color="light" *ngIf="!member?.completed"></ion-icon>
+            <ng-container item-right *ngIf="participationType === 'LEADING' && task.taskType === 'WORKABLE'">
+              <ion-icon name="checkmark-circle" color="secondary" *ngIf="member.completed"></ion-icon>
+              <ion-icon name="checkmark-circle-outline" color="light" *ngIf="!member.completed"></ion-icon>
             </ng-container>
           </ion-item>
         </ion-list>
@@ -112,9 +124,17 @@
       </div>
       <div card-content>
         <ion-list>
-          <ion-item *ngFor="let comp of task.taskCompetences">
-            {{comp.name}}
-          </ion-item>
+          <collapsible-card *ngFor="let comp of task.taskCompetences">
+            <span card-header> {{comp.name}} </span>
+            <div card-content>
+              <ion-item>
+                <ion-label stacked>Können<span float-right>{{comp.neededProficiencyLevel}}</span></ion-label>
+              </ion-item>
+              <ion-item *ngIf="comp.mandatory">
+                <ion-label>Zwingend</ion-label>
+              </ion-item>
+            </div>
+          </collapsible-card>
         </ion-list>
       </div>
     </collapsible-card>
@@ -132,7 +152,6 @@
           <p>
             <collapsible-card>
               <div card-header>
-                <ion-icon name="contact" item-left></ion-icon>
                 {{shift.signedUsers}} / {{shift.minAmountOfVolunteers}}
               </div>
               <div card-content>
@@ -166,39 +185,33 @@
       <div card-content>
         <collapsible-card *ngFor="let material of task.materials" no-padding>
           <div card-header>
-            <ion-icon name="cube" item-left></ion-icon>
             {{material.name}}: {{material.subscribedQuantity}} / {{material.quantity}}
           </div>
           <div card-content>
-            <table *ngIf="showShiftsMaterialsEnroll || material.subscribedQuantity > 0">
+            <table class="materials-brought" *ngIf="showShiftsMaterialsEnroll || material.subscribedQuantity > 0">
               <thead>
                 <tr>
                   <th>User</th>
                   <th>Menge</th>
-                  <th></th>
                 </tr>
               </thead>
               <tbody>
+                <tr *ngFor="let subscriber of getSubscribers(material)">
+                  <td>{{subscriber.userName}}</td>
+                  <td col-auto>{{subscriber.quantity}}</td>
+                </tr>
                 <tr *ngIf="showShiftsMaterialsEnroll">
-                  <td>Ich</td>
-                  <td>
-                    <input type="number" placeholder="Anzahl..." [(ngModel)] ="material.mySubscribedQuantity"
-                           min="0"
-                           [max]="material.quantity - material.subscribedQuantityOtherUsers"
-                           ng-class="{'has-error' : materialSubscribeError(material) }" />
-                  </td>
                   <td>
                     <button ion-button color="secondary" small (click)="subscribeToMaterial(material)">
-                      Nehm ich mit
+                      Ich bringe
                     </button>
                   </td>
+                  <td>
+                    <input type="number" [(ngModel)] ="material.mySubscribedQuantity" min="0"
+                    [max]="material.quantity - material.subscribedQuantityOtherUsers"
+                    ng-class="{'has-error' : materialSubscribeError(material) }" />
+                  </td>
                 </tr>
-                <ng-container *ngFor="let subscriber of material?.subscribedUsers">
-                  <tr *ngIf="subscriber.userName != user?.name">
-                    <td>{{subscriber.userName}}</td>
-                    <td>{{subscriber.quantity}}</td>
-                  </tr>
-                </ng-container>
               </tbody>
             </table>
           </div>
@@ -210,21 +223,21 @@
         Kommentare ({{task.comments.length}})
       </div>
       <div card-content>
-        <ion-list>
+        <ion-list class="comments">
           <ion-item *ngFor="let comment of task.comments">
             <ion-avatar item-left>
               <img src="../../assets/img/avatar-placeholder2.png">
             </ion-avatar>
-            <h2>{{comment?.name}}</h2>
+            <h2>{{comment.name}}</h2>
 
-            <p text-wrap>{{comment?.content}}</p>
+            <p text-wrap>{{comment.content}}</p>
           </ion-item>
 
 
           <ion-item>
-            <ion-label floating>Kommentar hinzufügen</ion-label>
+            <ion-label stacked>Kommentar hinzufügen</ion-label>
             <ion-textarea type="text" [(ngModel)]="newComment"></ion-textarea>
-            <button ion-button color="dark" clear item-right icon-only (click)="addNewComment()">
+            <button ion-button color="secondary" clear item-right icon-only (click)="addNewComment()" style="align-self: flex-end;">
               <ion-icon name="send"></ion-icon>
             </button>
           </ion-item>

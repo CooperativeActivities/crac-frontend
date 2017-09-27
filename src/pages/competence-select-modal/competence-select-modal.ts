@@ -21,6 +21,7 @@ export class CompetenceSelectModal {
   newComp: any;
   loading: Boolean = false;
   select_for: any;
+  confirmed_leave = false;
 
   constructor(public navCtrl: NavController, public userDataService: UserDataService,
     public toast: ToastController, private viewCtrl: ViewController, public navParams: NavParams) {
@@ -122,17 +123,33 @@ export class CompetenceSelectModal {
       neededProficiencyLevel: 50
     };
   }
+  tryLeaving(){
+    if(this.newComp.id >= 0){
+      this.resetCompetence()
+      return false
+    }
+    if(this.competenceArea){
+      this.resetCompetenceArea()
+      return false
+    }
+    return true
+  }
 
-  showToast({ message, position="top", duration=3000 }){
-    this.toast.create({ message, position, duration, })
-      .present();
+  ionViewCanLeave() {
+    return this.confirmed_leave || this.tryLeaving()
   }
 
   add(){
+    this.confirmed_leave = true
     this.viewCtrl.dismiss({ ...this.newComp })
   }
 
   cancel(){
     this.viewCtrl.dismiss()
+  }
+
+  showToast({ message, position="top", duration=3000 }){
+    this.toast.create({ message, position, duration, })
+      .present();
   }
 }

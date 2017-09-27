@@ -34,7 +34,7 @@ export class MyFriendsPage {
 
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
-      list = this.allUsers.filter((item) => {
+      list = list.filter((item) => {
         const name = item.firstName + " " + item.lastName;
         return (name.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })

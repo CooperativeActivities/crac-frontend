@@ -1,16 +1,25 @@
-
-.card-header.collapsible-header{
-  background-color: color($colors, light);
-  .item{
-    background: none;
-    min-height: 0;
-    .label{
-      margin-top: 0;
-      margin-bottom: 0;
+collapsible-card, collapsible-card-toggleable{
+  .card-header.collapsible-header{
+    background-color: color($colors, light);
+    .item{
+      background: none;
+      min-height: 0;
+      .label{
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      .icon{
+        margin: 0;
+      }
     }
-    .icon{
-      margin: 0;
+    padding: $global-card-padding;
+  }
+  & [card-content] {
+    & collapsible-card, & collapsible-card-toggleable {
+      & > ion-card {
+        margin: $global-card-margin 0;
+        width: 100%;
+      }
     }
   }
-  padding: $global-card-padding;
 }
