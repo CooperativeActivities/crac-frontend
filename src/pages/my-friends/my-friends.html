@@ -10,9 +10,13 @@
       Freunde
     </div>
     <div card-content>
-      <ion-list>
-        <ion-item *ngFor="let friend of friends" (click)="viewProfile(friend.id)">
-          {{ friend.firstName }} {{ friend.lastName }}</ion-item>
+      <ion-list class="list-border">
+        <button ion-item *ngFor="let friend of friends" (click)="viewProfile(friend.id)">
+          <ion-avatar item-start>
+            <img src="assets/img/avatar-placeholder1.png">
+          </ion-avatar>
+          {{ friend.firstName }} {{ friend.lastName }}
+        </button>
         <ion-item *ngIf="friends.length < 1">
           Du hast noch keine Freunde.
         </ion-item>
@@ -25,23 +29,21 @@
       Neue Freundschaftsanfrage
     </div>
     <div card-content>
-      <ion-list>
+      <ion-list class="list-border">
         <ion-item>
           <ion-searchbar (ionInput)="filterUsers($event)"></ion-searchbar>
         </ion-item>
-        <ion-item *ngFor="let u of userList">
-          <ion-checkbox [(ngModel)]="u.checked"></ion-checkbox>
-          <ion-label>{{u.firstName}} {{u.lastName}}</ion-label>
-          <button ion-button item-end clear icon-only (click)="viewProfile(u.id)">
-            <ion-icon name="person" color="dark"></ion-icon>
+        <ion-item *ngFor="let u of userList" (click)="viewProfile(u.id)">
+          <ion-avatar item-start>
+            <img src="assets/img/avatar-placeholder1.png">
+          </ion-avatar>
+            {{u.firstName}} {{u.lastName}}
+          <button ion-button item-end clear icon-only (click)="$event.stopPropagation(); befriend(u)">
+            <ion-icon name="send" color="secondary"></ion-icon>
           </button>
-          </ion-item>
-        <ion-item>
-          <button ion-button block icon-left
-                  (click)="sendRequests()" [disabled]="allUsers.filter(getSelected).length < 1">
-            <ion-icon name="add"></ion-icon>
-            Versenden
-          </button>
+        </ion-item>
+        <ion-item *ngIf="userList.length == 0">
+          Keine User gefunden.
         </ion-item>
       </ion-list>
     </div>

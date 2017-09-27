@@ -10,22 +10,29 @@
         <ion-item *ngFor="let notification of notifications">
           <div *ngIf="notification.name === 'Friend Request'">
             <p text-wrap>
-              Freundschaftsanfrage von {{ notification.user.name }}
+              Freundschaftsanfrage von
             </p>
-            <p text-wrap>
-              <button ion-button (click)="accept(notification)" color="secondary" icon-left>
-                <ion-icon name="checkmark"></ion-icon>
-                Zustimmen
-              </button>
-              <button ion-button (click)="decline(notification)" color="danger" icon-left>
-                <ion-icon name="close"></ion-icon>
-                Ablehnen
-              </button>
-              <button ion-button (click)="viewProfile(notification.senderId, notification.notificationId)" color="light" icon-left>
-                <ion-icon name="person"></ion-icon>
-                Profil anschauen
-              </button>
-            </p>
+            <ion-grid class="inner-padding">
+              <ion-row>
+                <ion-col>
+                  <button ion-button (click)="viewProfile(notification.senderId, notification.notificationId)" color="light" block>
+                    {{ notification.user.firstName }} {{ notification.user.lastName }}
+                  </button>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <button ion-button (click)="accept(notification)" color="secondary" block>
+                    Zustimmen
+                  </button>
+                </ion-col>
+                <ion-col>
+                  <button ion-button (click)="decline(notification)" color="danger" block>
+                    Ablehnen
+                  </button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           </div>
 
           <div *ngIf="notification.name === 'Evaluation'">
@@ -34,12 +41,10 @@
             </p>
             <br>
             <p text-wrap>
-              <button ion-button (click)="evaluate(notification)" color="secondary" icon-left>
-                <ion-icon name="checkmark"></ion-icon>
+              <button ion-button (click)="evaluate(notification)" color="secondary">
                 Bewerten
               </button>
-              <button ion-button (click)="decline(notification)" color="danger" icon-left>
-                <ion-icon name="close"></ion-icon>
+              <button ion-button (click)="decline(notification)" color="danger">
                 Ablehnen
               </button>
             </p>

@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Allgemein</ion-title>
+    <ion-title>Profil</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -10,7 +10,7 @@
 <ion-content>
   <ion-card>
     <ion-card-content>
-      <ion-list>
+      <ion-list class="list-border">
         <button ion-item *ngFor="let p of pages" (click)="openPage(p)">
           {{p.title}}
         </button>

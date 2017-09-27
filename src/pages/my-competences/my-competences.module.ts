@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { MyCompetencesPage } from './my-competences';
+import { ComponentsModule } from "../../components/components.module"
 
 @NgModule({
   declarations: [
@@ -8,6 +9,7 @@ import { MyCompetencesPage } from './my-competences';
   ],
   imports: [
     IonicPageModule.forChild(MyCompetencesPage),
+    ComponentsModule,
   ],
   exports: [
     MyCompetencesPage

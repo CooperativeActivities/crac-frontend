@@ -1,0 +1,10 @@
+
+@media(max-width: 320px){
+  .tabs-md .tab-button-text {
+    font-size: 1.1rem;
+  }
+}
+
+.tabs-md .tab-button[aria-selected=true] .tab-button-text {
+  transform: none;
+}

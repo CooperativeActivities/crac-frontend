@@ -1,8 +1,5 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
     <ion-title>Aufgabenliste</ion-title>
   </ion-navbar>
 </ion-header>
@@ -13,15 +10,13 @@
 
   <ion-card *ngIf="matchingTasks?.length === 0 && parentTasks?.length === 0">
     <ion-card-content>
-      <ion-list>
-        <ion-item>
+      <ion-list class="list-border">
+        <ion-item class="not-found">
           <p>Keine offene Aufgaben gefunden.</p>
-          <p>
-            <button ion-button block (click)="navCtrl.push('my-history')">
-              Vergangene Aufgaben anschauen
-            </button>
-          </p>
         </ion-item>
+        <button ion-item block (click)="navCtrl.push('my-history')">
+          Vergangene Aufgaben anschauen
+        </button>
       </ion-list>
     </ion-card-content>
   </ion-card>
@@ -36,6 +31,20 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
+
+    <ion-searchbar [(ngModel)]="searchQuery" [debounce]="250" (change)="onSearchBarInput($event)"
+                   autocorrect="off">
+    </ion-searchbar>
+    <div class="button-right">
+        <button ion-button icon-left (click)="presentModal()">
+            <ion-icon name="ios-funnel"></ion-icon>
+            Filter
+        </button>
+
+        <button ion-button icon-left (click)="resetTaskList()">
+            Reset List
+        </button>
+    </div>
 
   <ion-card task-list *ngIf="parentTasks?.length > 0">
     <ion-card-header>

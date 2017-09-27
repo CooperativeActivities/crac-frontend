@@ -1,0 +1,71 @@
+
+// @TODO:
+// switch to an icon font if we have more icons/need different colors
+.ion-md-crac-home, .ion-ios-crac-home,
+.ion-md-aufgabenliste, .ion-ios-aufgabenliste,
+.ion-md-meine-aufgaben, .ion-ios-meine-aufgaben,
+.ion-md-nachrichten, .ion-ios-nachrichten,
+.ion-md-crac-profil, .ion-ios-crac-profil,
+.ion-md-crac-edit, .ion-ios-crac-edit,
+.ion-md-crac-add, .ion-ios-crac-add
+{
+  &::before{
+    height: 1em;
+    width: 1em;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: 100%;
+  }
+}
+.ion-md-crac-home, .ion-ios-crac-home{
+  &::before{
+    background-image: url("../assets/icon/home.svg");
+  }
+  &[ng-reflect-is-active=true]::before{
+    background-image: url("../assets/icon/home-aktiv.svg");
+  }
+}
+.ion-md-aufgabenliste, .ion-ios-aufgabenliste{
+  &::before{
+    background-image: url("../assets/icon/aufgabenliste.svg");
+  }
+  &[ng-reflect-is-active=true]::before{
+    background-image: url("../assets/icon/aufgabenliste-aktiv.svg");
+  }
+}
+.ion-md-meine-aufgaben, .ion-ios-meine-aufgaben{
+  &::before{
+    background-image: url("../assets/icon/meine-aufgaben.svg");
+  }
+  &[ng-reflect-is-active=true]::before{
+    background-image: url("../assets/icon/meine-aufgaben-aktiv.svg");
+  }
+}
+.ion-md-nachrichten, .ion-ios-nachrichten{
+  &::before{
+    background-image: url("../assets/icon/nachrichten.svg");
+  }
+  &[ng-reflect-is-active=true]::before{
+    background-image: url("../assets/icon/nachrichten-aktiv.svg");
+  }
+}
+.ion-md-crac-profil, .ion-ios-crac-profil{
+  &::before{
+    background-image: url("../assets/icon/profil.svg");
+  }
+  &[ng-reflect-is-active=true]::before{
+    background-image: url("../assets/icon/profil-aktiv.svg");
+  }
+}
+.ion-md-crac-edit, .ion-ios-crac-edit{
+  &::before{
+    background-image: url("../assets/icon/edit.svg");
+  }
+}
+.ion-md-crac-add, .ion-ios-crac-add{
+  &::before{
+    background-image: url("../assets/icon/add.svg");
+  }
+}

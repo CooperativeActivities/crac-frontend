@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, AlertController, ModalController } from 'ionic-angular';
 import * as _ from 'lodash';
 
 import { TaskDataService } from '../../services/task_service';
@@ -23,16 +23,13 @@ export class TaskEditPage {
   hasEndTime: boolean = false;
   isNewTask: boolean = true;
   isChildTask: boolean = false;
-  addNewCompetence: boolean = false;
   addNewShift: boolean = false;
   addNewMaterial: boolean = false;
   pageTitle: string;
-  competenceArea: any = null;
-  competenceAreaId: number = -1;
-  competenceAreaList: Array<any> = [];
-  availableCompetences: Array<any> = [];
   materials: any = {
-    newObj: {},
+    newObj: {
+      quantity: 1,
+    },
     toAdd: [],
     toRemove: [],
     toUpdate: [],
@@ -45,11 +42,6 @@ export class TaskEditPage {
     all: []
   };
   competences: any = {
-    newObj: {
-      id: -1,
-      mandatory: false,
-      neededProficiencyLevel: 50
-    },
     toAdd: [],
     toRemove: [],
     toUpdate: [],
@@ -62,7 +54,7 @@ export class TaskEditPage {
   maximumDate: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public toast: ToastController, public alert: AlertController,
-              public taskDataService: TaskDataService, public userDataService: UserDataService) {
+              public taskDataService: TaskDataService, public userDataService: UserDataService, public modalCtrl: ModalController) {
     this.taskId = navParams.get("id");
     this.parentId = navParams.get("parentId");
 
@@ -106,8 +98,8 @@ export class TaskEditPage {
     console.log(this.navParams)
     if (this.navParams.data.address != null) {
       this.task.address = this.navParams.data.address;
-      this.task.lat = this.navParams.data.lat;
-      this.task.lng = this.navParams.data.lng;
+      this.task.geoLat = this.navParams.data.lat;
+      this.task.geoLng = this.navParams.data.lng;
       console.log("Import Address: " + this.navParams.data.address + " | lat: " + this.navParams.data.lat + " / lng: " + this.navParams.data.lng);
     }
   }
@@ -175,8 +167,8 @@ export class TaskEditPage {
       {
        id: this.taskId,
        address: this.task.address,
-       lat: this.task.lat,
-       lng: this.task.lng
+       lat: this.task.geoLat,
+       lng: this.task.geoLng
      });
   }
 
@@ -188,14 +180,40 @@ export class TaskEditPage {
     return date
   }
 
+  setTimeToZero(d) {
+    d.setHours(0);
+    d.setMinutes(0);
+    d.setSeconds(0);
+    d.setMilliseconds(0);
+    return d;
+  }
+
+  addStartTime() {
+    this.hasStartTime = true;
+    let d = this.setTimeToZero(new Date(this.task.startTime));
+    this.task.startTime = this.getDateString(d);
+  }
+
+  addEndTime() {
+    this.hasEndTime = true;
+    if(!this.task.endTime) return;
+    let d = this.setTimeToZero(new Date(this.task.endTime));
+    this.task.endTime = this.getDateString(d);
+  }
+
+  areLawsOfTimeFollowed(start, end) {
+    if(!end || start <= end) {
+      return true;
+    }
+    return false;
+  }
+
   getProcessedTaskData() {
     let taskData : any = {};
-
     taskData.name = this.task.name;
 
-    let startTime = this.toTimestamp(this.task.startTime)
-    let endTime = this.toTimestamp(this.task.endTime)
-    // @TODO: ensure that startTime/endTime are within startTime/endTime of superTask
+    let startTime = this.toTimestamp(this.task.startTime);
+    let endTime = this.toTimestamp(this.task.endTime);
 
     if(!startTime){
       this.toast.create({
@@ -208,7 +226,7 @@ export class TaskEditPage {
     if(!endTime){
       endTime = startTime
     }
-    if(endTime < startTime){
+    if(!this.areLawsOfTimeFollowed(startTime, endTime)){
       this.toast.create({
         message: "Aufgabe kann nicht gespeichert werden: " + "Startdatum muss vor Enddatum liegen!",
         duration: 3000,
@@ -217,14 +235,15 @@ export class TaskEditPage {
       return;
     }
 
-    taskData.startTime = startTime
-    taskData.endTime = endTime
+
+    taskData.startTime = startTime;
+    taskData.endTime = endTime;
 
     if(this.task.description) taskData.description = this.task.description;
     if(this.task.location) taskData.location = this.task.location;
     if(this.task.address) taskData.address = this.task.address;
-    if(this.task.lat) taskData.lat = this.task.lat;
-    if(this.task.lng) taskData.lng = this.task.lng;
+    if(this.task.geoLat) taskData.geoLat = this.task.geoLat;
+    if(this.task.geoLng) taskData.geoLng = this.task.geoLng;
     if(this.task.minAmountOfVolunteers) taskData.minAmountOfVolunteers = this.task.minAmountOfVolunteers;
     taskData.taskType = this.task.taskType;
     taskData.taskState = this.task.taskState;
@@ -243,7 +262,16 @@ export class TaskEditPage {
           position: 'top'
         }).present();
 
-        this.navCtrl.push('task-detail', {id: this.task.id});
+        const id = this.task.id
+        this.navCtrl.setPages(
+          this.navCtrl.getViews()
+          // remove last element
+          .slice(0, -1)
+          .map(view => ({ page: view.id, params: view.data }))
+          .concat({ page: "task-detail", params: { id } })
+
+        )
+        //this.navCtrl.push('task-detail', {id: this.task.id});
       } else {
         this.toast.create({
           message: "Aufgabe gespeichert",
@@ -251,7 +279,7 @@ export class TaskEditPage {
           position: 'top'
         }).present();
 
-        this.navCtrl.push('task-detail', {id: this.task.id});
+        this.navCtrl.pop()
       }
     })
   };
@@ -366,7 +394,7 @@ export class TaskEditPage {
   }
 
   task_delete(){
-    let template = 'Wollen sie diese Aufgabe wirklich löschen? Es wird die Aufgabe mit ALLEN darunterliegenden Aufgabes permanent gelöscht.';
+    let template = 'Wollen sie diese Aufgabe wirklich löschen? Es wird die Aufgabe mit ALLEN darunterliegenden Aufgaben permanent gelöscht.';
     if( this.task.taskState === 'PUBLISHED' )
       template += "<p><strong>Aufgabe ist schon veröffentlicht. Aufgabe trotzdem löschen?</strong></p>";
     if( this.task.taskState === 'STARTED' )
@@ -390,9 +418,14 @@ export class TaskEditPage {
                 duration: 3000
               }).present();
               if (this.task.superTask) {
-                this.navCtrl.push('task-detail', {id: this.task.superTask.id});
+                const id = this.task.id
+                this.navCtrl.setPages(
+                  this.navCtrl.getViews()
+                  .filter(view => view && ((view.id !== "task-detail" && view.id !== "task-edit") || (view.data && view.data.id !== id)))
+                  .map(view => ({ page: view.id, params: view.data }))
+                )
               } else {
-                this.navCtrl.push('my-tasks');
+                this.navCtrl.popToRoot();
               }
             }, (error) => {
               this.toast.create({
@@ -449,7 +482,7 @@ export class TaskEditPage {
         position: 'top',
         duration: 3000
       }).present();
-      this.navCtrl.push('task-detail', {id: this.task.id});
+      this.navCtrl.pop()
     }, (error) => {
       this.toast.create({
         message: "Aufgabe kann nicht zurückgezogen werden: " + error.message,
@@ -459,102 +492,16 @@ export class TaskEditPage {
     });
   };
 
-  openNewCompetenceForm(){
-    if(this.competenceAreaList.length === 0) {
-      this.getCompetenceAreas().then(()=> {
-        this.addNewCompetence = !this.addNewCompetence;
-      });
-    } else {
-      this.addNewCompetence = true;
-    }
-  }
-
-  getCompetenceAreas() {
-    return this.userDataService.getCompetenceAreas()
-      .then((res) => {
-        if (res.object.length === 0) {
-          this.toast.create({
-            message: "Keine Kompetenzbereiche gefunden: " + res.message,
-            position: 'top',
-            duration: 3000
-          }).present();
-          return;
-        }
-
-        let compAreas = _.orderBy(res.object, [ "name" ])
-        this.competenceAreaList = compAreas;
-      }, (error) => {
-        this.toast.create({
-          message: "Kompetenzbereiche können nicht geladen werden: " + error.message,
-          position: 'top',
-          duration: 3000
-        }).present();
-      });
-  }
-
-  getCompetencesForArea(newValue){
-    if(newValue === null) return;
-    this.competences.newObj = {
-      id: -1,
-      mandatory: false,
-      neededProficiencyLevel: 50
-    };
-
-    this.userDataService.getCompetencesForArea(newValue)
-      .then((res) => {
-        if(res.object.mappedCompetences.length === 0) {
-          this.toast.create({
-            message: "Keine Kompetenzen in diesem Bereich gefunden",
-            position: 'top',
-            duration: 3000
-          }).present();
-          return;
-        } else {
-          this.competenceAreaId = newValue.id;
-          this.availableCompetences = _.orderBy(res.meta.competences, [ "name" ])
-        }
-      }, (error) => {
-        this.toast.create({
-          message: "Kompetenzen dieses Bereichs können nicht geladen werden: " + error.message,
-          position: 'top',
-          duration: 3000
-        }).present();
-      });
-  }
-
   addCompetence(){
-    let competenceId = this.competences.newObj.id;
-    if(!competenceId) return;
-    //save later
-    let index = _.findIndex(this.availableCompetences, { id: parseInt(competenceId) });
-    if(index === -1){
-      console.error("this shouldn't happen");
-      return;
-    }
-    let competence = this.availableCompetences.splice(index, 1)[0];
-    let newComp = {
-      id: competenceId,
-      name: competence.name,
-      importanceLevel: this.competences.newObj.neededProficiencyLevel,
-      neededProficiencyLevel: this.competences.newObj.neededProficiencyLevel,
-      mandatory: this.competences.newObj.mandatory
-    };
+    const modal = this.modalCtrl.create("competence-select-modal", { usedCompetences: this.competences.all.map(c => c.id), select_for: "task" })
 
-    this.competences.toAdd.push(newComp);
-    this.competences.all.push(newComp);
-
-    this.closeAddCompetence();
-  };
-
-  closeAddCompetence() {
-    this.competences.newObj = {
-      id: -1,
-      mandatory: false,
-      neededProficiencyLevel: 50
-    };
-    this.competenceArea = null;
-    this.competenceAreaId = -1;
-    this.addNewCompetence = false;
+    modal.onDidDismiss((newComp: any) => {
+      if(newComp){
+        this.competences.toAdd.push(newComp);
+        this.competences.all.push(newComp);
+      }
+    })
+    modal.present()
   }
 
   updateCompetence(competence){
@@ -570,8 +517,8 @@ export class TaskEditPage {
   removeCompetence(competence){
     if(!competence) return;
     let index = _.findIndex(this.competences.all, competence);
-    let newIndex = _.findIndex(this.competences.toAdd, competence);
     this.competences.all.splice(index, 1)[0];
+    let newIndex = _.findIndex(this.competences.toAdd, competence);
     if(newIndex < 0) {
       this.competences.toRemove.push(competence.id);
     } else {
@@ -584,6 +531,7 @@ export class TaskEditPage {
     let end = this.task.endTime || this.task.startTime;
     this.shifts.newObj.startTime = start;
     this.shifts.newObj.endTime = end;
+    this.shifts.newObj.minAmountOfVolunteers = 1;
     this.addNewShift = !this.addNewShift;
   }
 
@@ -674,7 +622,9 @@ export class TaskEditPage {
   };
 
   closeAddMaterial() {
-    this.materials.newObj = {};
+    this.materials.newObj = {
+      quantity: 1,
+    };
     this.addNewMaterial = false;
   }
 
@@ -682,8 +632,6 @@ export class TaskEditPage {
     if(!this.validateMaterial(material)) {
       return false;
     }
-
-    material.edit = false;
 
     //save later
     this.materials.toUpdate.push(material);
@@ -703,40 +651,45 @@ export class TaskEditPage {
 
 
   async doRefresh (refresher=null) {
-    await Promise.all([
-      this.taskDataService.getTaskById(this.taskId).then((res) => {
-        this.task = res.object;
-        console.log(this.task);
+    await this.taskDataService.getTaskById(this.taskId).then(async (res) => {
+      this.task = res.object;
 
-        this.updateFlags();
+      this.updateFlags();
 
-        this.hasStartTime = true;
-        if(this.task.startTime != this.task.endTime ){
-          this.task.endTime = this.getDateString(new Date(this.task.endTime));
-          this.hasEndTime = true;
-        }
-        this.task.startTime = this.getDateString(new Date(this.task.startTime));
+      this.hasStartTime = true;
+      if(this.task.startTime === this.task.endTime) {
+        this.task.endTime = null;
+      } else {
+        this.task.endTime = this.getDateString(new Date(this.task.endTime));
+        this.hasEndTime = true;
+      }
+      this.task.startTime = this.getDateString(new Date(this.task.startTime));
 
+      if(this.task.taskType === "WORKABLE"){
+        const shifts = (await Promise.all(this.task.childTasks.map(({ id }) => this.taskDataService.getTaskById(id)))).map((res: any) => res.object)
+        this.shifts.all = _.orderBy(shifts, [ "startTime" ])
         this.competences.all = _.orderBy(_.clone(this.task.taskCompetences), [ "name" ])
         this.materials.all = _.orderBy(_.clone(this.task.materials), [ "name" ])
-        this.shifts.all = _.orderBy(_.clone(this.task.childTasks), [ "startTime" ])
 
-        for(let shift of this.shifts.all) {
+        for(const shift of this.shifts.all) {
           shift.startTime = this.getDateString(new Date(shift.startTime));
           shift.endTime = this.getDateString(new Date(shift.endTime));
         }
-      }, (error) => {
-        this.toast.create({
-          message:"Aufgabe kann nicht geladen werden: " + error.message,
-          position: 'top',
-          duration: 3000
-        }).present();
-      })
-    ]);
+      }
+
+    }, (error) => {
+      this.showToast({ message:"Aufgabe kann nicht geladen werden: " + error.message, })
+    })
     //Stop the ion-refresher from spinning
     if(refresher){
       refresher.complete();
     }
   }
+
+  showToast({ message, position="top", duration=3000 }){
+    this.toast.create({ message, position, duration, })
+      .present();
+  }
+
 
 }

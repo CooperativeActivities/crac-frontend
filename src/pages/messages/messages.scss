@@ -1,0 +1,10 @@
+
+ion-grid.inner-padding{
+  padding: 0;
+  ion-col:first-child{
+    padding-left: 0;
+  }
+  ion-col:last-child{
+    padding-right: 0;
+  }
+}

@@ -1,65 +1,76 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Aufgabe</ion-title>
+    <ion-title>
+      <span *ngIf="task" text-wrap> {{ task.name }} </span>
+    </ion-title>
     <ion-buttons end>
       <button *ngIf="task?.permissions" ion-button icon-only (click)="edit()">
-        <ion-icon name="md-create"></ion-icon>
+        <ion-icon name="crac-edit"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
+  <!--
   <ion-toolbar>
     <ion-title class="full">
-      <span *ngIf="task">
-        {{ task?.name }}
-      </span>
+      <span *ngIf="task" text-wrap> {{ task.name }} </span>
     </ion-title>
   </ion-toolbar>
+  -->
 </ion-header>
 <ion-content>
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ng-template [ngIf]="task">
+  <ng-container *ngIf="task">
 
-    <ion-card>
+    <ion-card *ngIf="task.description">
       <ion-card-content class="task-detail__header__desc">
-        <p style="font-weight: bold;">{{ task?.name }}</p>
-        <p>
-          {{task?.description}}
-        </p>
+        {{task.description}}
       </ion-card-content>
     </ion-card>
 
     <collapsible-card>
       <div card-header>
-        Details
+        Zeit & Ort
       </div>
       <div card-content>
-        <ion-icon name="calendar"></ion-icon>
         <span class="task-detail__content__headline"> Zeit: </span>
         <div *ngIf="timeChoice == 'slot'">
-          <div> Von: {{ task?.startTime | date: 'dd.MM.yyyy H:mm' }}</div>
-          <div> Bis: {{ task?.endTime | date: 'dd.MM.yyyy H:mm' }}</div>
+          <div> Von: {{ task.startTime | date: 'dd.MM.yyyy H:mm' }}</div>
+          <div> Bis: {{ task.endTime | date: 'dd.MM.yyyy H:mm' }}</div>
         </div>
         <div *ngIf="timeChoice == 'point'">
-          <div class="row"> {{ task?.endTime | date: 'dd.MM.yyyy -- H:mm' }}</div>
+          <div class="row"> {{ task.endTime | date: 'dd.MM.yyyy -- H:mm' }}</div>
         </div>
-        <div *ngIf="task?.address">
-          <ion-icon name="locate"></ion-icon>
+        <div *ngIf="task.address">
           <span class="task-detail__content__headline"> Adresse: </span>
-          <div>{{task?.address}}</div>
-          <ion-icon name="open" (click)="openMapView()" tappable="tappable"></ion-icon>
-          Auf Karte anzeigen
+          <div>{{task.address}}</div>
+          <span (click)="openMapView()">
+            <ion-icon name="open" tappable="tappable"></ion-icon>
+            Auf Karte anzeigen
+          </span>
         </div>
       </div>
     </collapsible-card>
     <collapsible-card>
       <div card-header>
-        Team ({{task?.signedUsers}}{{(task?.taskType == 'WORKABLE' && task?.childTasks?.length == 0) ? ' / ' + task?.minAmountOfVolunteers : ''}})
+        Team ({{task.signedUsers}}{{(task.taskType == 'WORKABLE' && task.childTasks?.length == 0) ? ' / ' + task.minAmountOfVolunteers : ''}})
       </div>
       <div card-content>
-        <ion-list>
-          <ion-item *ngFor="let member of team">
+        <ion-list class="team-list">
+          <ion-label stacked> Organisatoren </ion-label>
+          <ion-item *ngFor="let member of getLeading(team)">
+            <ion-icon name="star" color="primary" class="icon-role icon-role-leader"></ion-icon>
+            <ion-avatar item-left>
+              <img src="../../assets/img/avatar-placeholder1.png">
+            </ion-avatar>
+            <h2>
+              <strong *ngIf="member?.self">Ich</strong>
+              <span *ngIf="!member?.self">{{member?.name}}</span>
+            </h2>
+          </ion-item>
+          <ion-label stacked> Teilnehmer </ion-label>
+          <ion-item *ngFor="let member of getParticipants(team)">
             <ion-icon *ngIf="member.isLeading" name="star" color="primary" class="icon-role icon-role-leader"></ion-icon>
             <ion-icon *ngIf="member.isParticipant" name="person" class="icon-role"></ion-icon>
             <ion-avatar item-left>
@@ -69,38 +80,37 @@
               <strong *ngIf="member?.self">Ich</strong>
               <span *ngIf="!member?.self">{{member?.name}}</span>
             </h2>
-            <ng-template item-right [ngIf]="member?.isParticipant && participationType === 'LEADING' && task.taskType === 'WORKABLE'">
-              <ion-icon name="checkmark-circle" color="secondary" *ngIf="member?.completed"></ion-icon>
-              <ion-icon name="checkmark-circle-outline" color="light" *ngIf="!member?.completed"></ion-icon>
-            </ng-template>
+            <ng-container item-right *ngIf="participationType === 'LEADING' && task.taskType === 'WORKABLE'">
+              <ion-icon name="checkmark-circle" color="secondary" *ngIf="member.completed"></ion-icon>
+              <ion-icon name="checkmark-circle-outline" color="light" *ngIf="!member.completed"></ion-icon>
+            </ng-container>
           </ion-item>
         </ion-list>
       </div>
     </collapsible-card>
 
-    <collapsible-card *ngIf="task?.superTask">
+    <collapsible-card *ngIf="task.superTask">
       <div card-header>
         Übergeordnete Aufgabe
       </div>
       <div card-content>
         <ion-list>
-          <task-preview [task]="task?.superTask"></task-preview>
+          <task-preview [task]="task.superTask"></task-preview>
         </ion-list>
       </div>
     </collapsible-card>
 
-    <collapsible-card *ngIf="task?.taskType == 'ORGANISATIONAL'">
+    <collapsible-card *ngIf="task.taskType == 'ORGANISATIONAL'">
       <div card-header>
-        Unteraufgaben ({{task?.childTasks.length}})
+        Unteraufgaben ({{task.childTasks.length}})
       </div>
       <div card-content>
         <ion-list>
-          <div *ngFor="let task of task?.childTasks">
+          <div *ngFor="let task of task.childTasks">
             <task-preview item-block [task]="task"></task-preview>
           </div>
           <ion-item>
-            <button ion-button (click)="makeNewSubTask()" *ngIf="task?.permissions" block>
-              <ion-icon name="add"></ion-icon>
+            <button ion-button color="light" (click)="makeNewSubTask()" *ngIf="task.permissions" block>
               Unteraufgaben hinzufügen
             </button>
           </ion-item>
@@ -108,25 +118,33 @@
       </div>
     </collapsible-card>
 
-    <collapsible-card *ngIf="task?.taskType == 'WORKABLE'">
+    <collapsible-card *ngIf="task.taskType == 'WORKABLE'">
       <div card-header>
-        Kompetenzen ({{task?.taskCompetences?.length}})
+        Kompetenzen ({{task.taskCompetences?.length}})
       </div>
       <div card-content>
         <ion-list>
-          <ion-item *ngFor="let comp of task?.taskCompetences">
-            {{comp.name}}
-          </ion-item>
+          <collapsible-card *ngFor="let comp of task.taskCompetences">
+            <span card-header> {{comp.name}} </span>
+            <div card-content>
+              <ion-item>
+                <ion-label stacked>Können<span float-right>{{comp.neededProficiencyLevel}}</span></ion-label>
+              </ion-item>
+              <ion-item *ngIf="comp.mandatory">
+                <ion-label>Zwingend</ion-label>
+              </ion-item>
+            </div>
+          </collapsible-card>
         </ion-list>
       </div>
     </collapsible-card>
 
-    <collapsible-card (click)="loadShifts()" *ngIf="task?.taskType == 'WORKABLE' && task?.childTasks.length > 0">
+    <collapsible-card-toggleable (click)="loadShifts()" *ngIf="showShifts" [visible]="shiftsCardShown" (onToggle)="shiftsCardShown = !shiftsCardShown" class="shiftsCard">
       <div card-header>
-        Schichten ({{task?.childTasks.length}})
+        Schichten ({{task.childTasks.length}})
       </div>
       <div card-content>
-        <ion-item *ngFor="let shift of task?.childTasks">
+        <ion-item *ngFor="let shift of task.childTasks">
           <h2>
             <ion-icon name="time" item-left></ion-icon>
             {{shift.startTime | date: 'dd.MM.yyyy H:mm'}} - {{shift.endTime | date: 'H:mm'}}
@@ -134,7 +152,6 @@
           <p>
             <collapsible-card>
               <div card-header>
-                <ion-icon name="contact" item-left></ion-icon>
                 {{shift.signedUsers}} / {{shift.minAmountOfVolunteers}}
               </div>
               <div card-content>
@@ -145,10 +162,10 @@
                   </span>
                 </ng-container></ion-item>
                 <div *ngIf="showShiftsMaterialsEnroll">
-                  <button ion-button small (click)="addToShift(shift)"
+                  <button ion-button small color="secondary" (click)="addToShift(shift)"
                           *ngIf="!shift.assigned">Ich arbeite mit!
                   </button>
-                  <button ion-button small (click)="removeFromShift(shift)"
+                  <button ion-button small color="danger" (click)="removeFromShift(shift)"
                           *ngIf="shift.assigned">Absagen
                   </button>
                 </div>
@@ -159,48 +176,42 @@
           </p>
         </ion-item>
       </div>
-    </collapsible-card>
+    </collapsible-card-toggleable>
 
-    <collapsible-card *ngIf="task?.materials.length > 0">
+    <collapsible-card *ngIf="task.materials.length > 0">
       <div card-header>
-        Material ({{task?.materials.length}})
+        Material ({{task.materials.length}})
       </div>
       <div card-content>
-        <collapsible-card *ngFor="let material of task?.materials" no-padding>
+        <collapsible-card *ngFor="let material of task.materials" no-padding>
           <div card-header>
-            <ion-icon name="cube" item-left></ion-icon>
             {{material.name}}: {{material.subscribedQuantity}} / {{material.quantity}}
           </div>
           <div card-content>
-            <table *ngIf="showShiftsMaterialsEnroll || material.subscribedQuantity > 0">
+            <table class="materials-brought" *ngIf="showShiftsMaterialsEnroll || material.subscribedQuantity > 0">
               <thead>
                 <tr>
                   <th>User</th>
                   <th>Menge</th>
-                  <th></th>
                 </tr>
               </thead>
               <tbody>
+                <tr *ngFor="let subscriber of getSubscribers(material)">
+                  <td>{{subscriber.userName}}</td>
+                  <td col-auto>{{subscriber.quantity}}</td>
+                </tr>
                 <tr *ngIf="showShiftsMaterialsEnroll">
-                  <td>Ich</td>
                   <td>
-                    <input type="number" placeholder="Anzahl..." [(ngModel)] ="material.mySubscribedQuantity"
-                           min="0"
-                           [max]="material.quantity - material.subscribedQuantityOtherUsers"
-                           ng-class="{'has-error' : materialSubscribeError(material) }" />
-                  </td>
-                  <td>
-                    <button ion-button small (click)="subscribeToMaterial(material)">
-                      Nehm ich mit
+                    <button ion-button color="secondary" small (click)="subscribeToMaterial(material)">
+                      Ich bringe
                     </button>
                   </td>
+                  <td>
+                    <input type="number" [(ngModel)] ="material.mySubscribedQuantity" min="0"
+                    [max]="material.quantity - material.subscribedQuantityOtherUsers"
+                    ng-class="{'has-error' : materialSubscribeError(material) }" />
+                  </td>
                 </tr>
-                <ng-container *ngFor="let subscriber of material?.subscribedUsers">
-                  <tr *ngIf="subscriber.userName != user?.name">
-                    <td>{{subscriber.userName}}</td>
-                    <td>{{subscriber.quantity}}</td>
-                  </tr>
-                </ng-container>
               </tbody>
             </table>
           </div>
@@ -209,24 +220,24 @@
     </collapsible-card>
     <collapsible-card>
       <div card-header>
-        Kommentare ({{task?.comments.length}})
+        Kommentare ({{task.comments.length}})
       </div>
       <div card-content>
-        <ion-list>
-          <ion-item *ngFor="let comment of task?.comments">
+        <ion-list class="comments">
+          <ion-item *ngFor="let comment of task.comments">
             <ion-avatar item-left>
               <img src="../../assets/img/avatar-placeholder2.png">
             </ion-avatar>
-            <h2>{{comment?.name}}</h2>
+            <h2>{{comment.name}}</h2>
 
-            <p text-wrap>{{comment?.content}}</p>
+            <p text-wrap>{{comment.content}}</p>
           </ion-item>
 
 
           <ion-item>
-            <ion-label floating>Kommentar hinzufügen</ion-label>
+            <ion-label stacked>Kommentar hinzufügen</ion-label>
             <ion-textarea type="text" [(ngModel)]="newComment"></ion-textarea>
-            <button ion-button color="dark" clear item-right icon-only (click)="addNewComment()">
+            <button ion-button color="secondary" clear item-right icon-only (click)="addNewComment()" style="align-self: flex-end;">
               <ion-icon name="send"></ion-icon>
             </button>
           </ion-item>
@@ -234,53 +245,46 @@
         </ion-list>
       </div>
     </collapsible-card>
-  </ng-template>
+  </ng-container>
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar *ngIf="showPublish || showEnroll || showCancel || showFollow || showUnfollow || (participationType == 'PARTICIPATING' || participationType == 'LEADING') && task?.taskState == 'STARTED' || showEvaluate || showTriggerEval">
+  <ion-toolbar *ngIf="showPublish || showEnroll || showShifts || showCancel || showFollow || showUnfollow || (participationType == 'PARTICIPATING' || participationType == 'LEADING') && task.taskState == 'STARTED' || showEvaluate || showTriggerEval">
     <div class="toolbar-buttons">
-      <button ion-button icon-left full color="light" (click)="publish()" *ngIf="showPublish">
-        <ion-icon name="eye"></ion-icon>
+      <button ion-button block color="light" (click)="publish()" *ngIf="showPublish">
         Veröffentlichen
       </button>
-      <button ion-button icon-left full color="secondary" (click)="enroll()" *ngIf="showEnroll">
-        <ion-icon name="checkmark"></ion-icon>
+      <button ion-button block color="secondary" (click)="enroll()" *ngIf="showEnroll">
         Ich arbeite mit!
       </button>
-      <button ion-button icon-left full color="danger" (click)="cancel()" *ngIf="showCancel">
-        <ion-icon name="close"></ion-icon>
+      <button ion-button block color="secondary" (click)="openShifts()" *ngIf="showShifts">
+        Schicht wählen
+      </button>
+      <button ion-button block color="danger" (click)="cancel()" *ngIf="showCancel">
         Absagen
       </button>
-      <button ion-button icon-left full color="light" (click)="follow()" *ngIf="showFollow">
-        <ion-icon name="eye"></ion-icon>
+      <button ion-button block color="light" (click)="follow()" *ngIf="showFollow">
         Folgen
       </button>
-      <button ion-button icon-left full color="danger" (click)="unfollow()" *ngIf="showUnfollow">
-        <ion-icon name="eye-off"></ion-icon>
+      <button ion-button block color="danger" (click)="unfollow()" *ngIf="showUnfollow">
         Nicht mehr folgen
       </button>
-      <button ion-button icon-left full color="light" (click)="evaluate()" *ngIf="showEvaluate">
-        <ion-icon name="checkmark"></ion-icon>
+      <button ion-button block color="light" (click)="evaluate()" *ngIf="showEvaluate">
         Aufgabe bewerten
       </button>
-      <button ion-button icon-left full color="light" (click)="triggerEval()" *ngIf="showTriggerEval">
-        <ion-icon name="send"></ion-icon>
-        Bewertungnachrichten senden
+      <button ion-button block color="light" (click)="triggerEval()" *ngIf="showTriggerEval">
+        Bewertunsgnachrichten senden
       </button>
       <ng-container *ngIf="task?.taskState == 'STARTED'">
         <ng-container *ngIf="participationType == 'PARTICIPATING'">
-          <button ion-button icon-left full color="secondary" (click)="done()" *ngIf="!userIsDone">
-            <ion-icon name="ion-checkmark"></ion-icon>
+          <button ion-button block color="secondary" (click)="done()" *ngIf="!userIsDone">
             Ich bin fertig
           </button>
-          <button ion-button icon-left full color="danger" (click)="notDone()" *ngIf="userIsDone">
-            <ion-icon name="ion-close"></ion-icon>
+          <button ion-button block color="danger" (click)="notDone()" *ngIf="userIsDone">
             Ich bin nicht fertig
           </button>
         </ng-container>
-        <button ion-button icon-left full color="secondary" (click)="complete()" *ngIf="participationType == 'LEADING'">
-          <ion-icon name="ion-checkmark"></ion-icon>
+        <button ion-button block color="secondary" (click)="complete()" *ngIf="participationType == 'LEADING'">
           Aufgabe ist fertig
         </button>
       </ng-container>

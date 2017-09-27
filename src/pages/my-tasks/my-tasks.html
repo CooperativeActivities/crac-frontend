@@ -2,10 +2,10 @@
   <ion-navbar>
     <ion-buttons end *ngIf="userHasPermissions">
       <button ion-button icon-only (click)="makeNewTask()">
-        <ion-icon name="add-circle"></ion-icon>
+        <ion-icon name="crac-add"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>Meine offene Aufgaben</ion-title>
+    <ion-title>Meine offenen Aufgaben</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -16,18 +16,45 @@
 
   <ion-card *ngIf="allTasks?.participating?.length === 0 && allTasks?.following?.length === 0 && allTasks?.leading?.length === 0">
     <ion-card-content>
-      <ion-list>
+      <ion-list class="list-border">
         <ion-item>
-          <p>Keine offene Aufgaben gefunden.</p>
-          <p>
-            <button ion-button block icon-left (click)="makeNewTask()" *ngIf="userHasPermissions">
-              <ion-icon name="md-add-circle"></ion-icon>
-              Neue Aufgabe erstellen
-            </button>
-            <button ion-button block (click)="navCtrl.push('my-history')">
-              Vergangene Aufgaben anschauen
-            </button>
-          </p>
+          Keine offenen Aufgaben gefunden.
+        </ion-item>
+        <button ion-item (click)="makeNewTask()" *ngIf="userHasPermissions">
+          Neue Aufgabe erstellen
+        </button>
+        <button ion-item (click)="navCtrl.push('my-history')">
+          Vergangene Aufgaben anschauen
+        </button>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card task-list *ngIf="allTasks?.leading?.length > 0">
+    <ion-card-header>
+      Von mir organisierte Aufgaben
+    </ion-card-header>
+    <ion-card-content>
+      <ion-segment [(ngModel)]="filters.leading" (ionChange)="filterLeadingTasks($event)">
+        <ion-segment-button value="started">
+          Gestartet
+        </ion-segment-button>
+        <ion-segment-button value="published">
+          Anstehend
+        </ion-segment-button>
+        <!--
+        <ion-segment-button value="closed">
+          Beendet
+        </ion-segment-button>
+        -->
+        <ion-segment-button value="unpublished">
+          Geplant
+        </ion-segment-button>
+      </ion-segment>
+      <ion-list>
+        <task-preview item-block *ngFor="let task of leadingTasks" [task]="task"></task-preview>
+        <ion-item class="not-found" *ngIf="leadingTasks.length < 1">
+          Keine offenen Aufgaben gefunden.
         </ion-item>
       </ion-list>
     </ion-card-content>
@@ -35,7 +62,7 @@
 
   <ion-card task-list *ngIf="allTasks?.participating?.length > 0">
     <ion-card-header>
-      Teilgenommene Aufgaben
+      Von mir übernommene Aufgaben
     </ion-card-header>
     <ion-card-content>
       <ion-segment [(ngModel)]="filters.participating" (ionChange)="filterParticipatingTasks($event)">
@@ -43,11 +70,14 @@
           Gestartet
         </ion-segment-button>
         <ion-segment-button value="published">
-          Anstehende
+          Anstehend
         </ion-segment-button>
       </ion-segment>
       <ion-list>
         <task-preview item-block *ngFor="let task of participatingTasks" [task]="task"></task-preview>
+        <ion-item class="not-found" *ngIf="participatingTasks.length < 1">
+          Keine offenen Aufgaben gefunden.
+        </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
@@ -62,32 +92,14 @@
           Gestartet
         </ion-segment-button>
         <ion-segment-button value="published">
-          Anstehende
+          Anstehend
         </ion-segment-button>
       </ion-segment>
       <ion-list>
         <task-preview item-block *ngFor="let task of followingTasks" [task]="task" [action]="'unfollow'"></task-preview>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-  <ion-card task-list *ngIf="allTasks?.leading?.length > 0">
-    <ion-card-header>
-      Von mir angeführte Aufgaben
-    </ion-card-header>
-    <ion-card-content>
-      <ion-segment [(ngModel)]="filters.leading" (ionChange)="filterLeadingTasks($event)">
-        <ion-segment-button value="started">
-          Gestartet
-        </ion-segment-button>
-        <ion-segment-button value="published">
-          Öffentlicht
-        </ion-segment-button>
-        <ion-segment-button value="unpublished">
-          Neu
-        </ion-segment-button>
-      </ion-segment>
-      <ion-list>
-        <task-preview item-block *ngFor="let task of leadingTasks" [task]="task"></task-preview>
+        <ion-item class="not-found" *ngIf="followingTasks.length < 1">
+          Keine offenen Aufgaben gefunden.
+        </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>

@@ -4,6 +4,22 @@ page-task-detail {
     width: 100%;
   }
 
+  table.materials-brought{
+    tr:last-child:not(:first-child){
+      border-top: 1px solid #dedede;
+    }
+  }
+  ion-list.comments{
+    & ion-item:last-child:not(:first-child){
+      border-top: 1px solid #dedede;
+    }
+  }
+  ion-list.team-list{
+    &>ion-label:not(:first-child){
+      border-top: 1px solid #dedede;
+    }
+  }
+
   .icon-role {
     background: rgba(255,255,255,0.7);
     border-radius: 50%;

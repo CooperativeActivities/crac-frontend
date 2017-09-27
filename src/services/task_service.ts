@@ -11,8 +11,8 @@ export class TaskDataService {
       throw { error: responseData, message: "Aufgabenliste konnte nicht geladen werden" };
     }});
   };
-  //Get a TAsk by ID
-  getTaskById(id){
+  //Get a Task by ID
+  getTaskById(id): Promise<any>{
     return this.helpers.ajax("task/" + id, "get");
   };
   //Update the Task data if there are changes
@@ -173,5 +173,10 @@ export class TaskDataService {
   //send evaluation values
   evaluateTask(evaluationId, values){
     return this.helpers.ajax("evaluation/"+evaluationId, "put", { payload: values });
+  };
+
+// Returns all tasks affected by the elasticsearch-query
+  getFilteredTasks(taskData){
+    return this.helpers.ajax("task/", "post", { payload: taskData });
   };
 }

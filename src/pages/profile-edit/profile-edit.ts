@@ -34,7 +34,9 @@ export class ProfileEditPage {
   ngOnInit(): void {
     this.userDataService.getCurrentUser().then((res) => {
       this.user = res.object;
-      this.user.birthDate = this.getDateString(new Date(this.user.birthDate));
+      if(this.user.birthDate) {
+        this.user.birthDate = this.getDateString(new Date(this.user.birthDate));
+      }
     }).catch((error)=>{
       console.log(error);
       this.toast.create({
