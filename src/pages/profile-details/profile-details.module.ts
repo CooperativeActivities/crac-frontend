@@ -15,4 +15,4 @@ import { ComponentsModule } from "../../components/components.module"
     ProfileDetailsPage
   ]
 })
-export class MyProfilePageModule {}
+export class ProfileDetailsPageModule {}

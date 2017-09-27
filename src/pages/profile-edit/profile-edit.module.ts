@@ -27,4 +27,4 @@ import {PhoneNumberValidator} from "../../directives/phone-number";
     Camera
   ]
 })
-export class MyProfilePageModule {}
+export class ProfileEditPageModule {}
