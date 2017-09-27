@@ -112,6 +112,6 @@ export class UserDataService {
 
   //attach an image
   uploadProfileImage(formData) {
-    return this.helpers.ajax('attachmentUl/addFile','put',{payload: formData});
+    return this.helpers.ajax('attachmentUl/addFile','post',{payload: formData});
   }
 }
