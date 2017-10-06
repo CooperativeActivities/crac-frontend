@@ -84,7 +84,7 @@
 
   <ion-card task-list *ngIf="allTasks?.following?.length > 0">
     <ion-card-header>
-       Beobachtete Aufgaben
+       Von mir beobachtete Aufgaben
     </ion-card-header>
     <ion-card-content>
       <ion-segment [(ngModel)]="filters.following" (ionChange)="filterFollowingTasks($event)">
