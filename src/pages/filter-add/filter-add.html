@@ -16,14 +16,14 @@
                             <ion-item>
                                 <ion-label stacked>Beginndatum*</ion-label>
                                 <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="startDateMin" name="startDate"
-                                              [ngClass]="{'has-error' : !startDate}"></ion-datetime>
+                                              [ngClass]="{'has-error' : !startDate}" [min]="minimumDate" [max]="maximumDate"></ion-datetime>
                             </ion-item>
                         </ion-col>
                         <ion-col no-padding>
                             <ion-item>
                                 <ion-label stacked>Enddatum</ion-label>
                                 <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="endDateMin"
-                                              name="endTime"></ion-datetime>
+                                              name="endTime" [min]="minimumDate" [max]="maximumDate" ></ion-datetime>
                             </ion-item>
                         </ion-col>
                     </ion-row>
@@ -36,7 +36,7 @@
             Ortsfilter
         </ion-card-header>
         <ion-card-content>
-            <ion-input placeholder="Location Input"></ion-input>
+            <ion-input placeholder="Stadt" [(ngModel)]="getRegion"></ion-input>
         </ion-card-content>
     </ion-card>
     <ion-card>

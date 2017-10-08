@@ -21,25 +21,41 @@ export class FilterAddPage {
     friends: Array<any> = [];
     selectedUsers: Array<any> = [];
     task: any = {};
-    startDateMin: string = '';
+    startDateMin: string;
     startDateMax: string = '';
     endDateMin: string = '';
     endDateMax: string = '';
+    getRegion: string = '';
+    minimumDate: string;
+    maximumDate: string;
+    geoLat: number = 1.1;
+    geoLng: number = 1.1;
 
     constructor(public navCtrl: NavController, public params: NavParams,
                 public taskDataService: TaskDataService, public userDataService: UserDataService, public toast: ToastController, public viewCtrl: ViewController,) {
+
+        let now = new Date();
+        now.setHours(0);
+        now.setMinutes(0);
+        now.setSeconds(0);
+        now.setMilliseconds(0);
+        this.minimumDate = this.getDateString(now);
+        this.startDateMin = this.minimumDate;
+        now.setFullYear(now.getFullYear() + 4);
+        this.maximumDate = this.getDateString(now);
+
     }
 
 
     toTimestamp(datestring): Number {
-        if (!datestring) return
-        if (!isNaN(datestring)) return datestring;
+        if(!datestring) return
+        if(!isNaN(datestring)) return datestring;
         let date = Date.parse(datestring)
-        if (isNaN(date)) return
+        if(isNaN(date)) return
         return date
     }
 
-    getDateString(d) {
+    getDateString(d){
         let tzo = -d.getTimezoneOffset(),
             dif = tzo >= 0 ? '+' : '-',
             pad = (num) => {
@@ -57,14 +73,13 @@ export class FilterAddPage {
     }
 
     async applyFilters() {
-
         let startTime = this.toTimestamp(this.startDateMin);
         let endTime = this.toTimestamp(this.endDateMin);
         let friendName = this.selectedUsers;
         let friendsArray = [];
 
 
-        for (let i = 0; i <= this.selectedUsers.length-1; i++) {
+        for (let i = 0; i <= this.selectedUsers.length - 1; i++) {
 
             friendsArray.push({
                 name: friendName[i],
@@ -75,9 +90,48 @@ export class FilterAddPage {
             });
         }
 
+
         let taskData = {
             query: this.params.get('searchBarInput'),
             filters: [
+                // {
+                //     "name": "GeoFilter",
+                //     "params": [
+                //         {
+                //             name: "geoLat",
+                //             value: this.geoLat
+                //         },
+                //         {
+                //             name: "geoLng",
+                //             value: this.geoLng
+                //         },
+                //         {
+                //             name: "geoName",
+                //             value: ""
+                //         },
+                //         {
+                //             name: "geoCountry",
+                //             value: ""
+                //         },
+                //         {
+                //             name: "geoCountryA",
+                //             value: ""
+                //         },
+                //         {
+                //             name: "geoMacroRegion",
+                //             value: ""
+                //         },
+                //         {
+                //             name: "geoRegion",
+                //             value: this.getRegion
+                //         },
+                //         {
+                //             name: "geoLocality",
+                //             value: ""
+                //         }
+                //     ]
+                //
+                // },
                 {
                     "name": "DateFilter",
                     "params": [
@@ -101,21 +155,19 @@ export class FilterAddPage {
                     ]
 
                 },
-                {
-                    "name": "FriendFilter",
-                    "params": friendsArray
-                }
+                // {
+                //     "name": "FriendFilter",
+                //     "params": friendsArray
+                // }
             ]
         };
-        console.log('Das Objekt Taskdata', taskData);
+
         this.viewCtrl.dismiss(taskData);
     }
 
 
     ngOnInit() {
         let self = this;
-
-
         self.userDataService.getFriends().then(function (res) {
             self.friends = res.object
         }, function (error) {
