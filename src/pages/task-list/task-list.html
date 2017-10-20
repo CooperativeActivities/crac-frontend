@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Aufgabenliste</ion-title>
+    <ion-title>Liste aller Projekte</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
@@ -8,7 +8,7 @@
   <ion-refresher-content> </ion-refresher-content>
   </ion-refresher>
 
-  <ion-card *ngIf="matchingTasks?.length === 0 && parentTasks?.length === 0">
+ <!-- <ion-card *ngIf="matchingTasks?.length === 0 && parentTasks?.length === 0">
     <ion-card-content>
       <ion-list class="list-border">
         <ion-item class="not-found">
@@ -21,36 +21,39 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card task-list *ngIf="matchingTasks?.length > 0">
+ <!-- <ion-card task-list *ngIf="matchingTasks?.length > 0">
     <ion-card-header>
-      Vorgeschlagene Aufgaben
+      Neue Aufgaben für dich
     </ion-card-header>
     <ion-card-content>
       <ion-list>
         <task-preview item-block *ngFor="let task of matchingTasks" [task]="task.task" [action]="'follow'"></task-preview>
       </ion-list>
     </ion-card-content>
-  </ion-card>
+  </ion-card> -->
 
-    <ion-searchbar [(ngModel)]="searchQuery" [debounce]="250" (change)="onSearchBarInput($event)"
-                   autocorrect="off">
-    </ion-searchbar>
-    <div class="button-right">
+
+
+  <ion-card task-list *ngIf="parentTasks?.length > 0">
+    <!--<ion-card-header>
+      Alle offene Aufgaben/Projekte
+    </ion-card-header> -->
+    <ion-card-content>
+
+      <ion-searchbar [(ngModel)]="searchQuery" [debounce]="250" (change)="onSearchBarInput($event)"
+                     autocorrect="off">
+      </ion-searchbar>
+      <div class="button-right">
         <button ion-button icon-left (click)="presentModal()">
-            <ion-icon name="ios-funnel"></ion-icon>
-            Filter
+          <ion-icon name="ios-funnel"></ion-icon>
+          Filter
         </button>
 
         <button ion-button icon-left (click)="resetTaskList()">
-            Reset List
+          Reset List
         </button>
-    </div>
+      </div>
 
-  <ion-card task-list *ngIf="parentTasks?.length > 0">
-    <ion-card-header>
-      Alle offene Aufgaben/Projekte
-    </ion-card-header>
-    <ion-card-content>
       <ion-list>
         <task-preview-recursive item-block *ngFor="let task of parentTasks" [task]="task"></task-preview-recursive>
       </ion-list>
