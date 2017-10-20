@@ -307,7 +307,7 @@ export class TaskDetailPage {
     }
 
     let taskId = this.task.id;
-    this.taskDataService.changeTaskState(taskId, 'publish').then( (res) => {
+    this.taskDataService.changeTaskState(taskId, 'PUBLISHED').then( (res) => {
       this.presentToast("Task veröffentlicht", 'top', false, 5000);
       this.task.taskState = 'PUBLISHED';
       this.updateFlags();
@@ -323,7 +323,7 @@ export class TaskDetailPage {
       return;
     }
 
-    this.taskDataService.changeTaskPartState(this.taskId, 'participate').then( (res) => {
+    this.taskDataService.changeTaskPartState(this.taskId, 'PARTICIPATING').then( (res) => {
       //this.task = res.object
       let userRel = this.user;
       userRel.participationType = 'PARTICIPATING';
@@ -377,7 +377,7 @@ export class TaskDetailPage {
   // follow a task
   follow() {
     let that = this;
-    this.taskDataService.changeTaskPartState(this.task.id, 'follow').then(function (res) {
+    this.taskDataService.changeTaskPartState(this.task.id, 'FOLLOWING').then(function (res) {
       that.participationType = "FOLLOWING";
       that.updateFlags();
     }, function (error) {
@@ -402,7 +402,7 @@ export class TaskDetailPage {
 
   //add self to a shift
   addToShift(shift) {
-    this.taskDataService.changeTaskPartState(shift.id, 'participate').then((res) => {
+    this.taskDataService.changeTaskPartState(shift.id, 'PARTICIPATING').then((res) => {
       shift.assigned = true;
       let userRel = this.user;
       userRel.participationType = 'PARTICIPATING';
@@ -561,7 +561,7 @@ export class TaskDetailPage {
   complete() {
     let allDone = this.areAllParticipantsDone();
     if(allDone) {
-      this.completeTask('complete');
+      this.completeTask();
     } else {
       this.alert.create({
         title: "Task kann nicht als fertig markiert werden:",
@@ -574,7 +574,7 @@ export class TaskDetailPage {
           {
             text: 'Abschließen',
             handler: () => {
-              this.completeTask('forceComplete');
+              this.forceCompleteTask();
             }
           }
         ]
@@ -582,14 +582,23 @@ export class TaskDetailPage {
     }
   };
 
-  completeTask(state) {
+  forceCompleteTask() {
     if(!this.task.permissions) return false;
 
-    this.taskDataService.changeTaskState(this.task.id, state).then((res) => {
-      console.log("Task is completed");
+    this.taskDataService.forceTaskState(this.task.id, "complete").then((res) => {
       this.task.taskState = 'COMPLETED';
       this.updateFlags();
-      console.log(res);
+    }, (error) => {
+      this.presentToast("Aufgabe kann nicht abgeschlossen werden: " + error.message, 'top', false, 5000);
+    });
+  };
+
+  completeTask() {
+    if(!this.task.permissions) return false;
+
+    this.taskDataService.changeTaskState(this.task.id, "completed").then((res) => {
+      this.task.taskState = 'COMPLETED';
+      this.updateFlags();
     }, (error) => {
       this.presentToast("Aufgabe kann nicht abgeschlossen werden: " + error.message, 'top', false, 5000);
     });

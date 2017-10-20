@@ -80,9 +80,9 @@ export class MyTasksPage {
     await Promise.all([
       this.taskDataService.getMyTasks().then((res) => {
         this.allTasks = {
-          participating: _.orderBy(res.meta.participating, ["startTime","endTime","name"], ["asc","asc","asc"]),
-          following: _.orderBy(res.meta.following, ["startTime","endTime","name"], ["asc","asc","asc"]),
-          leading: _.orderBy(res.meta.leading, ["startTime","endTime","name"], ["asc","asc","asc"])
+          participating: _.orderBy(res.meta.PARTICIPATING, ["startTime","endTime","name"], ["asc","asc","asc"]),
+          following: _.orderBy(res.meta.FOLLOWING, ["startTime","endTime","name"], ["asc","asc","asc"]),
+          leading: _.orderBy(res.meta.LEADING, ["startTime","endTime","name"], ["asc","asc","asc"])
         };
         this.participatingTasks = this.filterTasks('participating', this.filters.participating);
         this.followingTasks = this.filterTasks('following', this.filters.following);

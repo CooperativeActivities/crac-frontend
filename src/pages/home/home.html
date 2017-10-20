@@ -31,7 +31,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <task-preview item-block *ngFor="let task of tasks" [task]="task.task" [action]="'follow'"></task-preview><!-- | orderBy: 'assessment'">-->
+        <task-preview item-block *ngFor="let task of tasks" [task]="task" [action]="'follow'"></task-preview>
       </ion-list>
     </ion-card-content>
   </ion-card>
