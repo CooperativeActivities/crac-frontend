@@ -111,7 +111,9 @@ export class UserDataService {
   }
 
   //attach an image
-  uploadProfileImage(formData) {
-    return this.helpers.ajax('attachmentUl/addFile','post',{payload: formData});
+  uploadProfileImage(blob: Blob) {
+    let formData = new FormData();
+    formData.append('file', blob);
+    return this.helpers.ajax('user/image','post',{payload: formData});
   }
 }

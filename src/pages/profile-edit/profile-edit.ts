@@ -101,15 +101,15 @@ export class ProfileEditPage {
               let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
               let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
               this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
+              // @TODO:
+              // this image must be uploaded too!?
             });
         } else {
           let currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
           let correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
           this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
         }
-      }
-      else
-      {
+      } else {
         this.uploadBase64(imagePath);
       }
     }, (err) => {
@@ -123,16 +123,13 @@ export class ProfileEditPage {
   }
 
   uploadBase64(img) {
+    console.log(img)
     let b64img = 'data:image/jpeg;base64,' + img;
-    let form = document.getElementById('uploadForm');
     let block = b64img.split(';');
     let contentType = block[0].split(':')[1];
     let realData = block[1].split(',')[1];
     let blob = this.b64toBlob(realData, contentType);
-    let formData = new FormData(<HTMLFormElement>form);
-    formData.append('uploadFile', blob);
-    console.log(formData);
-    this.userDataService.uploadProfileImage(formData).then((res) => {
+    this.userDataService.uploadProfileImage(blob).then((res) => {
       console.log(res);
       this.profileImg = b64img;
 
