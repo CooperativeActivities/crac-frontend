@@ -19,7 +19,7 @@ export class TaskDataService {
   updateTaskById(taskData, id){
     return this.helpers.ajax("task/" + id, "put", { payload: taskData });
   };
-  //Adds target task to the open-tasks of the logged-in user or changes it's state; Choose either 'participate', 'follow', or 'lead'
+  //Adds target task to the open-tasks of the logged-in user or changes it's state; Choose either 'PARTICIPATING' or 'FOLLOWING'
   changeTaskPartState(id, stateName){
     return this.helpers.ajax("task/" + id + "/add/" + stateName, "put");
   };
@@ -61,7 +61,7 @@ export class TaskDataService {
     return this.helpers.ajax("task/" + taskId + "/done/"+done_boolean, "put");
   };
   /*
-   **Change the state of target task; Choose either 'publish', 'start', or 'complete'**
+   **Change the state of target task; Choose either 'PUBLISHED', 'STARTED', or 'COMPLETED'**
    *For each state different prerequisite have to be fullfilled:*
    *NOT_PUBLISHED: Default state*
    *PUBLISHED: Only allowed when the task-fields are all filled*
@@ -69,7 +69,11 @@ export class TaskDataService {
    *COMPLETED: A task can only be completed when its children are all completed or if it has none*
    */
   changeTaskState(taskId, state_name){
-    return this.helpers.ajax("task/" + taskId + "/state/" + state_name, "put");
+    return this.helpers.ajax("task/" + taskId + "/state/changeTo/" + state_name, "put");
+  };
+  // Force the state of the target task; either 'unpublish' or 'complete'
+  forceTaskState(taskId, action){
+    return this.helpers.ajax("task/" + taskId + "/state/force/" + action, "put");
   };
   //Deletes the task with given id
   deleteTaskById(taskId){
@@ -123,14 +127,14 @@ export class TaskDataService {
 
   //Adds target material to target task
   addMaterialToTask(taskId,material){
-    return this.helpers.ajax("task/" + taskId + "/material/add", "post", { payload: material });
+    return this.helpers.ajax("task/" + taskId + "/material", "post", { payload: material });
   };
   removeMaterialFromTask(taskId,materialId){
-    return this.helpers.ajax("task/" + taskId + "/material/" + materialId + "/remove", "delete");
+    return this.helpers.ajax("task/" + taskId + "/material/" + materialId, "delete");
   };
   //updates a specific material
   updateMaterial(taskId, material) {
-    return this.helpers.ajax("task/" + taskId + "/material/" + material.id + "/update", "put", { payload: material });
+    return this.helpers.ajax("task/" + taskId + "/material/" + material.id, "put", { payload: material });
   }
   //Adds array of material objects
   addMaterialsToTask(taskId, materials){

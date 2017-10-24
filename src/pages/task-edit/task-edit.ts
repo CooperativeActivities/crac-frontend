@@ -454,7 +454,7 @@ export class TaskEditPage {
     }
     let success = await this.save_task()
     if(!success){ return }
-    this.taskDataService.changeTaskState(this.task.id, 'publish').then((res) => {
+    this.taskDataService.changeTaskState(this.task.id, 'PUBLISHED').then((res) => {
       this.task.taskState = 'PUBLISHED';
       this.updateFlags();
       this.toast.create({
@@ -474,7 +474,7 @@ export class TaskEditPage {
   async unpublish() {
     let success = await this.save_task()
     if(!success){ return }
-    this.taskDataService.changeTaskState(this.task.id, 'unpublish').then((res) => {
+    this.taskDataService.forceTaskState(this.task.id, 'unpublish').then((res) => {
       this.task.taskState = 'NOT_PUBLISHED';
       this.updateFlags();
       this.toast.create({

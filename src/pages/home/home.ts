@@ -18,7 +18,7 @@ export class HomePage {
   constructor(public navCtrl: NavController, public taskDataService: TaskDataService) { }
   ngOnInit(): void {
     this.taskDataService.getMatchingTasks(3).then((res) => {
-      this.tasks = _.orderBy(res.object, [ "assessment", "task.startTime" ], [ "desc", "asc" ])
+      this.tasks = _.sortBy(res.object, "startTime")
     }).catch((err)=>{
       console.log(err)
     })

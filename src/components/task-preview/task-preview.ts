@@ -52,7 +52,7 @@ export class TaskPreviewComponent implements OnInit {
   }
 
   follow(id) {
-    this.taskDataService.changeTaskPartState(this.task.id, 'follow').then(res => {
+    this.taskDataService.changeTaskPartState(this.task.id, 'FOLLOWING').then(res => {
       this.showFollow = false
       this.showUnfollow = true
       console.log("Following task");
