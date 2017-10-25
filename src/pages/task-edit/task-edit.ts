@@ -100,7 +100,19 @@ export class TaskEditPage {
       this.task.address = this.navParams.data.address;
       this.task.geoLat = this.navParams.data.lat;
       this.task.geoLng = this.navParams.data.lng;
-      console.log("Import Address: " + this.navParams.data.address + " | lat: " + this.navParams.data.lat + " / lng: " + this.navParams.data.lng);
+      this.task.geoName = this.navParams.data.geoName;
+      this.task.geoCountry = this.navParams.data.geoCountry;
+      this.task.geoCountryA = this.navParams.data.geoCountryA;
+      this.task.geoMacroRegion = this.navParams.data.geoMacroRegion;
+      this.task.geoRegion = this.navParams.data.geoRegion;
+      this.task.geoLocality = this.navParams.data.geoLocality;
+      console.log("Import Address: " + this.navParams.data.address + " | lat: " + this.navParams.data.lat + " / lng: " + this.navParams.data.lng
+      + " | " + this.navParams.data.geoName
+      + " | " + this.navParams.data.geoCountry
+      + " | " + this.navParams.data.geoCountryA
+      + " | " + this.navParams.data.geoMacroRegion
+      + " | " + this.navParams.data.geoRegion
+      + " | " + this.navParams.data.geoLocality);
     }
   }
   cancel(){
@@ -244,6 +256,14 @@ export class TaskEditPage {
     if(this.task.address) taskData.address = this.task.address;
     if(this.task.geoLat) taskData.geoLat = this.task.geoLat;
     if(this.task.geoLng) taskData.geoLng = this.task.geoLng;
+
+    if(this.task.geoName) taskData.geoName = this.task.geoName;
+    if(this.task.geoCountry) taskData.geoCountry = this.task.geoCountry;
+    if(this.task.geoCountryA) taskData.geoCountryA = this.task.geoCountryA;
+    if(this.task.geoMacroRegion) taskData.geoMacroRegion = this.task.geoMacroRegion;
+    if(this.task.geoRegion) taskData.geoRegion = this.task.geoRegion;
+    if(this.task.geoLocality) taskData.geoLocality = this.task.geoLocality;
+
     if(this.task.minAmountOfVolunteers) taskData.minAmountOfVolunteers = this.task.minAmountOfVolunteers;
     taskData.taskType = this.task.taskType;
     taskData.taskState = this.task.taskState;

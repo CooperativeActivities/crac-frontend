@@ -25,6 +25,12 @@ export class MapSelectPage implements OnInit {
   //lng:number;
   adrLat = 7;
   adrLng = 7;
+  geoName;
+  geoCountry;
+  geoCountryA;
+  geoMacroRegion;
+  geoRegion;
+  geoLocality;
   taskId : number;
   map: any;
   geocoder: any;
@@ -158,6 +164,13 @@ export class MapSelectPage implements OnInit {
       var Lat = data.features[0].geometry.coordinates[1];
       var Lng = data.features[0].geometry.coordinates[0];
 
+      var geoName = data.features[0].properties.name;
+      var geoCountry = data.features[0].properties.country;
+      var geoCountryA = data.features[0].properties.country_a;
+      var geoMacroRegion = data.features[0].properties.region;
+      var geoRegion = data.features[0].properties.county;
+      var geoLocality = data.features[0].properties.localadmin;
+
       if (rStreet != "") {
         if (rHouse != "") {
           rStreet += " ";
@@ -173,6 +186,12 @@ export class MapSelectPage implements OnInit {
       this.result = rStreet + rHouse + rPost + rCity;
       this.adrLat = Lat;
       this.adrLng = Lng;
+      this.geoName = geoName;
+      this.geoCountry = geoCountry;
+      this.geoCountryA = geoCountryA;
+      this.geoMacroRegion = geoMacroRegion;
+      this.geoRegion = geoRegion;
+      this.geoLocality = geoLocality;
 
       this.geocoder._input.value = this.result
     }
@@ -204,6 +223,13 @@ export class MapSelectPage implements OnInit {
 
     var Lat = data.features[0].geometry.coordinates[1];
     var Lng = data.features[0].geometry.coordinates[0];
+
+    var geoName = data.features[0].properties.name;
+    var geoCountry = data.features[0].properties.country;
+    var geoCountryA = data.features[0].properties.country_a;
+    var geoMacroRegion = data.features[0].properties.region;
+    var geoRegion = data.features[0].properties.county;
+    var geoLocality = data.features[0].properties.localadmin;
 
     if (rStreet != "") {
       if (rHouse != "") {
@@ -261,7 +287,18 @@ export class MapSelectPage implements OnInit {
 
   save_address(){
     let backView = this.navCtrl.getPrevious()
-    backView.instance.navParams.data = {id: this.taskId, address: this.result, lat: this.adrLat, lng: this.adrLng}
+    backView.instance.navParams.data = {
+      id: this.taskId,
+      address: this.result,
+      lat: this.adrLat,
+      lng: this.adrLng,
+      geoName: this.geoName,
+      geoCountry: this.geoCountry,
+      geoCountryA: this.geoCountryA,
+      geoMacroRegion: this.geoMacroRegion,
+      geoRegion: this.geoRegion,
+      geoLocality: this.geoLocality
+    }
     this.navCtrl.pop()
   }
 
