@@ -25,6 +25,7 @@ export class MapSelectPage implements OnInit {
   //lng:number;
   adrLat = 7;
   adrLng = 7;
+  initZoom = 15;
   geoName;
   geoCountry;
   geoCountryA;
@@ -35,12 +36,13 @@ export class MapSelectPage implements OnInit {
   map: any;
   geocoder: any;
   result: any;
+  isNew = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public http: HttpClient, public geolocation: Geolocation) {
     console.log(navParams);
     if (navParams.data.address != null) {this.impAddr = navParams.data.address;}
-    if (navParams.data.lat != null) {this.adrLat = navParams.data.lat;}
-    if (navParams.data.lng != null) {this.adrLng = navParams.data.lng;}
+    if (navParams.data.lat != null && navParams.data.lat != 0) {this.adrLat = navParams.data.lat;} else {this.adrLat = 47.327; this.isNew = true;}
+    if (navParams.data.lng != null && navParams.data.lng != 0) {this.adrLng = navParams.data.lng;} else {this.adrLng = 13.333; this.isNew = true;}
     if (navParams.data.id != null) {this.taskId = navParams.data.id;}
     console.log("Map view for taskId: " + this.taskId);
   }
@@ -49,7 +51,8 @@ export class MapSelectPage implements OnInit {
     if (this.map != undefined) { this.map.off(); this.map.remove(); }
     this.setupMap();
 
-    this.map.setView(new Leaflet.LatLng(this.adrLat, this.adrLng), 15);
+    if (this.isNew == true) { this.initZoom = 6};
+    this.map.setView(new Leaflet.LatLng(this.adrLat, this.adrLng), this.initZoom);
 
     if (this.impAddr != null) {
       console.log("Loading Address field: " + this.impAddr)
@@ -106,12 +109,13 @@ export class MapSelectPage implements OnInit {
       this.setSelectionRange(0, 9999);
     })
 
-    var once = 1; // TEMP: Leaflet maps fires 2 times on loading... find solution
+    var once = 2; // TEMP: Leaflet maps fires 2 times on loading... find solution
 
     this.map.on("moveend", (event) => {
       if (once > 0) { //TEMP
         once -= 1; //TEMP
       } else { //TEMP
+        this.isNew = false;
         // Get the Leaflet map from the triggered event.
         var map = event.target; // === this.map
         var center = map.getCenter();
@@ -155,45 +159,47 @@ export class MapSelectPage implements OnInit {
     }
     console.log("Mapzen request received:", data);
 
-    if (data.features[0] != null){
-      var rStreet = data.features[0].properties.street || data.features[0].properties.name;
-      var rHouse = data.features[0].properties.housenumber || "";
-      var rPost = data.features[0].properties.postalcode || "";
-      var rCity = data.features[0].properties.locality || data.features[0].properties.county;
+    if (this.isNew != true) {
+      if (data.features[0] != null){
+        var rStreet = data.features[0].properties.street || data.features[0].properties.name;
+        var rHouse = data.features[0].properties.housenumber || "";
+        var rPost = data.features[0].properties.postalcode || "";
+        var rCity = data.features[0].properties.locality || data.features[0].properties.county;
 
-      var Lat = data.features[0].geometry.coordinates[1];
-      var Lng = data.features[0].geometry.coordinates[0];
+        var Lat = data.features[0].geometry.coordinates[1];
+        var Lng = data.features[0].geometry.coordinates[0];
 
-      var geoName = data.features[0].properties.name;
-      var geoCountry = data.features[0].properties.country;
-      var geoCountryA = data.features[0].properties.country_a;
-      var geoMacroRegion = data.features[0].properties.region;
-      var geoRegion = data.features[0].properties.county;
-      var geoLocality = data.features[0].properties.localadmin;
+        var geoName = data.features[0].properties.name;
+        var geoCountry = data.features[0].properties.country;
+        var geoCountryA = data.features[0].properties.country_a;
+        var geoMacroRegion = data.features[0].properties.region;
+        var geoRegion = data.features[0].properties.county;
+        var geoLocality = data.features[0].properties.localadmin;
 
-      if (rStreet != "") {
-        if (rHouse != "") {
-          rStreet += " ";
-          rHouse += ", ";
-        } else {
-          rStreet += ", ";
+        if (rStreet != "") {
+          if (rHouse != "") {
+            rStreet += " ";
+            rHouse += ", ";
+          } else {
+            rStreet += ", ";
+          }
         }
-      }
-      if (rPost != "") {
-        rPost += " ";
-      }
+        if (rPost != "") {
+          rPost += " ";
+        }
 
-      this.result = rStreet + rHouse + rPost + rCity;
-      this.adrLat = Lat;
-      this.adrLng = Lng;
-      this.geoName = geoName;
-      this.geoCountry = geoCountry;
-      this.geoCountryA = geoCountryA;
-      this.geoMacroRegion = geoMacroRegion;
-      this.geoRegion = geoRegion;
-      this.geoLocality = geoLocality;
+        this.result = rStreet + rHouse + rPost + rCity;
+        this.adrLat = Lat;
+        this.adrLng = Lng;
+        this.geoName = geoName;
+        this.geoCountry = geoCountry;
+        this.geoCountryA = geoCountryA;
+        this.geoMacroRegion = geoMacroRegion;
+        this.geoRegion = geoRegion;
+        this.geoLocality = geoLocality;
 
-      this.geocoder._input.value = this.result
+        this.geocoder._input.value = this.result
+      }
     }
   }
 
@@ -271,6 +277,7 @@ export class MapSelectPage implements OnInit {
         //   draggable: true
         // };
 
+        this.isNew = false;
         this.setAddressField(position.coords.latitude, position.coords.longitude);
 
       }, (err) => {
